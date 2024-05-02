@@ -40,14 +40,14 @@ func (r *EvmJsonRpcService) Scan(ctx context.Context, body EvmJsonRpcScanParams,
 }
 
 type EvmJsonRpcScanParams struct {
-	// The chain name
-	Chain param.Field[string] `json:"chain,required"`
 	// JSON-RPC request that was received by the wallet.
 	Data param.Field[EvmJsonRpcScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[MetadataParam] `json:"metadata,required"`
 	// The address of the account (wallet) received the request in hex string format
 	AccountAddress param.Field[string] `json:"account_address"`
+	// An enumeration.
+	Chain param.Field[EvmJsonRpcScanParamsChain] `json:"chain"`
 	// List of one or both of options for the desired output. "simulation" - include
 	// simulation output in your response. "validation" - include security validation
 	// of the transaction in your response. Default is ["validation"]
@@ -68,6 +68,33 @@ type EvmJsonRpcScanParamsData struct {
 
 func (r EvmJsonRpcScanParamsData) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// An enumeration.
+type EvmJsonRpcScanParamsChain string
+
+const (
+	EvmJsonRpcScanParamsChainArbitrum    EvmJsonRpcScanParamsChain = "arbitrum"
+	EvmJsonRpcScanParamsChainAvalanche   EvmJsonRpcScanParamsChain = "avalanche"
+	EvmJsonRpcScanParamsChainBase        EvmJsonRpcScanParamsChain = "base"
+	EvmJsonRpcScanParamsChainBaseSepolia EvmJsonRpcScanParamsChain = "base-sepolia"
+	EvmJsonRpcScanParamsChainBsc         EvmJsonRpcScanParamsChain = "bsc"
+	EvmJsonRpcScanParamsChainEthereum    EvmJsonRpcScanParamsChain = "ethereum"
+	EvmJsonRpcScanParamsChainOptimism    EvmJsonRpcScanParamsChain = "optimism"
+	EvmJsonRpcScanParamsChainPolygon     EvmJsonRpcScanParamsChain = "polygon"
+	EvmJsonRpcScanParamsChainZksync      EvmJsonRpcScanParamsChain = "zksync"
+	EvmJsonRpcScanParamsChainZora        EvmJsonRpcScanParamsChain = "zora"
+	EvmJsonRpcScanParamsChainLinea       EvmJsonRpcScanParamsChain = "linea"
+	EvmJsonRpcScanParamsChainBlast       EvmJsonRpcScanParamsChain = "blast"
+	EvmJsonRpcScanParamsChainUnknown     EvmJsonRpcScanParamsChain = "unknown"
+)
+
+func (r EvmJsonRpcScanParamsChain) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanParamsChainArbitrum, EvmJsonRpcScanParamsChainAvalanche, EvmJsonRpcScanParamsChainBase, EvmJsonRpcScanParamsChainBaseSepolia, EvmJsonRpcScanParamsChainBsc, EvmJsonRpcScanParamsChainEthereum, EvmJsonRpcScanParamsChainOptimism, EvmJsonRpcScanParamsChainPolygon, EvmJsonRpcScanParamsChainZksync, EvmJsonRpcScanParamsChainZora, EvmJsonRpcScanParamsChainLinea, EvmJsonRpcScanParamsChainBlast, EvmJsonRpcScanParamsChainUnknown:
+		return true
+	}
+	return false
 }
 
 // An enumeration.
