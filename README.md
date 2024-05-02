@@ -1,6 +1,6 @@
 # Blockaid Go API Library
 
-<a href="https://pkg.go.dev/github.com/stainless-sdks/blockaid-go"><img src="https://pkg.go.dev/badge/github.com/stainless-sdks/blockaid-go.svg" alt="Go Reference"></a>
+<a href="https://pkg.go.dev/github.com/stainless-sdks/blockaid-client-go"><img src="https://pkg.go.dev/badge/github.com/stainless-sdks/blockaid-client-go.svg" alt="Go Reference"></a>
 
 The Blockaid Go library provides convenient access to [the Blockaid REST
 API](https://docs.blockaid.io) from applications written in Go. The full API of this library can be found in [api.md](api.md).
@@ -11,14 +11,14 @@ It is generated with [Stainless](https://www.stainlessapi.com/).
 
 ```go
 import (
-	"github.com/stainless-sdks/blockaid-go" // imported as blockaid
+	"github.com/stainless-sdks/blockaid-client-go" // imported as blockaid
 )
 ```
 
 Or to pin the version:
 
 ```sh
-go get -u 'github.com/stainless-sdks/blockaid-go@v0.0.1-alpha.0'
+go get -u 'github.com/stainless-sdks/blockaid-client-go@v0.0.1-alpha.0'
 ```
 
 ## Requirements
@@ -36,8 +36,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/stainless-sdks/blockaid-go"
-	"github.com/stainless-sdks/blockaid-go/option"
+	"github.com/stainless-sdks/blockaid-client-go"
+	"github.com/stainless-sdks/blockaid-client-go/option"
 )
 
 func main() {
@@ -154,7 +154,7 @@ client.Evm.JsonRpc.Scan(context.TODO(), ...,
 )
 ```
 
-See the [full list of request options](https://pkg.go.dev/github.com/stainless-sdks/blockaid-go/option).
+See the [full list of request options](https://pkg.go.dev/github.com/stainless-sdks/blockaid-client-go/option).
 
 ### Pagination
 

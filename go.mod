@@ -1,4 +1,4 @@
-module github.com/stainless-sdks/blockaid-go
+module github.com/stainless-sdks/blockaid-client-go
 
 go 1.19
 

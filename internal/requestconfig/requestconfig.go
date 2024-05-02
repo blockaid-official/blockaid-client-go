@@ -17,10 +17,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/stainless-sdks/blockaid-go/internal"
-	"github.com/stainless-sdks/blockaid-go/internal/apierror"
-	"github.com/stainless-sdks/blockaid-go/internal/apiform"
-	"github.com/stainless-sdks/blockaid-go/internal/apiquery"
+	"github.com/stainless-sdks/blockaid-client-go/internal"
+	"github.com/stainless-sdks/blockaid-client-go/internal/apierror"
+	"github.com/stainless-sdks/blockaid-client-go/internal/apiform"
+	"github.com/stainless-sdks/blockaid-client-go/internal/apiquery"
 )
 
 func getDefaultHeaders() map[string]string {

@@ -6,10 +6,10 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/stainless-sdks/blockaid-go/internal/apijson"
-	"github.com/stainless-sdks/blockaid-go/internal/param"
-	"github.com/stainless-sdks/blockaid-go/internal/requestconfig"
-	"github.com/stainless-sdks/blockaid-go/option"
+	"github.com/stainless-sdks/blockaid-client-go/internal/apijson"
+	"github.com/stainless-sdks/blockaid-client-go/internal/param"
+	"github.com/stainless-sdks/blockaid-client-go/internal/requestconfig"
+	"github.com/stainless-sdks/blockaid-client-go/option"
 )
 
 // EvmTransactionRawService contains methods and other services that help with

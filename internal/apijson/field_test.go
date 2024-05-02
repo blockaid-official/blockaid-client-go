@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stainless-sdks/blockaid-go/internal/param"
+	"github.com/stainless-sdks/blockaid-client-go/internal/param"
 )
 
 type Struct struct {

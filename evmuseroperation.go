@@ -3,7 +3,7 @@
 package blockaid
 
 import (
-	"github.com/stainless-sdks/blockaid-go/option"
+	"github.com/stainless-sdks/blockaid-client-go/option"
 )
 
 // EvmUserOperationService contains methods and other services that help with

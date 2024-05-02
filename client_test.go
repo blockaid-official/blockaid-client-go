@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stainless-sdks/blockaid-go"
-	"github.com/stainless-sdks/blockaid-go/internal"
-	"github.com/stainless-sdks/blockaid-go/option"
+	"github.com/stainless-sdks/blockaid-client-go"
+	"github.com/stainless-sdks/blockaid-client-go/internal"
+	"github.com/stainless-sdks/blockaid-client-go/option"
 )
 
 type closureTransport struct {

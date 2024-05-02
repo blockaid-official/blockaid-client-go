@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stainless-sdks/blockaid-go"
-	"github.com/stainless-sdks/blockaid-go/internal/testutil"
-	"github.com/stainless-sdks/blockaid-go/option"
+	"github.com/stainless-sdks/blockaid-client-go"
+	"github.com/stainless-sdks/blockaid-client-go/internal/testutil"
+	"github.com/stainless-sdks/blockaid-client-go/option"
 )
 
 func TestEvmTransactionBulkScanWithOptionalParams(t *testing.T) {
