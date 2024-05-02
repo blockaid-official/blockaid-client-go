@@ -1,6 +1,6 @@
 # Blockaid Go API Library
 
-<a href="https://pkg.go.dev/github.com/stainless-sdks/blockaid-client-go"><img src="https://pkg.go.dev/badge/github.com/stainless-sdks/blockaid-client-go.svg" alt="Go Reference"></a>
+<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go"><img src="https://pkg.go.dev/badge/github.com/blockaid-official/blockaid-client-go.svg" alt="Go Reference"></a>
 
 The Blockaid Go library provides convenient access to [the Blockaid REST
 API](https://docs.blockaid.io) from applications written in Go. The full API of this library can be found in [api.md](api.md).
@@ -9,17 +9,25 @@ It is generated with [Stainless](https://www.stainlessapi.com/).
 
 ## Installation
 
+<!-- x-release-please-start-version -->
+
 ```go
 import (
-	"github.com/stainless-sdks/blockaid-client-go" // imported as blockaid
+	"github.com/blockaid-official/blockaid-client-go" // imported as blockaidclientgo
 )
 ```
 
+<!-- x-release-please-end -->
+
 Or to pin the version:
 
+<!-- x-release-please-start-version -->
+
 ```sh
-go get -u 'github.com/stainless-sdks/blockaid-client-go@v0.0.1-alpha.0'
+go get -u 'github.com/blockaid-official/blockaid-client-go@v0.0.1-alpha.0'
 ```
+
+<!-- x-release-please-end -->
 
 ## Requirements
 
@@ -36,22 +44,22 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/stainless-sdks/blockaid-client-go"
-	"github.com/stainless-sdks/blockaid-client-go/option"
+	"github.com/blockaid-official/blockaid-client-go"
+	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
 func main() {
-	client := blockaid.NewClient(
+	client := blockaidclientgo.NewClient(
 		option.WithAPIKey("My API Key"), // defaults to os.LookupEnv("BLOCKAID_CLIENT_API_KEY")
 	)
-	transactionScanResponse, err := client.Evm.JsonRpc.Scan(context.TODO(), blockaid.EvmJsonRpcScanParams{
-		Chain: blockaid.F("ethereum"),
-		Data: blockaid.F(blockaid.EvmJsonRpcScanParamsData{
-			Method: blockaid.F("eth_signTypedData_v4"),
-			Params: blockaid.F([]interface{}{"0x49c73c9d361c04769a452E85D343b41aC38e0EE4", "{\"domain\":{\"chainId\":1,\"name\":\"Aave interest bearing WETH\",\"version\":\"1\",\"verifyingContract\":\"0x030ba81f1c18d280636f32af80b9aad02cf0854e\"},\"message\":{\"owner\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\",\"spender\":\"0xa74cbd5b80f73b5950768c8dc467f1c6307c00fd\",\"value\":\"115792089237316195423570985008687907853269984665640564039457584007913129639935\",\"nonce\":\"0\",\"deadline\":\"1988064000\",\"holder\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\"},\"primaryType\":\"Permit\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Permit\":[{\"name\":\"owner\",\"type\":\"address\"},{\"name\":\"spender\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"},{\"name\":\"nonce\",\"type\":\"uint256\"},{\"name\":\"deadline\",\"type\":\"uint256\"}]}}"}),
+	transactionScanResponse, err := client.Evm.JsonRpc.Scan(context.TODO(), blockaidclientgo.EvmJsonRpcScanParams{
+		Chain: blockaidclientgo.F("ethereum"),
+		Data: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsData{
+			Method: blockaidclientgo.F("eth_signTypedData_v4"),
+			Params: blockaidclientgo.F([]interface{}{"0x49c73c9d361c04769a452E85D343b41aC38e0EE4", "{\"domain\":{\"chainId\":1,\"name\":\"Aave interest bearing WETH\",\"version\":\"1\",\"verifyingContract\":\"0x030ba81f1c18d280636f32af80b9aad02cf0854e\"},\"message\":{\"owner\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\",\"spender\":\"0xa74cbd5b80f73b5950768c8dc467f1c6307c00fd\",\"value\":\"115792089237316195423570985008687907853269984665640564039457584007913129639935\",\"nonce\":\"0\",\"deadline\":\"1988064000\",\"holder\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\"},\"primaryType\":\"Permit\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Permit\":[{\"name\":\"owner\",\"type\":\"address\"},{\"name\":\"spender\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"},{\"name\":\"nonce\",\"type\":\"uint256\"},{\"name\":\"deadline\",\"type\":\"uint256\"}]}}"}),
 		}),
-		Metadata: blockaid.F(blockaid.MetadataParam{
-			Domain: blockaid.F("https://boredapeyartclub.com"),
+		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
+			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
 		}),
 	})
 	if err != nil {
@@ -76,18 +84,18 @@ To send a null, use `Null[T]()`, and to send a nonconforming value, use `Raw[T](
 
 ```go
 params := FooParams{
-	Name: blockaid.F("hello"),
+	Name: blockaidclientgo.F("hello"),
 
 	// Explicitly send `"description": null`
-	Description: blockaid.Null[string](),
+	Description: blockaidclientgo.Null[string](),
 
-	Point: blockaid.F(blockaid.Point{
-		X: blockaid.Int(0),
-		Y: blockaid.Int(1),
+	Point: blockaidclientgo.F(blockaidclientgo.Point{
+		X: blockaidclientgo.Int(0),
+		Y: blockaidclientgo.Int(1),
 
 		// In cases where the API specifies a given type,
 		// but you want to send something else, use `Raw`:
-		Z: blockaid.Raw[int64](0.01), // sends a float
+		Z: blockaidclientgo.Raw[int64](0.01), // sends a float
 	}),
 }
 ```
@@ -141,7 +149,7 @@ This library uses the functional options pattern. Functions defined in the
 requests. For example:
 
 ```go
-client := blockaid.NewClient(
+client := blockaidclientgo.NewClient(
 	// Adds a header to every request made by the client
 	option.WithHeader("X-Some-Header", "custom_header_info"),
 )
@@ -154,7 +162,7 @@ client.Evm.JsonRpc.Scan(context.TODO(), ...,
 )
 ```
 
-See the [full list of request options](https://pkg.go.dev/github.com/stainless-sdks/blockaid-client-go/option).
+See the [full list of request options](https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go/option).
 
 ### Pagination
 
@@ -168,25 +176,25 @@ with additional helper methods like `.GetNextPage()`, e.g.:
 ### Errors
 
 When the API returns a non-success status code, we return an error with type
-`*blockaid.Error`. This contains the `StatusCode`, `*http.Request`, and
+`*blockaidclientgo.Error`. This contains the `StatusCode`, `*http.Request`, and
 `*http.Response` values of the request, as well as the JSON of the error body
 (much like other response objects in the SDK).
 
 To handle errors, we recommend that you use the `errors.As` pattern:
 
 ```go
-_, err := client.Evm.JsonRpc.Scan(context.TODO(), blockaid.EvmJsonRpcScanParams{
-	Chain: blockaid.F("ethereum"),
-	Data: blockaid.F(blockaid.EvmJsonRpcScanParamsData{
-		Method: blockaid.F("eth_signTypedData_v4"),
-		Params: blockaid.F([]interface{}{"0x49c73c9d361c04769a452E85D343b41aC38e0EE4", "{\"domain\":{\"chainId\":1,\"name\":\"Aave interest bearing WETH\",\"version\":\"1\",\"verifyingContract\":\"0x030ba81f1c18d280636f32af80b9aad02cf0854e\"},\"message\":{\"owner\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\",\"spender\":\"0xa74cbd5b80f73b5950768c8dc467f1c6307c00fd\",\"value\":\"115792089237316195423570985008687907853269984665640564039457584007913129639935\",\"nonce\":\"0\",\"deadline\":\"1988064000\",\"holder\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\"},\"primaryType\":\"Permit\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Permit\":[{\"name\":\"owner\",\"type\":\"address\"},{\"name\":\"spender\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"},{\"name\":\"nonce\",\"type\":\"uint256\"},{\"name\":\"deadline\",\"type\":\"uint256\"}]}}"}),
+_, err := client.Evm.JsonRpc.Scan(context.TODO(), blockaidclientgo.EvmJsonRpcScanParams{
+	Chain: blockaidclientgo.F("ethereum"),
+	Data: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsData{
+		Method: blockaidclientgo.F("eth_signTypedData_v4"),
+		Params: blockaidclientgo.F([]interface{}{"0x49c73c9d361c04769a452E85D343b41aC38e0EE4", "{\"domain\":{\"chainId\":1,\"name\":\"Aave interest bearing WETH\",\"version\":\"1\",\"verifyingContract\":\"0x030ba81f1c18d280636f32af80b9aad02cf0854e\"},\"message\":{\"owner\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\",\"spender\":\"0xa74cbd5b80f73b5950768c8dc467f1c6307c00fd\",\"value\":\"115792089237316195423570985008687907853269984665640564039457584007913129639935\",\"nonce\":\"0\",\"deadline\":\"1988064000\",\"holder\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\"},\"primaryType\":\"Permit\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Permit\":[{\"name\":\"owner\",\"type\":\"address\"},{\"name\":\"spender\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"},{\"name\":\"nonce\",\"type\":\"uint256\"},{\"name\":\"deadline\",\"type\":\"uint256\"}]}}"}),
 	}),
-	Metadata: blockaid.F(blockaid.MetadataParam{
-		Domain: blockaid.F("https://boredapeyartclub.com"),
+	Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
+		Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
 	}),
 })
 if err != nil {
-	var apierr *blockaid.Error
+	var apierr *blockaidclientgo.Error
 	if errors.As(err, &apierr) {
 		println(string(apierr.DumpRequest(true)))  // Prints the serialized HTTP request
 		println(string(apierr.DumpResponse(true))) // Prints the serialized HTTP response
@@ -211,14 +219,14 @@ ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 defer cancel()
 client.Evm.JsonRpc.Scan(
 	ctx,
-	blockaid.EvmJsonRpcScanParams{
-		Chain: blockaid.F("ethereum"),
-		Data: blockaid.F(blockaid.EvmJsonRpcScanParamsData{
-			Method: blockaid.F("eth_signTypedData_v4"),
-			Params: blockaid.F([]interface{}{"0x49c73c9d361c04769a452E85D343b41aC38e0EE4", "{\"domain\":{\"chainId\":1,\"name\":\"Aave interest bearing WETH\",\"version\":\"1\",\"verifyingContract\":\"0x030ba81f1c18d280636f32af80b9aad02cf0854e\"},\"message\":{\"owner\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\",\"spender\":\"0xa74cbd5b80f73b5950768c8dc467f1c6307c00fd\",\"value\":\"115792089237316195423570985008687907853269984665640564039457584007913129639935\",\"nonce\":\"0\",\"deadline\":\"1988064000\",\"holder\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\"},\"primaryType\":\"Permit\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Permit\":[{\"name\":\"owner\",\"type\":\"address\"},{\"name\":\"spender\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"},{\"name\":\"nonce\",\"type\":\"uint256\"},{\"name\":\"deadline\",\"type\":\"uint256\"}]}}"}),
+	blockaidclientgo.EvmJsonRpcScanParams{
+		Chain: blockaidclientgo.F("ethereum"),
+		Data: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsData{
+			Method: blockaidclientgo.F("eth_signTypedData_v4"),
+			Params: blockaidclientgo.F([]interface{}{"0x49c73c9d361c04769a452E85D343b41aC38e0EE4", "{\"domain\":{\"chainId\":1,\"name\":\"Aave interest bearing WETH\",\"version\":\"1\",\"verifyingContract\":\"0x030ba81f1c18d280636f32af80b9aad02cf0854e\"},\"message\":{\"owner\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\",\"spender\":\"0xa74cbd5b80f73b5950768c8dc467f1c6307c00fd\",\"value\":\"115792089237316195423570985008687907853269984665640564039457584007913129639935\",\"nonce\":\"0\",\"deadline\":\"1988064000\",\"holder\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\"},\"primaryType\":\"Permit\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Permit\":[{\"name\":\"owner\",\"type\":\"address\"},{\"name\":\"spender\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"},{\"name\":\"nonce\",\"type\":\"uint256\"},{\"name\":\"deadline\",\"type\":\"uint256\"}]}}"}),
 		}),
-		Metadata: blockaid.F(blockaid.MetadataParam{
-			Domain: blockaid.F("https://boredapeyartclub.com"),
+		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
+			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
 		}),
 	},
 	// This sets the per-retry timeout
@@ -236,7 +244,7 @@ The file name and content-type can be customized by implementing `Name() string`
 string` on the run-time type of `io.Reader`. Note that `os.File` implements `Name() string`, so a
 file returned by `os.Open` will be sent with the file name on disk.
 
-We also provide a helper `blockaid.FileParam(reader io.Reader, filename string, contentType string)`
+We also provide a helper `blockaidclientgo.FileParam(reader io.Reader, filename string, contentType string)`
 which can be used to wrap any `io.Reader` with the appropriate file name and content type.
 
 ### Retries
@@ -249,21 +257,21 @@ You can use the `WithMaxRetries` option to configure or disable this:
 
 ```go
 // Configure the default for all requests:
-client := blockaid.NewClient(
+client := blockaidclientgo.NewClient(
 	option.WithMaxRetries(0), // default is 2
 )
 
 // Override per-request:
 client.Evm.JsonRpc.Scan(
 	context.TODO(),
-	blockaid.EvmJsonRpcScanParams{
-		Chain: blockaid.F("ethereum"),
-		Data: blockaid.F(blockaid.EvmJsonRpcScanParamsData{
-			Method: blockaid.F("eth_signTypedData_v4"),
-			Params: blockaid.F([]interface{}{"0x49c73c9d361c04769a452E85D343b41aC38e0EE4", "{\"domain\":{\"chainId\":1,\"name\":\"Aave interest bearing WETH\",\"version\":\"1\",\"verifyingContract\":\"0x030ba81f1c18d280636f32af80b9aad02cf0854e\"},\"message\":{\"owner\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\",\"spender\":\"0xa74cbd5b80f73b5950768c8dc467f1c6307c00fd\",\"value\":\"115792089237316195423570985008687907853269984665640564039457584007913129639935\",\"nonce\":\"0\",\"deadline\":\"1988064000\",\"holder\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\"},\"primaryType\":\"Permit\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Permit\":[{\"name\":\"owner\",\"type\":\"address\"},{\"name\":\"spender\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"},{\"name\":\"nonce\",\"type\":\"uint256\"},{\"name\":\"deadline\",\"type\":\"uint256\"}]}}"}),
+	blockaidclientgo.EvmJsonRpcScanParams{
+		Chain: blockaidclientgo.F("ethereum"),
+		Data: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsData{
+			Method: blockaidclientgo.F("eth_signTypedData_v4"),
+			Params: blockaidclientgo.F([]interface{}{"0x49c73c9d361c04769a452E85D343b41aC38e0EE4", "{\"domain\":{\"chainId\":1,\"name\":\"Aave interest bearing WETH\",\"version\":\"1\",\"verifyingContract\":\"0x030ba81f1c18d280636f32af80b9aad02cf0854e\"},\"message\":{\"owner\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\",\"spender\":\"0xa74cbd5b80f73b5950768c8dc467f1c6307c00fd\",\"value\":\"115792089237316195423570985008687907853269984665640564039457584007913129639935\",\"nonce\":\"0\",\"deadline\":\"1988064000\",\"holder\":\"0x49c73c9d361c04769a452E85D343b41aC38e0EE4\"},\"primaryType\":\"Permit\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}],\"Permit\":[{\"name\":\"owner\",\"type\":\"address\"},{\"name\":\"spender\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"},{\"name\":\"nonce\",\"type\":\"uint256\"},{\"name\":\"deadline\",\"type\":\"uint256\"}]}}"}),
 		}),
-		Metadata: blockaid.F(blockaid.MetadataParam{
-			Domain: blockaid.F("https://boredapeyartclub.com"),
+		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
+			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
 		}),
 	},
 	option.WithMaxRetries(5),
@@ -303,9 +311,9 @@ or the `option.WithJSONSet()` methods.
 
 ```go
 params := FooNewParams{
-    ID:   blockaid.F("id_xxxx"),
-    Data: blockaid.F(FooNewParamsData{
-        FirstName: blockaid.F("John"),
+    ID:   blockaidclientgo.F("id_xxxx"),
+    Data: blockaidclientgo.F(FooNewParamsData{
+        FirstName: blockaidclientgo.F("John"),
     }),
 }
 client.Foo.New(context.Background(), params, option.WithJSONSet("data.last_name", "Doe"))
@@ -340,7 +348,7 @@ func Logger(req *http.Request, next option.MiddlewareNext) (res *http.Response, 
     return res, err
 }
 
-client := blockaid.NewClient(
+client := blockaidclientgo.NewClient(
 	option.WithMiddleware(Logger),
 )
 ```
@@ -365,4 +373,4 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/new/blockaid-go/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/blockaid-official/blockaid-client-go/issues) with questions, bugs, or suggestions.

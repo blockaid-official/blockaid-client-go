@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package blockaid
+package blockaidclientgo
 
 import (
-	"github.com/stainless-sdks/blockaid-client-go/option"
+	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
 // EvmUserOperationService contains methods and other services that help with

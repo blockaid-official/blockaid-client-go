@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/stainless-sdks/blockaid-client-go/internal/param"
+	"github.com/blockaid-official/blockaid-client-go/internal/param"
 )
 
 var encoders sync.Map // map[reflect.Type]encoderFunc

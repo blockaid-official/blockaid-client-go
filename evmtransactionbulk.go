@@ -1,15 +1,15 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package blockaid
+package blockaidclientgo
 
 import (
 	"context"
 	"net/http"
 
-	"github.com/stainless-sdks/blockaid-client-go/internal/apijson"
-	"github.com/stainless-sdks/blockaid-client-go/internal/param"
-	"github.com/stainless-sdks/blockaid-client-go/internal/requestconfig"
-	"github.com/stainless-sdks/blockaid-client-go/option"
+	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
+	"github.com/blockaid-official/blockaid-client-go/internal/param"
+	"github.com/blockaid-official/blockaid-client-go/internal/requestconfig"
+	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
 // EvmTransactionBulkService contains methods and other services that help with
