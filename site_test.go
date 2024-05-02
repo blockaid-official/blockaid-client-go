@@ -26,7 +26,7 @@ func TestSiteScanWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Site.Scan(context.TODO(), blockaidclientgo.SiteScanParams{
-		URL: blockaidclientgo.F("string"),
+		URL: blockaidclientgo.F("https://app.uniswap.org"),
 		Metadata: blockaidclientgo.F[blockaidclientgo.SiteScanParamsMetadataUnion](blockaidclientgo.SiteScanParamsMetadataCatalogRequestMetadata{
 			Type: blockaidclientgo.F(blockaidclientgo.SiteScanParamsMetadataCatalogRequestMetadataTypeCatalog),
 		}),
