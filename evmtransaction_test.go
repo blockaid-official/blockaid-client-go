@@ -27,6 +27,7 @@ func TestEvmTransactionScanWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Evm.Transaction.Scan(context.TODO(), blockaidclientgo.EvmTransactionScanParams{
 		AccountAddress: blockaidclientgo.F("string"),
+		Chain:          blockaidclientgo.F("ethereum"),
 		Data: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsData{
 			From:     blockaidclientgo.F("0x5e1a0d484c5f0de722e82f9dca3a9d5a421d47cb"),
 			To:       blockaidclientgo.F("0x0d524a5b52737c0a02880d5e84f7d20b8d66bfba"),
@@ -38,7 +39,6 @@ func TestEvmTransactionScanWithOptionalParams(t *testing.T) {
 		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
 			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
 		}),
-		Chain:   blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsChainEthereum),
 		Options: blockaidclientgo.F([]blockaidclientgo.EvmTransactionScanParamsOption{blockaidclientgo.EvmTransactionScanParamsOptionSimulation, blockaidclientgo.EvmTransactionScanParamsOptionValidation}),
 	})
 	if err != nil {

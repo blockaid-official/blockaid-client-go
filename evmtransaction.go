@@ -44,12 +44,12 @@ type EvmTransactionScanParams struct {
 	// The address to relate the transaction to. Account address determines in which
 	// perspective the transaction is simulated and validated.
 	AccountAddress param.Field[string] `json:"account_address,required"`
+	// The chain name
+	Chain param.Field[string] `json:"chain,required"`
 	// Transaction parameters
 	Data param.Field[EvmTransactionScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[MetadataParam] `json:"metadata,required"`
-	// An enumeration.
-	Chain param.Field[EvmTransactionScanParamsChain] `json:"chain"`
 	// List of one or both of options for the desired output. "simulation" - include
 	// simulation output in your response. "validation" - include security validation
 	// of the transaction in your response. Default is ["validation"]
@@ -78,33 +78,6 @@ type EvmTransactionScanParamsData struct {
 
 func (r EvmTransactionScanParamsData) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-// An enumeration.
-type EvmTransactionScanParamsChain string
-
-const (
-	EvmTransactionScanParamsChainArbitrum    EvmTransactionScanParamsChain = "arbitrum"
-	EvmTransactionScanParamsChainAvalanche   EvmTransactionScanParamsChain = "avalanche"
-	EvmTransactionScanParamsChainBase        EvmTransactionScanParamsChain = "base"
-	EvmTransactionScanParamsChainBaseSepolia EvmTransactionScanParamsChain = "base-sepolia"
-	EvmTransactionScanParamsChainBsc         EvmTransactionScanParamsChain = "bsc"
-	EvmTransactionScanParamsChainEthereum    EvmTransactionScanParamsChain = "ethereum"
-	EvmTransactionScanParamsChainOptimism    EvmTransactionScanParamsChain = "optimism"
-	EvmTransactionScanParamsChainPolygon     EvmTransactionScanParamsChain = "polygon"
-	EvmTransactionScanParamsChainZksync      EvmTransactionScanParamsChain = "zksync"
-	EvmTransactionScanParamsChainZora        EvmTransactionScanParamsChain = "zora"
-	EvmTransactionScanParamsChainLinea       EvmTransactionScanParamsChain = "linea"
-	EvmTransactionScanParamsChainBlast       EvmTransactionScanParamsChain = "blast"
-	EvmTransactionScanParamsChainUnknown     EvmTransactionScanParamsChain = "unknown"
-)
-
-func (r EvmTransactionScanParamsChain) IsKnown() bool {
-	switch r {
-	case EvmTransactionScanParamsChainArbitrum, EvmTransactionScanParamsChainAvalanche, EvmTransactionScanParamsChainBase, EvmTransactionScanParamsChainBaseSepolia, EvmTransactionScanParamsChainBsc, EvmTransactionScanParamsChainEthereum, EvmTransactionScanParamsChainOptimism, EvmTransactionScanParamsChainPolygon, EvmTransactionScanParamsChainZksync, EvmTransactionScanParamsChainZora, EvmTransactionScanParamsChainLinea, EvmTransactionScanParamsChainBlast, EvmTransactionScanParamsChainUnknown:
-		return true
-	}
-	return false
 }
 
 // An enumeration.
