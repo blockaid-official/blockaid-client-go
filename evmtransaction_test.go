@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package blockaid_test
+package blockaidclientgo_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stainless-sdks/blockaid-client-go"
-	"github.com/stainless-sdks/blockaid-client-go/internal/testutil"
-	"github.com/stainless-sdks/blockaid-client-go/option"
+	"github.com/blockaid-official/blockaid-client-go"
+	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
+	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
 func TestEvmTransactionScanWithOptionalParams(t *testing.T) {
@@ -21,28 +21,28 @@ func TestEvmTransactionScanWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := blockaid.NewClient(
+	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Evm.Transaction.Scan(context.TODO(), blockaid.EvmTransactionScanParams{
-		AccountAddress: blockaid.F("string"),
-		Chain:          blockaid.F("ethereum"),
-		Data: blockaid.F(blockaid.EvmTransactionScanParamsData{
-			From:     blockaid.F("0x5e1a0d484c5f0de722e82f9dca3a9d5a421d47cb"),
-			To:       blockaid.F("0x0d524a5b52737c0a02880d5e84f7d20b8d66bfba"),
-			Data:     blockaid.F("0x"),
-			Value:    blockaid.F("0x1000000000000000"),
-			Gas:      blockaid.F("string"),
-			GasPrice: blockaid.F("string"),
+	_, err := client.Evm.Transaction.Scan(context.TODO(), blockaidclientgo.EvmTransactionScanParams{
+		AccountAddress: blockaidclientgo.F("string"),
+		Data: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsData{
+			From:     blockaidclientgo.F("0x5e1a0d484c5f0de722e82f9dca3a9d5a421d47cb"),
+			To:       blockaidclientgo.F("0x0d524a5b52737c0a02880d5e84f7d20b8d66bfba"),
+			Data:     blockaidclientgo.F("0x"),
+			Value:    blockaidclientgo.F("0x1000000000000000"),
+			Gas:      blockaidclientgo.F("string"),
+			GasPrice: blockaidclientgo.F("string"),
 		}),
-		Metadata: blockaid.F(blockaid.MetadataParam{
-			Domain: blockaid.F("https://boredapeyartclub.com"),
+		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
+			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
 		}),
-		Options: blockaid.F([]blockaid.EvmTransactionScanParamsOption{blockaid.EvmTransactionScanParamsOptionSimulation, blockaid.EvmTransactionScanParamsOptionValidation}),
+		Chain:   blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsChainEthereum),
+		Options: blockaidclientgo.F([]blockaidclientgo.EvmTransactionScanParamsOption{blockaidclientgo.EvmTransactionScanParamsOptionSimulation, blockaidclientgo.EvmTransactionScanParamsOptionValidation}),
 	})
 	if err != nil {
-		var apierr *blockaid.Error
+		var apierr *blockaidclientgo.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

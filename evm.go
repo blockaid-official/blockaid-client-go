@@ -1,15 +1,15 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package blockaid
+package blockaidclientgo
 
 import (
 	"reflect"
 	"time"
 
-	"github.com/stainless-sdks/blockaid-client-go/internal/apijson"
-	"github.com/stainless-sdks/blockaid-client-go/internal/param"
-	"github.com/stainless-sdks/blockaid-client-go/option"
-	"github.com/stainless-sdks/blockaid-client-go/shared"
+	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
+	"github.com/blockaid-official/blockaid-client-go/internal/param"
+	"github.com/blockaid-official/blockaid-client-go/option"
+	"github.com/blockaid-official/blockaid-client-go/shared"
 	"github.com/tidwall/gjson"
 )
 
@@ -1265,6 +1265,8 @@ func (r NonercTokenDetailsType) IsKnown() bool {
 }
 
 type TransactionBulkResponse struct {
+	Block         string                               `json:"block"`
+	Chain         string                               `json:"chain"`
 	Events        []TransactionBulkResponseEvent       `json:"events"`
 	GasEstimation TransactionBulkResponseGasEstimation `json:"gas_estimation"`
 	Simulation    TransactionBulkResponseSimulation    `json:"simulation"`
@@ -1275,6 +1277,8 @@ type TransactionBulkResponse struct {
 // transactionBulkResponseJSON contains the JSON metadata for the struct
 // [TransactionBulkResponse]
 type transactionBulkResponseJSON struct {
+	Block         apijson.Field
+	Chain         apijson.Field
 	Events        apijson.Field
 	GasEstimation apijson.Field
 	Simulation    apijson.Field
@@ -1818,6 +1822,8 @@ func (r TransactionScanFeatureType) IsKnown() bool {
 }
 
 type TransactionScanResponse struct {
+	Block      string                            `json:"block"`
+	Chain      string                            `json:"chain"`
 	Simulation TransactionScanResponseSimulation `json:"simulation"`
 	Validation TransactionScanResponseValidation `json:"validation"`
 	JSON       transactionScanResponseJSON       `json:"-"`
@@ -1826,6 +1832,8 @@ type TransactionScanResponse struct {
 // transactionScanResponseJSON contains the JSON metadata for the struct
 // [TransactionScanResponse]
 type transactionScanResponseJSON struct {
+	Block       apijson.Field
+	Chain       apijson.Field
 	Simulation  apijson.Field
 	Validation  apijson.Field
 	raw         string

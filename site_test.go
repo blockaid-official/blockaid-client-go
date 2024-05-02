@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package blockaid_test
+package blockaidclientgo_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stainless-sdks/blockaid-client-go"
-	"github.com/stainless-sdks/blockaid-client-go/internal/testutil"
-	"github.com/stainless-sdks/blockaid-client-go/option"
+	"github.com/blockaid-official/blockaid-client-go"
+	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
+	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
 func TestSiteScanWithOptionalParams(t *testing.T) {
@@ -21,18 +21,18 @@ func TestSiteScanWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := blockaid.NewClient(
+	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Site.Scan(context.TODO(), blockaid.SiteScanParams{
-		URL: blockaid.F("string"),
-		Metadata: blockaid.F[blockaid.SiteScanParamsMetadataUnion](blockaid.SiteScanParamsMetadataCatalogRequestMetadata{
-			Type: blockaid.F(blockaid.SiteScanParamsMetadataCatalogRequestMetadataTypeCatalog),
+	_, err := client.Site.Scan(context.TODO(), blockaidclientgo.SiteScanParams{
+		URL: blockaidclientgo.F("https://app.uniswap.org"),
+		Metadata: blockaidclientgo.F[blockaidclientgo.SiteScanParamsMetadataUnion](blockaidclientgo.SiteScanParamsMetadataCatalogRequestMetadata{
+			Type: blockaidclientgo.F(blockaidclientgo.SiteScanParamsMetadataCatalogRequestMetadataTypeCatalog),
 		}),
 	})
 	if err != nil {
-		var apierr *blockaid.Error
+		var apierr *blockaidclientgo.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

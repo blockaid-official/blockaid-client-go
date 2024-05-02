@@ -1,15 +1,15 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package blockaid
+package blockaidclientgo
 
 import (
 	"context"
 	"net/http"
 
-	"github.com/stainless-sdks/blockaid-client-go/internal/apijson"
-	"github.com/stainless-sdks/blockaid-client-go/internal/param"
-	"github.com/stainless-sdks/blockaid-client-go/internal/requestconfig"
-	"github.com/stainless-sdks/blockaid-client-go/option"
+	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
+	"github.com/blockaid-official/blockaid-client-go/internal/param"
+	"github.com/blockaid-official/blockaid-client-go/internal/requestconfig"
+	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
 // EvmTransactionRawService contains methods and other services that help with
@@ -44,12 +44,12 @@ type EvmTransactionRawScanParams struct {
 	// The address to relate the transaction to. Account address determines in which
 	// perspective the transaction is simulated and validated.
 	AccountAddress param.Field[string] `json:"account_address,required"`
-	// The chain name
-	Chain param.Field[string] `json:"chain,required"`
 	// Hex string of the raw transaction data
 	Data param.Field[string] `json:"data,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[MetadataParam] `json:"metadata,required"`
+	// An enumeration.
+	Chain param.Field[EvmTransactionRawScanParamsChain] `json:"chain"`
 	// List of one or both of options for the desired output. "simulation" - include
 	// simulation output in your response. "validation" - include security validation
 	// of the transaction in your response. Default is ["validation"]
@@ -58,6 +58,33 @@ type EvmTransactionRawScanParams struct {
 
 func (r EvmTransactionRawScanParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// An enumeration.
+type EvmTransactionRawScanParamsChain string
+
+const (
+	EvmTransactionRawScanParamsChainArbitrum    EvmTransactionRawScanParamsChain = "arbitrum"
+	EvmTransactionRawScanParamsChainAvalanche   EvmTransactionRawScanParamsChain = "avalanche"
+	EvmTransactionRawScanParamsChainBase        EvmTransactionRawScanParamsChain = "base"
+	EvmTransactionRawScanParamsChainBaseSepolia EvmTransactionRawScanParamsChain = "base-sepolia"
+	EvmTransactionRawScanParamsChainBsc         EvmTransactionRawScanParamsChain = "bsc"
+	EvmTransactionRawScanParamsChainEthereum    EvmTransactionRawScanParamsChain = "ethereum"
+	EvmTransactionRawScanParamsChainOptimism    EvmTransactionRawScanParamsChain = "optimism"
+	EvmTransactionRawScanParamsChainPolygon     EvmTransactionRawScanParamsChain = "polygon"
+	EvmTransactionRawScanParamsChainZksync      EvmTransactionRawScanParamsChain = "zksync"
+	EvmTransactionRawScanParamsChainZora        EvmTransactionRawScanParamsChain = "zora"
+	EvmTransactionRawScanParamsChainLinea       EvmTransactionRawScanParamsChain = "linea"
+	EvmTransactionRawScanParamsChainBlast       EvmTransactionRawScanParamsChain = "blast"
+	EvmTransactionRawScanParamsChainUnknown     EvmTransactionRawScanParamsChain = "unknown"
+)
+
+func (r EvmTransactionRawScanParamsChain) IsKnown() bool {
+	switch r {
+	case EvmTransactionRawScanParamsChainArbitrum, EvmTransactionRawScanParamsChainAvalanche, EvmTransactionRawScanParamsChainBase, EvmTransactionRawScanParamsChainBaseSepolia, EvmTransactionRawScanParamsChainBsc, EvmTransactionRawScanParamsChainEthereum, EvmTransactionRawScanParamsChainOptimism, EvmTransactionRawScanParamsChainPolygon, EvmTransactionRawScanParamsChainZksync, EvmTransactionRawScanParamsChainZora, EvmTransactionRawScanParamsChainLinea, EvmTransactionRawScanParamsChainBlast, EvmTransactionRawScanParamsChainUnknown:
+		return true
+	}
+	return false
 }
 
 // An enumeration.
