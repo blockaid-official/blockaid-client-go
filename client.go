@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/stainless-sdks/blockaid-go/internal/requestconfig"
-	"github.com/stainless-sdks/blockaid-go/option"
+	"github.com/stainless-sdks/blockaid-client-go/internal/requestconfig"
+	"github.com/stainless-sdks/blockaid-client-go/option"
 )
 
 // Client creates a struct with services and top level methods that help with

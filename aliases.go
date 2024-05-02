@@ -3,7 +3,7 @@
 package blockaid
 
 import (
-	"github.com/stainless-sdks/blockaid-go/internal/apierror"
+	"github.com/stainless-sdks/blockaid-client-go/internal/apierror"
 )
 
 type Error = apierror.Error

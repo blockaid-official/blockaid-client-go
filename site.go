@@ -8,10 +8,10 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/stainless-sdks/blockaid-go/internal/apijson"
-	"github.com/stainless-sdks/blockaid-go/internal/param"
-	"github.com/stainless-sdks/blockaid-go/internal/requestconfig"
-	"github.com/stainless-sdks/blockaid-go/option"
+	"github.com/stainless-sdks/blockaid-client-go/internal/apijson"
+	"github.com/stainless-sdks/blockaid-client-go/internal/param"
+	"github.com/stainless-sdks/blockaid-client-go/internal/requestconfig"
+	"github.com/stainless-sdks/blockaid-client-go/option"
 	"github.com/tidwall/gjson"
 )
 

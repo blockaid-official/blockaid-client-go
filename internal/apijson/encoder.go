@@ -12,7 +12,7 @@ import (
 
 	"github.com/tidwall/sjson"
 
-	"github.com/stainless-sdks/blockaid-go/internal/param"
+	"github.com/stainless-sdks/blockaid-client-go/internal/param"
 )
 
 var encoders sync.Map // map[encoderEntry]encoderFunc
