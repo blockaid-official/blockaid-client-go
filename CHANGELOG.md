@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.7.1 (2024-05-02)
+
+Full Changelog: [v0.7.0...v0.7.1](https://github.com/blockaid-official/blockaid-client-go/compare/v0.7.0...v0.7.1)
+
+### Features
+
+* **api:** update via SDK Studio ([#5](https://github.com/blockaid-official/blockaid-client-go/issues/5)) ([87ea2cb](https://github.com/blockaid-official/blockaid-client-go/commit/87ea2cb2aadcc5756af06da322a2f195a055c568))
+
 ## 0.7.0 (2024-05-02)
 
 Full Changelog: [v0.0.1-alpha.0...v0.7.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.0.1-alpha.0...v0.7.0)
