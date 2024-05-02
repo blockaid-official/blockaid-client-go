@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 
-	"github.com/stainless-sdks/blockaid-client-go/internal/apijson"
+	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 )
 
 // Error represents an error that originates from the API, i.e. when a request is

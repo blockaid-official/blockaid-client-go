@@ -1,15 +1,15 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package blockaid
+package blockaidclientgo
 
 import (
 	"reflect"
 	"time"
 
-	"github.com/stainless-sdks/blockaid-client-go/internal/apijson"
-	"github.com/stainless-sdks/blockaid-client-go/internal/param"
-	"github.com/stainless-sdks/blockaid-client-go/option"
-	"github.com/stainless-sdks/blockaid-client-go/shared"
+	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
+	"github.com/blockaid-official/blockaid-client-go/internal/param"
+	"github.com/blockaid-official/blockaid-client-go/option"
+	"github.com/blockaid-official/blockaid-client-go/shared"
 	"github.com/tidwall/gjson"
 )
 

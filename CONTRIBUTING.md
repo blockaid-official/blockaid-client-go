@@ -34,7 +34,7 @@ To use a local version of this library from source in another project, edit the 
 directive. This can be done through the CLI with the following:
 
 ```bash
-go mod edit -replace github.com/stainless-sdks/blockaid-client-go=/path/to/blockaid-client-go
+go mod edit -replace github.com/blockaid-official/blockaid-client-go=/path/to/blockaid-client-go
 ```
 
 ## Running tests
