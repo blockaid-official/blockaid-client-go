@@ -881,6 +881,61 @@ func (r MetadataParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+type NativeAssetDetails struct {
+	ChainID   int64  `json:"chain_id,required"`
+	ChainName string `json:"chain_name,required"`
+	Decimals  int64  `json:"decimals,required"`
+	LogoURL   string `json:"logo_url,required"`
+	// asset type.
+	Type NativeAssetDetailsType `json:"type,required"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                 `json:"symbol"`
+	JSON   nativeAssetDetailsJSON `json:"-"`
+}
+
+// nativeAssetDetailsJSON contains the JSON metadata for the struct
+// [NativeAssetDetails]
+type nativeAssetDetailsJSON struct {
+	ChainID     apijson.Field
+	ChainName   apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *NativeAssetDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r nativeAssetDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r NativeAssetDetails) implementsTransactionSimulationAccountSummaryAssetsDiffsAsset() {}
+
+func (r NativeAssetDetails) implementsTransactionSimulationAssetsDiffsAsset() {}
+
+// asset type.
+type NativeAssetDetailsType string
+
+const (
+	NativeAssetDetailsTypeNative NativeAssetDetailsType = "NATIVE"
+)
+
+func (r NativeAssetDetailsType) IsKnown() bool {
+	switch r {
+	case NativeAssetDetailsTypeNative:
+		return true
+	}
+	return false
+}
+
 type NativeDiff struct {
 	// value before divided by decimal, that was transferred from this address
 	RawValue int64 `json:"raw_value,required"`
@@ -2013,8 +2068,7 @@ func (r TransactionSimulationAccountSummaryAssetsDiffsAsset) AsUnion() Transacti
 // description of the asset for the current diff
 //
 // Union satisfied by [Erc20TokenDetails], [Erc1155TokenDetails],
-// [Erc721TokenDetails], [NonercTokenDetails] or
-// [TransactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetails].
+// [Erc721TokenDetails], [NonercTokenDetails] or [NativeAssetDetails].
 type TransactionSimulationAccountSummaryAssetsDiffsAssetUnion interface {
 	implementsTransactionSimulationAccountSummaryAssetsDiffsAsset()
 }
@@ -2041,64 +2095,9 @@ func init() {
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetails{}),
+			Type:       reflect.TypeOf(NativeAssetDetails{}),
 		},
 	)
-}
-
-type TransactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetails struct {
-	ChainID   int64  `json:"chain_id,required"`
-	ChainName string `json:"chain_name,required"`
-	Decimals  int64  `json:"decimals,required"`
-	LogoURL   string `json:"logo_url,required"`
-	// asset type.
-	Type TransactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetailsType `json:"type,required"`
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string                                                                    `json:"symbol"`
-	JSON   transactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetailsJSON `json:"-"`
-}
-
-// transactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetailsJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetails]
-type transactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetailsJSON struct {
-	ChainID     apijson.Field
-	ChainName   apijson.Field
-	Decimals    apijson.Field
-	LogoURL     apijson.Field
-	Type        apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetails) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetailsJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetails) implementsTransactionSimulationAccountSummaryAssetsDiffsAsset() {
-}
-
-// asset type.
-type TransactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetailsType string
-
-const (
-	TransactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetailsTypeNative TransactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetailsType = "NATIVE"
-)
-
-func (r TransactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetailsType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryAssetsDiffsAssetNativeAssetDetailsTypeNative:
-		return true
-	}
-	return false
 }
 
 // asset type.
@@ -2375,8 +2374,7 @@ func (r TransactionSimulationAssetsDiffsAsset) AsUnion() TransactionSimulationAs
 // description of the asset for the current diff
 //
 // Union satisfied by [Erc20TokenDetails], [Erc1155TokenDetails],
-// [Erc721TokenDetails], [NonercTokenDetails] or
-// [TransactionSimulationAssetsDiffsAssetNativeAssetDetails].
+// [Erc721TokenDetails], [NonercTokenDetails] or [NativeAssetDetails].
 type TransactionSimulationAssetsDiffsAssetUnion interface {
 	implementsTransactionSimulationAssetsDiffsAsset()
 }
@@ -2403,64 +2401,9 @@ func init() {
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAssetsDiffsAssetNativeAssetDetails{}),
+			Type:       reflect.TypeOf(NativeAssetDetails{}),
 		},
 	)
-}
-
-type TransactionSimulationAssetsDiffsAssetNativeAssetDetails struct {
-	ChainID   int64  `json:"chain_id,required"`
-	ChainName string `json:"chain_name,required"`
-	Decimals  int64  `json:"decimals,required"`
-	LogoURL   string `json:"logo_url,required"`
-	// asset type.
-	Type TransactionSimulationAssetsDiffsAssetNativeAssetDetailsType `json:"type,required"`
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string                                                      `json:"symbol"`
-	JSON   transactionSimulationAssetsDiffsAssetNativeAssetDetailsJSON `json:"-"`
-}
-
-// transactionSimulationAssetsDiffsAssetNativeAssetDetailsJSON contains the JSON
-// metadata for the struct
-// [TransactionSimulationAssetsDiffsAssetNativeAssetDetails]
-type transactionSimulationAssetsDiffsAssetNativeAssetDetailsJSON struct {
-	ChainID     apijson.Field
-	ChainName   apijson.Field
-	Decimals    apijson.Field
-	LogoURL     apijson.Field
-	Type        apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAssetsDiffsAssetNativeAssetDetails) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAssetsDiffsAssetNativeAssetDetailsJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAssetsDiffsAssetNativeAssetDetails) implementsTransactionSimulationAssetsDiffsAsset() {
-}
-
-// asset type.
-type TransactionSimulationAssetsDiffsAssetNativeAssetDetailsType string
-
-const (
-	TransactionSimulationAssetsDiffsAssetNativeAssetDetailsTypeNative TransactionSimulationAssetsDiffsAssetNativeAssetDetailsType = "NATIVE"
-)
-
-func (r TransactionSimulationAssetsDiffsAssetNativeAssetDetailsType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAssetsDiffsAssetNativeAssetDetailsTypeNative:
-		return true
-	}
-	return false
 }
 
 // asset type.
