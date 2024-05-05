@@ -1264,6 +1264,33 @@ func (r NonercTokenDetailsType) IsKnown() bool {
 	return false
 }
 
+// An enumeration.
+type SupportedChain string
+
+const (
+	SupportedChainArbitrum    SupportedChain = "arbitrum"
+	SupportedChainAvalanche   SupportedChain = "avalanche"
+	SupportedChainBase        SupportedChain = "base"
+	SupportedChainBaseSepolia SupportedChain = "base-sepolia"
+	SupportedChainBsc         SupportedChain = "bsc"
+	SupportedChainEthereum    SupportedChain = "ethereum"
+	SupportedChainOptimism    SupportedChain = "optimism"
+	SupportedChainPolygon     SupportedChain = "polygon"
+	SupportedChainZksync      SupportedChain = "zksync"
+	SupportedChainZora        SupportedChain = "zora"
+	SupportedChainLinea       SupportedChain = "linea"
+	SupportedChainBlast       SupportedChain = "blast"
+	SupportedChainUnknown     SupportedChain = "unknown"
+)
+
+func (r SupportedChain) IsKnown() bool {
+	switch r {
+	case SupportedChainArbitrum, SupportedChainAvalanche, SupportedChainBase, SupportedChainBaseSepolia, SupportedChainBsc, SupportedChainEthereum, SupportedChainOptimism, SupportedChainPolygon, SupportedChainZksync, SupportedChainZora, SupportedChainLinea, SupportedChainBlast, SupportedChainUnknown:
+		return true
+	}
+	return false
+}
+
 type TransactionBulkResponse struct {
 	Block         string                               `json:"block"`
 	Chain         string                               `json:"chain"`
