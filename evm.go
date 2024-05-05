@@ -40,341 +40,6 @@ func NewEvmService(opts ...option.RequestOption) (r *EvmService) {
 	return
 }
 
-type AddressAssetDiff struct {
-	// description of the asset for the current diff
-	Asset AddressAssetDiffAsset `json:"asset,required"`
-	// amount of the asset that was transferred to the address in this transaction
-	In []AddressAssetDiffIn `json:"in,required"`
-	// amount of the asset that was transferred from the address in this transaction
-	Out  []AddressAssetDiffOut `json:"out,required"`
-	JSON addressAssetDiffJSON  `json:"-"`
-}
-
-// addressAssetDiffJSON contains the JSON metadata for the struct
-// [AddressAssetDiff]
-type addressAssetDiffJSON struct {
-	Asset       apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AddressAssetDiff) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r addressAssetDiffJSON) RawJSON() string {
-	return r.raw
-}
-
-// description of the asset for the current diff
-type AddressAssetDiffAsset struct {
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string `json:"symbol"`
-	// address of the token
-	Address string `json:"address"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// asset type.
-	Type AddressAssetDiffAssetType `json:"type,required"`
-	// asset's decimals
-	Decimals  int64                     `json:"decimals"`
-	ChainName string                    `json:"chain_name"`
-	ChainID   int64                     `json:"chain_id"`
-	JSON      addressAssetDiffAssetJSON `json:"-"`
-	union     AddressAssetDiffAssetUnion
-}
-
-// addressAssetDiffAssetJSON contains the JSON metadata for the struct
-// [AddressAssetDiffAsset]
-type addressAssetDiffAssetJSON struct {
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Address     apijson.Field
-	LogoURL     apijson.Field
-	Type        apijson.Field
-	Decimals    apijson.Field
-	ChainName   apijson.Field
-	ChainID     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r addressAssetDiffAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *AddressAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-func (r AddressAssetDiffAsset) AsUnion() AddressAssetDiffAssetUnion {
-	return r.union
-}
-
-// description of the asset for the current diff
-//
-// Union satisfied by [Erc20TokenDetails], [Erc1155TokenDetails],
-// [Erc721TokenDetails], [NonercTokenDetails] or
-// [AddressAssetDiffAssetNativeAssetDetails].
-type AddressAssetDiffAssetUnion interface {
-	implementsAddressAssetDiffAsset()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*AddressAssetDiffAssetUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc20TokenDetails{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc1155TokenDetails{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc721TokenDetails{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(NonercTokenDetails{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(AddressAssetDiffAssetNativeAssetDetails{}),
-		},
-	)
-}
-
-type AddressAssetDiffAssetNativeAssetDetails struct {
-	ChainID   int64  `json:"chain_id,required"`
-	ChainName string `json:"chain_name,required"`
-	Decimals  int64  `json:"decimals,required"`
-	LogoURL   string `json:"logo_url,required"`
-	// asset type.
-	Type AddressAssetDiffAssetNativeAssetDetailsType `json:"type,required"`
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string                                      `json:"symbol"`
-	JSON   addressAssetDiffAssetNativeAssetDetailsJSON `json:"-"`
-}
-
-// addressAssetDiffAssetNativeAssetDetailsJSON contains the JSON metadata for the
-// struct [AddressAssetDiffAssetNativeAssetDetails]
-type addressAssetDiffAssetNativeAssetDetailsJSON struct {
-	ChainID     apijson.Field
-	ChainName   apijson.Field
-	Decimals    apijson.Field
-	LogoURL     apijson.Field
-	Type        apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AddressAssetDiffAssetNativeAssetDetails) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r addressAssetDiffAssetNativeAssetDetailsJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r AddressAssetDiffAssetNativeAssetDetails) implementsAddressAssetDiffAsset() {}
-
-// asset type.
-type AddressAssetDiffAssetNativeAssetDetailsType string
-
-const (
-	AddressAssetDiffAssetNativeAssetDetailsTypeNative AddressAssetDiffAssetNativeAssetDetailsType = "NATIVE"
-)
-
-func (r AddressAssetDiffAssetNativeAssetDetailsType) IsKnown() bool {
-	switch r {
-	case AddressAssetDiffAssetNativeAssetDetailsTypeNative:
-		return true
-	}
-	return false
-}
-
-// asset type.
-type AddressAssetDiffAssetType string
-
-const (
-	AddressAssetDiffAssetTypeErc20   AddressAssetDiffAssetType = "ERC20"
-	AddressAssetDiffAssetTypeErc1155 AddressAssetDiffAssetType = "ERC1155"
-	AddressAssetDiffAssetTypeErc721  AddressAssetDiffAssetType = "ERC721"
-	AddressAssetDiffAssetTypeNonerc  AddressAssetDiffAssetType = "NONERC"
-	AddressAssetDiffAssetTypeNative  AddressAssetDiffAssetType = "NATIVE"
-)
-
-func (r AddressAssetDiffAssetType) IsKnown() bool {
-	switch r {
-	case AddressAssetDiffAssetTypeErc20, AddressAssetDiffAssetTypeErc1155, AddressAssetDiffAssetTypeErc721, AddressAssetDiffAssetTypeNonerc, AddressAssetDiffAssetTypeNative:
-		return true
-	}
-	return false
-}
-
-type AddressAssetDiffIn struct {
-	// usd equal of the asset that was transferred from this address
-	UsdPrice float64 `json:"usd_price"`
-	// user friendly description of the asset transfer
-	Summary string `json:"summary"`
-	// id of the token
-	TokenID int64 `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	RawValue int64 `json:"raw_value"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// value after divided by decimals, that was transferred from this address
-	Value float64                `json:"value"`
-	JSON  addressAssetDiffInJSON `json:"-"`
-	union AddressAssetDiffInUnion
-}
-
-// addressAssetDiffInJSON contains the JSON metadata for the struct
-// [AddressAssetDiffIn]
-type addressAssetDiffInJSON struct {
-	UsdPrice    apijson.Field
-	Summary     apijson.Field
-	TokenID     apijson.Field
-	RawValue    apijson.Field
-	LogoURL     apijson.Field
-	Value       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r addressAssetDiffInJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *AddressAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-func (r AddressAssetDiffIn) AsUnion() AddressAssetDiffInUnion {
-	return r.union
-}
-
-// Union satisfied by [Erc1155Diff], [Erc721Diff], [Erc20Diff] or [NativeDiff].
-type AddressAssetDiffInUnion interface {
-	implementsAddressAssetDiffIn()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*AddressAssetDiffInUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc1155Diff{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc721Diff{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc20Diff{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(NativeDiff{}),
-		},
-	)
-}
-
-type AddressAssetDiffOut struct {
-	// usd equal of the asset that was transferred from this address
-	UsdPrice float64 `json:"usd_price"`
-	// user friendly description of the asset transfer
-	Summary string `json:"summary"`
-	// id of the token
-	TokenID int64 `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	RawValue int64 `json:"raw_value"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// value after divided by decimals, that was transferred from this address
-	Value float64                 `json:"value"`
-	JSON  addressAssetDiffOutJSON `json:"-"`
-	union AddressAssetDiffOutUnion
-}
-
-// addressAssetDiffOutJSON contains the JSON metadata for the struct
-// [AddressAssetDiffOut]
-type addressAssetDiffOutJSON struct {
-	UsdPrice    apijson.Field
-	Summary     apijson.Field
-	TokenID     apijson.Field
-	RawValue    apijson.Field
-	LogoURL     apijson.Field
-	Value       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r addressAssetDiffOutJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *AddressAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-func (r AddressAssetDiffOut) AsUnion() AddressAssetDiffOutUnion {
-	return r.union
-}
-
-// Union satisfied by [Erc1155Diff], [Erc721Diff], [Erc20Diff] or [NativeDiff].
-type AddressAssetDiffOutUnion interface {
-	implementsAddressAssetDiffOut()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*AddressAssetDiffOutUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc1155Diff{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc721Diff{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc20Diff{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(NativeDiff{}),
-		},
-	)
-}
-
 type AddressAssetExposure struct {
 	// description of the asset for the current diff
 	Asset AddressAssetExposureAsset `json:"asset,required"`
@@ -565,6 +230,283 @@ func init() {
 	)
 }
 
+type AssetDiff struct {
+	// description of the asset for the current diff
+	Asset AssetDiffAsset `json:"asset,required"`
+	// amount of the asset that was transferred to the address in this transaction
+	In []AssetDiffIn `json:"in,required"`
+	// amount of the asset that was transferred from the address in this transaction
+	Out  []AssetDiffOut `json:"out,required"`
+	JSON assetDiffJSON  `json:"-"`
+}
+
+// assetDiffJSON contains the JSON metadata for the struct [AssetDiff]
+type assetDiffJSON struct {
+	Asset       apijson.Field
+	In          apijson.Field
+	Out         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AssetDiff) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r assetDiffJSON) RawJSON() string {
+	return r.raw
+}
+
+// description of the asset for the current diff
+type AssetDiffAsset struct {
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string `json:"symbol"`
+	// address of the token
+	Address string `json:"address"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// asset type.
+	Type AssetDiffAssetType `json:"type,required"`
+	// asset's decimals
+	Decimals  int64              `json:"decimals"`
+	ChainName string             `json:"chain_name"`
+	ChainID   int64              `json:"chain_id"`
+	JSON      assetDiffAssetJSON `json:"-"`
+	union     AssetDiffAssetUnion
+}
+
+// assetDiffAssetJSON contains the JSON metadata for the struct [AssetDiffAsset]
+type assetDiffAssetJSON struct {
+	Name        apijson.Field
+	Symbol      apijson.Field
+	Address     apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	Decimals    apijson.Field
+	ChainName   apijson.Field
+	ChainID     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r assetDiffAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+func (r AssetDiffAsset) AsUnion() AssetDiffAssetUnion {
+	return r.union
+}
+
+// description of the asset for the current diff
+//
+// Union satisfied by [Erc20TokenDetails], [Erc1155TokenDetails],
+// [Erc721TokenDetails], [NonercTokenDetails] or [NativeAssetDetails].
+type AssetDiffAssetUnion interface {
+	implementsAssetDiffAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AssetDiffAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc20TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc1155TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc721TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NativeAssetDetails{}),
+		},
+	)
+}
+
+// asset type.
+type AssetDiffAssetType string
+
+const (
+	AssetDiffAssetTypeErc20   AssetDiffAssetType = "ERC20"
+	AssetDiffAssetTypeErc1155 AssetDiffAssetType = "ERC1155"
+	AssetDiffAssetTypeErc721  AssetDiffAssetType = "ERC721"
+	AssetDiffAssetTypeNonerc  AssetDiffAssetType = "NONERC"
+	AssetDiffAssetTypeNative  AssetDiffAssetType = "NATIVE"
+)
+
+func (r AssetDiffAssetType) IsKnown() bool {
+	switch r {
+	case AssetDiffAssetTypeErc20, AssetDiffAssetTypeErc1155, AssetDiffAssetTypeErc721, AssetDiffAssetTypeNonerc, AssetDiffAssetTypeNative:
+		return true
+	}
+	return false
+}
+
+type AssetDiffIn struct {
+	// usd equal of the asset that was transferred from this address
+	UsdPrice float64 `json:"usd_price"`
+	// user friendly description of the asset transfer
+	Summary string `json:"summary"`
+	// id of the token
+	TokenID int64 `json:"token_id"`
+	// value before divided by decimal, that was transferred from this address
+	RawValue int64 `json:"raw_value"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// value after divided by decimals, that was transferred from this address
+	Value float64         `json:"value"`
+	JSON  assetDiffInJSON `json:"-"`
+	union AssetDiffInUnion
+}
+
+// assetDiffInJSON contains the JSON metadata for the struct [AssetDiffIn]
+type assetDiffInJSON struct {
+	UsdPrice    apijson.Field
+	Summary     apijson.Field
+	TokenID     apijson.Field
+	RawValue    apijson.Field
+	LogoURL     apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r assetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+func (r AssetDiffIn) AsUnion() AssetDiffInUnion {
+	return r.union
+}
+
+// Union satisfied by [Erc1155Diff], [Erc721Diff], [Erc20Diff] or [NativeDiff].
+type AssetDiffInUnion interface {
+	implementsAssetDiffIn()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AssetDiffInUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc1155Diff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc721Diff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc20Diff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NativeDiff{}),
+		},
+	)
+}
+
+type AssetDiffOut struct {
+	// usd equal of the asset that was transferred from this address
+	UsdPrice float64 `json:"usd_price"`
+	// user friendly description of the asset transfer
+	Summary string `json:"summary"`
+	// id of the token
+	TokenID int64 `json:"token_id"`
+	// value before divided by decimal, that was transferred from this address
+	RawValue int64 `json:"raw_value"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// value after divided by decimals, that was transferred from this address
+	Value float64          `json:"value"`
+	JSON  assetDiffOutJSON `json:"-"`
+	union AssetDiffOutUnion
+}
+
+// assetDiffOutJSON contains the JSON metadata for the struct [AssetDiffOut]
+type assetDiffOutJSON struct {
+	UsdPrice    apijson.Field
+	Summary     apijson.Field
+	TokenID     apijson.Field
+	RawValue    apijson.Field
+	LogoURL     apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r assetDiffOutJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+func (r AssetDiffOut) AsUnion() AssetDiffOutUnion {
+	return r.union
+}
+
+// Union satisfied by [Erc1155Diff], [Erc721Diff], [Erc20Diff] or [NativeDiff].
+type AssetDiffOutUnion interface {
+	implementsAssetDiffOut()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AssetDiffOutUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc1155Diff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc721Diff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc20Diff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NativeDiff{}),
+		},
+	)
+}
+
 // The chain name
 type Chain string
 
@@ -625,15 +567,15 @@ func (r erc1155DiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r Erc1155Diff) implementsAddressAssetDiffIn() {}
-
-func (r Erc1155Diff) implementsAddressAssetDiffOut() {}
-
 func (r Erc1155Diff) implementsErc20ExposureExposure() {}
 
 func (r Erc1155Diff) implementsErc721ExposureExposure() {}
 
 func (r Erc1155Diff) implementsErc1155ExposureExposure() {}
+
+func (r Erc1155Diff) implementsAssetDiffIn() {}
+
+func (r Erc1155Diff) implementsAssetDiffOut() {}
 
 type Erc1155Exposure struct {
 	Exposure []Erc1155ExposureExposure `json:"exposure,required"`
@@ -772,9 +714,9 @@ func (r erc1155TokenDetailsJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r Erc1155TokenDetails) implementsAddressAssetDiffAsset() {}
-
 func (r Erc1155TokenDetails) implementsAddressAssetExposureAsset() {}
+
+func (r Erc1155TokenDetails) implementsAssetDiffAsset() {}
 
 // asset type.
 type Erc1155TokenDetailsType string
@@ -821,15 +763,15 @@ func (r erc20DiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r Erc20Diff) implementsAddressAssetDiffIn() {}
-
-func (r Erc20Diff) implementsAddressAssetDiffOut() {}
-
 func (r Erc20Diff) implementsErc20ExposureExposure() {}
 
 func (r Erc20Diff) implementsErc721ExposureExposure() {}
 
 func (r Erc20Diff) implementsErc1155ExposureExposure() {}
+
+func (r Erc20Diff) implementsAssetDiffIn() {}
+
+func (r Erc20Diff) implementsAssetDiffOut() {}
 
 type Erc20Exposure struct {
 	// the amount that was asked in the approval request for this spender from the
@@ -974,9 +916,9 @@ func (r erc20TokenDetailsJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r Erc20TokenDetails) implementsAddressAssetDiffAsset() {}
-
 func (r Erc20TokenDetails) implementsAddressAssetExposureAsset() {}
+
+func (r Erc20TokenDetails) implementsAssetDiffAsset() {}
 
 // asset type.
 type Erc20TokenDetailsType string
@@ -1023,15 +965,15 @@ func (r erc721DiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r Erc721Diff) implementsAddressAssetDiffIn() {}
-
-func (r Erc721Diff) implementsAddressAssetDiffOut() {}
-
 func (r Erc721Diff) implementsErc20ExposureExposure() {}
 
 func (r Erc721Diff) implementsErc721ExposureExposure() {}
 
 func (r Erc721Diff) implementsErc1155ExposureExposure() {}
+
+func (r Erc721Diff) implementsAssetDiffIn() {}
+
+func (r Erc721Diff) implementsAssetDiffOut() {}
 
 type Erc721Exposure struct {
 	Exposure []Erc721ExposureExposure `json:"exposure,required"`
@@ -1170,9 +1112,9 @@ func (r erc721TokenDetailsJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r Erc721TokenDetails) implementsAddressAssetDiffAsset() {}
-
 func (r Erc721TokenDetails) implementsAddressAssetExposureAsset() {}
+
+func (r Erc721TokenDetails) implementsAssetDiffAsset() {}
 
 // asset type.
 type Erc721TokenDetailsType string
@@ -1196,6 +1138,59 @@ type MetadataParam struct {
 
 func (r MetadataParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type NativeAssetDetails struct {
+	ChainID   int64  `json:"chain_id,required"`
+	ChainName string `json:"chain_name,required"`
+	Decimals  int64  `json:"decimals,required"`
+	LogoURL   string `json:"logo_url,required"`
+	// asset type.
+	Type NativeAssetDetailsType `json:"type,required"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                 `json:"symbol"`
+	JSON   nativeAssetDetailsJSON `json:"-"`
+}
+
+// nativeAssetDetailsJSON contains the JSON metadata for the struct
+// [NativeAssetDetails]
+type nativeAssetDetailsJSON struct {
+	ChainID     apijson.Field
+	ChainName   apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *NativeAssetDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r nativeAssetDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r NativeAssetDetails) implementsAssetDiffAsset() {}
+
+// asset type.
+type NativeAssetDetailsType string
+
+const (
+	NativeAssetDetailsTypeNative NativeAssetDetailsType = "NATIVE"
+)
+
+func (r NativeAssetDetailsType) IsKnown() bool {
+	switch r {
+	case NativeAssetDetailsTypeNative:
+		return true
+	}
+	return false
 }
 
 type NativeDiff struct {
@@ -1228,15 +1223,15 @@ func (r nativeDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r NativeDiff) implementsAddressAssetDiffIn() {}
-
-func (r NativeDiff) implementsAddressAssetDiffOut() {}
-
 func (r NativeDiff) implementsErc20ExposureExposure() {}
 
 func (r NativeDiff) implementsErc721ExposureExposure() {}
 
 func (r NativeDiff) implementsErc1155ExposureExposure() {}
+
+func (r NativeDiff) implementsAssetDiffIn() {}
+
+func (r NativeDiff) implementsAssetDiffOut() {}
 
 type NonercTokenDetails struct {
 	// address of the token
@@ -1272,9 +1267,9 @@ func (r nonercTokenDetailsJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r NonercTokenDetails) implementsAddressAssetDiffAsset() {}
-
 func (r NonercTokenDetails) implementsAddressAssetExposureAsset() {}
+
+func (r NonercTokenDetails) implementsAssetDiffAsset() {}
 
 // asset type.
 type NonercTokenDetailsType string
@@ -1558,8 +1553,7 @@ func (r TransactionBulkResponseSimulation) AsUnion() TransactionBulkResponseSimu
 	return r.union
 }
 
-// Union satisfied by [TransactionSimulation] or
-// [TransactionBulkResponseSimulationTransactionSimulationError].
+// Union satisfied by [TransactionSimulation] or [TransactionSimulationError].
 type TransactionBulkResponseSimulationUnion interface {
 	implementsTransactionBulkResponseSimulation()
 }
@@ -1574,35 +1568,9 @@ func init() {
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionBulkResponseSimulationTransactionSimulationError{}),
+			Type:       reflect.TypeOf(TransactionSimulationError{}),
 		},
 	)
-}
-
-type TransactionBulkResponseSimulationTransactionSimulationError struct {
-	// An error message if the simulation failed.
-	Error string                                                          `json:"error,required"`
-	JSON  transactionBulkResponseSimulationTransactionSimulationErrorJSON `json:"-"`
-}
-
-// transactionBulkResponseSimulationTransactionSimulationErrorJSON contains the
-// JSON metadata for the struct
-// [TransactionBulkResponseSimulationTransactionSimulationError]
-type transactionBulkResponseSimulationTransactionSimulationErrorJSON struct {
-	Error       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionBulkResponseSimulationTransactionSimulationError) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionBulkResponseSimulationTransactionSimulationErrorJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionBulkResponseSimulationTransactionSimulationError) implementsTransactionBulkResponseSimulation() {
 }
 
 type TransactionBulkResponseValidation struct {
@@ -1653,8 +1621,7 @@ func (r TransactionBulkResponseValidation) AsUnion() TransactionBulkResponseVali
 	return r.union
 }
 
-// Union satisfied by [TransactionValidation] or
-// [TransactionBulkResponseValidationTransactrionValidationError].
+// Union satisfied by [TransactionValidation] or [TransactionValidationError].
 type TransactionBulkResponseValidationUnion interface {
 	implementsTransactionBulkResponseValidation()
 }
@@ -1669,116 +1636,9 @@ func init() {
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionBulkResponseValidationTransactrionValidationError{}),
+			Type:       reflect.TypeOf(TransactionValidationError{}),
 		},
 	)
-}
-
-type TransactionBulkResponseValidationTransactrionValidationError struct {
-	// A textual classification that can be presented to the user explaining the
-	// reason.
-	Classification TransactionBulkResponseValidationTransactrionValidationErrorClassification `json:"classification,required"`
-	// A textual description that can be presented to the user about what this
-	// transaction is doing.
-	Description TransactionBulkResponseValidationTransactrionValidationErrorDescription `json:"description,required"`
-	// An error message if the validation failed.
-	Error string `json:"error,required"`
-	// A list of features about this transaction explaining the validation.
-	Features []TransactionScanFeature `json:"features,required"`
-	// A textual description about the reasons the transaction was flagged with
-	// result_type.
-	Reason TransactionBulkResponseValidationTransactrionValidationErrorReason `json:"reason,required"`
-	// A string indicating if the transaction is safe to sign or not.
-	ResultType TransactionBulkResponseValidationTransactrionValidationErrorResultType `json:"result_type,required"`
-	JSON       transactionBulkResponseValidationTransactrionValidationErrorJSON       `json:"-"`
-}
-
-// transactionBulkResponseValidationTransactrionValidationErrorJSON contains the
-// JSON metadata for the struct
-// [TransactionBulkResponseValidationTransactrionValidationError]
-type transactionBulkResponseValidationTransactrionValidationErrorJSON struct {
-	Classification apijson.Field
-	Description    apijson.Field
-	Error          apijson.Field
-	Features       apijson.Field
-	Reason         apijson.Field
-	ResultType     apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *TransactionBulkResponseValidationTransactrionValidationError) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionBulkResponseValidationTransactrionValidationErrorJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionBulkResponseValidationTransactrionValidationError) implementsTransactionBulkResponseValidation() {
-}
-
-// A textual classification that can be presented to the user explaining the
-// reason.
-type TransactionBulkResponseValidationTransactrionValidationErrorClassification string
-
-const (
-	TransactionBulkResponseValidationTransactrionValidationErrorClassificationEmpty TransactionBulkResponseValidationTransactrionValidationErrorClassification = ""
-)
-
-func (r TransactionBulkResponseValidationTransactrionValidationErrorClassification) IsKnown() bool {
-	switch r {
-	case TransactionBulkResponseValidationTransactrionValidationErrorClassificationEmpty:
-		return true
-	}
-	return false
-}
-
-// A textual description that can be presented to the user about what this
-// transaction is doing.
-type TransactionBulkResponseValidationTransactrionValidationErrorDescription string
-
-const (
-	TransactionBulkResponseValidationTransactrionValidationErrorDescriptionEmpty TransactionBulkResponseValidationTransactrionValidationErrorDescription = ""
-)
-
-func (r TransactionBulkResponseValidationTransactrionValidationErrorDescription) IsKnown() bool {
-	switch r {
-	case TransactionBulkResponseValidationTransactrionValidationErrorDescriptionEmpty:
-		return true
-	}
-	return false
-}
-
-// A textual description about the reasons the transaction was flagged with
-// result_type.
-type TransactionBulkResponseValidationTransactrionValidationErrorReason string
-
-const (
-	TransactionBulkResponseValidationTransactrionValidationErrorReasonEmpty TransactionBulkResponseValidationTransactrionValidationErrorReason = ""
-)
-
-func (r TransactionBulkResponseValidationTransactrionValidationErrorReason) IsKnown() bool {
-	switch r {
-	case TransactionBulkResponseValidationTransactrionValidationErrorReasonEmpty:
-		return true
-	}
-	return false
-}
-
-// A string indicating if the transaction is safe to sign or not.
-type TransactionBulkResponseValidationTransactrionValidationErrorResultType string
-
-const (
-	TransactionBulkResponseValidationTransactrionValidationErrorResultTypeError TransactionBulkResponseValidationTransactrionValidationErrorResultType = "Error"
-)
-
-func (r TransactionBulkResponseValidationTransactrionValidationErrorResultType) IsKnown() bool {
-	switch r {
-	case TransactionBulkResponseValidationTransactrionValidationErrorResultTypeError:
-		return true
-	}
-	return false
 }
 
 // An enumeration.
@@ -1918,8 +1778,7 @@ func (r TransactionScanResponseSimulation) AsUnion() TransactionScanResponseSimu
 	return r.union
 }
 
-// Union satisfied by [TransactionSimulation] or
-// [TransactionScanResponseSimulationTransactionSimulationError].
+// Union satisfied by [TransactionSimulation] or [TransactionSimulationError].
 type TransactionScanResponseSimulationUnion interface {
 	implementsTransactionScanResponseSimulation()
 }
@@ -1934,35 +1793,9 @@ func init() {
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionScanResponseSimulationTransactionSimulationError{}),
+			Type:       reflect.TypeOf(TransactionSimulationError{}),
 		},
 	)
-}
-
-type TransactionScanResponseSimulationTransactionSimulationError struct {
-	// An error message if the simulation failed.
-	Error string                                                          `json:"error,required"`
-	JSON  transactionScanResponseSimulationTransactionSimulationErrorJSON `json:"-"`
-}
-
-// transactionScanResponseSimulationTransactionSimulationErrorJSON contains the
-// JSON metadata for the struct
-// [TransactionScanResponseSimulationTransactionSimulationError]
-type transactionScanResponseSimulationTransactionSimulationErrorJSON struct {
-	Error       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionScanResponseSimulationTransactionSimulationError) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionScanResponseSimulationTransactionSimulationErrorJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionScanResponseSimulationTransactionSimulationError) implementsTransactionScanResponseSimulation() {
 }
 
 type TransactionScanResponseValidation struct {
@@ -2013,8 +1846,7 @@ func (r TransactionScanResponseValidation) AsUnion() TransactionScanResponseVali
 	return r.union
 }
 
-// Union satisfied by [TransactionValidation] or
-// [TransactionScanResponseValidationTransactrionValidationError].
+// Union satisfied by [TransactionValidation] or [TransactionValidationError].
 type TransactionScanResponseValidationUnion interface {
 	implementsTransactionScanResponseValidation()
 }
@@ -2029,116 +1861,9 @@ func init() {
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionScanResponseValidationTransactrionValidationError{}),
+			Type:       reflect.TypeOf(TransactionValidationError{}),
 		},
 	)
-}
-
-type TransactionScanResponseValidationTransactrionValidationError struct {
-	// A textual classification that can be presented to the user explaining the
-	// reason.
-	Classification TransactionScanResponseValidationTransactrionValidationErrorClassification `json:"classification,required"`
-	// A textual description that can be presented to the user about what this
-	// transaction is doing.
-	Description TransactionScanResponseValidationTransactrionValidationErrorDescription `json:"description,required"`
-	// An error message if the validation failed.
-	Error string `json:"error,required"`
-	// A list of features about this transaction explaining the validation.
-	Features []TransactionScanFeature `json:"features,required"`
-	// A textual description about the reasons the transaction was flagged with
-	// result_type.
-	Reason TransactionScanResponseValidationTransactrionValidationErrorReason `json:"reason,required"`
-	// A string indicating if the transaction is safe to sign or not.
-	ResultType TransactionScanResponseValidationTransactrionValidationErrorResultType `json:"result_type,required"`
-	JSON       transactionScanResponseValidationTransactrionValidationErrorJSON       `json:"-"`
-}
-
-// transactionScanResponseValidationTransactrionValidationErrorJSON contains the
-// JSON metadata for the struct
-// [TransactionScanResponseValidationTransactrionValidationError]
-type transactionScanResponseValidationTransactrionValidationErrorJSON struct {
-	Classification apijson.Field
-	Description    apijson.Field
-	Error          apijson.Field
-	Features       apijson.Field
-	Reason         apijson.Field
-	ResultType     apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *TransactionScanResponseValidationTransactrionValidationError) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionScanResponseValidationTransactrionValidationErrorJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionScanResponseValidationTransactrionValidationError) implementsTransactionScanResponseValidation() {
-}
-
-// A textual classification that can be presented to the user explaining the
-// reason.
-type TransactionScanResponseValidationTransactrionValidationErrorClassification string
-
-const (
-	TransactionScanResponseValidationTransactrionValidationErrorClassificationEmpty TransactionScanResponseValidationTransactrionValidationErrorClassification = ""
-)
-
-func (r TransactionScanResponseValidationTransactrionValidationErrorClassification) IsKnown() bool {
-	switch r {
-	case TransactionScanResponseValidationTransactrionValidationErrorClassificationEmpty:
-		return true
-	}
-	return false
-}
-
-// A textual description that can be presented to the user about what this
-// transaction is doing.
-type TransactionScanResponseValidationTransactrionValidationErrorDescription string
-
-const (
-	TransactionScanResponseValidationTransactrionValidationErrorDescriptionEmpty TransactionScanResponseValidationTransactrionValidationErrorDescription = ""
-)
-
-func (r TransactionScanResponseValidationTransactrionValidationErrorDescription) IsKnown() bool {
-	switch r {
-	case TransactionScanResponseValidationTransactrionValidationErrorDescriptionEmpty:
-		return true
-	}
-	return false
-}
-
-// A textual description about the reasons the transaction was flagged with
-// result_type.
-type TransactionScanResponseValidationTransactrionValidationErrorReason string
-
-const (
-	TransactionScanResponseValidationTransactrionValidationErrorReasonEmpty TransactionScanResponseValidationTransactrionValidationErrorReason = ""
-)
-
-func (r TransactionScanResponseValidationTransactrionValidationErrorReason) IsKnown() bool {
-	switch r {
-	case TransactionScanResponseValidationTransactrionValidationErrorReasonEmpty:
-		return true
-	}
-	return false
-}
-
-// A string indicating if the transaction is safe to sign or not.
-type TransactionScanResponseValidationTransactrionValidationErrorResultType string
-
-const (
-	TransactionScanResponseValidationTransactrionValidationErrorResultTypeError TransactionScanResponseValidationTransactrionValidationErrorResultType = "Error"
-)
-
-func (r TransactionScanResponseValidationTransactrionValidationErrorResultType) IsKnown() bool {
-	switch r {
-	case TransactionScanResponseValidationTransactrionValidationErrorResultTypeError:
-		return true
-	}
-	return false
 }
 
 // An enumeration.
@@ -2169,7 +1894,7 @@ type TransactionSimulation struct {
 	AddressDetails map[string]TransactionSimulationAddressDetail `json:"address_details,required"`
 	// dictionary describes the assets differences as a result of this transaction for
 	// every involved address
-	AssetsDiffs map[string][]AddressAssetDiff `json:"assets_diffs,required"`
+	AssetsDiffs map[string][]AssetDiff `json:"assets_diffs,required"`
 	// dictionary describes the exposure differences as a result of this transaction
 	// for every involved address (as a result of any approval / setApproval / permit
 	// function)
@@ -2213,7 +1938,7 @@ func (r TransactionSimulation) implementsTransactionScanResponseSimulation() {}
 // account_address field in the request.
 type TransactionSimulationAccountSummary struct {
 	// All assets diffs related to the account address
-	AssetsDiffs []AddressAssetDiff `json:"assets_diffs,required"`
+	AssetsDiffs []AssetDiff `json:"assets_diffs,required"`
 	// All assets exposures related to the account address
 	Exposures []AddressAssetExposure `json:"exposures,required"`
 	// Total usd diff related to the account address
@@ -2266,6 +1991,32 @@ func (r *TransactionSimulationAddressDetail) UnmarshalJSON(data []byte) (err err
 func (r transactionSimulationAddressDetailJSON) RawJSON() string {
 	return r.raw
 }
+
+type TransactionSimulationError struct {
+	// An error message if the simulation failed.
+	Error string                         `json:"error,required"`
+	JSON  transactionSimulationErrorJSON `json:"-"`
+}
+
+// transactionSimulationErrorJSON contains the JSON metadata for the struct
+// [TransactionSimulationError]
+type transactionSimulationErrorJSON struct {
+	Error       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationError) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationErrorJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationError) implementsTransactionBulkResponseSimulation() {}
+
+func (r TransactionSimulationError) implementsTransactionScanResponseSimulation() {}
 
 type TransactionValidation struct {
 	// A list of features about this transaction explaining the validation.
@@ -2320,6 +2071,113 @@ const (
 func (r TransactionValidationResultType) IsKnown() bool {
 	switch r {
 	case TransactionValidationResultTypeBenign, TransactionValidationResultTypeWarning, TransactionValidationResultTypeMalicious:
+		return true
+	}
+	return false
+}
+
+type TransactionValidationError struct {
+	// A textual classification that can be presented to the user explaining the
+	// reason.
+	Classification TransactionValidationErrorClassification `json:"classification,required"`
+	// A textual description that can be presented to the user about what this
+	// transaction is doing.
+	Description TransactionValidationErrorDescription `json:"description,required"`
+	// An error message if the validation failed.
+	Error string `json:"error,required"`
+	// A list of features about this transaction explaining the validation.
+	Features []TransactionScanFeature `json:"features,required"`
+	// A textual description about the reasons the transaction was flagged with
+	// result_type.
+	Reason TransactionValidationErrorReason `json:"reason,required"`
+	// A string indicating if the transaction is safe to sign or not.
+	ResultType TransactionValidationErrorResultType `json:"result_type,required"`
+	JSON       transactionValidationErrorJSON       `json:"-"`
+}
+
+// transactionValidationErrorJSON contains the JSON metadata for the struct
+// [TransactionValidationError]
+type transactionValidationErrorJSON struct {
+	Classification apijson.Field
+	Description    apijson.Field
+	Error          apijson.Field
+	Features       apijson.Field
+	Reason         apijson.Field
+	ResultType     apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *TransactionValidationError) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionValidationErrorJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionValidationError) implementsTransactionBulkResponseValidation() {}
+
+func (r TransactionValidationError) implementsTransactionScanResponseValidation() {}
+
+// A textual classification that can be presented to the user explaining the
+// reason.
+type TransactionValidationErrorClassification string
+
+const (
+	TransactionValidationErrorClassificationEmpty TransactionValidationErrorClassification = ""
+)
+
+func (r TransactionValidationErrorClassification) IsKnown() bool {
+	switch r {
+	case TransactionValidationErrorClassificationEmpty:
+		return true
+	}
+	return false
+}
+
+// A textual description that can be presented to the user about what this
+// transaction is doing.
+type TransactionValidationErrorDescription string
+
+const (
+	TransactionValidationErrorDescriptionEmpty TransactionValidationErrorDescription = ""
+)
+
+func (r TransactionValidationErrorDescription) IsKnown() bool {
+	switch r {
+	case TransactionValidationErrorDescriptionEmpty:
+		return true
+	}
+	return false
+}
+
+// A textual description about the reasons the transaction was flagged with
+// result_type.
+type TransactionValidationErrorReason string
+
+const (
+	TransactionValidationErrorReasonEmpty TransactionValidationErrorReason = ""
+)
+
+func (r TransactionValidationErrorReason) IsKnown() bool {
+	switch r {
+	case TransactionValidationErrorReasonEmpty:
+		return true
+	}
+	return false
+}
+
+// A string indicating if the transaction is safe to sign or not.
+type TransactionValidationErrorResultType string
+
+const (
+	TransactionValidationErrorResultTypeError TransactionValidationErrorResultType = "Error"
+)
+
+func (r TransactionValidationErrorResultType) IsKnown() bool {
+	switch r {
+	case TransactionValidationErrorResultTypeError:
 		return true
 	}
 	return false
