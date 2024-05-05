@@ -565,6 +565,33 @@ func init() {
 	)
 }
 
+// An enumeration.
+type Chain string
+
+const (
+	ChainArbitrum    Chain = "arbitrum"
+	ChainAvalanche   Chain = "avalanche"
+	ChainBase        Chain = "base"
+	ChainBaseSepolia Chain = "base-sepolia"
+	ChainBsc         Chain = "bsc"
+	ChainEthereum    Chain = "ethereum"
+	ChainOptimism    Chain = "optimism"
+	ChainPolygon     Chain = "polygon"
+	ChainZksync      Chain = "zksync"
+	ChainZora        Chain = "zora"
+	ChainLinea       Chain = "linea"
+	ChainBlast       Chain = "blast"
+	ChainUnknown     Chain = "unknown"
+)
+
+func (r Chain) IsKnown() bool {
+	switch r {
+	case ChainArbitrum, ChainAvalanche, ChainBase, ChainBaseSepolia, ChainBsc, ChainEthereum, ChainOptimism, ChainPolygon, ChainZksync, ChainZora, ChainLinea, ChainBlast, ChainUnknown:
+		return true
+	}
+	return false
+}
+
 type Erc1155Diff struct {
 	// value before divided by decimal, that was transferred from this address
 	RawValue int64 `json:"raw_value,required"`
@@ -1259,33 +1286,6 @@ const (
 func (r NonercTokenDetailsType) IsKnown() bool {
 	switch r {
 	case NonercTokenDetailsTypeNonerc:
-		return true
-	}
-	return false
-}
-
-// An enumeration.
-type SupportedChain string
-
-const (
-	SupportedChainArbitrum    SupportedChain = "arbitrum"
-	SupportedChainAvalanche   SupportedChain = "avalanche"
-	SupportedChainBase        SupportedChain = "base"
-	SupportedChainBaseSepolia SupportedChain = "base-sepolia"
-	SupportedChainBsc         SupportedChain = "bsc"
-	SupportedChainEthereum    SupportedChain = "ethereum"
-	SupportedChainOptimism    SupportedChain = "optimism"
-	SupportedChainPolygon     SupportedChain = "polygon"
-	SupportedChainZksync      SupportedChain = "zksync"
-	SupportedChainZora        SupportedChain = "zora"
-	SupportedChainLinea       SupportedChain = "linea"
-	SupportedChainBlast       SupportedChain = "blast"
-	SupportedChainUnknown     SupportedChain = "unknown"
-)
-
-func (r SupportedChain) IsKnown() bool {
-	switch r {
-	case SupportedChainArbitrum, SupportedChainAvalanche, SupportedChainBase, SupportedChainBaseSepolia, SupportedChainBsc, SupportedChainEthereum, SupportedChainOptimism, SupportedChainPolygon, SupportedChainZksync, SupportedChainZora, SupportedChainLinea, SupportedChainBlast, SupportedChainUnknown:
 		return true
 	}
 	return false
