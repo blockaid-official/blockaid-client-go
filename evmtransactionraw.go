@@ -44,8 +44,8 @@ type EvmTransactionRawScanParams struct {
 	// The address to relate the transaction to. Account address determines in which
 	// perspective the transaction is simulated and validated.
 	AccountAddress param.Field[string] `json:"account_address,required"`
-	// The chain name
-	Chain param.Field[string] `json:"chain,required"`
+	// An enumeration.
+	Chain param.Field[SupportedChain] `json:"chain,required"`
 	// Hex string of the raw transaction data
 	Data param.Field[string] `json:"data,required"`
 	// Object of additional information to validate against.
