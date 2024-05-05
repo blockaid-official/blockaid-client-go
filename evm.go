@@ -1553,8 +1553,7 @@ func (r TransactionBulkResponseSimulation) AsUnion() TransactionBulkResponseSimu
 	return r.union
 }
 
-// Union satisfied by [TransactionSimulation] or
-// [TransactionBulkResponseSimulationTransactionSimulationError].
+// Union satisfied by [TransactionSimulation] or [TransactionSimulationError].
 type TransactionBulkResponseSimulationUnion interface {
 	implementsTransactionBulkResponseSimulation()
 }
@@ -1569,35 +1568,9 @@ func init() {
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionBulkResponseSimulationTransactionSimulationError{}),
+			Type:       reflect.TypeOf(TransactionSimulationError{}),
 		},
 	)
-}
-
-type TransactionBulkResponseSimulationTransactionSimulationError struct {
-	// An error message if the simulation failed.
-	Error string                                                          `json:"error,required"`
-	JSON  transactionBulkResponseSimulationTransactionSimulationErrorJSON `json:"-"`
-}
-
-// transactionBulkResponseSimulationTransactionSimulationErrorJSON contains the
-// JSON metadata for the struct
-// [TransactionBulkResponseSimulationTransactionSimulationError]
-type transactionBulkResponseSimulationTransactionSimulationErrorJSON struct {
-	Error       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionBulkResponseSimulationTransactionSimulationError) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionBulkResponseSimulationTransactionSimulationErrorJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionBulkResponseSimulationTransactionSimulationError) implementsTransactionBulkResponseSimulation() {
 }
 
 type TransactionBulkResponseValidation struct {
@@ -1913,8 +1886,7 @@ func (r TransactionScanResponseSimulation) AsUnion() TransactionScanResponseSimu
 	return r.union
 }
 
-// Union satisfied by [TransactionSimulation] or
-// [TransactionScanResponseSimulationTransactionSimulationError].
+// Union satisfied by [TransactionSimulation] or [TransactionSimulationError].
 type TransactionScanResponseSimulationUnion interface {
 	implementsTransactionScanResponseSimulation()
 }
@@ -1929,35 +1901,9 @@ func init() {
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionScanResponseSimulationTransactionSimulationError{}),
+			Type:       reflect.TypeOf(TransactionSimulationError{}),
 		},
 	)
-}
-
-type TransactionScanResponseSimulationTransactionSimulationError struct {
-	// An error message if the simulation failed.
-	Error string                                                          `json:"error,required"`
-	JSON  transactionScanResponseSimulationTransactionSimulationErrorJSON `json:"-"`
-}
-
-// transactionScanResponseSimulationTransactionSimulationErrorJSON contains the
-// JSON metadata for the struct
-// [TransactionScanResponseSimulationTransactionSimulationError]
-type transactionScanResponseSimulationTransactionSimulationErrorJSON struct {
-	Error       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionScanResponseSimulationTransactionSimulationError) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionScanResponseSimulationTransactionSimulationErrorJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionScanResponseSimulationTransactionSimulationError) implementsTransactionScanResponseSimulation() {
 }
 
 type TransactionScanResponseValidation struct {
@@ -2261,6 +2207,32 @@ func (r *TransactionSimulationAddressDetail) UnmarshalJSON(data []byte) (err err
 func (r transactionSimulationAddressDetailJSON) RawJSON() string {
 	return r.raw
 }
+
+type TransactionSimulationError struct {
+	// An error message if the simulation failed.
+	Error string                         `json:"error,required"`
+	JSON  transactionSimulationErrorJSON `json:"-"`
+}
+
+// transactionSimulationErrorJSON contains the JSON metadata for the struct
+// [TransactionSimulationError]
+type transactionSimulationErrorJSON struct {
+	Error       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationError) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationErrorJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationError) implementsTransactionBulkResponseSimulation() {}
+
+func (r TransactionSimulationError) implementsTransactionScanResponseSimulation() {}
 
 type TransactionValidation struct {
 	// A list of features about this transaction explaining the validation.
