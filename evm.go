@@ -565,6 +565,33 @@ func init() {
 	)
 }
 
+// The chain name
+type Chain string
+
+const (
+	ChainArbitrum    Chain = "arbitrum"
+	ChainAvalanche   Chain = "avalanche"
+	ChainBase        Chain = "base"
+	ChainBaseSepolia Chain = "base-sepolia"
+	ChainBsc         Chain = "bsc"
+	ChainEthereum    Chain = "ethereum"
+	ChainOptimism    Chain = "optimism"
+	ChainPolygon     Chain = "polygon"
+	ChainZksync      Chain = "zksync"
+	ChainZora        Chain = "zora"
+	ChainLinea       Chain = "linea"
+	ChainBlast       Chain = "blast"
+	ChainUnknown     Chain = "unknown"
+)
+
+func (r Chain) IsKnown() bool {
+	switch r {
+	case ChainArbitrum, ChainAvalanche, ChainBase, ChainBaseSepolia, ChainBsc, ChainEthereum, ChainOptimism, ChainPolygon, ChainZksync, ChainZora, ChainLinea, ChainBlast, ChainUnknown:
+		return true
+	}
+	return false
+}
+
 type Erc1155Diff struct {
 	// value before divided by decimal, that was transferred from this address
 	RawValue int64 `json:"raw_value,required"`

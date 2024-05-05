@@ -43,7 +43,7 @@ func (r *EvmTransactionBulkService) Scan(ctx context.Context, body EvmTransactio
 
 type EvmTransactionBulkScanParams struct {
 	// The chain name
-	Chain param.Field[string] `json:"chain,required"`
+	Chain param.Field[Chain] `json:"chain,required"`
 	// Transaction bulk parameters
 	Data param.Field[[]EvmTransactionBulkScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.

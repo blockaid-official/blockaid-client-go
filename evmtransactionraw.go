@@ -45,7 +45,7 @@ type EvmTransactionRawScanParams struct {
 	// perspective the transaction is simulated and validated.
 	AccountAddress param.Field[string] `json:"account_address,required"`
 	// The chain name
-	Chain param.Field[string] `json:"chain,required"`
+	Chain param.Field[Chain] `json:"chain,required"`
 	// Hex string of the raw transaction data
 	Data param.Field[string] `json:"data,required"`
 	// Object of additional information to validate against.
