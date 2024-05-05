@@ -565,7 +565,7 @@ func init() {
 	)
 }
 
-// An enumeration.
+// The chain name
 type Chain string
 
 const (

@@ -40,7 +40,7 @@ func (r *EvmJsonRpcService) Scan(ctx context.Context, body EvmJsonRpcScanParams,
 }
 
 type EvmJsonRpcScanParams struct {
-	// An enumeration.
+	// The chain name
 	Chain param.Field[Chain] `json:"chain,required"`
 	// JSON-RPC request that was received by the wallet.
 	Data param.Field[EvmJsonRpcScanParamsData] `json:"data,required"`
