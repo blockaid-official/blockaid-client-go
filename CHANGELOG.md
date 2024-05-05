@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.7.3 (2024-05-05)
+
+Full Changelog: [v0.7.2...v0.7.3](https://github.com/blockaid-official/blockaid-client-go/compare/v0.7.2...v0.7.3)
+
+### Features
+
+* **api:** OpenAPI spec update via Stainless API ([#17](https://github.com/blockaid-official/blockaid-client-go/issues/17)) ([fa4991d](https://github.com/blockaid-official/blockaid-client-go/commit/fa4991d95be638b08ec62652dec18a0c23b17bf5))
+* **api:** update via SDK Studio ([#11](https://github.com/blockaid-official/blockaid-client-go/issues/11)) ([900d333](https://github.com/blockaid-official/blockaid-client-go/commit/900d333a5fdf4b95c19d340f3a4c68bae68c6cc2))
+* **api:** update via SDK Studio ([#13](https://github.com/blockaid-official/blockaid-client-go/issues/13)) ([e4d8cb0](https://github.com/blockaid-official/blockaid-client-go/commit/e4d8cb09ada035a401e71162c6660129aa37e43a))
+* **api:** update via SDK Studio ([#14](https://github.com/blockaid-official/blockaid-client-go/issues/14)) ([bd29419](https://github.com/blockaid-official/blockaid-client-go/commit/bd29419cfdaadafbc4062799dd505c853ddedf15))
+* **api:** update via SDK Studio ([#15](https://github.com/blockaid-official/blockaid-client-go/issues/15)) ([f69b1fb](https://github.com/blockaid-official/blockaid-client-go/commit/f69b1fb01d912bbdfca9947228b46054c083faac))
+* **api:** update via SDK Studio ([#16](https://github.com/blockaid-official/blockaid-client-go/issues/16)) ([73349d2](https://github.com/blockaid-official/blockaid-client-go/commit/73349d27ede54067033b2449cc2e4589462d9bef))
+
 ## 0.7.2 (2024-05-05)
 
 Full Changelog: [v0.7.1...v0.7.2](https://github.com/blockaid-official/blockaid-client-go/compare/v0.7.1...v0.7.2)
