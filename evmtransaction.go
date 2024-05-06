@@ -45,12 +45,12 @@ type EvmTransactionScanParams struct {
 	// perspective the transaction is simulated and validated.
 	AccountAddress param.Field[string] `json:"account_address,required"`
 	// The chain name
-	Chain param.Field[Chain] `json:"chain,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
 	// Transaction parameters
 	Data param.Field[EvmTransactionScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[MetadataParam] `json:"metadata,required"`
-	// List of one or both of options for the desired output. "simulation" - include
+	// list of one or both of options for the desired output. "simulation" - include
 	// simulation output in your response. "validation" - include security validation
 	// of the transaction in your response. Default is ["validation"]
 	Options param.Field[[]EvmTransactionScanParamsOption] `json:"options"`
@@ -84,13 +84,15 @@ func (r EvmTransactionScanParamsData) MarshalJSON() (data []byte, err error) {
 type EvmTransactionScanParamsOption string
 
 const (
-	EvmTransactionScanParamsOptionValidation EvmTransactionScanParamsOption = "validation"
-	EvmTransactionScanParamsOptionSimulation EvmTransactionScanParamsOption = "simulation"
+	EvmTransactionScanParamsOptionValidation    EvmTransactionScanParamsOption = "validation"
+	EvmTransactionScanParamsOptionSimulation    EvmTransactionScanParamsOption = "simulation"
+	EvmTransactionScanParamsOptionGasEstimation EvmTransactionScanParamsOption = "gas_estimation"
+	EvmTransactionScanParamsOptionEvents        EvmTransactionScanParamsOption = "events"
 )
 
 func (r EvmTransactionScanParamsOption) IsKnown() bool {
 	switch r {
-	case EvmTransactionScanParamsOptionValidation, EvmTransactionScanParamsOptionSimulation:
+	case EvmTransactionScanParamsOptionValidation, EvmTransactionScanParamsOptionSimulation, EvmTransactionScanParamsOptionGasEstimation, EvmTransactionScanParamsOptionEvents:
 		return true
 	}
 	return false

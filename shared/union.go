@@ -4,4 +4,9 @@ package shared
 
 type UnionString string
 
-func (UnionString) ImplementsTransactionBulkResponseEventsParamsValueUnion() {}
+func (UnionString) ImplementsTransactionScanResponseEventsParamsValueUnion() {}
+func (UnionString) ImplementsTransactionValidationErrorLocUnion()            {}
+
+type UnionInt int64
+
+func (UnionInt) ImplementsTransactionValidationErrorLocUnion() {}
