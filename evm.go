@@ -367,15 +367,14 @@ type AssetDiffIn struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64 `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	RawValue int64 `json:"raw_value"`
+	TokenID int64       `json:"token_id"`
+	Value   interface{} `json:"value,required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
-	// value after divided by decimals, that was transferred from this address
-	Value float64         `json:"value"`
-	JSON  assetDiffInJSON `json:"-"`
-	union AssetDiffInUnion
+	// value before divided by decimal, that was transferred from this address
+	RawValue int64           `json:"raw_value"`
+	JSON     assetDiffInJSON `json:"-"`
+	union    AssetDiffInUnion
 }
 
 // assetDiffInJSON contains the JSON metadata for the struct [AssetDiffIn]
@@ -383,9 +382,9 @@ type assetDiffInJSON struct {
 	UsdPrice    apijson.Field
 	Summary     apijson.Field
 	TokenID     apijson.Field
-	RawValue    apijson.Field
-	LogoURL     apijson.Field
 	Value       apijson.Field
+	LogoURL     apijson.Field
+	RawValue    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -440,15 +439,14 @@ type AssetDiffOut struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64 `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	RawValue int64 `json:"raw_value"`
+	TokenID int64       `json:"token_id"`
+	Value   interface{} `json:"value,required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
-	// value after divided by decimals, that was transferred from this address
-	Value float64          `json:"value"`
-	JSON  assetDiffOutJSON `json:"-"`
-	union AssetDiffOutUnion
+	// value before divided by decimal, that was transferred from this address
+	RawValue int64            `json:"raw_value"`
+	JSON     assetDiffOutJSON `json:"-"`
+	union    AssetDiffOutUnion
 }
 
 // assetDiffOutJSON contains the JSON metadata for the struct [AssetDiffOut]
@@ -456,9 +454,9 @@ type assetDiffOutJSON struct {
 	UsdPrice    apijson.Field
 	Summary     apijson.Field
 	TokenID     apijson.Field
-	RawValue    apijson.Field
-	LogoURL     apijson.Field
 	Value       apijson.Field
+	LogoURL     apijson.Field
+	RawValue    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -507,38 +505,11 @@ func init() {
 	)
 }
 
-// The chain name
-type Chain string
-
-const (
-	ChainArbitrum    Chain = "arbitrum"
-	ChainAvalanche   Chain = "avalanche"
-	ChainBase        Chain = "base"
-	ChainBaseSepolia Chain = "base-sepolia"
-	ChainBsc         Chain = "bsc"
-	ChainEthereum    Chain = "ethereum"
-	ChainOptimism    Chain = "optimism"
-	ChainPolygon     Chain = "polygon"
-	ChainZksync      Chain = "zksync"
-	ChainZora        Chain = "zora"
-	ChainLinea       Chain = "linea"
-	ChainBlast       Chain = "blast"
-	ChainUnknown     Chain = "unknown"
-)
-
-func (r Chain) IsKnown() bool {
-	switch r {
-	case ChainArbitrum, ChainAvalanche, ChainBase, ChainBaseSepolia, ChainBsc, ChainEthereum, ChainOptimism, ChainPolygon, ChainZksync, ChainZora, ChainLinea, ChainBlast, ChainUnknown:
-		return true
-	}
-	return false
-}
-
 type Erc1155Diff struct {
-	// value before divided by decimal, that was transferred from this address
-	RawValue int64 `json:"raw_value,required"`
 	// id of the token
 	TokenID int64 `json:"token_id,required"`
+	// value before divided by decimal, that was transferred from this address
+	Value int64 `json:"value,required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -550,8 +521,8 @@ type Erc1155Diff struct {
 
 // erc1155DiffJSON contains the JSON metadata for the struct [Erc1155Diff]
 type erc1155DiffJSON struct {
-	RawValue    apijson.Field
 	TokenID     apijson.Field
+	Value       apijson.Field
 	LogoURL     apijson.Field
 	Summary     apijson.Field
 	UsdPrice    apijson.Field
@@ -612,15 +583,14 @@ type Erc1155ExposureExposure struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64 `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	RawValue int64 `json:"raw_value"`
+	TokenID int64       `json:"token_id"`
+	Value   interface{} `json:"value,required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
-	// value after divided by decimals, that was transferred from this address
-	Value float64                     `json:"value"`
-	JSON  erc1155ExposureExposureJSON `json:"-"`
-	union Erc1155ExposureExposureUnion
+	// value before divided by decimal, that was transferred from this address
+	RawValue int64                       `json:"raw_value"`
+	JSON     erc1155ExposureExposureJSON `json:"-"`
+	union    Erc1155ExposureExposureUnion
 }
 
 // erc1155ExposureExposureJSON contains the JSON metadata for the struct
@@ -629,9 +599,9 @@ type erc1155ExposureExposureJSON struct {
 	UsdPrice    apijson.Field
 	Summary     apijson.Field
 	TokenID     apijson.Field
-	RawValue    apijson.Field
-	LogoURL     apijson.Field
 	Value       apijson.Field
+	LogoURL     apijson.Field
+	RawValue    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -811,15 +781,14 @@ type Erc20ExposureExposure struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64 `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	RawValue int64 `json:"raw_value"`
+	TokenID int64       `json:"token_id"`
+	Value   interface{} `json:"value,required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
-	// value after divided by decimals, that was transferred from this address
-	Value float64                   `json:"value"`
-	JSON  erc20ExposureExposureJSON `json:"-"`
-	union Erc20ExposureExposureUnion
+	// value before divided by decimal, that was transferred from this address
+	RawValue int64                     `json:"raw_value"`
+	JSON     erc20ExposureExposureJSON `json:"-"`
+	union    Erc20ExposureExposureUnion
 }
 
 // erc20ExposureExposureJSON contains the JSON metadata for the struct
@@ -828,9 +797,9 @@ type erc20ExposureExposureJSON struct {
 	UsdPrice    apijson.Field
 	Summary     apijson.Field
 	TokenID     apijson.Field
-	RawValue    apijson.Field
-	LogoURL     apijson.Field
 	Value       apijson.Field
+	LogoURL     apijson.Field
+	RawValue    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -1010,15 +979,14 @@ type Erc721ExposureExposure struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64 `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	RawValue int64 `json:"raw_value"`
+	TokenID int64       `json:"token_id"`
+	Value   interface{} `json:"value,required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
-	// value after divided by decimals, that was transferred from this address
-	Value float64                    `json:"value"`
-	JSON  erc721ExposureExposureJSON `json:"-"`
-	union Erc721ExposureExposureUnion
+	// value before divided by decimal, that was transferred from this address
+	RawValue int64                      `json:"raw_value"`
+	JSON     erc721ExposureExposureJSON `json:"-"`
+	union    Erc721ExposureExposureUnion
 }
 
 // erc721ExposureExposureJSON contains the JSON metadata for the struct
@@ -1027,9 +995,9 @@ type erc721ExposureExposureJSON struct {
 	UsdPrice    apijson.Field
 	Summary     apijson.Field
 	TokenID     apijson.Field
-	RawValue    apijson.Field
-	LogoURL     apijson.Field
 	Value       apijson.Field
+	LogoURL     apijson.Field
+	RawValue    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -1286,379 +1254,6 @@ func (r NonercTokenDetailsType) IsKnown() bool {
 	return false
 }
 
-type TransactionBulkResponse struct {
-	Block         string                               `json:"block"`
-	Chain         string                               `json:"chain"`
-	Events        []TransactionBulkResponseEvent       `json:"events"`
-	GasEstimation TransactionBulkResponseGasEstimation `json:"gas_estimation"`
-	Simulation    TransactionBulkResponseSimulation    `json:"simulation"`
-	Validation    TransactionBulkResponseValidation    `json:"validation"`
-	JSON          transactionBulkResponseJSON          `json:"-"`
-}
-
-// transactionBulkResponseJSON contains the JSON metadata for the struct
-// [TransactionBulkResponse]
-type transactionBulkResponseJSON struct {
-	Block         apijson.Field
-	Chain         apijson.Field
-	Events        apijson.Field
-	GasEstimation apijson.Field
-	Simulation    apijson.Field
-	Validation    apijson.Field
-	raw           string
-	ExtraFields   map[string]apijson.Field
-}
-
-func (r *TransactionBulkResponse) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionBulkResponseJSON) RawJSON() string {
-	return r.raw
-}
-
-type TransactionBulkResponseEvent struct {
-	Data           string                               `json:"data,required"`
-	EmitterAddress string                               `json:"emitter_address,required"`
-	Topics         []string                             `json:"topics,required"`
-	EmitterName    string                               `json:"emitter_name"`
-	Name           string                               `json:"name"`
-	Params         []TransactionBulkResponseEventsParam `json:"params"`
-	JSON           transactionBulkResponseEventJSON     `json:"-"`
-}
-
-// transactionBulkResponseEventJSON contains the JSON metadata for the struct
-// [TransactionBulkResponseEvent]
-type transactionBulkResponseEventJSON struct {
-	Data           apijson.Field
-	EmitterAddress apijson.Field
-	Topics         apijson.Field
-	EmitterName    apijson.Field
-	Name           apijson.Field
-	Params         apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *TransactionBulkResponseEvent) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionBulkResponseEventJSON) RawJSON() string {
-	return r.raw
-}
-
-type TransactionBulkResponseEventsParam struct {
-	Type         string                                        `json:"type,required"`
-	Value        TransactionBulkResponseEventsParamsValueUnion `json:"value,required"`
-	InternalType string                                        `json:"internalType"`
-	Name         string                                        `json:"name"`
-	JSON         transactionBulkResponseEventsParamJSON        `json:"-"`
-}
-
-// transactionBulkResponseEventsParamJSON contains the JSON metadata for the struct
-// [TransactionBulkResponseEventsParam]
-type transactionBulkResponseEventsParamJSON struct {
-	Type         apijson.Field
-	Value        apijson.Field
-	InternalType apijson.Field
-	Name         apijson.Field
-	raw          string
-	ExtraFields  map[string]apijson.Field
-}
-
-func (r *TransactionBulkResponseEventsParam) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionBulkResponseEventsParamJSON) RawJSON() string {
-	return r.raw
-}
-
-// Union satisfied by [shared.UnionString],
-// [TransactionBulkResponseEventsParamsValueUnknown] or
-// [TransactionBulkResponseEventsParamsValueArray].
-type TransactionBulkResponseEventsParamsValueUnion interface {
-	ImplementsTransactionBulkResponseEventsParamsValueUnion()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionBulkResponseEventsParamsValueUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.String,
-			Type:       reflect.TypeOf(shared.UnionString("")),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionBulkResponseEventsParamsValueArray{}),
-		},
-	)
-}
-
-type TransactionBulkResponseEventsParamsValueArray []interface{}
-
-func (r TransactionBulkResponseEventsParamsValueArray) ImplementsTransactionBulkResponseEventsParamsValueUnion() {
-}
-
-type TransactionBulkResponseGasEstimation struct {
-	Used     int64                                    `json:"used"`
-	Estimate int64                                    `json:"estimate"`
-	Error    string                                   `json:"error"`
-	JSON     transactionBulkResponseGasEstimationJSON `json:"-"`
-	union    TransactionBulkResponseGasEstimationUnion
-}
-
-// transactionBulkResponseGasEstimationJSON contains the JSON metadata for the
-// struct [TransactionBulkResponseGasEstimation]
-type transactionBulkResponseGasEstimationJSON struct {
-	Used        apijson.Field
-	Estimate    apijson.Field
-	Error       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r transactionBulkResponseGasEstimationJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionBulkResponseGasEstimation) UnmarshalJSON(data []byte) (err error) {
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-func (r TransactionBulkResponseGasEstimation) AsUnion() TransactionBulkResponseGasEstimationUnion {
-	return r.union
-}
-
-// Union satisfied by
-// [TransactionBulkResponseGasEstimationTransactionScanGasEstimation] or
-// [TransactionBulkResponseGasEstimationTransactionScanGasEstimationError].
-type TransactionBulkResponseGasEstimationUnion interface {
-	implementsTransactionBulkResponseGasEstimation()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionBulkResponseGasEstimationUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionBulkResponseGasEstimationTransactionScanGasEstimation{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionBulkResponseGasEstimationTransactionScanGasEstimationError{}),
-		},
-	)
-}
-
-type TransactionBulkResponseGasEstimationTransactionScanGasEstimation struct {
-	Estimate int64                                                                `json:"estimate,required"`
-	Used     int64                                                                `json:"used,required"`
-	JSON     transactionBulkResponseGasEstimationTransactionScanGasEstimationJSON `json:"-"`
-}
-
-// transactionBulkResponseGasEstimationTransactionScanGasEstimationJSON contains
-// the JSON metadata for the struct
-// [TransactionBulkResponseGasEstimationTransactionScanGasEstimation]
-type transactionBulkResponseGasEstimationTransactionScanGasEstimationJSON struct {
-	Estimate    apijson.Field
-	Used        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionBulkResponseGasEstimationTransactionScanGasEstimation) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionBulkResponseGasEstimationTransactionScanGasEstimationJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionBulkResponseGasEstimationTransactionScanGasEstimation) implementsTransactionBulkResponseGasEstimation() {
-}
-
-type TransactionBulkResponseGasEstimationTransactionScanGasEstimationError struct {
-	Error string                                                                    `json:"error,required"`
-	JSON  transactionBulkResponseGasEstimationTransactionScanGasEstimationErrorJSON `json:"-"`
-}
-
-// transactionBulkResponseGasEstimationTransactionScanGasEstimationErrorJSON
-// contains the JSON metadata for the struct
-// [TransactionBulkResponseGasEstimationTransactionScanGasEstimationError]
-type transactionBulkResponseGasEstimationTransactionScanGasEstimationErrorJSON struct {
-	Error       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionBulkResponseGasEstimationTransactionScanGasEstimationError) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionBulkResponseGasEstimationTransactionScanGasEstimationErrorJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionBulkResponseGasEstimationTransactionScanGasEstimationError) implementsTransactionBulkResponseGasEstimation() {
-}
-
-type TransactionBulkResponseSimulation struct {
-	AssetsDiffs      interface{} `json:"assets_diffs,required"`
-	TotalUsdDiff     interface{} `json:"total_usd_diff,required"`
-	Exposures        interface{} `json:"exposures,required"`
-	TotalUsdExposure interface{} `json:"total_usd_exposure,required"`
-	AddressDetails   interface{} `json:"address_details,required"`
-	AccountSummary   interface{} `json:"account_summary,required"`
-	// An error message if the simulation failed.
-	Error string                                `json:"error"`
-	JSON  transactionBulkResponseSimulationJSON `json:"-"`
-	union TransactionBulkResponseSimulationUnion
-}
-
-// transactionBulkResponseSimulationJSON contains the JSON metadata for the struct
-// [TransactionBulkResponseSimulation]
-type transactionBulkResponseSimulationJSON struct {
-	AssetsDiffs      apijson.Field
-	TotalUsdDiff     apijson.Field
-	Exposures        apijson.Field
-	TotalUsdExposure apijson.Field
-	AddressDetails   apijson.Field
-	AccountSummary   apijson.Field
-	Error            apijson.Field
-	raw              string
-	ExtraFields      map[string]apijson.Field
-}
-
-func (r transactionBulkResponseSimulationJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionBulkResponseSimulation) UnmarshalJSON(data []byte) (err error) {
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-func (r TransactionBulkResponseSimulation) AsUnion() TransactionBulkResponseSimulationUnion {
-	return r.union
-}
-
-// Union satisfied by [TransactionSimulation] or [TransactionSimulationError].
-type TransactionBulkResponseSimulationUnion interface {
-	implementsTransactionBulkResponseSimulation()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionBulkResponseSimulationUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulation{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationError{}),
-		},
-	)
-}
-
-type TransactionBulkResponseValidation struct {
-	// An enumeration.
-	ResultType TransactionBulkResponseValidationResultType `json:"result_type,required"`
-	// A textual description that can be presented to the user about what this
-	// transaction is doing.
-	Description string `json:"description"`
-	// A textual description about the reasons the transaction was flagged with
-	// result_type.
-	Reason string `json:"reason"`
-	// A textual classification that can be presented to the user explaining the
-	// reason.
-	Classification string      `json:"classification"`
-	Features       interface{} `json:"features"`
-	// An error message if the validation failed.
-	Error string                                `json:"error"`
-	JSON  transactionBulkResponseValidationJSON `json:"-"`
-	union TransactionBulkResponseValidationUnion
-}
-
-// transactionBulkResponseValidationJSON contains the JSON metadata for the struct
-// [TransactionBulkResponseValidation]
-type transactionBulkResponseValidationJSON struct {
-	ResultType     apijson.Field
-	Description    apijson.Field
-	Reason         apijson.Field
-	Classification apijson.Field
-	Features       apijson.Field
-	Error          apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r transactionBulkResponseValidationJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionBulkResponseValidation) UnmarshalJSON(data []byte) (err error) {
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-func (r TransactionBulkResponseValidation) AsUnion() TransactionBulkResponseValidationUnion {
-	return r.union
-}
-
-// Union satisfied by [TransactionValidation] or [TransactionValidationError].
-type TransactionBulkResponseValidationUnion interface {
-	implementsTransactionBulkResponseValidation()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionBulkResponseValidationUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionValidation{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionValidationError{}),
-		},
-	)
-}
-
-// An enumeration.
-type TransactionBulkResponseValidationResultType string
-
-const (
-	TransactionBulkResponseValidationResultTypeBenign    TransactionBulkResponseValidationResultType = "Benign"
-	TransactionBulkResponseValidationResultTypeWarning   TransactionBulkResponseValidationResultType = "Warning"
-	TransactionBulkResponseValidationResultTypeMalicious TransactionBulkResponseValidationResultType = "Malicious"
-	TransactionBulkResponseValidationResultTypeError     TransactionBulkResponseValidationResultType = "Error"
-)
-
-func (r TransactionBulkResponseValidationResultType) IsKnown() bool {
-	switch r {
-	case TransactionBulkResponseValidationResultTypeBenign, TransactionBulkResponseValidationResultTypeWarning, TransactionBulkResponseValidationResultTypeMalicious, TransactionBulkResponseValidationResultTypeError:
-		return true
-	}
-	return false
-}
-
 type TransactionScanFeature struct {
 	// Textual description
 	Description string `json:"description,required"`
@@ -1709,22 +1304,28 @@ func (r TransactionScanFeatureType) IsKnown() bool {
 }
 
 type TransactionScanResponse struct {
-	Block      string                            `json:"block"`
-	Chain      string                            `json:"chain"`
-	Simulation TransactionScanResponseSimulation `json:"simulation"`
-	Validation TransactionScanResponseValidation `json:"validation"`
-	JSON       transactionScanResponseJSON       `json:"-"`
+	Block         string                               `json:"block,required"`
+	Chain         string                               `json:"chain,required"`
+	Events        []TransactionScanResponseEvent       `json:"events"`
+	Features      interface{}                          `json:"features"`
+	GasEstimation TransactionScanResponseGasEstimation `json:"gas_estimation"`
+	Simulation    TransactionScanResponseSimulation    `json:"simulation"`
+	Validation    TransactionScanResponseValidation    `json:"validation"`
+	JSON          transactionScanResponseJSON          `json:"-"`
 }
 
 // transactionScanResponseJSON contains the JSON metadata for the struct
 // [TransactionScanResponse]
 type transactionScanResponseJSON struct {
-	Block       apijson.Field
-	Chain       apijson.Field
-	Simulation  apijson.Field
-	Validation  apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	Block         apijson.Field
+	Chain         apijson.Field
+	Events        apijson.Field
+	Features      apijson.Field
+	GasEstimation apijson.Field
+	Simulation    apijson.Field
+	Validation    apijson.Field
+	raw           string
+	ExtraFields   map[string]apijson.Field
 }
 
 func (r *TransactionScanResponse) UnmarshalJSON(data []byte) (err error) {
@@ -1733,6 +1334,199 @@ func (r *TransactionScanResponse) UnmarshalJSON(data []byte) (err error) {
 
 func (r transactionScanResponseJSON) RawJSON() string {
 	return r.raw
+}
+
+type TransactionScanResponseEvent struct {
+	Data           string                               `json:"data,required"`
+	EmitterAddress string                               `json:"emitter_address,required"`
+	Topics         []string                             `json:"topics,required"`
+	EmitterName    string                               `json:"emitter_name"`
+	Name           string                               `json:"name"`
+	Params         []TransactionScanResponseEventsParam `json:"params"`
+	JSON           transactionScanResponseEventJSON     `json:"-"`
+}
+
+// transactionScanResponseEventJSON contains the JSON metadata for the struct
+// [TransactionScanResponseEvent]
+type transactionScanResponseEventJSON struct {
+	Data           apijson.Field
+	EmitterAddress apijson.Field
+	Topics         apijson.Field
+	EmitterName    apijson.Field
+	Name           apijson.Field
+	Params         apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *TransactionScanResponseEvent) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionScanResponseEventJSON) RawJSON() string {
+	return r.raw
+}
+
+type TransactionScanResponseEventsParam struct {
+	Type         string                                        `json:"type,required"`
+	Value        TransactionScanResponseEventsParamsValueUnion `json:"value,required"`
+	InternalType string                                        `json:"internalType"`
+	Name         string                                        `json:"name"`
+	JSON         transactionScanResponseEventsParamJSON        `json:"-"`
+}
+
+// transactionScanResponseEventsParamJSON contains the JSON metadata for the struct
+// [TransactionScanResponseEventsParam]
+type transactionScanResponseEventsParamJSON struct {
+	Type         apijson.Field
+	Value        apijson.Field
+	InternalType apijson.Field
+	Name         apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
+}
+
+func (r *TransactionScanResponseEventsParam) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionScanResponseEventsParamJSON) RawJSON() string {
+	return r.raw
+}
+
+// Union satisfied by [shared.UnionString],
+// [TransactionScanResponseEventsParamsValueUnknown] or
+// [TransactionScanResponseEventsParamsValueArray].
+type TransactionScanResponseEventsParamsValueUnion interface {
+	ImplementsTransactionScanResponseEventsParamsValueUnion()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TransactionScanResponseEventsParamsValueUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.String,
+			Type:       reflect.TypeOf(shared.UnionString("")),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionScanResponseEventsParamsValueArray{}),
+		},
+	)
+}
+
+type TransactionScanResponseEventsParamsValueArray []interface{}
+
+func (r TransactionScanResponseEventsParamsValueArray) ImplementsTransactionScanResponseEventsParamsValueUnion() {
+}
+
+type TransactionScanResponseGasEstimation struct {
+	Used     int64                                    `json:"used"`
+	Estimate int64                                    `json:"estimate"`
+	Error    string                                   `json:"error"`
+	JSON     transactionScanResponseGasEstimationJSON `json:"-"`
+	union    TransactionScanResponseGasEstimationUnion
+}
+
+// transactionScanResponseGasEstimationJSON contains the JSON metadata for the
+// struct [TransactionScanResponseGasEstimation]
+type transactionScanResponseGasEstimationJSON struct {
+	Used        apijson.Field
+	Estimate    apijson.Field
+	Error       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r transactionScanResponseGasEstimationJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *TransactionScanResponseGasEstimation) UnmarshalJSON(data []byte) (err error) {
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+func (r TransactionScanResponseGasEstimation) AsUnion() TransactionScanResponseGasEstimationUnion {
+	return r.union
+}
+
+// Union satisfied by
+// [TransactionScanResponseGasEstimationTransactionScanGasEstimation] or
+// [TransactionScanResponseGasEstimationTransactionScanGasEstimationError].
+type TransactionScanResponseGasEstimationUnion interface {
+	implementsTransactionScanResponseGasEstimation()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TransactionScanResponseGasEstimationUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionScanResponseGasEstimationTransactionScanGasEstimation{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionScanResponseGasEstimationTransactionScanGasEstimationError{}),
+		},
+	)
+}
+
+type TransactionScanResponseGasEstimationTransactionScanGasEstimation struct {
+	Estimate int64                                                                `json:"estimate,required"`
+	Used     int64                                                                `json:"used,required"`
+	JSON     transactionScanResponseGasEstimationTransactionScanGasEstimationJSON `json:"-"`
+}
+
+// transactionScanResponseGasEstimationTransactionScanGasEstimationJSON contains
+// the JSON metadata for the struct
+// [TransactionScanResponseGasEstimationTransactionScanGasEstimation]
+type transactionScanResponseGasEstimationTransactionScanGasEstimationJSON struct {
+	Estimate    apijson.Field
+	Used        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionScanResponseGasEstimationTransactionScanGasEstimation) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionScanResponseGasEstimationTransactionScanGasEstimationJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionScanResponseGasEstimationTransactionScanGasEstimation) implementsTransactionScanResponseGasEstimation() {
+}
+
+type TransactionScanResponseGasEstimationTransactionScanGasEstimationError struct {
+	Error string                                                                    `json:"error,required"`
+	JSON  transactionScanResponseGasEstimationTransactionScanGasEstimationErrorJSON `json:"-"`
+}
+
+// transactionScanResponseGasEstimationTransactionScanGasEstimationErrorJSON
+// contains the JSON metadata for the struct
+// [TransactionScanResponseGasEstimationTransactionScanGasEstimationError]
+type transactionScanResponseGasEstimationTransactionScanGasEstimationErrorJSON struct {
+	Error       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionScanResponseGasEstimationTransactionScanGasEstimationError) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionScanResponseGasEstimationTransactionScanGasEstimationErrorJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionScanResponseGasEstimationTransactionScanGasEstimationError) implementsTransactionScanResponseGasEstimation() {
 }
 
 type TransactionScanResponseSimulation struct {
@@ -1800,7 +1594,7 @@ func init() {
 
 type TransactionScanResponseValidation struct {
 	// An enumeration.
-	ResultType TransactionScanResponseValidationResultType `json:"result_type,required"`
+	ResultType TransactionScanResponseValidationResultType `json:"result_type"`
 	// A textual description that can be presented to the user about what this
 	// transaction is doing.
 	Description string `json:"description"`
@@ -1809,12 +1603,13 @@ type TransactionScanResponseValidation struct {
 	Reason string `json:"reason"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
-	Classification string      `json:"classification"`
-	Features       interface{} `json:"features"`
-	// An error message if the validation failed.
-	Error string                                `json:"error"`
-	JSON  transactionScanResponseValidationJSON `json:"-"`
-	union TransactionScanResponseValidationUnion
+	Classification string                                `json:"classification"`
+	Features       interface{}                           `json:"features,required"`
+	Loc            interface{}                           `json:"loc,required"`
+	Msg            string                                `json:"msg"`
+	Type           string                                `json:"type"`
+	JSON           transactionScanResponseValidationJSON `json:"-"`
+	union          TransactionScanResponseValidationUnion
 }
 
 // transactionScanResponseValidationJSON contains the JSON metadata for the struct
@@ -1825,7 +1620,9 @@ type transactionScanResponseValidationJSON struct {
 	Reason         apijson.Field
 	Classification apijson.Field
 	Features       apijson.Field
-	Error          apijson.Field
+	Loc            apijson.Field
+	Msg            apijson.Field
+	Type           apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
@@ -1873,12 +1670,38 @@ const (
 	TransactionScanResponseValidationResultTypeBenign    TransactionScanResponseValidationResultType = "Benign"
 	TransactionScanResponseValidationResultTypeWarning   TransactionScanResponseValidationResultType = "Warning"
 	TransactionScanResponseValidationResultTypeMalicious TransactionScanResponseValidationResultType = "Malicious"
-	TransactionScanResponseValidationResultTypeError     TransactionScanResponseValidationResultType = "Error"
 )
 
 func (r TransactionScanResponseValidationResultType) IsKnown() bool {
 	switch r {
-	case TransactionScanResponseValidationResultTypeBenign, TransactionScanResponseValidationResultTypeWarning, TransactionScanResponseValidationResultTypeMalicious, TransactionScanResponseValidationResultTypeError:
+	case TransactionScanResponseValidationResultTypeBenign, TransactionScanResponseValidationResultTypeWarning, TransactionScanResponseValidationResultTypeMalicious:
+		return true
+	}
+	return false
+}
+
+// The chain name
+type TransactionScanSupportedChain string
+
+const (
+	TransactionScanSupportedChainArbitrum    TransactionScanSupportedChain = "arbitrum"
+	TransactionScanSupportedChainAvalanche   TransactionScanSupportedChain = "avalanche"
+	TransactionScanSupportedChainBase        TransactionScanSupportedChain = "base"
+	TransactionScanSupportedChainBaseSepolia TransactionScanSupportedChain = "base-sepolia"
+	TransactionScanSupportedChainBsc         TransactionScanSupportedChain = "bsc"
+	TransactionScanSupportedChainEthereum    TransactionScanSupportedChain = "ethereum"
+	TransactionScanSupportedChainOptimism    TransactionScanSupportedChain = "optimism"
+	TransactionScanSupportedChainPolygon     TransactionScanSupportedChain = "polygon"
+	TransactionScanSupportedChainZksync      TransactionScanSupportedChain = "zksync"
+	TransactionScanSupportedChainZora        TransactionScanSupportedChain = "zora"
+	TransactionScanSupportedChainLinea       TransactionScanSupportedChain = "linea"
+	TransactionScanSupportedChainBlast       TransactionScanSupportedChain = "blast"
+	TransactionScanSupportedChainUnknown     TransactionScanSupportedChain = "unknown"
+)
+
+func (r TransactionScanSupportedChain) IsKnown() bool {
+	switch r {
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainUnknown:
 		return true
 	}
 	return false
@@ -1928,8 +1751,6 @@ func (r *TransactionSimulation) UnmarshalJSON(data []byte) (err error) {
 func (r transactionSimulationJSON) RawJSON() string {
 	return r.raw
 }
-
-func (r TransactionSimulation) implementsTransactionBulkResponseSimulation() {}
 
 func (r TransactionSimulation) implementsTransactionScanResponseSimulation() {}
 
@@ -2014,8 +1835,6 @@ func (r transactionSimulationErrorJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r TransactionSimulationError) implementsTransactionBulkResponseSimulation() {}
-
 func (r TransactionSimulationError) implementsTransactionScanResponseSimulation() {}
 
 type TransactionValidation struct {
@@ -2055,8 +1874,6 @@ func (r transactionValidationJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r TransactionValidation) implementsTransactionBulkResponseValidation() {}
-
 func (r TransactionValidation) implementsTransactionScanResponseValidation() {}
 
 // An enumeration.
@@ -2077,35 +1894,20 @@ func (r TransactionValidationResultType) IsKnown() bool {
 }
 
 type TransactionValidationError struct {
-	// A textual classification that can be presented to the user explaining the
-	// reason.
-	Classification TransactionValidationErrorClassification `json:"classification,required"`
-	// A textual description that can be presented to the user about what this
-	// transaction is doing.
-	Description TransactionValidationErrorDescription `json:"description,required"`
-	// An error message if the validation failed.
-	Error string `json:"error,required"`
-	// A list of features about this transaction explaining the validation.
-	Features []TransactionScanFeature `json:"features,required"`
-	// A textual description about the reasons the transaction was flagged with
-	// result_type.
-	Reason TransactionValidationErrorReason `json:"reason,required"`
-	// A string indicating if the transaction is safe to sign or not.
-	ResultType TransactionValidationErrorResultType `json:"result_type,required"`
-	JSON       transactionValidationErrorJSON       `json:"-"`
+	Loc  []TransactionValidationErrorLocUnion `json:"loc,required"`
+	Msg  string                               `json:"msg,required"`
+	Type string                               `json:"type,required"`
+	JSON transactionValidationErrorJSON       `json:"-"`
 }
 
 // transactionValidationErrorJSON contains the JSON metadata for the struct
 // [TransactionValidationError]
 type transactionValidationErrorJSON struct {
-	Classification apijson.Field
-	Description    apijson.Field
-	Error          apijson.Field
-	Features       apijson.Field
-	Reason         apijson.Field
-	ResultType     apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
+	Loc         apijson.Field
+	Msg         apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
 }
 
 func (r *TransactionValidationError) UnmarshalJSON(data []byte) (err error) {
@@ -2116,71 +1918,26 @@ func (r transactionValidationErrorJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r TransactionValidationError) implementsTransactionBulkResponseValidation() {}
-
 func (r TransactionValidationError) implementsTransactionScanResponseValidation() {}
 
-// A textual classification that can be presented to the user explaining the
-// reason.
-type TransactionValidationErrorClassification string
-
-const (
-	TransactionValidationErrorClassificationEmpty TransactionValidationErrorClassification = ""
-)
-
-func (r TransactionValidationErrorClassification) IsKnown() bool {
-	switch r {
-	case TransactionValidationErrorClassificationEmpty:
-		return true
-	}
-	return false
+// Union satisfied by [shared.UnionString] or [shared.UnionInt].
+type TransactionValidationErrorLocUnion interface {
+	ImplementsTransactionValidationErrorLocUnion()
 }
 
-// A textual description that can be presented to the user about what this
-// transaction is doing.
-type TransactionValidationErrorDescription string
-
-const (
-	TransactionValidationErrorDescriptionEmpty TransactionValidationErrorDescription = ""
-)
-
-func (r TransactionValidationErrorDescription) IsKnown() bool {
-	switch r {
-	case TransactionValidationErrorDescriptionEmpty:
-		return true
-	}
-	return false
-}
-
-// A textual description about the reasons the transaction was flagged with
-// result_type.
-type TransactionValidationErrorReason string
-
-const (
-	TransactionValidationErrorReasonEmpty TransactionValidationErrorReason = ""
-)
-
-func (r TransactionValidationErrorReason) IsKnown() bool {
-	switch r {
-	case TransactionValidationErrorReasonEmpty:
-		return true
-	}
-	return false
-}
-
-// A string indicating if the transaction is safe to sign or not.
-type TransactionValidationErrorResultType string
-
-const (
-	TransactionValidationErrorResultTypeError TransactionValidationErrorResultType = "Error"
-)
-
-func (r TransactionValidationErrorResultType) IsKnown() bool {
-	switch r {
-	case TransactionValidationErrorResultTypeError:
-		return true
-	}
-	return false
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TransactionValidationErrorLocUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.String,
+			Type:       reflect.TypeOf(shared.UnionString("")),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.Number,
+			Type:       reflect.TypeOf(shared.UnionInt(0)),
+		},
+	)
 }
 
 type UsdDiff struct {
