@@ -45,12 +45,12 @@ type EvmTransactionRawScanParams struct {
 	// perspective the transaction is simulated and validated.
 	AccountAddress param.Field[string] `json:"account_address,required"`
 	// The chain name
-	Chain param.Field[Chain] `json:"chain,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
 	// Hex string of the raw transaction data
 	Data param.Field[string] `json:"data,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[MetadataParam] `json:"metadata,required"`
-	// List of one or both of options for the desired output. "simulation" - include
+	// list of one or both of options for the desired output. "simulation" - include
 	// simulation output in your response. "validation" - include security validation
 	// of the transaction in your response. Default is ["validation"]
 	Options param.Field[[]EvmTransactionRawScanParamsOption] `json:"options"`
@@ -64,13 +64,15 @@ func (r EvmTransactionRawScanParams) MarshalJSON() (data []byte, err error) {
 type EvmTransactionRawScanParamsOption string
 
 const (
-	EvmTransactionRawScanParamsOptionValidation EvmTransactionRawScanParamsOption = "validation"
-	EvmTransactionRawScanParamsOptionSimulation EvmTransactionRawScanParamsOption = "simulation"
+	EvmTransactionRawScanParamsOptionValidation    EvmTransactionRawScanParamsOption = "validation"
+	EvmTransactionRawScanParamsOptionSimulation    EvmTransactionRawScanParamsOption = "simulation"
+	EvmTransactionRawScanParamsOptionGasEstimation EvmTransactionRawScanParamsOption = "gas_estimation"
+	EvmTransactionRawScanParamsOptionEvents        EvmTransactionRawScanParamsOption = "events"
 )
 
 func (r EvmTransactionRawScanParamsOption) IsKnown() bool {
 	switch r {
-	case EvmTransactionRawScanParamsOptionValidation, EvmTransactionRawScanParamsOptionSimulation:
+	case EvmTransactionRawScanParamsOptionValidation, EvmTransactionRawScanParamsOptionSimulation, EvmTransactionRawScanParamsOptionGasEstimation, EvmTransactionRawScanParamsOptionEvents:
 		return true
 	}
 	return false

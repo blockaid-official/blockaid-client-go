@@ -34,7 +34,7 @@ func NewEvmTransactionBulkService(opts ...option.RequestOption) (r *EvmTransacti
 // after executing the transactions synchronously, along with a suggested course of
 // action and textual explanations highlighting the reasons for flagging the bulk
 // in that manner.
-func (r *EvmTransactionBulkService) Scan(ctx context.Context, body EvmTransactionBulkScanParams, opts ...option.RequestOption) (res *[]TransactionBulkResponse, err error) {
+func (r *EvmTransactionBulkService) Scan(ctx context.Context, body EvmTransactionBulkScanParams, opts ...option.RequestOption) (res *[]TransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "evm/transaction-bulk/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -43,7 +43,7 @@ func (r *EvmTransactionBulkService) Scan(ctx context.Context, body EvmTransactio
 
 type EvmTransactionBulkScanParams struct {
 	// The chain name
-	Chain param.Field[Chain] `json:"chain,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
 	// Transaction bulk parameters
 	Data param.Field[[]EvmTransactionBulkScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.

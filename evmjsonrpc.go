@@ -41,14 +41,14 @@ func (r *EvmJsonRpcService) Scan(ctx context.Context, body EvmJsonRpcScanParams,
 
 type EvmJsonRpcScanParams struct {
 	// The chain name
-	Chain param.Field[Chain] `json:"chain,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
 	// JSON-RPC request that was received by the wallet.
 	Data param.Field[EvmJsonRpcScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[MetadataParam] `json:"metadata,required"`
 	// The address of the account (wallet) received the request in hex string format
 	AccountAddress param.Field[string] `json:"account_address"`
-	// List of one or both of options for the desired output. "simulation" - include
+	// list of one or both of options for the desired output. "simulation" - include
 	// simulation output in your response. "validation" - include security validation
 	// of the transaction in your response. Default is ["validation"]
 	Options param.Field[[]EvmJsonRpcScanParamsOption] `json:"options"`
@@ -74,13 +74,15 @@ func (r EvmJsonRpcScanParamsData) MarshalJSON() (data []byte, err error) {
 type EvmJsonRpcScanParamsOption string
 
 const (
-	EvmJsonRpcScanParamsOptionValidation EvmJsonRpcScanParamsOption = "validation"
-	EvmJsonRpcScanParamsOptionSimulation EvmJsonRpcScanParamsOption = "simulation"
+	EvmJsonRpcScanParamsOptionValidation    EvmJsonRpcScanParamsOption = "validation"
+	EvmJsonRpcScanParamsOptionSimulation    EvmJsonRpcScanParamsOption = "simulation"
+	EvmJsonRpcScanParamsOptionGasEstimation EvmJsonRpcScanParamsOption = "gas_estimation"
+	EvmJsonRpcScanParamsOptionEvents        EvmJsonRpcScanParamsOption = "events"
 )
 
 func (r EvmJsonRpcScanParamsOption) IsKnown() bool {
 	switch r {
-	case EvmJsonRpcScanParamsOptionValidation, EvmJsonRpcScanParamsOptionSimulation:
+	case EvmJsonRpcScanParamsOptionValidation, EvmJsonRpcScanParamsOptionSimulation, EvmJsonRpcScanParamsOptionGasEstimation, EvmJsonRpcScanParamsOptionEvents:
 		return true
 	}
 	return false
