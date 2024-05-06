@@ -42,14 +42,14 @@ func (r *EvmUserOperationService) Scan(ctx context.Context, body EvmUserOperatio
 
 type EvmUserOperationScanParams struct {
 	// The chain name
-	Chain param.Field[Chain] `json:"chain,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
 	// The user operation request that was received by the wallet
 	Data param.Field[EvmUserOperationScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[MetadataParam] `json:"metadata,required"`
 	// The address of the account (wallet) sending the request in hex string format
 	AccountAddress param.Field[string] `json:"account_address"`
-	// List of one or both of options for the desired output. "simulation" - include
+	// list of one or both of options for the desired output. "simulation" - include
 	// simulation output in your response. "validation" - include security validation
 	// of the transaction in your response. Default is ["validation"]
 	Options param.Field[[]EvmUserOperationScanParamsOption] `json:"options"`
@@ -105,13 +105,15 @@ func (r EvmUserOperationScanParamsDataOperation) MarshalJSON() (data []byte, err
 type EvmUserOperationScanParamsOption string
 
 const (
-	EvmUserOperationScanParamsOptionValidation EvmUserOperationScanParamsOption = "validation"
-	EvmUserOperationScanParamsOptionSimulation EvmUserOperationScanParamsOption = "simulation"
+	EvmUserOperationScanParamsOptionValidation    EvmUserOperationScanParamsOption = "validation"
+	EvmUserOperationScanParamsOptionSimulation    EvmUserOperationScanParamsOption = "simulation"
+	EvmUserOperationScanParamsOptionGasEstimation EvmUserOperationScanParamsOption = "gas_estimation"
+	EvmUserOperationScanParamsOptionEvents        EvmUserOperationScanParamsOption = "events"
 )
 
 func (r EvmUserOperationScanParamsOption) IsKnown() bool {
 	switch r {
-	case EvmUserOperationScanParamsOptionValidation, EvmUserOperationScanParamsOptionSimulation:
+	case EvmUserOperationScanParamsOptionValidation, EvmUserOperationScanParamsOptionSimulation, EvmUserOperationScanParamsOptionGasEstimation, EvmUserOperationScanParamsOptionEvents:
 		return true
 	}
 	return false
