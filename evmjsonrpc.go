@@ -34,7 +34,7 @@ func NewEvmJsonRpcService(opts ...option.RequestOption) (r *EvmJsonRpcService) {
 // reasons of why the transaction was flagged that way.
 func (r *EvmJsonRpcService) Scan(ctx context.Context, body EvmJsonRpcScanParams, opts ...option.RequestOption) (res *TransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
-	path := "evm/json-rpc/scan"
+	path := "v0/evm/json-rpc/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
