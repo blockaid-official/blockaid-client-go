@@ -1254,6 +1254,30 @@ func (r NonercTokenDetailsType) IsKnown() bool {
 	return false
 }
 
+// The chain name
+type TokenScanSupportedChain string
+
+const (
+	TokenScanSupportedChainArbitrum  TokenScanSupportedChain = "arbitrum"
+	TokenScanSupportedChainAvalanche TokenScanSupportedChain = "avalanche"
+	TokenScanSupportedChainBase      TokenScanSupportedChain = "base"
+	TokenScanSupportedChainBsc       TokenScanSupportedChain = "bsc"
+	TokenScanSupportedChainEthereum  TokenScanSupportedChain = "ethereum"
+	TokenScanSupportedChainOptimism  TokenScanSupportedChain = "optimism"
+	TokenScanSupportedChainPolygon   TokenScanSupportedChain = "polygon"
+	TokenScanSupportedChainZora      TokenScanSupportedChain = "zora"
+	TokenScanSupportedChainSolana    TokenScanSupportedChain = "solana"
+	TokenScanSupportedChainUnknown   TokenScanSupportedChain = "unknown"
+)
+
+func (r TokenScanSupportedChain) IsKnown() bool {
+	switch r {
+	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainUnknown:
+		return true
+	}
+	return false
+}
+
 type TransactionScanFeature struct {
 	// Textual description
 	Description string `json:"description,required"`

@@ -24,7 +24,7 @@ Or to pin the version:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/blockaid-official/blockaid-client-go@v0.7.5'
+go get -u 'github.com/blockaid-official/blockaid-client-go@v0.7.6'
 ```
 
 <!-- x-release-please-end -->
@@ -199,7 +199,7 @@ if err != nil {
 		println(string(apierr.DumpRequest(true)))  // Prints the serialized HTTP request
 		println(string(apierr.DumpResponse(true))) // Prints the serialized HTTP response
 	}
-	panic(err.Error()) // GET "/evm/json-rpc/scan": 400 Bad Request { ... }
+	panic(err.Error()) // GET "/v0/evm/json-rpc/scan": 400 Bad Request { ... }
 }
 ```
 

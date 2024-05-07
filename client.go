@@ -18,6 +18,7 @@ type Client struct {
 	Options []option.RequestOption
 	Evm     *EvmService
 	Site    *SiteService
+	Token   *TokenService
 }
 
 // NewClient generates a new client with the default option read from the
@@ -35,6 +36,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 
 	r.Evm = NewEvmService(opts...)
 	r.Site = NewSiteService(opts...)
+	r.Token = NewTokenService(opts...)
 
 	return
 }
