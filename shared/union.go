@@ -6,6 +6,7 @@ type UnionString string
 
 func (UnionString) ImplementsTransactionScanResponseEventsParamsValueUnion() {}
 func (UnionString) ImplementsTransactionValidationErrorLocUnion()            {}
+func (UnionString) ImplementsTokenScanParamsAddressUnion()                   {}
 
 type UnionInt int64
 
