@@ -35,7 +35,7 @@ func NewEvmTransactionRawService(opts ...option.RequestOption) (r *EvmTransactio
 // of why the transaction was flagged that way.
 func (r *EvmTransactionRawService) Scan(ctx context.Context, body EvmTransactionRawScanParams, opts ...option.RequestOption) (res *TransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
-	path := "evm/transaction-raw/scan"
+	path := "v0/evm/transaction-raw/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }

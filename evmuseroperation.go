@@ -35,7 +35,7 @@ func NewEvmUserOperationService(opts ...option.RequestOption) (r *EvmUserOperati
 // reasons of why the transaction was flagged that way.
 func (r *EvmUserOperationService) Scan(ctx context.Context, body EvmUserOperationScanParams, opts ...option.RequestOption) (res *TransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
-	path := "evm/user-operation/scan"
+	path := "v0/evm/user-operation/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }

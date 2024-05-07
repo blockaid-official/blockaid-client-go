@@ -35,7 +35,7 @@ func NewSiteService(opts ...option.RequestOption) (r *SiteService) {
 // Scan Site
 func (r *SiteService) Scan(ctx context.Context, body SiteScanParams, opts ...option.RequestOption) (res *SiteScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
-	path := "site/scan"
+	path := "v0/site/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
