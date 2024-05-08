@@ -5,9 +5,4 @@ package shared
 type UnionString string
 
 func (UnionString) ImplementsTransactionScanResponseEventsParamsValueUnion() {}
-func (UnionString) ImplementsTransactionValidationErrorLocUnion()            {}
 func (UnionString) ImplementsTokenScanParamsAddressUnion()                   {}
-
-type UnionInt int64
-
-func (UnionInt) ImplementsTransactionValidationErrorLocUnion() {}
