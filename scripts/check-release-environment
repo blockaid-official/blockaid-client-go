@@ -1,17 +1,6 @@
 #!/usr/bin/env bash
 
-warnings=()
 errors=()
-
-lenWarnings=${#warnings[@]}
-
-if [[ lenWarnings -gt 0 ]]; then
-  echo -e "Found the following warnings in the release environment:\n"
-
-  for warning in "${warnings[@]}"; do
-    echo -e "- $warning\n"
-  done
-fi
 
 lenErrors=${#errors[@]}
 
