@@ -1618,7 +1618,7 @@ func init() {
 
 type TransactionScanResponseValidation struct {
 	// An enumeration.
-	ResultType TransactionScanResponseValidationResultType `json:"result_type"`
+	ResultType TransactionScanResponseValidationResultType `json:"result_type,required"`
 	// A textual description that can be presented to the user about what this
 	// transaction is doing.
 	Description string `json:"description"`
@@ -1627,13 +1627,12 @@ type TransactionScanResponseValidation struct {
 	Reason string `json:"reason"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
-	Classification string                                `json:"classification"`
-	Features       interface{}                           `json:"features,required"`
-	Loc            interface{}                           `json:"loc,required"`
-	Msg            string                                `json:"msg"`
-	Type           string                                `json:"type"`
-	JSON           transactionScanResponseValidationJSON `json:"-"`
-	union          TransactionScanResponseValidationUnion
+	Classification string      `json:"classification"`
+	Features       interface{} `json:"features"`
+	// An error message if the validation failed.
+	Error string                                `json:"error"`
+	JSON  transactionScanResponseValidationJSON `json:"-"`
+	union TransactionScanResponseValidationUnion
 }
 
 // transactionScanResponseValidationJSON contains the JSON metadata for the struct
@@ -1644,9 +1643,7 @@ type transactionScanResponseValidationJSON struct {
 	Reason         apijson.Field
 	Classification apijson.Field
 	Features       apijson.Field
-	Loc            apijson.Field
-	Msg            apijson.Field
-	Type           apijson.Field
+	Error          apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
@@ -1694,11 +1691,12 @@ const (
 	TransactionScanResponseValidationResultTypeBenign    TransactionScanResponseValidationResultType = "Benign"
 	TransactionScanResponseValidationResultTypeWarning   TransactionScanResponseValidationResultType = "Warning"
 	TransactionScanResponseValidationResultTypeMalicious TransactionScanResponseValidationResultType = "Malicious"
+	TransactionScanResponseValidationResultTypeError     TransactionScanResponseValidationResultType = "Error"
 )
 
 func (r TransactionScanResponseValidationResultType) IsKnown() bool {
 	switch r {
-	case TransactionScanResponseValidationResultTypeBenign, TransactionScanResponseValidationResultTypeWarning, TransactionScanResponseValidationResultTypeMalicious:
+	case TransactionScanResponseValidationResultTypeBenign, TransactionScanResponseValidationResultTypeWarning, TransactionScanResponseValidationResultTypeMalicious, TransactionScanResponseValidationResultTypeError:
 		return true
 	}
 	return false
@@ -1918,20 +1916,35 @@ func (r TransactionValidationResultType) IsKnown() bool {
 }
 
 type TransactionValidationError struct {
-	Loc  []TransactionValidationErrorLocUnion `json:"loc,required"`
-	Msg  string                               `json:"msg,required"`
-	Type string                               `json:"type,required"`
-	JSON transactionValidationErrorJSON       `json:"-"`
+	// A textual classification that can be presented to the user explaining the
+	// reason.
+	Classification TransactionValidationErrorClassification `json:"classification,required"`
+	// A textual description that can be presented to the user about what this
+	// transaction is doing.
+	Description TransactionValidationErrorDescription `json:"description,required"`
+	// An error message if the validation failed.
+	Error string `json:"error,required"`
+	// A list of features about this transaction explaining the validation.
+	Features []TransactionScanFeature `json:"features,required"`
+	// A textual description about the reasons the transaction was flagged with
+	// result_type.
+	Reason TransactionValidationErrorReason `json:"reason,required"`
+	// A string indicating if the transaction is safe to sign or not.
+	ResultType TransactionValidationErrorResultType `json:"result_type,required"`
+	JSON       transactionValidationErrorJSON       `json:"-"`
 }
 
 // transactionValidationErrorJSON contains the JSON metadata for the struct
 // [TransactionValidationError]
 type transactionValidationErrorJSON struct {
-	Loc         apijson.Field
-	Msg         apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	Classification apijson.Field
+	Description    apijson.Field
+	Error          apijson.Field
+	Features       apijson.Field
+	Reason         apijson.Field
+	ResultType     apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
 }
 
 func (r *TransactionValidationError) UnmarshalJSON(data []byte) (err error) {
@@ -1944,24 +1957,67 @@ func (r transactionValidationErrorJSON) RawJSON() string {
 
 func (r TransactionValidationError) implementsTransactionScanResponseValidation() {}
 
-// Union satisfied by [shared.UnionString] or [shared.UnionInt].
-type TransactionValidationErrorLocUnion interface {
-	ImplementsTransactionValidationErrorLocUnion()
+// A textual classification that can be presented to the user explaining the
+// reason.
+type TransactionValidationErrorClassification string
+
+const (
+	TransactionValidationErrorClassificationEmpty TransactionValidationErrorClassification = ""
+)
+
+func (r TransactionValidationErrorClassification) IsKnown() bool {
+	switch r {
+	case TransactionValidationErrorClassificationEmpty:
+		return true
+	}
+	return false
 }
 
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionValidationErrorLocUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.String,
-			Type:       reflect.TypeOf(shared.UnionString("")),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.Number,
-			Type:       reflect.TypeOf(shared.UnionInt(0)),
-		},
-	)
+// A textual description that can be presented to the user about what this
+// transaction is doing.
+type TransactionValidationErrorDescription string
+
+const (
+	TransactionValidationErrorDescriptionEmpty TransactionValidationErrorDescription = ""
+)
+
+func (r TransactionValidationErrorDescription) IsKnown() bool {
+	switch r {
+	case TransactionValidationErrorDescriptionEmpty:
+		return true
+	}
+	return false
+}
+
+// A textual description about the reasons the transaction was flagged with
+// result_type.
+type TransactionValidationErrorReason string
+
+const (
+	TransactionValidationErrorReasonEmpty TransactionValidationErrorReason = ""
+)
+
+func (r TransactionValidationErrorReason) IsKnown() bool {
+	switch r {
+	case TransactionValidationErrorReasonEmpty:
+		return true
+	}
+	return false
+}
+
+// A string indicating if the transaction is safe to sign or not.
+type TransactionValidationErrorResultType string
+
+const (
+	TransactionValidationErrorResultTypeError TransactionValidationErrorResultType = "Error"
+)
+
+func (r TransactionValidationErrorResultType) IsKnown() bool {
+	switch r {
+	case TransactionValidationErrorResultTypeError:
+		return true
+	}
+	return false
 }
 
 type UsdDiff struct {
