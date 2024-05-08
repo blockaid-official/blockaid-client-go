@@ -360,12 +360,12 @@ func (r SiteScanParamsMetadataWalletRequestMetadata) implementsSiteScanParamsMet
 type SiteScanParamsMetadataWalletRequestMetadataType string
 
 const (
-	SiteScanParamsMetadataWalletRequestMetadataTypeCatalog SiteScanParamsMetadataWalletRequestMetadataType = "catalog"
+	SiteScanParamsMetadataWalletRequestMetadataTypeWallet SiteScanParamsMetadataWalletRequestMetadataType = "wallet"
 )
 
 func (r SiteScanParamsMetadataWalletRequestMetadataType) IsKnown() bool {
 	switch r {
-	case SiteScanParamsMetadataWalletRequestMetadataTypeCatalog:
+	case SiteScanParamsMetadataWalletRequestMetadataTypeWallet:
 		return true
 	}
 	return false
@@ -375,11 +375,12 @@ type SiteScanParamsMetadataType string
 
 const (
 	SiteScanParamsMetadataTypeCatalog SiteScanParamsMetadataType = "catalog"
+	SiteScanParamsMetadataTypeWallet  SiteScanParamsMetadataType = "wallet"
 )
 
 func (r SiteScanParamsMetadataType) IsKnown() bool {
 	switch r {
-	case SiteScanParamsMetadataTypeCatalog:
+	case SiteScanParamsMetadataTypeCatalog, SiteScanParamsMetadataTypeWallet:
 		return true
 	}
 	return false
