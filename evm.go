@@ -1446,16 +1446,18 @@ func (r TransactionScanResponseEventsParamsValueArray) ImplementsTransactionScan
 }
 
 type TransactionScanResponseGasEstimation struct {
-	Used     int64                                    `json:"used"`
-	Estimate int64                                    `json:"estimate"`
-	Error    string                                   `json:"error"`
-	JSON     transactionScanResponseGasEstimationJSON `json:"-"`
+	Status   TransactionScanResponseGasEstimationStatus `json:"status,required"`
+	Used     int64                                      `json:"used"`
+	Estimate int64                                      `json:"estimate"`
+	Error    string                                     `json:"error"`
+	JSON     transactionScanResponseGasEstimationJSON   `json:"-"`
 	union    TransactionScanResponseGasEstimationUnion
 }
 
 // transactionScanResponseGasEstimationJSON contains the JSON metadata for the
 // struct [TransactionScanResponseGasEstimation]
 type transactionScanResponseGasEstimationJSON struct {
+	Status      apijson.Field
 	Used        apijson.Field
 	Estimate    apijson.Field
 	Error       apijson.Field
@@ -1502,9 +1504,10 @@ func init() {
 }
 
 type TransactionScanResponseGasEstimationTransactionScanGasEstimation struct {
-	Estimate int64                                                                `json:"estimate,required"`
-	Used     int64                                                                `json:"used,required"`
-	JSON     transactionScanResponseGasEstimationTransactionScanGasEstimationJSON `json:"-"`
+	Estimate int64                                                                  `json:"estimate,required"`
+	Status   TransactionScanResponseGasEstimationTransactionScanGasEstimationStatus `json:"status,required"`
+	Used     int64                                                                  `json:"used,required"`
+	JSON     transactionScanResponseGasEstimationTransactionScanGasEstimationJSON   `json:"-"`
 }
 
 // transactionScanResponseGasEstimationTransactionScanGasEstimationJSON contains
@@ -1512,6 +1515,7 @@ type TransactionScanResponseGasEstimationTransactionScanGasEstimation struct {
 // [TransactionScanResponseGasEstimationTransactionScanGasEstimation]
 type transactionScanResponseGasEstimationTransactionScanGasEstimationJSON struct {
 	Estimate    apijson.Field
+	Status      apijson.Field
 	Used        apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -1528,9 +1532,24 @@ func (r transactionScanResponseGasEstimationTransactionScanGasEstimationJSON) Ra
 func (r TransactionScanResponseGasEstimationTransactionScanGasEstimation) implementsTransactionScanResponseGasEstimation() {
 }
 
+type TransactionScanResponseGasEstimationTransactionScanGasEstimationStatus string
+
+const (
+	TransactionScanResponseGasEstimationTransactionScanGasEstimationStatusSuccess TransactionScanResponseGasEstimationTransactionScanGasEstimationStatus = "Success"
+)
+
+func (r TransactionScanResponseGasEstimationTransactionScanGasEstimationStatus) IsKnown() bool {
+	switch r {
+	case TransactionScanResponseGasEstimationTransactionScanGasEstimationStatusSuccess:
+		return true
+	}
+	return false
+}
+
 type TransactionScanResponseGasEstimationTransactionScanGasEstimationError struct {
-	Error string                                                                    `json:"error,required"`
-	JSON  transactionScanResponseGasEstimationTransactionScanGasEstimationErrorJSON `json:"-"`
+	Error  string                                                                      `json:"error,required"`
+	Status TransactionScanResponseGasEstimationTransactionScanGasEstimationErrorStatus `json:"status,required"`
+	JSON   transactionScanResponseGasEstimationTransactionScanGasEstimationErrorJSON   `json:"-"`
 }
 
 // transactionScanResponseGasEstimationTransactionScanGasEstimationErrorJSON
@@ -1538,6 +1557,7 @@ type TransactionScanResponseGasEstimationTransactionScanGasEstimationError struc
 // [TransactionScanResponseGasEstimationTransactionScanGasEstimationError]
 type transactionScanResponseGasEstimationTransactionScanGasEstimationErrorJSON struct {
 	Error       apijson.Field
+	Status      apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -1553,13 +1573,44 @@ func (r transactionScanResponseGasEstimationTransactionScanGasEstimationErrorJSO
 func (r TransactionScanResponseGasEstimationTransactionScanGasEstimationError) implementsTransactionScanResponseGasEstimation() {
 }
 
+type TransactionScanResponseGasEstimationTransactionScanGasEstimationErrorStatus string
+
+const (
+	TransactionScanResponseGasEstimationTransactionScanGasEstimationErrorStatusError TransactionScanResponseGasEstimationTransactionScanGasEstimationErrorStatus = "Error"
+)
+
+func (r TransactionScanResponseGasEstimationTransactionScanGasEstimationErrorStatus) IsKnown() bool {
+	switch r {
+	case TransactionScanResponseGasEstimationTransactionScanGasEstimationErrorStatusError:
+		return true
+	}
+	return false
+}
+
+type TransactionScanResponseGasEstimationStatus string
+
+const (
+	TransactionScanResponseGasEstimationStatusSuccess TransactionScanResponseGasEstimationStatus = "Success"
+	TransactionScanResponseGasEstimationStatusError   TransactionScanResponseGasEstimationStatus = "Error"
+)
+
+func (r TransactionScanResponseGasEstimationStatus) IsKnown() bool {
+	switch r {
+	case TransactionScanResponseGasEstimationStatusSuccess, TransactionScanResponseGasEstimationStatusError:
+		return true
+	}
+	return false
+}
+
 type TransactionScanResponseSimulation struct {
-	AssetsDiffs      interface{} `json:"assets_diffs,required"`
-	TotalUsdDiff     interface{} `json:"total_usd_diff,required"`
-	Exposures        interface{} `json:"exposures,required"`
-	TotalUsdExposure interface{} `json:"total_usd_exposure,required"`
-	AddressDetails   interface{} `json:"address_details,required"`
-	AccountSummary   interface{} `json:"account_summary,required"`
+	// A string indicating if the simulation was successful or not.
+	Status           TransactionScanResponseSimulationStatus `json:"status,required"`
+	AssetsDiffs      interface{}                             `json:"assets_diffs,required"`
+	TotalUsdDiff     interface{}                             `json:"total_usd_diff,required"`
+	Exposures        interface{}                             `json:"exposures,required"`
+	TotalUsdExposure interface{}                             `json:"total_usd_exposure,required"`
+	AddressDetails   interface{}                             `json:"address_details,required"`
+	AccountSummary   interface{}                             `json:"account_summary,required"`
 	// An error message if the simulation failed.
 	Error string                                `json:"error"`
 	JSON  transactionScanResponseSimulationJSON `json:"-"`
@@ -1569,6 +1620,7 @@ type TransactionScanResponseSimulation struct {
 // transactionScanResponseSimulationJSON contains the JSON metadata for the struct
 // [TransactionScanResponseSimulation]
 type transactionScanResponseSimulationJSON struct {
+	Status           apijson.Field
 	AssetsDiffs      apijson.Field
 	TotalUsdDiff     apijson.Field
 	Exposures        apijson.Field
@@ -1614,6 +1666,22 @@ func init() {
 			Type:       reflect.TypeOf(TransactionSimulationError{}),
 		},
 	)
+}
+
+// A string indicating if the simulation was successful or not.
+type TransactionScanResponseSimulationStatus string
+
+const (
+	TransactionScanResponseSimulationStatusSuccess TransactionScanResponseSimulationStatus = "Success"
+	TransactionScanResponseSimulationStatusError   TransactionScanResponseSimulationStatus = "Error"
+)
+
+func (r TransactionScanResponseSimulationStatus) IsKnown() bool {
+	switch r {
+	case TransactionScanResponseSimulationStatusSuccess, TransactionScanResponseSimulationStatusError:
+		return true
+	}
+	return false
 }
 
 type TransactionScanResponseValidation struct {
@@ -1744,6 +1812,8 @@ type TransactionSimulation struct {
 	// for every involved address (as a result of any approval / setApproval / permit
 	// function)
 	Exposures map[string][]AddressAssetExposure `json:"exposures,required"`
+	// A string indicating if the simulation was successful or not.
+	Status TransactionSimulationStatus `json:"status,required"`
 	// dictionary represents the usd value each address gained / lost during this
 	// transaction
 	TotalUsdDiff map[string]UsdDiff `json:"total_usd_diff,required"`
@@ -1760,6 +1830,7 @@ type transactionSimulationJSON struct {
 	AddressDetails   apijson.Field
 	AssetsDiffs      apijson.Field
 	Exposures        apijson.Field
+	Status           apijson.Field
 	TotalUsdDiff     apijson.Field
 	TotalUsdExposure apijson.Field
 	raw              string
@@ -1835,16 +1906,34 @@ func (r transactionSimulationAddressDetailJSON) RawJSON() string {
 	return r.raw
 }
 
+// A string indicating if the simulation was successful or not.
+type TransactionSimulationStatus string
+
+const (
+	TransactionSimulationStatusSuccess TransactionSimulationStatus = "Success"
+)
+
+func (r TransactionSimulationStatus) IsKnown() bool {
+	switch r {
+	case TransactionSimulationStatusSuccess:
+		return true
+	}
+	return false
+}
+
 type TransactionSimulationError struct {
 	// An error message if the simulation failed.
-	Error string                         `json:"error,required"`
-	JSON  transactionSimulationErrorJSON `json:"-"`
+	Error string `json:"error,required"`
+	// A string indicating if the simulation was successful or not.
+	Status TransactionSimulationErrorStatus `json:"status,required"`
+	JSON   transactionSimulationErrorJSON   `json:"-"`
 }
 
 // transactionSimulationErrorJSON contains the JSON metadata for the struct
 // [TransactionSimulationError]
 type transactionSimulationErrorJSON struct {
 	Error       apijson.Field
+	Status      apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -1858,6 +1947,21 @@ func (r transactionSimulationErrorJSON) RawJSON() string {
 }
 
 func (r TransactionSimulationError) implementsTransactionScanResponseSimulation() {}
+
+// A string indicating if the simulation was successful or not.
+type TransactionSimulationErrorStatus string
+
+const (
+	TransactionSimulationErrorStatusError TransactionSimulationErrorStatus = "Error"
+)
+
+func (r TransactionSimulationErrorStatus) IsKnown() bool {
+	switch r {
+	case TransactionSimulationErrorStatusError:
+		return true
+	}
+	return false
+}
 
 type TransactionValidation struct {
 	// A list of features about this transaction explaining the validation.
