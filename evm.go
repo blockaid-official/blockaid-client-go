@@ -1685,6 +1685,8 @@ func (r TransactionScanResponseSimulationStatus) IsKnown() bool {
 }
 
 type TransactionScanResponseValidation struct {
+	// A string indicating if the simulation was successful or not.
+	Status TransactionScanResponseValidationStatus `json:"status,required"`
 	// An enumeration.
 	ResultType TransactionScanResponseValidationResultType `json:"result_type,required"`
 	// A textual description that can be presented to the user about what this
@@ -1706,6 +1708,7 @@ type TransactionScanResponseValidation struct {
 // transactionScanResponseValidationJSON contains the JSON metadata for the struct
 // [TransactionScanResponseValidation]
 type transactionScanResponseValidationJSON struct {
+	Status         apijson.Field
 	ResultType     apijson.Field
 	Description    apijson.Field
 	Reason         apijson.Field
@@ -1750,6 +1753,21 @@ func init() {
 			Type:       reflect.TypeOf(TransactionValidationError{}),
 		},
 	)
+}
+
+// A string indicating if the simulation was successful or not.
+type TransactionScanResponseValidationStatus string
+
+const (
+	TransactionScanResponseValidationStatusSuccess TransactionScanResponseValidationStatus = "Success"
+)
+
+func (r TransactionScanResponseValidationStatus) IsKnown() bool {
+	switch r {
+	case TransactionScanResponseValidationStatusSuccess:
+		return true
+	}
+	return false
 }
 
 // An enumeration.
@@ -1968,6 +1986,8 @@ type TransactionValidation struct {
 	Features []TransactionScanFeature `json:"features,required"`
 	// An enumeration.
 	ResultType TransactionValidationResultType `json:"result_type,required"`
+	// A string indicating if the simulation was successful or not.
+	Status TransactionValidationStatus `json:"status,required"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
@@ -1985,6 +2005,7 @@ type TransactionValidation struct {
 type transactionValidationJSON struct {
 	Features       apijson.Field
 	ResultType     apijson.Field
+	Status         apijson.Field
 	Classification apijson.Field
 	Description    apijson.Field
 	Reason         apijson.Field
@@ -2019,6 +2040,21 @@ func (r TransactionValidationResultType) IsKnown() bool {
 	return false
 }
 
+// A string indicating if the simulation was successful or not.
+type TransactionValidationStatus string
+
+const (
+	TransactionValidationStatusSuccess TransactionValidationStatus = "Success"
+)
+
+func (r TransactionValidationStatus) IsKnown() bool {
+	switch r {
+	case TransactionValidationStatusSuccess:
+		return true
+	}
+	return false
+}
+
 type TransactionValidationError struct {
 	// A textual classification that can be presented to the user explaining the
 	// reason.
@@ -2035,7 +2071,9 @@ type TransactionValidationError struct {
 	Reason TransactionValidationErrorReason `json:"reason,required"`
 	// A string indicating if the transaction is safe to sign or not.
 	ResultType TransactionValidationErrorResultType `json:"result_type,required"`
-	JSON       transactionValidationErrorJSON       `json:"-"`
+	// A string indicating if the simulation was successful or not.
+	Status TransactionValidationErrorStatus `json:"status,required"`
+	JSON   transactionValidationErrorJSON   `json:"-"`
 }
 
 // transactionValidationErrorJSON contains the JSON metadata for the struct
@@ -2047,6 +2085,7 @@ type transactionValidationErrorJSON struct {
 	Features       apijson.Field
 	Reason         apijson.Field
 	ResultType     apijson.Field
+	Status         apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
@@ -2119,6 +2158,21 @@ const (
 func (r TransactionValidationErrorResultType) IsKnown() bool {
 	switch r {
 	case TransactionValidationErrorResultTypeError:
+		return true
+	}
+	return false
+}
+
+// A string indicating if the simulation was successful or not.
+type TransactionValidationErrorStatus string
+
+const (
+	TransactionValidationErrorStatusSuccess TransactionValidationErrorStatus = "Success"
+)
+
+func (r TransactionValidationErrorStatus) IsKnown() bool {
+	switch r {
+	case TransactionValidationErrorStatusSuccess:
 		return true
 	}
 	return false
