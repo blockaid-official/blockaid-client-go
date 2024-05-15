@@ -13,9 +13,11 @@ import (
 )
 
 // EvmJsonRpcService contains methods and other services that help with interacting
-// with the blockaid API. Note, unlike clients, this service does not read
-// variables from the environment automatically. You should not instantiate this
-// service directly, and instead use the [NewEvmJsonRpcService] method instead.
+// with the blockaid API.
+//
+// Note, unlike clients, this service does not read variables from the environment
+// automatically. You should not instantiate this service directly, and instead use
+// the [NewEvmJsonRpcService] method instead.
 type EvmJsonRpcService struct {
 	Options []option.RequestOption
 }
