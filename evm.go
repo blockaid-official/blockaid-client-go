@@ -374,7 +374,7 @@ type AssetDiffIn struct {
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
-	RawValue int64           `json:"raw_value"`
+	RawValue string          `json:"raw_value"`
 	JSON     assetDiffInJSON `json:"-"`
 	union    AssetDiffInUnion
 }
@@ -446,7 +446,7 @@ type AssetDiffOut struct {
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
-	RawValue int64            `json:"raw_value"`
+	RawValue string           `json:"raw_value"`
 	JSON     assetDiffOutJSON `json:"-"`
 	union    AssetDiffOutUnion
 }
@@ -511,7 +511,7 @@ type Erc1155Diff struct {
 	// id of the token
 	TokenID int64 `json:"token_id,required"`
 	// value before divided by decimal, that was transferred from this address
-	Value int64 `json:"value,required"`
+	Value string `json:"value,required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -590,7 +590,7 @@ type Erc1155ExposureExposure struct {
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
-	RawValue int64                       `json:"raw_value"`
+	RawValue string                      `json:"raw_value"`
 	JSON     erc1155ExposureExposureJSON `json:"-"`
 	union    Erc1155ExposureExposureUnion
 }
@@ -707,7 +707,7 @@ func (r Erc1155TokenDetailsType) IsKnown() bool {
 
 type Erc20Diff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue int64 `json:"raw_value,required"`
+	RawValue string `json:"raw_value,required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -788,7 +788,7 @@ type Erc20ExposureExposure struct {
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
-	RawValue int64                     `json:"raw_value"`
+	RawValue string                    `json:"raw_value"`
 	JSON     erc20ExposureExposureJSON `json:"-"`
 	union    Erc20ExposureExposureUnion
 }
@@ -986,7 +986,7 @@ type Erc721ExposureExposure struct {
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
-	RawValue int64                      `json:"raw_value"`
+	RawValue string                     `json:"raw_value"`
 	JSON     erc721ExposureExposureJSON `json:"-"`
 	union    Erc721ExposureExposureUnion
 }
@@ -1165,7 +1165,7 @@ func (r NativeAssetDetailsType) IsKnown() bool {
 
 type NativeDiff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue int64 `json:"raw_value,required"`
+	RawValue string `json:"raw_value,required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
