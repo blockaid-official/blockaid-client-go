@@ -365,12 +365,13 @@ func (r AssetDiffAssetType) IsKnown() bool {
 
 type AssetDiffIn struct {
 	// usd equal of the asset that was transferred from this address
-	UsdPrice float64 `json:"usd_price"`
+	UsdPrice string `json:"usd_price"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64       `json:"token_id"`
-	Value   interface{} `json:"value,required"`
+	TokenID int64 `json:"token_id"`
+	// value before divided by decimal, that was transferred from this address
+	Value string `json:"value"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
@@ -437,12 +438,13 @@ func init() {
 
 type AssetDiffOut struct {
 	// usd equal of the asset that was transferred from this address
-	UsdPrice float64 `json:"usd_price"`
+	UsdPrice string `json:"usd_price"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64       `json:"token_id"`
-	Value   interface{} `json:"value,required"`
+	TokenID int64 `json:"token_id"`
+	// value before divided by decimal, that was transferred from this address
+	Value string `json:"value"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
@@ -517,7 +519,7 @@ type Erc1155Diff struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
-	UsdPrice float64         `json:"usd_price"`
+	UsdPrice string          `json:"usd_price"`
 	JSON     erc1155DiffJSON `json:"-"`
 }
 
@@ -581,12 +583,13 @@ func (r Erc1155Exposure) implementsAddressAssetExposureSpender() {}
 
 type Erc1155ExposureExposure struct {
 	// usd equal of the asset that was transferred from this address
-	UsdPrice float64 `json:"usd_price"`
+	UsdPrice string `json:"usd_price"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64       `json:"token_id"`
-	Value   interface{} `json:"value,required"`
+	TokenID int64 `json:"token_id"`
+	// value before divided by decimal, that was transferred from this address
+	Value string `json:"value"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
@@ -711,9 +714,9 @@ type Erc20Diff struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
-	UsdPrice float64 `json:"usd_price"`
+	UsdPrice string `json:"usd_price"`
 	// value after divided by decimals, that was transferred from this address
-	Value float64       `json:"value"`
+	Value string        `json:"value"`
 	JSON  erc20DiffJSON `json:"-"`
 }
 
@@ -779,12 +782,13 @@ func (r Erc20Exposure) implementsAddressAssetExposureSpender() {}
 
 type Erc20ExposureExposure struct {
 	// usd equal of the asset that was transferred from this address
-	UsdPrice float64 `json:"usd_price"`
+	UsdPrice string `json:"usd_price"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64       `json:"token_id"`
-	Value   interface{} `json:"value,required"`
+	TokenID int64 `json:"token_id"`
+	// value before divided by decimal, that was transferred from this address
+	Value string `json:"value"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
@@ -914,7 +918,7 @@ type Erc721Diff struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
-	UsdPrice float64        `json:"usd_price"`
+	UsdPrice string         `json:"usd_price"`
 	JSON     erc721DiffJSON `json:"-"`
 }
 
@@ -977,12 +981,13 @@ func (r Erc721Exposure) implementsAddressAssetExposureSpender() {}
 
 type Erc721ExposureExposure struct {
 	// usd equal of the asset that was transferred from this address
-	UsdPrice float64 `json:"usd_price"`
+	UsdPrice string `json:"usd_price"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64       `json:"token_id"`
-	Value   interface{} `json:"value,required"`
+	TokenID int64 `json:"token_id"`
+	// value before divided by decimal, that was transferred from this address
+	Value string `json:"value"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
@@ -1169,9 +1174,9 @@ type NativeDiff struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
-	UsdPrice float64 `json:"usd_price"`
+	UsdPrice string `json:"usd_price"`
 	// value after divided by decimals, that was transferred from this address
-	Value float64        `json:"value"`
+	Value string         `json:"value"`
 	JSON  nativeDiffJSON `json:"-"`
 }
 
