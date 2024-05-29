@@ -43,7 +43,7 @@ func (r *EvmJsonRpcService) Scan(ctx context.Context, body EvmJsonRpcScanParams,
 
 type EvmJsonRpcScanParams struct {
 	// The chain name
-	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	Chain param.Field[EvmJsonRpcScanParamsChainUnion] `json:"chain,required"`
 	// JSON-RPC request that was received by the wallet.
 	Data param.Field[EvmJsonRpcScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
@@ -58,6 +58,13 @@ type EvmJsonRpcScanParams struct {
 
 func (r EvmJsonRpcScanParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// The chain name
+//
+// Satisfied by [TransactionScanSupportedChain], [shared.UnionString].
+type EvmJsonRpcScanParamsChainUnion interface {
+	ImplementsEvmJsonRpcScanParamsChainUnion()
 }
 
 // JSON-RPC request that was received by the wallet.

@@ -1811,12 +1811,11 @@ const (
 	TransactionScanSupportedChainZora        TransactionScanSupportedChain = "zora"
 	TransactionScanSupportedChainLinea       TransactionScanSupportedChain = "linea"
 	TransactionScanSupportedChainBlast       TransactionScanSupportedChain = "blast"
-	TransactionScanSupportedChainUnknown     TransactionScanSupportedChain = "unknown"
 )
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainUnknown:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast:
 		return true
 	}
 	return false
