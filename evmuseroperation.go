@@ -43,7 +43,7 @@ func (r *EvmUserOperationService) Scan(ctx context.Context, body EvmUserOperatio
 
 type EvmUserOperationScanParams struct {
 	// The chain name
-	Chain param.Field[string] `json:"chain,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
 	// The user operation request that was received by the wallet
 	Data param.Field[EvmUserOperationScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
