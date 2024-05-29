@@ -1795,32 +1795,6 @@ func (r TransactionScanResponseValidationResultType) IsKnown() bool {
 	return false
 }
 
-// The chain name
-type TransactionScanSupportedChain string
-
-const (
-	TransactionScanSupportedChainArbitrum    TransactionScanSupportedChain = "arbitrum"
-	TransactionScanSupportedChainAvalanche   TransactionScanSupportedChain = "avalanche"
-	TransactionScanSupportedChainBase        TransactionScanSupportedChain = "base"
-	TransactionScanSupportedChainBaseSepolia TransactionScanSupportedChain = "base-sepolia"
-	TransactionScanSupportedChainBsc         TransactionScanSupportedChain = "bsc"
-	TransactionScanSupportedChainEthereum    TransactionScanSupportedChain = "ethereum"
-	TransactionScanSupportedChainOptimism    TransactionScanSupportedChain = "optimism"
-	TransactionScanSupportedChainPolygon     TransactionScanSupportedChain = "polygon"
-	TransactionScanSupportedChainZksync      TransactionScanSupportedChain = "zksync"
-	TransactionScanSupportedChainZora        TransactionScanSupportedChain = "zora"
-	TransactionScanSupportedChainLinea       TransactionScanSupportedChain = "linea"
-	TransactionScanSupportedChainBlast       TransactionScanSupportedChain = "blast"
-)
-
-func (r TransactionScanSupportedChain) IsKnown() bool {
-	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast:
-		return true
-	}
-	return false
-}
-
 type TransactionSimulation struct {
 	// Account summary for the account address. account address is determined implicit
 	// by the `from` field in the transaction request, or explicit by the
