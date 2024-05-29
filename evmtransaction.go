@@ -45,8 +45,8 @@ type EvmTransactionScanParams struct {
 	// The address to relate the transaction to. Account address determines in which
 	// perspective the transaction is simulated and validated.
 	AccountAddress param.Field[string] `json:"account_address,required"`
-	// The chain name
-	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	// The chain name or chain ID
+	Chain param.Field[EvmTransactionScanParamsChainUnion] `json:"chain,required"`
 	// Transaction parameters
 	Data param.Field[EvmTransactionScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
@@ -59,6 +59,13 @@ type EvmTransactionScanParams struct {
 
 func (r EvmTransactionScanParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// The chain name or chain ID
+//
+// Satisfied by [TransactionScanSupportedChain], [shared.UnionString].
+type EvmTransactionScanParamsChainUnion interface {
+	ImplementsEvmTransactionScanParamsChainUnion()
 }
 
 // Transaction parameters
