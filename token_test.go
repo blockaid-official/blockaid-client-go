@@ -27,12 +27,11 @@ func TestTokenScanWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Token.Scan(context.TODO(), blockaidclientgo.TokenScanParams{
-		Address: blockaidclientgo.F[blockaidclientgo.TokenScanParamsAddressUnion](shared.UnionString("0x630acfba8e410d9978ceb68500ce5ffb91f2a05f")),
+		Address: blockaidclientgo.F[blockaidclientgo.TokenScanParamsAddressUnion](shared.UnionString("0x66587563e933bbf3974b89156b47bb82b921eb35")),
 		Chain:   blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainEthereum),
 		Metadata: blockaidclientgo.F(blockaidclientgo.TokenScanParamsMetadata{
-			Domain: blockaidclientgo.F("example.com"),
+			Domain: blockaidclientgo.F("string"),
 		}),
-		TokenID: blockaidclientgo.F(int64(0)),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error

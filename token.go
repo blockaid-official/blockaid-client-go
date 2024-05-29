@@ -13,9 +13,11 @@ import (
 )
 
 // TokenService contains methods and other services that help with interacting with
-// the blockaid API. Note, unlike clients, this service does not read variables
-// from the environment automatically. You should not instantiate this service
-// directly, and instead use the [NewTokenService] method instead.
+// the blockaid API.
+//
+// Note, unlike clients, this service does not read variables from the environment
+// automatically. You should not instantiate this service directly, and instead use
+// the [NewTokenService] method instead.
 type TokenService struct {
 	Options []option.RequestOption
 }
@@ -119,8 +121,6 @@ type TokenScanParams struct {
 	Chain param.Field[TokenScanSupportedChain] `json:"chain,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[TokenScanParamsMetadata] `json:"metadata"`
-	// (optional) Token ID for ERC721 or ERC1155
-	TokenID param.Field[int64] `json:"token_id"`
 }
 
 func (r TokenScanParams) MarshalJSON() (data []byte, err error) {
