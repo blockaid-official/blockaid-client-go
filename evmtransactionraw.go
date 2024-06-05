@@ -3,6 +3,12 @@
 package blockaidclientgo
 
 import (
+	"context"
+	"net/http"
+
+	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
+	"github.com/blockaid-official/blockaid-client-go/internal/param"
+	"github.com/blockaid-official/blockaid-client-go/internal/requestconfig"
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
@@ -23,4 +29,59 @@ func NewEvmTransactionRawService(opts ...option.RequestOption) (r *EvmTransactio
 	r = &EvmTransactionRawService{}
 	r.Options = opts
 	return
+}
+
+// Gets a raw transaction and returns a full simulation indicating what will happen
+// in the transaction together with a recommended action and some textual reasons
+// of why the transaction was flagged that way.
+func (r *EvmTransactionRawService) Scan(ctx context.Context, body EvmTransactionRawScanParams, opts ...option.RequestOption) (res *TransactionScanResponse, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "v0/evm/transaction-raw/scan"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
+type EvmTransactionRawScanParams struct {
+	// The address to relate the transaction to. Account address determines in which
+	// perspective the transaction is simulated and validated.
+	AccountAddress param.Field[string] `json:"account_address,required"`
+	// The chain name or chain ID
+	Chain param.Field[EvmTransactionRawScanParamsChainUnion] `json:"chain,required"`
+	// Hex string of the raw transaction data
+	Data param.Field[string] `json:"data,required"`
+	// Object of additional information to validate against.
+	Metadata param.Field[MetadataParam] `json:"metadata,required"`
+	// list of one or both of options for the desired output. "simulation" - include
+	// simulation output in your response. "validation" - include security validation
+	// of the transaction in your response. Default is ["validation"]
+	Options param.Field[[]EvmTransactionRawScanParamsOption] `json:"options"`
+}
+
+func (r EvmTransactionRawScanParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The chain name or chain ID
+//
+// Satisfied by [TransactionScanSupportedChain], [shared.UnionString].
+type EvmTransactionRawScanParamsChainUnion interface {
+	ImplementsEvmTransactionRawScanParamsChainUnion()
+}
+
+// An enumeration.
+type EvmTransactionRawScanParamsOption string
+
+const (
+	EvmTransactionRawScanParamsOptionValidation    EvmTransactionRawScanParamsOption = "validation"
+	EvmTransactionRawScanParamsOptionSimulation    EvmTransactionRawScanParamsOption = "simulation"
+	EvmTransactionRawScanParamsOptionGasEstimation EvmTransactionRawScanParamsOption = "gas_estimation"
+	EvmTransactionRawScanParamsOptionEvents        EvmTransactionRawScanParamsOption = "events"
+)
+
+func (r EvmTransactionRawScanParamsOption) IsKnown() bool {
+	switch r {
+	case EvmTransactionRawScanParamsOptionValidation, EvmTransactionRawScanParamsOptionSimulation, EvmTransactionRawScanParamsOptionGasEstimation, EvmTransactionRawScanParamsOptionEvents:
+		return true
+	}
+	return false
 }
