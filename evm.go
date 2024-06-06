@@ -1799,24 +1799,27 @@ func (r TransactionScanResponseValidationResultType) IsKnown() bool {
 type TransactionScanSupportedChain string
 
 const (
-	TransactionScanSupportedChainArbitrum    TransactionScanSupportedChain = "arbitrum"
-	TransactionScanSupportedChainAvalanche   TransactionScanSupportedChain = "avalanche"
-	TransactionScanSupportedChainBase        TransactionScanSupportedChain = "base"
-	TransactionScanSupportedChainBaseSepolia TransactionScanSupportedChain = "base-sepolia"
-	TransactionScanSupportedChainBsc         TransactionScanSupportedChain = "bsc"
-	TransactionScanSupportedChainEthereum    TransactionScanSupportedChain = "ethereum"
-	TransactionScanSupportedChainOptimism    TransactionScanSupportedChain = "optimism"
-	TransactionScanSupportedChainPolygon     TransactionScanSupportedChain = "polygon"
-	TransactionScanSupportedChainZksync      TransactionScanSupportedChain = "zksync"
-	TransactionScanSupportedChainZora        TransactionScanSupportedChain = "zora"
-	TransactionScanSupportedChainLinea       TransactionScanSupportedChain = "linea"
-	TransactionScanSupportedChainBlast       TransactionScanSupportedChain = "blast"
-	TransactionScanSupportedChainUnknown     TransactionScanSupportedChain = "unknown"
+	TransactionScanSupportedChainArbitrum        TransactionScanSupportedChain = "arbitrum"
+	TransactionScanSupportedChainAvalanche       TransactionScanSupportedChain = "avalanche"
+	TransactionScanSupportedChainBase            TransactionScanSupportedChain = "base"
+	TransactionScanSupportedChainBaseSepolia     TransactionScanSupportedChain = "base-sepolia"
+	TransactionScanSupportedChainBsc             TransactionScanSupportedChain = "bsc"
+	TransactionScanSupportedChainEthereum        TransactionScanSupportedChain = "ethereum"
+	TransactionScanSupportedChainOptimism        TransactionScanSupportedChain = "optimism"
+	TransactionScanSupportedChainPolygon         TransactionScanSupportedChain = "polygon"
+	TransactionScanSupportedChainZksync          TransactionScanSupportedChain = "zksync"
+	TransactionScanSupportedChainZora            TransactionScanSupportedChain = "zora"
+	TransactionScanSupportedChainLinea           TransactionScanSupportedChain = "linea"
+	TransactionScanSupportedChainBlast           TransactionScanSupportedChain = "blast"
+	TransactionScanSupportedChainScroll          TransactionScanSupportedChain = "scroll"
+	TransactionScanSupportedChainEthereumSepolia TransactionScanSupportedChain = "ethereum-sepolia"
+	TransactionScanSupportedChainDegen           TransactionScanSupportedChain = "degen"
+	TransactionScanSupportedChainAvalancheFuji   TransactionScanSupportedChain = "avalanche-fuji"
 )
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainUnknown:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji:
 		return true
 	}
 	return false

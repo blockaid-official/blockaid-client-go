@@ -42,7 +42,7 @@ func (r *EvmJsonRpcService) Scan(ctx context.Context, body EvmJsonRpcScanParams,
 }
 
 type EvmJsonRpcScanParams struct {
-	// The chain name
+	// The chain name or chain ID
 	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
 	// JSON-RPC request that was received by the wallet.
 	Data param.Field[EvmJsonRpcScanParamsData] `json:"data,required"`
