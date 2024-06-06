@@ -43,7 +43,7 @@ func (r *EvmUserOperationService) Scan(ctx context.Context, body EvmUserOperatio
 
 type EvmUserOperationScanParams struct {
 	// The chain name or chain ID
-	Chain param.Field[EvmUserOperationScanParamsChainUnion] `json:"chain,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
 	// The user operation request that was received by the wallet
 	Data param.Field[EvmUserOperationScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
@@ -58,13 +58,6 @@ type EvmUserOperationScanParams struct {
 
 func (r EvmUserOperationScanParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-// The chain name or chain ID
-//
-// Satisfied by [TransactionScanSupportedChain], [shared.UnionString].
-type EvmUserOperationScanParamsChainUnion interface {
-	ImplementsEvmUserOperationScanParamsChainUnion()
 }
 
 // The user operation request that was received by the wallet
