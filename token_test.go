@@ -11,7 +11,6 @@ import (
 	"github.com/blockaid-official/blockaid-client-go"
 	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
 	"github.com/blockaid-official/blockaid-client-go/option"
-	"github.com/blockaid-official/blockaid-client-go/shared"
 )
 
 func TestTokenScanWithOptionalParams(t *testing.T) {
@@ -27,7 +26,7 @@ func TestTokenScanWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Token.Scan(context.TODO(), blockaidclientgo.TokenScanParams{
-		Address: blockaidclientgo.F[blockaidclientgo.TokenScanParamsAddressUnion](shared.UnionString("0x66587563e933bbf3974b89156b47bb82b921eb35")),
+		Address: blockaidclientgo.F("0x66587563e933bbf3974b89156b47bb82b921eb35"),
 		Chain:   blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainEthereum),
 		Metadata: blockaidclientgo.F(blockaidclientgo.TokenScanParamsMetadata{
 			Domain: blockaidclientgo.F("string"),
