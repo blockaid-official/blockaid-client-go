@@ -20,12 +20,14 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewEvmService] method instead.
 type EvmService struct {
-	Options         []option.RequestOption
-	JsonRpc         *EvmJsonRpcService
-	Transaction     *EvmTransactionService
-	TransactionBulk *EvmTransactionBulkService
-	TransactionRaw  *EvmTransactionRawService
-	UserOperation   *EvmUserOperationService
+	Options             []option.RequestOption
+	JsonRpc             *EvmJsonRpcService
+	Transaction         *EvmTransactionService
+	TransactionBulk     *EvmTransactionBulkService
+	TransactionRaw      *EvmTransactionRawService
+	UserOperation       *EvmUserOperationService
+	PostTransaction     *EvmPostTransactionService
+	PostTransactionBulk *EvmPostTransactionBulkService
 }
 
 // NewEvmService generates a new service that applies the given options to each
@@ -39,6 +41,8 @@ func NewEvmService(opts ...option.RequestOption) (r *EvmService) {
 	r.TransactionBulk = NewEvmTransactionBulkService(opts...)
 	r.TransactionRaw = NewEvmTransactionRawService(opts...)
 	r.UserOperation = NewEvmUserOperationService(opts...)
+	r.PostTransaction = NewEvmPostTransactionService(opts...)
+	r.PostTransactionBulk = NewEvmPostTransactionBulkService(opts...)
 	return
 }
 
