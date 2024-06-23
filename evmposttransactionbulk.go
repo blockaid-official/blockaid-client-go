@@ -43,8 +43,8 @@ func (r *EvmPostTransactionBulkService) Scan(ctx context.Context, body EvmPostTr
 type EvmPostTransactionBulkScanParams struct {
 	// The chain name or chain ID
 	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
-	// Transaction bulk parameters
-	Data param.Field[[]EvmPostTransactionBulkScanParamsData] `json:"data,required"`
+	// Transaction hashes to scan
+	Data param.Field[[]string] `json:"data,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[MetadataParam] `json:"metadata,required"`
 	// List of one or both of options for the desired output. "simulation" - include
@@ -54,25 +54,6 @@ type EvmPostTransactionBulkScanParams struct {
 }
 
 func (r EvmPostTransactionBulkScanParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type EvmPostTransactionBulkScanParamsData struct {
-	// The source address of the transaction in hex string format
-	From param.Field[string] `json:"from,required"`
-	// The encoded call data of the transaction in hex string format
-	Data param.Field[string] `json:"data"`
-	// The gas required for the transaction in hex string format.
-	Gas param.Field[string] `json:"gas"`
-	// The gas price for the transaction in hex string format.
-	GasPrice param.Field[string] `json:"gas_price"`
-	// The destination address of the transaction in hex string format
-	To param.Field[string] `json:"to"`
-	// The value of the transaction in Wei in hex string format
-	Value param.Field[string] `json:"value"`
-}
-
-func (r EvmPostTransactionBulkScanParamsData) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
