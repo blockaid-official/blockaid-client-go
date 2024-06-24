@@ -1812,6 +1812,7 @@ const (
 	TransactionScanSupportedChainOptimism        TransactionScanSupportedChain = "optimism"
 	TransactionScanSupportedChainPolygon         TransactionScanSupportedChain = "polygon"
 	TransactionScanSupportedChainZksync          TransactionScanSupportedChain = "zksync"
+	TransactionScanSupportedChainZksyncSepolia   TransactionScanSupportedChain = "zksync-sepolia"
 	TransactionScanSupportedChainZora            TransactionScanSupportedChain = "zora"
 	TransactionScanSupportedChainLinea           TransactionScanSupportedChain = "linea"
 	TransactionScanSupportedChainBlast           TransactionScanSupportedChain = "blast"
@@ -1823,7 +1824,7 @@ const (
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji:
 		return true
 	}
 	return false
