@@ -1339,28 +1339,30 @@ func (r TransactionScanFeatureType) IsKnown() bool {
 }
 
 type TransactionScanResponse struct {
-	Block         string                               `json:"block,required"`
-	Chain         string                               `json:"chain,required"`
-	Events        []TransactionScanResponseEvent       `json:"events"`
-	Features      interface{}                          `json:"features"`
-	GasEstimation TransactionScanResponseGasEstimation `json:"gas_estimation"`
-	Simulation    TransactionScanResponseSimulation    `json:"simulation"`
-	Validation    TransactionScanResponseValidation    `json:"validation"`
-	JSON          transactionScanResponseJSON          `json:"-"`
+	Block          string                               `json:"block,required"`
+	Chain          string                               `json:"chain,required"`
+	AccountAddress string                               `json:"account_address"`
+	Events         []TransactionScanResponseEvent       `json:"events"`
+	Features       interface{}                          `json:"features"`
+	GasEstimation  TransactionScanResponseGasEstimation `json:"gas_estimation"`
+	Simulation     TransactionScanResponseSimulation    `json:"simulation"`
+	Validation     TransactionScanResponseValidation    `json:"validation"`
+	JSON           transactionScanResponseJSON          `json:"-"`
 }
 
 // transactionScanResponseJSON contains the JSON metadata for the struct
 // [TransactionScanResponse]
 type transactionScanResponseJSON struct {
-	Block         apijson.Field
-	Chain         apijson.Field
-	Events        apijson.Field
-	Features      apijson.Field
-	GasEstimation apijson.Field
-	Simulation    apijson.Field
-	Validation    apijson.Field
-	raw           string
-	ExtraFields   map[string]apijson.Field
+	Block          apijson.Field
+	Chain          apijson.Field
+	AccountAddress apijson.Field
+	Events         apijson.Field
+	Features       apijson.Field
+	GasEstimation  apijson.Field
+	Simulation     apijson.Field
+	Validation     apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
 }
 
 func (r *TransactionScanResponse) UnmarshalJSON(data []byte) (err error) {
