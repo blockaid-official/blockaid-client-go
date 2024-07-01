@@ -20,12 +20,14 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewEvmService] method instead.
 type EvmService struct {
-	Options         []option.RequestOption
-	JsonRpc         *EvmJsonRpcService
-	Transaction     *EvmTransactionService
-	TransactionBulk *EvmTransactionBulkService
-	TransactionRaw  *EvmTransactionRawService
-	UserOperation   *EvmUserOperationService
+	Options             []option.RequestOption
+	JsonRpc             *EvmJsonRpcService
+	Transaction         *EvmTransactionService
+	TransactionBulk     *EvmTransactionBulkService
+	TransactionRaw      *EvmTransactionRawService
+	UserOperation       *EvmUserOperationService
+	PostTransaction     *EvmPostTransactionService
+	PostTransactionBulk *EvmPostTransactionBulkService
 }
 
 // NewEvmService generates a new service that applies the given options to each
@@ -39,6 +41,8 @@ func NewEvmService(opts ...option.RequestOption) (r *EvmService) {
 	r.TransactionBulk = NewEvmTransactionBulkService(opts...)
 	r.TransactionRaw = NewEvmTransactionRawService(opts...)
 	r.UserOperation = NewEvmUserOperationService(opts...)
+	r.PostTransaction = NewEvmPostTransactionService(opts...)
+	r.PostTransactionBulk = NewEvmPostTransactionBulkService(opts...)
 	return
 }
 
@@ -1335,28 +1339,30 @@ func (r TransactionScanFeatureType) IsKnown() bool {
 }
 
 type TransactionScanResponse struct {
-	Block         string                               `json:"block,required"`
-	Chain         string                               `json:"chain,required"`
-	Events        []TransactionScanResponseEvent       `json:"events"`
-	Features      interface{}                          `json:"features"`
-	GasEstimation TransactionScanResponseGasEstimation `json:"gas_estimation"`
-	Simulation    TransactionScanResponseSimulation    `json:"simulation"`
-	Validation    TransactionScanResponseValidation    `json:"validation"`
-	JSON          transactionScanResponseJSON          `json:"-"`
+	Block          string                               `json:"block,required"`
+	Chain          string                               `json:"chain,required"`
+	AccountAddress string                               `json:"account_address"`
+	Events         []TransactionScanResponseEvent       `json:"events"`
+	Features       interface{}                          `json:"features"`
+	GasEstimation  TransactionScanResponseGasEstimation `json:"gas_estimation"`
+	Simulation     TransactionScanResponseSimulation    `json:"simulation"`
+	Validation     TransactionScanResponseValidation    `json:"validation"`
+	JSON           transactionScanResponseJSON          `json:"-"`
 }
 
 // transactionScanResponseJSON contains the JSON metadata for the struct
 // [TransactionScanResponse]
 type transactionScanResponseJSON struct {
-	Block         apijson.Field
-	Chain         apijson.Field
-	Events        apijson.Field
-	Features      apijson.Field
-	GasEstimation apijson.Field
-	Simulation    apijson.Field
-	Validation    apijson.Field
-	raw           string
-	ExtraFields   map[string]apijson.Field
+	Block          apijson.Field
+	Chain          apijson.Field
+	AccountAddress apijson.Field
+	Events         apijson.Field
+	Features       apijson.Field
+	GasEstimation  apijson.Field
+	Simulation     apijson.Field
+	Validation     apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
 }
 
 func (r *TransactionScanResponse) UnmarshalJSON(data []byte) (err error) {
@@ -1808,6 +1814,7 @@ const (
 	TransactionScanSupportedChainOptimism        TransactionScanSupportedChain = "optimism"
 	TransactionScanSupportedChainPolygon         TransactionScanSupportedChain = "polygon"
 	TransactionScanSupportedChainZksync          TransactionScanSupportedChain = "zksync"
+	TransactionScanSupportedChainZksyncSepolia   TransactionScanSupportedChain = "zksync-sepolia"
 	TransactionScanSupportedChainZora            TransactionScanSupportedChain = "zora"
 	TransactionScanSupportedChainLinea           TransactionScanSupportedChain = "linea"
 	TransactionScanSupportedChainBlast           TransactionScanSupportedChain = "blast"
@@ -1819,7 +1826,7 @@ const (
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji:
 		return true
 	}
 	return false
