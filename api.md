@@ -60,6 +60,36 @@ Methods:
 
 - <code title="post /v0/evm/user-operation/scan">client.Evm.UserOperation.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmUserOperationService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmUserOperationScanParams">EvmUserOperationScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionScanResponse">TransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
+## PostTransaction
+
+Methods:
+
+- <code title="post /v0/evm/post-transaction/scan">client.Evm.PostTransaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmPostTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmPostTransactionScanParams">EvmPostTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionScanResponse">TransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
+## PostTransactionBulk
+
+Methods:
+
+- <code title="post /v0/evm/post-transaction-bulk/scan">client.Evm.PostTransactionBulk.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmPostTransactionBulkService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmPostTransactionBulkScanParams">EvmPostTransactionBulkScanParams</a>) ([]<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionScanResponse">TransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
+# Stellar
+
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanRequestParam">StellarTransactionScanRequestParam</a>
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarAssetContractDetailsSchema">StellarAssetContractDetailsSchema</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarAssetTransferDetailsSchema">StellarAssetTransferDetailsSchema</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanResponse">StellarTransactionScanResponse</a>
+
+## Transaction
+
+Methods:
+
+- <code title="post /v0/stellar/scan/transaction">client.Stellar.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanParams">StellarTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanResponse">StellarTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
 # Site
 
 Response Types:

@@ -115,8 +115,8 @@ func (r TokenScanResponseResultType) IsKnown() bool {
 }
 
 type TokenScanParams struct {
-	// Token address to validate (EVM / Solana)
-	Address param.Field[TokenScanParamsAddressUnion] `json:"address,required"`
+	// Token address to validate (EVM / Solana / Stellar)
+	Address param.Field[string] `json:"address,required"`
 	// The chain name
 	Chain param.Field[TokenScanSupportedChain] `json:"chain,required"`
 	// Object of additional information to validate against.
@@ -125,13 +125,6 @@ type TokenScanParams struct {
 
 func (r TokenScanParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-// Token address to validate (EVM / Solana)
-//
-// Satisfied by [shared.UnionString], [shared.UnionString].
-type TokenScanParamsAddressUnion interface {
-	ImplementsTokenScanParamsAddressUnion()
 }
 
 // Object of additional information to validate against.

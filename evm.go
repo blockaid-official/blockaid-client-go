@@ -20,12 +20,14 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewEvmService] method instead.
 type EvmService struct {
-	Options         []option.RequestOption
-	JsonRpc         *EvmJsonRpcService
-	Transaction     *EvmTransactionService
-	TransactionBulk *EvmTransactionBulkService
-	TransactionRaw  *EvmTransactionRawService
-	UserOperation   *EvmUserOperationService
+	Options             []option.RequestOption
+	JsonRpc             *EvmJsonRpcService
+	Transaction         *EvmTransactionService
+	TransactionBulk     *EvmTransactionBulkService
+	TransactionRaw      *EvmTransactionRawService
+	UserOperation       *EvmUserOperationService
+	PostTransaction     *EvmPostTransactionService
+	PostTransactionBulk *EvmPostTransactionBulkService
 }
 
 // NewEvmService generates a new service that applies the given options to each
@@ -39,6 +41,8 @@ func NewEvmService(opts ...option.RequestOption) (r *EvmService) {
 	r.TransactionBulk = NewEvmTransactionBulkService(opts...)
 	r.TransactionRaw = NewEvmTransactionRawService(opts...)
 	r.UserOperation = NewEvmUserOperationService(opts...)
+	r.PostTransaction = NewEvmPostTransactionService(opts...)
+	r.PostTransactionBulk = NewEvmPostTransactionBulkService(opts...)
 	return
 }
 
@@ -111,6 +115,11 @@ func (r *AddressAssetExposureAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [AddressAssetExposureAssetUnion] interface which you can cast
+// to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc20TokenDetails],
+// [Erc1155TokenDetails], [Erc721TokenDetails], [NonercTokenDetails].
 func (r AddressAssetExposureAsset) AsUnion() AddressAssetExposureAssetUnion {
 	return r.union
 }
@@ -165,6 +174,8 @@ func (r AddressAssetExposureAssetType) IsKnown() bool {
 }
 
 type AddressAssetExposureSpender struct {
+	// This field can have the runtime type of [[]Erc20ExposureExposure],
+	// [[]Erc721ExposureExposure], [[]Erc1155ExposureExposure].
 	Exposure interface{} `json:"exposure"`
 	// user friendly description of the approval
 	Summary string `json:"summary"`
@@ -204,6 +215,11 @@ func (r *AddressAssetExposureSpender) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [AddressAssetExposureSpendersUnion] interface which you can
+// cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc20Exposure], [Erc721Exposure],
+// [Erc1155Exposure].
 func (r AddressAssetExposureSpender) AsUnion() AddressAssetExposureSpendersUnion {
 	return r.union
 }
@@ -305,6 +321,12 @@ func (r *AssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [AssetDiffAssetUnion] interface which you can cast to the
+// specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc20TokenDetails],
+// [Erc1155TokenDetails], [Erc721TokenDetails], [NonercTokenDetails],
+// [NativeAssetDetails].
 func (r AssetDiffAsset) AsUnion() AssetDiffAssetUnion {
 	return r.union
 }
@@ -404,6 +426,11 @@ func (r *AssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [AssetDiffInUnion] interface which you can cast to the
+// specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155Diff], [Erc721Diff],
+// [Erc20Diff], [NativeDiff].
 func (r AssetDiffIn) AsUnion() AssetDiffInUnion {
 	return r.union
 }
@@ -477,6 +504,11 @@ func (r *AssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [AssetDiffOutUnion] interface which you can cast to the
+// specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155Diff], [Erc721Diff],
+// [Erc20Diff], [NativeDiff].
 func (r AssetDiffOut) AsUnion() AssetDiffOutUnion {
 	return r.union
 }
@@ -623,6 +655,11 @@ func (r *Erc1155ExposureExposure) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [Erc1155ExposureExposureUnion] interface which you can cast to
+// the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155Diff], [Erc721Diff],
+// [Erc20Diff], [NativeDiff].
 func (r Erc1155ExposureExposure) AsUnion() Erc1155ExposureExposureUnion {
 	return r.union
 }
@@ -822,6 +859,11 @@ func (r *Erc20ExposureExposure) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [Erc20ExposureExposureUnion] interface which you can cast to
+// the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155Diff], [Erc721Diff],
+// [Erc20Diff], [NativeDiff].
 func (r Erc20ExposureExposure) AsUnion() Erc20ExposureExposureUnion {
 	return r.union
 }
@@ -1021,6 +1063,11 @@ func (r *Erc721ExposureExposure) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [Erc721ExposureExposureUnion] interface which you can cast to
+// the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155Diff], [Erc721Diff],
+// [Erc20Diff], [NativeDiff].
 func (r Erc721ExposureExposure) AsUnion() Erc721ExposureExposureUnion {
 	return r.union
 }
@@ -1274,12 +1321,13 @@ const (
 	TokenScanSupportedChainPolygon   TokenScanSupportedChain = "polygon"
 	TokenScanSupportedChainZora      TokenScanSupportedChain = "zora"
 	TokenScanSupportedChainSolana    TokenScanSupportedChain = "solana"
+	TokenScanSupportedChainStellar   TokenScanSupportedChain = "stellar"
 	TokenScanSupportedChainUnknown   TokenScanSupportedChain = "unknown"
 )
 
 func (r TokenScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainUnknown:
+	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStellar, TokenScanSupportedChainUnknown:
 		return true
 	}
 	return false
@@ -1335,28 +1383,30 @@ func (r TransactionScanFeatureType) IsKnown() bool {
 }
 
 type TransactionScanResponse struct {
-	Block         string                               `json:"block,required"`
-	Chain         string                               `json:"chain,required"`
-	Events        []TransactionScanResponseEvent       `json:"events"`
-	Features      interface{}                          `json:"features"`
-	GasEstimation TransactionScanResponseGasEstimation `json:"gas_estimation"`
-	Simulation    TransactionScanResponseSimulation    `json:"simulation"`
-	Validation    TransactionScanResponseValidation    `json:"validation"`
-	JSON          transactionScanResponseJSON          `json:"-"`
+	Block          string                               `json:"block,required"`
+	Chain          string                               `json:"chain,required"`
+	AccountAddress string                               `json:"account_address"`
+	Events         []TransactionScanResponseEvent       `json:"events"`
+	Features       interface{}                          `json:"features"`
+	GasEstimation  TransactionScanResponseGasEstimation `json:"gas_estimation"`
+	Simulation     TransactionScanResponseSimulation    `json:"simulation"`
+	Validation     TransactionScanResponseValidation    `json:"validation"`
+	JSON           transactionScanResponseJSON          `json:"-"`
 }
 
 // transactionScanResponseJSON contains the JSON metadata for the struct
 // [TransactionScanResponse]
 type transactionScanResponseJSON struct {
-	Block         apijson.Field
-	Chain         apijson.Field
-	Events        apijson.Field
-	Features      apijson.Field
-	GasEstimation apijson.Field
-	Simulation    apijson.Field
-	Validation    apijson.Field
-	raw           string
-	ExtraFields   map[string]apijson.Field
+	Block          apijson.Field
+	Chain          apijson.Field
+	AccountAddress apijson.Field
+	Events         apijson.Field
+	Features       apijson.Field
+	GasEstimation  apijson.Field
+	Simulation     apijson.Field
+	Validation     apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
 }
 
 func (r *TransactionScanResponse) UnmarshalJSON(data []byte) (err error) {
@@ -1484,6 +1534,12 @@ func (r *TransactionScanResponseGasEstimation) UnmarshalJSON(data []byte) (err e
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [TransactionScanResponseGasEstimationUnion] interface which
+// you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [TransactionScanResponseGasEstimationTransactionScanGasEstimation],
+// [TransactionScanResponseGasEstimationTransactionScanGasEstimationError].
 func (r TransactionScanResponseGasEstimation) AsUnion() TransactionScanResponseGasEstimationUnion {
 	return r.union
 }
@@ -1611,13 +1667,20 @@ func (r TransactionScanResponseGasEstimationStatus) IsKnown() bool {
 
 type TransactionScanResponseSimulation struct {
 	// A string indicating if the simulation was successful or not.
-	Status           TransactionScanResponseSimulationStatus `json:"status,required"`
-	AssetsDiffs      interface{}                             `json:"assets_diffs,required"`
-	TotalUsdDiff     interface{}                             `json:"total_usd_diff,required"`
-	Exposures        interface{}                             `json:"exposures,required"`
-	TotalUsdExposure interface{}                             `json:"total_usd_exposure,required"`
-	AddressDetails   interface{}                             `json:"address_details,required"`
-	AccountSummary   interface{}                             `json:"account_summary,required"`
+	Status TransactionScanResponseSimulationStatus `json:"status,required"`
+	// This field can have the runtime type of [map[string][]AssetDiff].
+	AssetsDiffs interface{} `json:"assets_diffs,required"`
+	// This field can have the runtime type of [map[string]UsdDiff].
+	TotalUsdDiff interface{} `json:"total_usd_diff,required"`
+	// This field can have the runtime type of [map[string][]AddressAssetExposure].
+	Exposures interface{} `json:"exposures,required"`
+	// This field can have the runtime type of [map[string]map[string]string].
+	TotalUsdExposure interface{} `json:"total_usd_exposure,required"`
+	// This field can have the runtime type of
+	// [map[string]TransactionSimulationAddressDetail].
+	AddressDetails interface{} `json:"address_details,required"`
+	// This field can have the runtime type of [TransactionSimulationAccountSummary].
+	AccountSummary interface{} `json:"account_summary,required"`
 	// An error message if the simulation failed.
 	Error string                                `json:"error"`
 	JSON  transactionScanResponseSimulationJSON `json:"-"`
@@ -1651,6 +1714,11 @@ func (r *TransactionScanResponseSimulation) UnmarshalJSON(data []byte) (err erro
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [TransactionScanResponseSimulationUnion] interface which you
+// can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [TransactionSimulation],
+// [TransactionSimulationError].
 func (r TransactionScanResponseSimulation) AsUnion() TransactionScanResponseSimulationUnion {
 	return r.union
 }
@@ -1704,8 +1772,9 @@ type TransactionScanResponseValidation struct {
 	Reason string `json:"reason"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
-	Classification string      `json:"classification"`
-	Features       interface{} `json:"features"`
+	Classification string `json:"classification"`
+	// This field can have the runtime type of [[]TransactionScanFeature].
+	Features interface{} `json:"features"`
 	// An error message if the validation failed.
 	Error string                                `json:"error"`
 	JSON  transactionScanResponseValidationJSON `json:"-"`
@@ -1738,6 +1807,11 @@ func (r *TransactionScanResponseValidation) UnmarshalJSON(data []byte) (err erro
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [TransactionScanResponseValidationUnion] interface which you
+// can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [TransactionValidation],
+// [TransactionValidationError].
 func (r TransactionScanResponseValidation) AsUnion() TransactionScanResponseValidationUnion {
 	return r.union
 }
@@ -1808,6 +1882,7 @@ const (
 	TransactionScanSupportedChainOptimism        TransactionScanSupportedChain = "optimism"
 	TransactionScanSupportedChainPolygon         TransactionScanSupportedChain = "polygon"
 	TransactionScanSupportedChainZksync          TransactionScanSupportedChain = "zksync"
+	TransactionScanSupportedChainZksyncSepolia   TransactionScanSupportedChain = "zksync-sepolia"
 	TransactionScanSupportedChainZora            TransactionScanSupportedChain = "zora"
 	TransactionScanSupportedChainLinea           TransactionScanSupportedChain = "linea"
 	TransactionScanSupportedChainBlast           TransactionScanSupportedChain = "blast"
@@ -1819,7 +1894,7 @@ const (
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji:
 		return true
 	}
 	return false

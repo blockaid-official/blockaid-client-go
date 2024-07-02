@@ -13,7 +13,7 @@ import (
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
-func TestTokenScanWithOptionalParams(t *testing.T) {
+func TestEvmPostTransactionBulkScanWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -25,12 +25,13 @@ func TestTokenScanWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Token.Scan(context.TODO(), blockaidclientgo.TokenScanParams{
-		Address: blockaidclientgo.F("0x66587563e933bbf3974b89156b47bb82b921eb35"),
-		Chain:   blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainEthereum),
-		Metadata: blockaidclientgo.F(blockaidclientgo.TokenScanParamsMetadata{
+	_, err := client.Evm.PostTransactionBulk.Scan(context.TODO(), blockaidclientgo.EvmPostTransactionBulkScanParams{
+		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChain(blockaidclientgo.TransactionScanSupportedChainEthereum)),
+		Data:  blockaidclientgo.F([]string{"0x11c865addc39f1e1c4f0f6c9a84533c501e3705a6397988af942b2103d5e87a2", "0x50a109a2c2dd396e49710613dcf652728656055d90f80094f10c3ddd05150d2e"}),
+		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
 			Domain: blockaidclientgo.F("string"),
 		}),
+		Options: blockaidclientgo.F([]blockaidclientgo.EvmPostTransactionBulkScanParamsOption{blockaidclientgo.EvmPostTransactionBulkScanParamsOptionValidation, blockaidclientgo.EvmPostTransactionBulkScanParamsOptionSimulation}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
