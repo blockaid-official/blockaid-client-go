@@ -115,6 +115,11 @@ func (r *AddressAssetExposureAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [AddressAssetExposureAssetUnion] interface which you can cast
+// to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc20TokenDetails],
+// [Erc1155TokenDetails], [Erc721TokenDetails], [NonercTokenDetails].
 func (r AddressAssetExposureAsset) AsUnion() AddressAssetExposureAssetUnion {
 	return r.union
 }
@@ -169,6 +174,8 @@ func (r AddressAssetExposureAssetType) IsKnown() bool {
 }
 
 type AddressAssetExposureSpender struct {
+	// This field can have the runtime type of [[]Erc20ExposureExposure],
+	// [[]Erc721ExposureExposure], [[]Erc1155ExposureExposure].
 	Exposure interface{} `json:"exposure"`
 	// user friendly description of the approval
 	Summary string `json:"summary"`
@@ -208,6 +215,11 @@ func (r *AddressAssetExposureSpender) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [AddressAssetExposureSpendersUnion] interface which you can
+// cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc20Exposure], [Erc721Exposure],
+// [Erc1155Exposure].
 func (r AddressAssetExposureSpender) AsUnion() AddressAssetExposureSpendersUnion {
 	return r.union
 }
@@ -309,6 +321,12 @@ func (r *AssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [AssetDiffAssetUnion] interface which you can cast to the
+// specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc20TokenDetails],
+// [Erc1155TokenDetails], [Erc721TokenDetails], [NonercTokenDetails],
+// [NativeAssetDetails].
 func (r AssetDiffAsset) AsUnion() AssetDiffAssetUnion {
 	return r.union
 }
@@ -408,6 +426,11 @@ func (r *AssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [AssetDiffInUnion] interface which you can cast to the
+// specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155Diff], [Erc721Diff],
+// [Erc20Diff], [NativeDiff].
 func (r AssetDiffIn) AsUnion() AssetDiffInUnion {
 	return r.union
 }
@@ -481,6 +504,11 @@ func (r *AssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [AssetDiffOutUnion] interface which you can cast to the
+// specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155Diff], [Erc721Diff],
+// [Erc20Diff], [NativeDiff].
 func (r AssetDiffOut) AsUnion() AssetDiffOutUnion {
 	return r.union
 }
@@ -627,6 +655,11 @@ func (r *Erc1155ExposureExposure) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [Erc1155ExposureExposureUnion] interface which you can cast to
+// the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155Diff], [Erc721Diff],
+// [Erc20Diff], [NativeDiff].
 func (r Erc1155ExposureExposure) AsUnion() Erc1155ExposureExposureUnion {
 	return r.union
 }
@@ -826,6 +859,11 @@ func (r *Erc20ExposureExposure) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [Erc20ExposureExposureUnion] interface which you can cast to
+// the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155Diff], [Erc721Diff],
+// [Erc20Diff], [NativeDiff].
 func (r Erc20ExposureExposure) AsUnion() Erc20ExposureExposureUnion {
 	return r.union
 }
@@ -1025,6 +1063,11 @@ func (r *Erc721ExposureExposure) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [Erc721ExposureExposureUnion] interface which you can cast to
+// the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155Diff], [Erc721Diff],
+// [Erc20Diff], [NativeDiff].
 func (r Erc721ExposureExposure) AsUnion() Erc721ExposureExposureUnion {
 	return r.union
 }
@@ -1490,6 +1533,12 @@ func (r *TransactionScanResponseGasEstimation) UnmarshalJSON(data []byte) (err e
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [TransactionScanResponseGasEstimationUnion] interface which
+// you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [TransactionScanResponseGasEstimationTransactionScanGasEstimation],
+// [TransactionScanResponseGasEstimationTransactionScanGasEstimationError].
 func (r TransactionScanResponseGasEstimation) AsUnion() TransactionScanResponseGasEstimationUnion {
 	return r.union
 }
@@ -1617,13 +1666,20 @@ func (r TransactionScanResponseGasEstimationStatus) IsKnown() bool {
 
 type TransactionScanResponseSimulation struct {
 	// A string indicating if the simulation was successful or not.
-	Status           TransactionScanResponseSimulationStatus `json:"status,required"`
-	AssetsDiffs      interface{}                             `json:"assets_diffs,required"`
-	TotalUsdDiff     interface{}                             `json:"total_usd_diff,required"`
-	Exposures        interface{}                             `json:"exposures,required"`
-	TotalUsdExposure interface{}                             `json:"total_usd_exposure,required"`
-	AddressDetails   interface{}                             `json:"address_details,required"`
-	AccountSummary   interface{}                             `json:"account_summary,required"`
+	Status TransactionScanResponseSimulationStatus `json:"status,required"`
+	// This field can have the runtime type of [map[string][]AssetDiff].
+	AssetsDiffs interface{} `json:"assets_diffs,required"`
+	// This field can have the runtime type of [map[string]UsdDiff].
+	TotalUsdDiff interface{} `json:"total_usd_diff,required"`
+	// This field can have the runtime type of [map[string][]AddressAssetExposure].
+	Exposures interface{} `json:"exposures,required"`
+	// This field can have the runtime type of [map[string]map[string]string].
+	TotalUsdExposure interface{} `json:"total_usd_exposure,required"`
+	// This field can have the runtime type of
+	// [map[string]TransactionSimulationAddressDetail].
+	AddressDetails interface{} `json:"address_details,required"`
+	// This field can have the runtime type of [TransactionSimulationAccountSummary].
+	AccountSummary interface{} `json:"account_summary,required"`
 	// An error message if the simulation failed.
 	Error string                                `json:"error"`
 	JSON  transactionScanResponseSimulationJSON `json:"-"`
@@ -1657,6 +1713,11 @@ func (r *TransactionScanResponseSimulation) UnmarshalJSON(data []byte) (err erro
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [TransactionScanResponseSimulationUnion] interface which you
+// can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [TransactionSimulation],
+// [TransactionSimulationError].
 func (r TransactionScanResponseSimulation) AsUnion() TransactionScanResponseSimulationUnion {
 	return r.union
 }
@@ -1710,8 +1771,9 @@ type TransactionScanResponseValidation struct {
 	Reason string `json:"reason"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
-	Classification string      `json:"classification"`
-	Features       interface{} `json:"features"`
+	Classification string `json:"classification"`
+	// This field can have the runtime type of [[]TransactionScanFeature].
+	Features interface{} `json:"features"`
 	// An error message if the validation failed.
 	Error string                                `json:"error"`
 	JSON  transactionScanResponseValidationJSON `json:"-"`
@@ -1744,6 +1806,11 @@ func (r *TransactionScanResponseValidation) UnmarshalJSON(data []byte) (err erro
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [TransactionScanResponseValidationUnion] interface which you
+// can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [TransactionValidation],
+// [TransactionValidationError].
 func (r TransactionScanResponseValidation) AsUnion() TransactionScanResponseValidationUnion {
 	return r.union
 }

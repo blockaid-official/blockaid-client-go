@@ -210,21 +210,27 @@ func (r SiteScanMissResponseStatus) IsKnown() bool {
 }
 
 type SiteScanResponse struct {
-	Status            SiteScanResponseStatus `json:"status,required"`
-	URL               string                 `json:"url"`
-	ScanStartTime     time.Time              `json:"scan_start_time" format:"date-time"`
-	ScanEndTime       time.Time              `json:"scan_end_time" format:"date-time"`
-	MaliciousScore    float64                `json:"malicious_score"`
-	IsReachable       bool                   `json:"is_reachable"`
-	IsWeb3Site        bool                   `json:"is_web3_site"`
-	IsMalicious       bool                   `json:"is_malicious"`
-	AttackTypes       interface{}            `json:"attack_types,required"`
-	NetworkOperations interface{}            `json:"network_operations,required"`
-	JsonRpcOperations interface{}            `json:"json_rpc_operations,required"`
-	ContractWrite     interface{}            `json:"contract_write,required"`
-	ContractRead      interface{}            `json:"contract_read,required"`
-	JSON              siteScanResponseJSON   `json:"-"`
-	union             SiteScanResponseUnion
+	Status         SiteScanResponseStatus `json:"status,required"`
+	URL            string                 `json:"url"`
+	ScanStartTime  time.Time              `json:"scan_start_time" format:"date-time"`
+	ScanEndTime    time.Time              `json:"scan_end_time" format:"date-time"`
+	MaliciousScore float64                `json:"malicious_score"`
+	IsReachable    bool                   `json:"is_reachable"`
+	IsWeb3Site     bool                   `json:"is_web3_site"`
+	IsMalicious    bool                   `json:"is_malicious"`
+	// This field can have the runtime type of
+	// [map[string]SiteScanHitResponseAttackType].
+	AttackTypes interface{} `json:"attack_types,required"`
+	// This field can have the runtime type of [[]string].
+	NetworkOperations interface{} `json:"network_operations,required"`
+	// This field can have the runtime type of [[]string].
+	JsonRpcOperations interface{} `json:"json_rpc_operations,required"`
+	// This field can have the runtime type of [SiteScanHitResponseContractWrite].
+	ContractWrite interface{} `json:"contract_write,required"`
+	// This field can have the runtime type of [SiteScanHitResponseContractRead].
+	ContractRead interface{}          `json:"contract_read,required"`
+	JSON         siteScanResponseJSON `json:"-"`
+	union        SiteScanResponseUnion
 }
 
 // siteScanResponseJSON contains the JSON metadata for the struct
@@ -259,6 +265,11 @@ func (r *SiteScanResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [SiteScanResponseUnion] interface which you can cast to the
+// specific types for more type safety.
+//
+// Possible runtime types of the union are [SiteScanHitResponse],
+// [SiteScanMissResponse].
 func (r SiteScanResponse) AsUnion() SiteScanResponseUnion {
 	return r.union
 }
