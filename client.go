@@ -17,6 +17,7 @@ import (
 type Client struct {
 	Options []option.RequestOption
 	Evm     *EvmService
+	Stellar *StellarService
 	Site    *SiteService
 	Token   *TokenService
 }
@@ -35,6 +36,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r = &Client{Options: opts}
 
 	r.Evm = NewEvmService(opts...)
+	r.Stellar = NewStellarService(opts...)
 	r.Site = NewSiteService(opts...)
 	r.Token = NewTokenService(opts...)
 
