@@ -1303,7 +1303,7 @@ type SuccessfulSimulationResultSchema struct {
 	AccountsDetails []SuccessfulSimulationResultSchemaAccountsDetail `json:"accounts_details,required"`
 	// Summary of the assets involved in the transaction simulation
 	AssetsDiff map[string][]SuccessfulSimulationResultSchemaAssetsDiff `json:"assets_diff,required"`
-	// Summary of ownership changes; By account address
+	// Summary of ownership changes, By account address
 	AssetsOwnershipDiff map[string][]SuccessfulSimulationResultSchemaAssetsOwnershipDiff `json:"assets_ownership_diff,required"`
 	// Summary of the delegations, by account address
 	Delegations map[string][]DelegatedAssetDetailsSchema `json:"delegations,required"`
