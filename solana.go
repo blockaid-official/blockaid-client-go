@@ -98,6 +98,36 @@ func (r CnftDetailsSchema) implementsSolanaMessageScanResponseResultSimulationAc
 
 func (r CnftDetailsSchema) implementsSolanaMessageScanResponseResultSimulationDelegationsAsset() {}
 
+type CnftDiffSchema struct {
+	Asset CnftDetailsSchema `json:"asset,required"`
+	// Incoming transfers of the asset
+	In   AssetTransferDetailsSchema `json:"in,nullable"`
+	Out  AssetTransferDetailsSchema `json:"out,nullable"`
+	JSON cnftDiffSchemaJSON         `json:"-"`
+}
+
+// cnftDiffSchemaJSON contains the JSON metadata for the struct [CnftDiffSchema]
+type cnftDiffSchemaJSON struct {
+	Asset       apijson.Field
+	In          apijson.Field
+	Out         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *CnftDiffSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r cnftDiffSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r CnftDiffSchema) implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff() {
+}
+
+func (r CnftDiffSchema) implementsSolanaMessageScanResponseResultSimulationAssetsDiff() {}
+
 type NativeSolDetailsSchema struct {
 	Decimals int64 `json:"decimals"`
 	// Type of the asset (`"SOL"`)
