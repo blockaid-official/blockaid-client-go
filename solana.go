@@ -36,7 +36,7 @@ func NewSolanaService(opts ...option.RequestOption) (r *SolanaService) {
 
 type AccountSummarySchema struct {
 	// Total USD diff for the requested account address
-	TotalUsdDiff AccountSummarySchemaTotalUsdDiff `json:"total_usd_diff,required"`
+	TotalUsdDiff TotalUsdDiffSchema `json:"total_usd_diff,required"`
 	// Assets diff of the requested account address
 	AccountAssetsDiff []AccountSummarySchemaAccountAssetsDiff `json:"account_assets_diff"`
 	// Delegated assets of the requested account address
@@ -65,54 +65,14 @@ func (r accountSummarySchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-// Total USD diff for the requested account address
-type AccountSummarySchemaTotalUsdDiff struct {
-	// Total incoming USD transfers
-	In float64 `json:"in,required"`
-	// Total outgoing USD transfers
-	Out float64 `json:"out,required"`
-	// Total USD transfers
-	Total float64                              `json:"total,required"`
-	JSON  accountSummarySchemaTotalUsdDiffJSON `json:"-"`
-}
-
-// accountSummarySchemaTotalUsdDiffJSON contains the JSON metadata for the struct
-// [AccountSummarySchemaTotalUsdDiff]
-type accountSummarySchemaTotalUsdDiffJSON struct {
-	In          apijson.Field
-	Out         apijson.Field
-	Total       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaTotalUsdDiff) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaTotalUsdDiffJSON) RawJSON() string {
-	return r.raw
-}
-
 type AccountSummarySchemaAccountAssetsDiff struct {
-	// This field can have the runtime type of
-	// [AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaAsset],
-	// [AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaAsset],
-	// [AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaAsset],
-	// [AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaAsset].
+	// This field can have the runtime type of [NativeSolDetailsSchema],
+	// [SplFungibleTokenDetailsSchema], [SplNonFungibleTokenDetailsSchema],
+	// [CnftDetailsSchema].
 	Asset interface{} `json:"asset"`
-	// This field can have the runtime type of
-	// [AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaIn],
-	// [AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaIn],
-	// [AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaIn],
-	// [AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaIn].
-	In interface{} `json:"in,required"`
-	// This field can have the runtime type of
-	// [AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaOut],
-	// [AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaOut],
-	// [AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaOut],
-	// [AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaOut].
-	Out   interface{}                               `json:"out,required"`
+	// Incoming transfers of the asset
+	In    AssetTransferDetailsSchema                `json:"in,nullable"`
+	Out   AssetTransferDetailsSchema                `json:"out,nullable"`
 	JSON  accountSummarySchemaAccountAssetsDiffJSON `json:"-"`
 	union AccountSummarySchemaAccountAssetsDiffUnion
 }
@@ -142,19 +102,14 @@ func (r *AccountSummarySchemaAccountAssetsDiff) UnmarshalJSON(data []byte) (err 
 // AsUnion returns a [AccountSummarySchemaAccountAssetsDiffUnion] interface which
 // you can cast to the specific types for more type safety.
 //
-// Possible runtime types of the union are
-// [AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchema],
-// [AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchema],
-// [AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchema],
-// [AccountSummarySchemaAccountAssetsDiffCnftDiffSchema].
+// Possible runtime types of the union are [NativeSolDiffSchema],
+// [SplFungibleTokenDiffSchema], [SplNonFungibleTokenDiffSchema], [CnftDiffSchema].
 func (r AccountSummarySchemaAccountAssetsDiff) AsUnion() AccountSummarySchemaAccountAssetsDiffUnion {
 	return r.union
 }
 
-// Union satisfied by [AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchema],
-// [AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchema],
-// [AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchema] or
-// [AccountSummarySchemaAccountAssetsDiffCnftDiffSchema].
+// Union satisfied by [NativeSolDiffSchema], [SplFungibleTokenDiffSchema],
+// [SplNonFungibleTokenDiffSchema] or [CnftDiffSchema].
 type AccountSummarySchemaAccountAssetsDiffUnion interface {
 	implementsAccountSummarySchemaAccountAssetsDiff()
 }
@@ -165,540 +120,31 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchema{}),
+			Type:       reflect.TypeOf(NativeSolDiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchema{}),
+			Type:       reflect.TypeOf(SplFungibleTokenDiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchema{}),
+			Type:       reflect.TypeOf(SplNonFungibleTokenDiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(AccountSummarySchemaAccountAssetsDiffCnftDiffSchema{}),
+			Type:       reflect.TypeOf(CnftDiffSchema{}),
 		},
 	)
 }
 
-type AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchema struct {
-	Asset AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaAsset `json:"asset,required"`
-	// Incoming transfers of the asset
-	In   AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaIn   `json:"in,nullable"`
-	Out  AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaOut  `json:"out,nullable"`
-	JSON accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaJSON contains the JSON
-// metadata for the struct
-// [AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchema]
-type accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaJSON struct {
-	Asset       apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchema) implementsAccountSummarySchemaAccountAssetsDiff() {
-}
-
-type AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaAsset struct {
-	Decimals int64 `json:"decimals"`
-	// Type of the asset (`"SOL"`)
-	Type string                                                            `json:"type"`
-	JSON accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaAssetJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaAssetJSON contains the
-// JSON metadata for the struct
-// [AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaAsset]
-type accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaAssetJSON struct {
-	Decimals    apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-// Incoming transfers of the asset
-type AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                        `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaInJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaInJSON contains the JSON
-// metadata for the struct
-// [AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaIn]
-type accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-type AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                         `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaOutJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaOutJSON contains the
-// JSON metadata for the struct
-// [AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaOut]
-type accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffNativeSolDiffSchemaOutJSON) RawJSON() string {
-	return r.raw
-}
-
-type AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchema struct {
-	Asset AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaAsset `json:"asset,required"`
-	// Incoming transfers of the asset
-	In   AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaIn   `json:"in,nullable"`
-	Out  AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaOut  `json:"out,nullable"`
-	JSON accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaJSON contains the
-// JSON metadata for the struct
-// [AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchema]
-type accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaJSON struct {
-	Asset       apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchema) implementsAccountSummarySchemaAccountAssetsDiff() {
-}
-
-type AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaAsset struct {
-	Address  string `json:"address,required"`
-	Decimals int64  `json:"decimals,required"`
-	Name     string `json:"name,required"`
-	Symbol   string `json:"symbol,required"`
-	Logo     string `json:"logo"`
-	// Type of the asset (`"TOKEN"`)
-	Type string                                                                   `json:"type"`
-	JSON accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaAssetJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaAssetJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaAsset]
-type accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaAssetJSON struct {
-	Address     apijson.Field
-	Decimals    apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-// Incoming transfers of the asset
-type AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                               `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaInJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaInJSON contains
-// the JSON metadata for the struct
-// [AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaIn]
-type accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-type AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaOutJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaOutJSON contains
-// the JSON metadata for the struct
-// [AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaOut]
-type accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffSplFungibleTokenDiffSchemaOutJSON) RawJSON() string {
-	return r.raw
-}
-
-type AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchema struct {
-	Asset AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaAsset `json:"asset,required"`
-	// Incoming transfers of the asset
-	In   AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaIn   `json:"in,nullable"`
-	Out  AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaOut  `json:"out,nullable"`
-	JSON accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaJSON contains
-// the JSON metadata for the struct
-// [AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchema]
-type accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaJSON struct {
-	Asset       apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchema) implementsAccountSummarySchemaAccountAssetsDiff() {
-}
-
-type AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaAsset struct {
-	Address  string `json:"address,required"`
-	Name     string `json:"name,required"`
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
-	Logo     string `json:"logo"`
-	// Type of the asset (`"NFT"`)
-	Type string                                                                      `json:"type"`
-	JSON accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaAssetJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaAssetJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaAsset]
-type accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaAssetJSON struct {
-	Address     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Decimals    apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-// Incoming transfers of the asset
-type AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                  `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaInJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaInJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaIn]
-type accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-type AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                   `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaOutJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaOutJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaOut]
-type accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffSplNonFungibleTokenDiffSchemaOutJSON) RawJSON() string {
-	return r.raw
-}
-
-type AccountSummarySchemaAccountAssetsDiffCnftDiffSchema struct {
-	Asset AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaAsset `json:"asset,required"`
-	// Incoming transfers of the asset
-	In   AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaIn   `json:"in,nullable"`
-	Out  AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaOut  `json:"out,nullable"`
-	JSON accountSummarySchemaAccountAssetsDiffCnftDiffSchemaJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffCnftDiffSchemaJSON contains the JSON
-// metadata for the struct [AccountSummarySchemaAccountAssetsDiffCnftDiffSchema]
-type accountSummarySchemaAccountAssetsDiffCnftDiffSchemaJSON struct {
-	Asset       apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffCnftDiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffCnftDiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r AccountSummarySchemaAccountAssetsDiffCnftDiffSchema) implementsAccountSummarySchemaAccountAssetsDiff() {
-}
-
-type AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaAsset struct {
-	Address  string `json:"address,required"`
-	Decimals int64  `json:"decimals,required"`
-	Name     string `json:"name,required"`
-	Symbol   string `json:"symbol,required"`
-	Logo     string `json:"logo"`
-	// Type of the asset (`"CNFT"`)
-	Type string                                                       `json:"type"`
-	JSON accountSummarySchemaAccountAssetsDiffCnftDiffSchemaAssetJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffCnftDiffSchemaAssetJSON contains the JSON
-// metadata for the struct
-// [AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaAsset]
-type accountSummarySchemaAccountAssetsDiffCnftDiffSchemaAssetJSON struct {
-	Address     apijson.Field
-	Decimals    apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffCnftDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-// Incoming transfers of the asset
-type AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                   `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountAssetsDiffCnftDiffSchemaInJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffCnftDiffSchemaInJSON contains the JSON
-// metadata for the struct [AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaIn]
-type accountSummarySchemaAccountAssetsDiffCnftDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffCnftDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-type AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                    `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountAssetsDiffCnftDiffSchemaOutJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountAssetsDiffCnftDiffSchemaOutJSON contains the JSON
-// metadata for the struct [AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaOut]
-type accountSummarySchemaAccountAssetsDiffCnftDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountAssetsDiffCnftDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountAssetsDiffCnftDiffSchemaOutJSON) RawJSON() string {
-	return r.raw
-}
-
 type AccountSummarySchemaAccountOwnershipsDiff struct {
-	// This field can have the runtime type of
-	// [AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaAsset],
-	// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAsset],
-	// [AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaAsset].
+	// This field can have the runtime type of [NativeSolDetailsSchema],
+	// [SplTokenOwnershipDiffSchemaAsset], [StakedSolAssetDetailsSchema].
 	Asset interface{} `json:"asset,required"`
-	// This field can have the runtime type of
-	// [AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaIn],
-	// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaIn],
-	// [AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaIn].
-	In interface{} `json:"in_,required"`
-	// This field can have the runtime type of
-	// [AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaOut],
-	// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaOut],
-	// [AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaOut].
-	Out interface{} `json:"out,required"`
+	// Incoming transfers of the asset
+	In AssetTransferDetailsSchema `json:"in_,nullable"`
+	// Details of the moved value
+	Out AssetTransferDetailsSchema `json:"out,nullable"`
 	// The owner prior to the transaction
 	PreOwner string `json:"pre_owner,nullable"`
 	// The owner post the transaction
@@ -734,18 +180,14 @@ func (r *AccountSummarySchemaAccountOwnershipsDiff) UnmarshalJSON(data []byte) (
 // AsUnion returns a [AccountSummarySchemaAccountOwnershipsDiffUnion] interface
 // which you can cast to the specific types for more type safety.
 //
-// Possible runtime types of the union are
-// [AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchema],
-// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchema],
-// [AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchema].
+// Possible runtime types of the union are [NativeSolOwnershipDiffSchema],
+// [SplTokenOwnershipDiffSchema], [StakedSolWithdrawAuthorityDiffSchema].
 func (r AccountSummarySchemaAccountOwnershipsDiff) AsUnion() AccountSummarySchemaAccountOwnershipsDiffUnion {
 	return r.union
 }
 
-// Union satisfied by
-// [AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchema],
-// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchema] or
-// [AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchema].
+// Union satisfied by [NativeSolOwnershipDiffSchema], [SplTokenOwnershipDiffSchema]
+// or [StakedSolWithdrawAuthorityDiffSchema].
 type AccountSummarySchemaAccountOwnershipsDiffUnion interface {
 	implementsAccountSummarySchemaAccountOwnershipsDiff()
 }
@@ -756,520 +198,17 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchema{}),
+			Type:       reflect.TypeOf(NativeSolOwnershipDiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchema{}),
+			Type:       reflect.TypeOf(SplTokenOwnershipDiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchema{}),
+			Type:       reflect.TypeOf(StakedSolWithdrawAuthorityDiffSchema{}),
 		},
 	)
-}
-
-type AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchema struct {
-	Asset AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaAsset `json:"asset,required"`
-	// The owner post the transaction
-	PostOwner string `json:"post_owner,required"`
-	// Incoming transfers of the asset
-	In AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaIn `json:"in_,nullable"`
-	// Details of the moved value
-	Out AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaOut `json:"out,nullable"`
-	// The owner prior to the transaction
-	PreOwner string                                                                    `json:"pre_owner,nullable"`
-	JSON     accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchema]
-type accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaJSON struct {
-	Asset       apijson.Field
-	PostOwner   apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	PreOwner    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchema) implementsAccountSummarySchemaAccountOwnershipsDiff() {
-}
-
-type AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaAsset struct {
-	Decimals int64 `json:"decimals"`
-	// Type of the asset (`"SOL"`)
-	Type string                                                                         `json:"type"`
-	JSON accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaAssetJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaAssetJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaAsset]
-type accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaAssetJSON struct {
-	Decimals    apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-// Incoming transfers of the asset
-type AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                     `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaInJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaInJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaIn]
-type accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-// Details of the moved value
-type AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                      `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaOutJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaOutJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaOut]
-type accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffNativeSolOwnershipDiffSchemaOutJSON) RawJSON() string {
-	return r.raw
-}
-
-type AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchema struct {
-	Asset AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAsset `json:"asset,required"`
-	// The owner post the transaction
-	PostOwner string `json:"post_owner,required"`
-	// Incoming transfers of the asset
-	In AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaIn `json:"in_,nullable"`
-	// Details of the moved value
-	Out AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaOut `json:"out,nullable"`
-	// The owner prior to the transaction
-	PreOwner string                                                                   `json:"pre_owner,nullable"`
-	JSON     accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchema]
-type accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaJSON struct {
-	Asset       apijson.Field
-	PostOwner   apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	PreOwner    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchema) implementsAccountSummarySchemaAccountOwnershipsDiff() {
-}
-
-type AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAsset struct {
-	Address string `json:"address,required"`
-	Symbol  string `json:"symbol,required"`
-	Name    string `json:"name,required"`
-	Logo    string `json:"logo"`
-	// Type of the asset (`"TOKEN"`)
-	Type     string                                                                        `json:"type"`
-	Decimals int64                                                                         `json:"decimals"`
-	JSON     accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetJSON `json:"-"`
-	union    AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetUnion
-}
-
-// accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAsset]
-type accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetJSON struct {
-	Address     apijson.Field
-	Symbol      apijson.Field
-	Name        apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
-	Decimals    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a
-// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetUnion]
-// interface which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are
-// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema],
-// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema].
-func (r AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAsset) AsUnion() AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetUnion {
-	return r.union
-}
-
-// Union satisfied by
-// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema]
-// or
-// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema].
-type AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetUnion interface {
-	implementsAccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAsset()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema{}),
-		},
-	)
-}
-
-type AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema struct {
-	Address  string `json:"address,required"`
-	Decimals int64  `json:"decimals,required"`
-	Name     string `json:"name,required"`
-	Symbol   string `json:"symbol,required"`
-	Logo     string `json:"logo"`
-	// Type of the asset (`"TOKEN"`)
-	Type string                                                                                                     `json:"type"`
-	JSON accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchemaJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchemaJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema]
-type accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchemaJSON struct {
-	Address     apijson.Field
-	Decimals    apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema) implementsAccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAsset() {
-}
-
-type AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema struct {
-	Address  string `json:"address,required"`
-	Name     string `json:"name,required"`
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
-	Logo     string `json:"logo"`
-	// Type of the asset (`"NFT"`)
-	Type string                                                                                                        `json:"type"`
-	JSON accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchemaJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchemaJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema]
-type accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchemaJSON struct {
-	Address     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Decimals    apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema) implementsAccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaAsset() {
-}
-
-// Incoming transfers of the asset
-type AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                    `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaInJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaInJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaIn]
-type accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-// Details of the moved value
-type AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                     `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaOutJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaOutJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaOut]
-type accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffSplTokenOwnershipDiffSchemaOutJSON) RawJSON() string {
-	return r.raw
-}
-
-type AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchema struct {
-	// The owner post the transaction
-	PostOwner string                                                                             `json:"post_owner,required"`
-	Asset     AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaAsset `json:"asset"`
-	// Incoming transfers of the asset
-	In AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaIn `json:"in_,nullable"`
-	// Details of the moved value
-	Out AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaOut `json:"out,nullable"`
-	// The owner prior to the transaction
-	PreOwner string                                                                            `json:"pre_owner,nullable"`
-	JSON     accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchema]
-type accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaJSON struct {
-	PostOwner   apijson.Field
-	Asset       apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	PreOwner    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchema) implementsAccountSummarySchemaAccountOwnershipsDiff() {
-}
-
-type AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaAsset struct {
-	Decimals int64 `json:"decimals"`
-	// Type of the asset (`"STAKED_SOL"`)
-	Type string                                                                                 `json:"type"`
-	JSON accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaAssetJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaAssetJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaAsset]
-type accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaAssetJSON struct {
-	Decimals    apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-// Incoming transfers of the asset
-type AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                             `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaInJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaInJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaIn]
-type accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-// Details of the moved value
-type AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                              `json:"usd_price,nullable"`
-	JSON     accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaOutJSON `json:"-"`
-}
-
-// accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaOutJSON
-// contains the JSON metadata for the struct
-// [AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaOut]
-type accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummarySchemaAccountOwnershipsDiffStakedSolWithdrawAuthorityDiffSchemaOutJSON) RawJSON() string {
-	return r.raw
 }
 
 type AddressScanRequestSchemaParam struct {
@@ -1381,6 +320,158 @@ func (r AddressScanResponseSchemaResultType) IsKnown() bool {
 	return false
 }
 
+type AssetTransferDetailsSchema struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// Value of the transfer
+	Value float64 `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                        `json:"usd_price,nullable"`
+	JSON     assetTransferDetailsSchemaJSON `json:"-"`
+}
+
+// assetTransferDetailsSchemaJSON contains the JSON metadata for the struct
+// [AssetTransferDetailsSchema]
+type assetTransferDetailsSchemaJSON struct {
+	RawValue    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	UsdPrice    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AssetTransferDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r assetTransferDetailsSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+type CnftDetailsSchema struct {
+	Address  string `json:"address,required"`
+	Decimals int64  `json:"decimals,required"`
+	Name     string `json:"name,required"`
+	Symbol   string `json:"symbol,required"`
+	Logo     string `json:"logo"`
+	// Type of the asset (`"CNFT"`)
+	Type string                `json:"type"`
+	JSON cnftDetailsSchemaJSON `json:"-"`
+}
+
+// cnftDetailsSchemaJSON contains the JSON metadata for the struct
+// [CnftDetailsSchema]
+type cnftDetailsSchemaJSON struct {
+	Address     apijson.Field
+	Decimals    apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	Logo        apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *CnftDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r cnftDetailsSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r CnftDetailsSchema) implementsDelegatedAssetDetailsSchemaAsset() {}
+
+type CnftDiffSchema struct {
+	Asset CnftDetailsSchema `json:"asset,required"`
+	// Incoming transfers of the asset
+	In   AssetTransferDetailsSchema `json:"in,nullable"`
+	Out  AssetTransferDetailsSchema `json:"out,nullable"`
+	JSON cnftDiffSchemaJSON         `json:"-"`
+}
+
+// cnftDiffSchemaJSON contains the JSON metadata for the struct [CnftDiffSchema]
+type cnftDiffSchemaJSON struct {
+	Asset       apijson.Field
+	In          apijson.Field
+	Out         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *CnftDiffSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r cnftDiffSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r CnftDiffSchema) implementsAccountSummarySchemaAccountAssetsDiff() {}
+
+func (r CnftDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsDiff() {}
+
+type CnftMintAccountDetailsSchema struct {
+	// Encoded public key of the account
+	AccountAddress string `json:"account_address,required"`
+	// Name of the mint
+	Name string `json:"name,required"`
+	// Symbol of the mint
+	Symbol string `json:"symbol,required"`
+	// URI of the mint
+	Uri string `json:"uri,required"`
+	// Whether the account had been written to during the simulation
+	WasWrittenTo bool `json:"was_written_to,required"`
+	// Description of the account
+	Description string `json:"description,nullable"`
+	// Logo of the mint
+	Logo string                           `json:"logo"`
+	Type CnftMintAccountDetailsSchemaType `json:"type"`
+	JSON cnftMintAccountDetailsSchemaJSON `json:"-"`
+}
+
+// cnftMintAccountDetailsSchemaJSON contains the JSON metadata for the struct
+// [CnftMintAccountDetailsSchema]
+type cnftMintAccountDetailsSchemaJSON struct {
+	AccountAddress apijson.Field
+	Name           apijson.Field
+	Symbol         apijson.Field
+	Uri            apijson.Field
+	WasWrittenTo   apijson.Field
+	Description    apijson.Field
+	Logo           apijson.Field
+	Type           apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *CnftMintAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r cnftMintAccountDetailsSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r CnftMintAccountDetailsSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {}
+
+type CnftMintAccountDetailsSchemaType string
+
+const (
+	CnftMintAccountDetailsSchemaTypeCnftMintAccount CnftMintAccountDetailsSchemaType = "CNFT_MINT_ACCOUNT"
+)
+
+func (r CnftMintAccountDetailsSchemaType) IsKnown() bool {
+	switch r {
+	case CnftMintAccountDetailsSchemaTypeCnftMintAccount:
+		return true
+	}
+	return false
+}
+
 type CombinedValidationResult struct {
 	// Transaction validation result
 	Validation CombinedValidationResultValidation `json:"validation,required"`
@@ -1483,8 +574,8 @@ type DelegatedAssetDetailsSchema struct {
 	// The delegate's address
 	Delegate string `json:"delegate,required"`
 	// Details of the delegation
-	Delegation DelegatedAssetDetailsSchemaDelegation `json:"delegation,required"`
-	JSON       delegatedAssetDetailsSchemaJSON       `json:"-"`
+	Delegation AssetTransferDetailsSchema      `json:"delegation,required"`
+	JSON       delegatedAssetDetailsSchemaJSON `json:"-"`
 }
 
 // delegatedAssetDetailsSchemaJSON contains the JSON metadata for the struct
@@ -1545,18 +636,14 @@ func (r *DelegatedAssetDetailsSchemaAsset) UnmarshalJSON(data []byte) (err error
 // AsUnion returns a [DelegatedAssetDetailsSchemaAssetUnion] interface which you
 // can cast to the specific types for more type safety.
 //
-// Possible runtime types of the union are
-// [DelegatedAssetDetailsSchemaAssetSplFungibleTokenDetailsSchema],
-// [DelegatedAssetDetailsSchemaAssetSplNonFungibleTokenDetailsSchema],
-// [DelegatedAssetDetailsSchemaAssetCnftDetailsSchema].
+// Possible runtime types of the union are [SplFungibleTokenDetailsSchema],
+// [SplNonFungibleTokenDetailsSchema], [CnftDetailsSchema].
 func (r DelegatedAssetDetailsSchemaAsset) AsUnion() DelegatedAssetDetailsSchemaAssetUnion {
 	return r.union
 }
 
-// Union satisfied by
-// [DelegatedAssetDetailsSchemaAssetSplFungibleTokenDetailsSchema],
-// [DelegatedAssetDetailsSchemaAssetSplNonFungibleTokenDetailsSchema] or
-// [DelegatedAssetDetailsSchemaAssetCnftDetailsSchema].
+// Union satisfied by [SplFungibleTokenDetailsSchema],
+// [SplNonFungibleTokenDetailsSchema] or [CnftDetailsSchema].
 type DelegatedAssetDetailsSchemaAssetUnion interface {
 	implementsDelegatedAssetDetailsSchemaAsset()
 }
@@ -1567,156 +654,320 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(DelegatedAssetDetailsSchemaAssetSplFungibleTokenDetailsSchema{}),
+			Type:       reflect.TypeOf(SplFungibleTokenDetailsSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(DelegatedAssetDetailsSchemaAssetSplNonFungibleTokenDetailsSchema{}),
+			Type:       reflect.TypeOf(SplNonFungibleTokenDetailsSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(DelegatedAssetDetailsSchemaAssetCnftDetailsSchema{}),
+			Type:       reflect.TypeOf(CnftDetailsSchema{}),
 		},
 	)
 }
 
-type DelegatedAssetDetailsSchemaAssetSplFungibleTokenDetailsSchema struct {
-	Address  string `json:"address,required"`
-	Decimals int64  `json:"decimals,required"`
-	Name     string `json:"name,required"`
-	Symbol   string `json:"symbol,required"`
-	Logo     string `json:"logo"`
-	// Type of the asset (`"TOKEN"`)
-	Type string                                                            `json:"type"`
-	JSON delegatedAssetDetailsSchemaAssetSplFungibleTokenDetailsSchemaJSON `json:"-"`
+type FungibleMintAccountDetailsSchema struct {
+	// Encoded public key of the account
+	AccountAddress string `json:"account_address,required"`
+	// Name of the mint
+	Name string `json:"name,required"`
+	// Symbol of the mint
+	Symbol string `json:"symbol,required"`
+	// Whether the account had been written to during the simulation
+	WasWrittenTo bool `json:"was_written_to,required"`
+	// Description of the account
+	Description string `json:"description,nullable"`
+	// Logo of the mint
+	Logo string                               `json:"logo"`
+	Type FungibleMintAccountDetailsSchemaType `json:"type"`
+	JSON fungibleMintAccountDetailsSchemaJSON `json:"-"`
 }
 
-// delegatedAssetDetailsSchemaAssetSplFungibleTokenDetailsSchemaJSON contains the
-// JSON metadata for the struct
-// [DelegatedAssetDetailsSchemaAssetSplFungibleTokenDetailsSchema]
-type delegatedAssetDetailsSchemaAssetSplFungibleTokenDetailsSchemaJSON struct {
-	Address     apijson.Field
+// fungibleMintAccountDetailsSchemaJSON contains the JSON metadata for the struct
+// [FungibleMintAccountDetailsSchema]
+type fungibleMintAccountDetailsSchemaJSON struct {
+	AccountAddress apijson.Field
+	Name           apijson.Field
+	Symbol         apijson.Field
+	WasWrittenTo   apijson.Field
+	Description    apijson.Field
+	Logo           apijson.Field
+	Type           apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *FungibleMintAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r fungibleMintAccountDetailsSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r FungibleMintAccountDetailsSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {
+}
+
+type FungibleMintAccountDetailsSchemaType string
+
+const (
+	FungibleMintAccountDetailsSchemaTypeFungibleMintAccount FungibleMintAccountDetailsSchemaType = "FUNGIBLE_MINT_ACCOUNT"
+)
+
+func (r FungibleMintAccountDetailsSchemaType) IsKnown() bool {
+	switch r {
+	case FungibleMintAccountDetailsSchemaTypeFungibleMintAccount:
+		return true
+	}
+	return false
+}
+
+type NativeSolDetailsSchema struct {
+	Decimals int64 `json:"decimals"`
+	// Type of the asset (`"SOL"`)
+	Type string                     `json:"type"`
+	JSON nativeSolDetailsSchemaJSON `json:"-"`
+}
+
+// nativeSolDetailsSchemaJSON contains the JSON metadata for the struct
+// [NativeSolDetailsSchema]
+type nativeSolDetailsSchemaJSON struct {
 	Decimals    apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Logo        apijson.Field
 	Type        apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *DelegatedAssetDetailsSchemaAssetSplFungibleTokenDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *NativeSolDetailsSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r delegatedAssetDetailsSchemaAssetSplFungibleTokenDetailsSchemaJSON) RawJSON() string {
+func (r nativeSolDetailsSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r DelegatedAssetDetailsSchemaAssetSplFungibleTokenDetailsSchema) implementsDelegatedAssetDetailsSchemaAsset() {
+type NativeSolDiffSchema struct {
+	Asset NativeSolDetailsSchema `json:"asset,required"`
+	// Incoming transfers of the asset
+	In   AssetTransferDetailsSchema `json:"in,nullable"`
+	Out  AssetTransferDetailsSchema `json:"out,nullable"`
+	JSON nativeSolDiffSchemaJSON    `json:"-"`
 }
 
-type DelegatedAssetDetailsSchemaAssetSplNonFungibleTokenDetailsSchema struct {
-	Address  string `json:"address,required"`
-	Name     string `json:"name,required"`
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
-	Logo     string `json:"logo"`
-	// Type of the asset (`"NFT"`)
-	Type string                                                               `json:"type"`
-	JSON delegatedAssetDetailsSchemaAssetSplNonFungibleTokenDetailsSchemaJSON `json:"-"`
-}
-
-// delegatedAssetDetailsSchemaAssetSplNonFungibleTokenDetailsSchemaJSON contains
-// the JSON metadata for the struct
-// [DelegatedAssetDetailsSchemaAssetSplNonFungibleTokenDetailsSchema]
-type delegatedAssetDetailsSchemaAssetSplNonFungibleTokenDetailsSchemaJSON struct {
-	Address     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Decimals    apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
+// nativeSolDiffSchemaJSON contains the JSON metadata for the struct
+// [NativeSolDiffSchema]
+type nativeSolDiffSchemaJSON struct {
+	Asset       apijson.Field
+	In          apijson.Field
+	Out         apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *DelegatedAssetDetailsSchemaAssetSplNonFungibleTokenDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *NativeSolDiffSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r delegatedAssetDetailsSchemaAssetSplNonFungibleTokenDetailsSchemaJSON) RawJSON() string {
+func (r nativeSolDiffSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r DelegatedAssetDetailsSchemaAssetSplNonFungibleTokenDetailsSchema) implementsDelegatedAssetDetailsSchemaAsset() {
+func (r NativeSolDiffSchema) implementsAccountSummarySchemaAccountAssetsDiff() {}
+
+func (r NativeSolDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsDiff() {}
+
+type NativeSolOwnershipDiffSchema struct {
+	Asset NativeSolDetailsSchema `json:"asset,required"`
+	// The owner post the transaction
+	PostOwner string `json:"post_owner,required"`
+	// Incoming transfers of the asset
+	In AssetTransferDetailsSchema `json:"in_,nullable"`
+	// Details of the moved value
+	Out AssetTransferDetailsSchema `json:"out,nullable"`
+	// The owner prior to the transaction
+	PreOwner string                           `json:"pre_owner,nullable"`
+	JSON     nativeSolOwnershipDiffSchemaJSON `json:"-"`
 }
 
-type DelegatedAssetDetailsSchemaAssetCnftDetailsSchema struct {
-	Address  string `json:"address,required"`
-	Decimals int64  `json:"decimals,required"`
-	Name     string `json:"name,required"`
-	Symbol   string `json:"symbol,required"`
-	Logo     string `json:"logo"`
-	// Type of the asset (`"CNFT"`)
-	Type string                                                `json:"type"`
-	JSON delegatedAssetDetailsSchemaAssetCnftDetailsSchemaJSON `json:"-"`
-}
-
-// delegatedAssetDetailsSchemaAssetCnftDetailsSchemaJSON contains the JSON metadata
-// for the struct [DelegatedAssetDetailsSchemaAssetCnftDetailsSchema]
-type delegatedAssetDetailsSchemaAssetCnftDetailsSchemaJSON struct {
-	Address     apijson.Field
-	Decimals    apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
+// nativeSolOwnershipDiffSchemaJSON contains the JSON metadata for the struct
+// [NativeSolOwnershipDiffSchema]
+type nativeSolOwnershipDiffSchemaJSON struct {
+	Asset       apijson.Field
+	PostOwner   apijson.Field
+	In          apijson.Field
+	Out         apijson.Field
+	PreOwner    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *DelegatedAssetDetailsSchemaAssetCnftDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *NativeSolOwnershipDiffSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r delegatedAssetDetailsSchemaAssetCnftDetailsSchemaJSON) RawJSON() string {
+func (r nativeSolOwnershipDiffSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r DelegatedAssetDetailsSchemaAssetCnftDetailsSchema) implementsDelegatedAssetDetailsSchemaAsset() {
+func (r NativeSolOwnershipDiffSchema) implementsAccountSummarySchemaAccountOwnershipsDiff() {}
+
+func (r NativeSolOwnershipDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsOwnershipDiff() {
 }
 
-// Details of the delegation
-type DelegatedAssetDetailsSchemaDelegation struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                   `json:"usd_price,nullable"`
-	JSON     delegatedAssetDetailsSchemaDelegationJSON `json:"-"`
+type NonFungibleMintAccountDetailsSchema struct {
+	// Encoded public key of the account
+	AccountAddress string `json:"account_address,required"`
+	// Name of the mint
+	Name string `json:"name,required"`
+	// Symbol of the mint
+	Symbol string `json:"symbol,required"`
+	// URI of the mint
+	Uri string `json:"uri,required"`
+	// Whether the account had been written to during the simulation
+	WasWrittenTo bool `json:"was_written_to,required"`
+	// Description of the account
+	Description string `json:"description,nullable"`
+	// Logo of the mint
+	Logo string                                  `json:"logo"`
+	Type NonFungibleMintAccountDetailsSchemaType `json:"type"`
+	JSON nonFungibleMintAccountDetailsSchemaJSON `json:"-"`
 }
 
-// delegatedAssetDetailsSchemaDelegationJSON contains the JSON metadata for the
-// struct [DelegatedAssetDetailsSchemaDelegation]
-type delegatedAssetDetailsSchemaDelegationJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+// nonFungibleMintAccountDetailsSchemaJSON contains the JSON metadata for the
+// struct [NonFungibleMintAccountDetailsSchema]
+type nonFungibleMintAccountDetailsSchemaJSON struct {
+	AccountAddress apijson.Field
+	Name           apijson.Field
+	Symbol         apijson.Field
+	Uri            apijson.Field
+	WasWrittenTo   apijson.Field
+	Description    apijson.Field
+	Logo           apijson.Field
+	Type           apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
 }
 
-func (r *DelegatedAssetDetailsSchemaDelegation) UnmarshalJSON(data []byte) (err error) {
+func (r *NonFungibleMintAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r delegatedAssetDetailsSchemaDelegationJSON) RawJSON() string {
+func (r nonFungibleMintAccountDetailsSchemaJSON) RawJSON() string {
 	return r.raw
+}
+
+func (r NonFungibleMintAccountDetailsSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {
+}
+
+type NonFungibleMintAccountDetailsSchemaType string
+
+const (
+	NonFungibleMintAccountDetailsSchemaTypeNonFungibleMintAccount NonFungibleMintAccountDetailsSchemaType = "NON_FUNGIBLE_MINT_ACCOUNT"
+)
+
+func (r NonFungibleMintAccountDetailsSchemaType) IsKnown() bool {
+	switch r {
+	case NonFungibleMintAccountDetailsSchemaTypeNonFungibleMintAccount:
+		return true
+	}
+	return false
+}
+
+type PdaAccountSchema struct {
+	// Encoded public key of the account
+	AccountAddress string `json:"account_address,required"`
+	// The address of the owning program
+	Owner string `json:"owner,required"`
+	// Whether the account had been written to during the simulation
+	WasWrittenTo bool `json:"was_written_to,required"`
+	// Description of the account
+	Description string               `json:"description,nullable"`
+	Type        PdaAccountSchemaType `json:"type"`
+	JSON        pdaAccountSchemaJSON `json:"-"`
+}
+
+// pdaAccountSchemaJSON contains the JSON metadata for the struct
+// [PdaAccountSchema]
+type pdaAccountSchemaJSON struct {
+	AccountAddress apijson.Field
+	Owner          apijson.Field
+	WasWrittenTo   apijson.Field
+	Description    apijson.Field
+	Type           apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *PdaAccountSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r pdaAccountSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r PdaAccountSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {}
+
+type PdaAccountSchemaType string
+
+const (
+	PdaAccountSchemaTypePda PdaAccountSchemaType = "PDA"
+)
+
+func (r PdaAccountSchemaType) IsKnown() bool {
+	switch r {
+	case PdaAccountSchemaTypePda:
+		return true
+	}
+	return false
+}
+
+type ProgramAccountDetailsSchema struct {
+	// Encoded public key of the account
+	AccountAddress string                          `json:"account_address,required"`
+	Type           ProgramAccountDetailsSchemaType `json:"type,required"`
+	// Whether the account had been written to during the simulation
+	WasWrittenTo bool `json:"was_written_to,required"`
+	// Description of the account
+	Description string                          `json:"description,nullable"`
+	JSON        programAccountDetailsSchemaJSON `json:"-"`
+}
+
+// programAccountDetailsSchemaJSON contains the JSON metadata for the struct
+// [ProgramAccountDetailsSchema]
+type programAccountDetailsSchemaJSON struct {
+	AccountAddress apijson.Field
+	Type           apijson.Field
+	WasWrittenTo   apijson.Field
+	Description    apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *ProgramAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r programAccountDetailsSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r ProgramAccountDetailsSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {}
+
+type ProgramAccountDetailsSchemaType string
+
+const (
+	ProgramAccountDetailsSchemaTypeProgram       ProgramAccountDetailsSchemaType = "PROGRAM"
+	ProgramAccountDetailsSchemaTypeNativeProgram ProgramAccountDetailsSchemaType = "NATIVE_PROGRAM"
+)
+
+func (r ProgramAccountDetailsSchemaType) IsKnown() bool {
+	switch r {
+	case ProgramAccountDetailsSchemaTypeProgram, ProgramAccountDetailsSchemaTypeNativeProgram:
+		return true
+	}
+	return false
 }
 
 type ResponseSchema struct {
@@ -1744,6 +995,305 @@ func (r *ResponseSchema) UnmarshalJSON(data []byte) (err error) {
 
 func (r responseSchemaJSON) RawJSON() string {
 	return r.raw
+}
+
+type SplFungibleTokenDetailsSchema struct {
+	Address  string `json:"address,required"`
+	Decimals int64  `json:"decimals,required"`
+	Name     string `json:"name,required"`
+	Symbol   string `json:"symbol,required"`
+	Logo     string `json:"logo"`
+	// Type of the asset (`"TOKEN"`)
+	Type string                            `json:"type"`
+	JSON splFungibleTokenDetailsSchemaJSON `json:"-"`
+}
+
+// splFungibleTokenDetailsSchemaJSON contains the JSON metadata for the struct
+// [SplFungibleTokenDetailsSchema]
+type splFungibleTokenDetailsSchemaJSON struct {
+	Address     apijson.Field
+	Decimals    apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	Logo        apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *SplFungibleTokenDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r splFungibleTokenDetailsSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r SplFungibleTokenDetailsSchema) implementsDelegatedAssetDetailsSchemaAsset() {}
+
+func (r SplFungibleTokenDetailsSchema) implementsSplTokenOwnershipDiffSchemaAsset() {}
+
+type SplFungibleTokenDiffSchema struct {
+	Asset SplFungibleTokenDetailsSchema `json:"asset,required"`
+	// Incoming transfers of the asset
+	In   AssetTransferDetailsSchema     `json:"in,nullable"`
+	Out  AssetTransferDetailsSchema     `json:"out,nullable"`
+	JSON splFungibleTokenDiffSchemaJSON `json:"-"`
+}
+
+// splFungibleTokenDiffSchemaJSON contains the JSON metadata for the struct
+// [SplFungibleTokenDiffSchema]
+type splFungibleTokenDiffSchemaJSON struct {
+	Asset       apijson.Field
+	In          apijson.Field
+	Out         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *SplFungibleTokenDiffSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r splFungibleTokenDiffSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r SplFungibleTokenDiffSchema) implementsAccountSummarySchemaAccountAssetsDiff() {}
+
+func (r SplFungibleTokenDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsDiff() {}
+
+type SplNonFungibleTokenDetailsSchema struct {
+	Address  string `json:"address,required"`
+	Name     string `json:"name,required"`
+	Symbol   string `json:"symbol,required"`
+	Decimals int64  `json:"decimals"`
+	Logo     string `json:"logo"`
+	// Type of the asset (`"NFT"`)
+	Type string                               `json:"type"`
+	JSON splNonFungibleTokenDetailsSchemaJSON `json:"-"`
+}
+
+// splNonFungibleTokenDetailsSchemaJSON contains the JSON metadata for the struct
+// [SplNonFungibleTokenDetailsSchema]
+type splNonFungibleTokenDetailsSchemaJSON struct {
+	Address     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	Decimals    apijson.Field
+	Logo        apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *SplNonFungibleTokenDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r splNonFungibleTokenDetailsSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r SplNonFungibleTokenDetailsSchema) implementsDelegatedAssetDetailsSchemaAsset() {}
+
+func (r SplNonFungibleTokenDetailsSchema) implementsSplTokenOwnershipDiffSchemaAsset() {}
+
+type SplNonFungibleTokenDiffSchema struct {
+	Asset SplNonFungibleTokenDetailsSchema `json:"asset,required"`
+	// Incoming transfers of the asset
+	In   AssetTransferDetailsSchema        `json:"in,nullable"`
+	Out  AssetTransferDetailsSchema        `json:"out,nullable"`
+	JSON splNonFungibleTokenDiffSchemaJSON `json:"-"`
+}
+
+// splNonFungibleTokenDiffSchemaJSON contains the JSON metadata for the struct
+// [SplNonFungibleTokenDiffSchema]
+type splNonFungibleTokenDiffSchemaJSON struct {
+	Asset       apijson.Field
+	In          apijson.Field
+	Out         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *SplNonFungibleTokenDiffSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r splNonFungibleTokenDiffSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r SplNonFungibleTokenDiffSchema) implementsAccountSummarySchemaAccountAssetsDiff() {}
+
+func (r SplNonFungibleTokenDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsDiff() {}
+
+type SplTokenOwnershipDiffSchema struct {
+	Asset SplTokenOwnershipDiffSchemaAsset `json:"asset,required"`
+	// The owner post the transaction
+	PostOwner string `json:"post_owner,required"`
+	// Incoming transfers of the asset
+	In AssetTransferDetailsSchema `json:"in_,nullable"`
+	// Details of the moved value
+	Out AssetTransferDetailsSchema `json:"out,nullable"`
+	// The owner prior to the transaction
+	PreOwner string                          `json:"pre_owner,nullable"`
+	JSON     splTokenOwnershipDiffSchemaJSON `json:"-"`
+}
+
+// splTokenOwnershipDiffSchemaJSON contains the JSON metadata for the struct
+// [SplTokenOwnershipDiffSchema]
+type splTokenOwnershipDiffSchemaJSON struct {
+	Asset       apijson.Field
+	PostOwner   apijson.Field
+	In          apijson.Field
+	Out         apijson.Field
+	PreOwner    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *SplTokenOwnershipDiffSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r splTokenOwnershipDiffSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r SplTokenOwnershipDiffSchema) implementsAccountSummarySchemaAccountOwnershipsDiff() {}
+
+func (r SplTokenOwnershipDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsOwnershipDiff() {
+}
+
+type SplTokenOwnershipDiffSchemaAsset struct {
+	Address string `json:"address,required"`
+	Symbol  string `json:"symbol,required"`
+	Name    string `json:"name,required"`
+	Logo    string `json:"logo"`
+	// Type of the asset (`"TOKEN"`)
+	Type     string                               `json:"type"`
+	Decimals int64                                `json:"decimals"`
+	JSON     splTokenOwnershipDiffSchemaAssetJSON `json:"-"`
+	union    SplTokenOwnershipDiffSchemaAssetUnion
+}
+
+// splTokenOwnershipDiffSchemaAssetJSON contains the JSON metadata for the struct
+// [SplTokenOwnershipDiffSchemaAsset]
+type splTokenOwnershipDiffSchemaAssetJSON struct {
+	Address     apijson.Field
+	Symbol      apijson.Field
+	Name        apijson.Field
+	Logo        apijson.Field
+	Type        apijson.Field
+	Decimals    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r splTokenOwnershipDiffSchemaAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *SplTokenOwnershipDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [SplTokenOwnershipDiffSchemaAssetUnion] interface which you
+// can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [SplFungibleTokenDetailsSchema],
+// [SplNonFungibleTokenDetailsSchema].
+func (r SplTokenOwnershipDiffSchemaAsset) AsUnion() SplTokenOwnershipDiffSchemaAssetUnion {
+	return r.union
+}
+
+// Union satisfied by [SplFungibleTokenDetailsSchema] or
+// [SplNonFungibleTokenDetailsSchema].
+type SplTokenOwnershipDiffSchemaAssetUnion interface {
+	implementsSplTokenOwnershipDiffSchemaAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*SplTokenOwnershipDiffSchemaAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(SplFungibleTokenDetailsSchema{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(SplNonFungibleTokenDetailsSchema{}),
+		},
+	)
+}
+
+type StakedSolAssetDetailsSchema struct {
+	Decimals int64 `json:"decimals"`
+	// Type of the asset (`"STAKED_SOL"`)
+	Type string                          `json:"type"`
+	JSON stakedSolAssetDetailsSchemaJSON `json:"-"`
+}
+
+// stakedSolAssetDetailsSchemaJSON contains the JSON metadata for the struct
+// [StakedSolAssetDetailsSchema]
+type stakedSolAssetDetailsSchemaJSON struct {
+	Decimals    apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StakedSolAssetDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stakedSolAssetDetailsSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+type StakedSolWithdrawAuthorityDiffSchema struct {
+	// The owner post the transaction
+	PostOwner string                      `json:"post_owner,required"`
+	Asset     StakedSolAssetDetailsSchema `json:"asset"`
+	// Incoming transfers of the asset
+	In AssetTransferDetailsSchema `json:"in_,nullable"`
+	// Details of the moved value
+	Out AssetTransferDetailsSchema `json:"out,nullable"`
+	// The owner prior to the transaction
+	PreOwner string                                   `json:"pre_owner,nullable"`
+	JSON     stakedSolWithdrawAuthorityDiffSchemaJSON `json:"-"`
+}
+
+// stakedSolWithdrawAuthorityDiffSchemaJSON contains the JSON metadata for the
+// struct [StakedSolWithdrawAuthorityDiffSchema]
+type stakedSolWithdrawAuthorityDiffSchemaJSON struct {
+	PostOwner   apijson.Field
+	Asset       apijson.Field
+	In          apijson.Field
+	Out         apijson.Field
+	PreOwner    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StakedSolWithdrawAuthorityDiffSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stakedSolWithdrawAuthorityDiffSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r StakedSolWithdrawAuthorityDiffSchema) implementsAccountSummarySchemaAccountOwnershipsDiff() {}
+
+func (r StakedSolWithdrawAuthorityDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsOwnershipDiff() {
 }
 
 type SuccessfulSimulationResultSchema struct {
@@ -1839,26 +1389,18 @@ func (r *SuccessfulSimulationResultSchemaAccountsDetail) UnmarshalJSON(data []by
 // AsUnion returns a [SuccessfulSimulationResultSchemaAccountsDetailsUnion]
 // interface which you can cast to the specific types for more type safety.
 //
-// Possible runtime types of the union are
-// [SuccessfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchema],
-// [SuccessfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchema],
-// [SuccessfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchema],
-// [SuccessfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchema],
-// [SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchema],
-// [SuccessfulSimulationResultSchemaAccountsDetailsPdaAccountSchema],
-// [SuccessfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchema].
+// Possible runtime types of the union are [SystemAccountDetailsSchema],
+// [TokenAccountDetailsSchema], [FungibleMintAccountDetailsSchema],
+// [NonFungibleMintAccountDetailsSchema], [ProgramAccountDetailsSchema],
+// [PdaAccountSchema], [CnftMintAccountDetailsSchema].
 func (r SuccessfulSimulationResultSchemaAccountsDetail) AsUnion() SuccessfulSimulationResultSchemaAccountsDetailsUnion {
 	return r.union
 }
 
-// Union satisfied by
-// [SuccessfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchema],
-// [SuccessfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchema],
-// [SuccessfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchema],
-// [SuccessfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchema],
-// [SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchema],
-// [SuccessfulSimulationResultSchemaAccountsDetailsPdaAccountSchema] or
-// [SuccessfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchema].
+// Union satisfied by [SystemAccountDetailsSchema], [TokenAccountDetailsSchema],
+// [FungibleMintAccountDetailsSchema], [NonFungibleMintAccountDetailsSchema],
+// [ProgramAccountDetailsSchema], [PdaAccountSchema] or
+// [CnftMintAccountDetailsSchema].
 type SuccessfulSimulationResultSchemaAccountsDetailsUnion interface {
 	implementsSuccessfulSimulationResultSchemaAccountsDetail()
 }
@@ -1869,412 +1411,33 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchema{}),
+			Type:       reflect.TypeOf(SystemAccountDetailsSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchema{}),
+			Type:       reflect.TypeOf(TokenAccountDetailsSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchema{}),
+			Type:       reflect.TypeOf(FungibleMintAccountDetailsSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchema{}),
+			Type:       reflect.TypeOf(NonFungibleMintAccountDetailsSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchema{}),
+			Type:       reflect.TypeOf(ProgramAccountDetailsSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAccountsDetailsPdaAccountSchema{}),
+			Type:       reflect.TypeOf(PdaAccountSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchema{}),
+			Type:       reflect.TypeOf(CnftMintAccountDetailsSchema{}),
 		},
 	)
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchema struct {
-	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
-	// Whether the account had been written to during the simulation
-	WasWrittenTo bool `json:"was_written_to,required"`
-	// Description of the account
-	Description string                                                                        `json:"description,nullable"`
-	Type        SuccessfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchemaType `json:"type"`
-	JSON        successfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchemaJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchema]
-type successfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchemaJSON struct {
-	AccountAddress apijson.Field
-	WasWrittenTo   apijson.Field
-	Description    apijson.Field
-	Type           apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchemaType string
-
-const (
-	SuccessfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchemaTypeSystemAccount SuccessfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchemaType = "SYSTEM_ACCOUNT"
-)
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchemaType) IsKnown() bool {
-	switch r {
-	case SuccessfulSimulationResultSchemaAccountsDetailsSystemAccountDetailsSchemaTypeSystemAccount:
-		return true
-	}
-	return false
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchema struct {
-	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
-	// Encoded public key of the mint
-	MintAddress string `json:"mint_address,required"`
-	// Encoded public key of the owner
-	OwnerAddress string `json:"owner_address,required"`
-	// Whether the account had been written to during the simulation
-	WasWrittenTo bool `json:"was_written_to,required"`
-	// Description of the account
-	Description string                                                                       `json:"description,nullable"`
-	Type        SuccessfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchemaType `json:"type"`
-	JSON        successfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchemaJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchema]
-type successfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchemaJSON struct {
-	AccountAddress apijson.Field
-	MintAddress    apijson.Field
-	OwnerAddress   apijson.Field
-	WasWrittenTo   apijson.Field
-	Description    apijson.Field
-	Type           apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchemaType string
-
-const (
-	SuccessfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchemaTypeTokenAccount SuccessfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchemaType = "TOKEN_ACCOUNT"
-)
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchemaType) IsKnown() bool {
-	switch r {
-	case SuccessfulSimulationResultSchemaAccountsDetailsTokenAccountDetailsSchemaTypeTokenAccount:
-		return true
-	}
-	return false
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchema struct {
-	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
-	// Name of the mint
-	Name string `json:"name,required"`
-	// Symbol of the mint
-	Symbol string `json:"symbol,required"`
-	// Whether the account had been written to during the simulation
-	WasWrittenTo bool `json:"was_written_to,required"`
-	// Description of the account
-	Description string `json:"description,nullable"`
-	// Logo of the mint
-	Logo string                                                                              `json:"logo"`
-	Type SuccessfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchemaType `json:"type"`
-	JSON successfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchemaJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchema]
-type successfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchemaJSON struct {
-	AccountAddress apijson.Field
-	Name           apijson.Field
-	Symbol         apijson.Field
-	WasWrittenTo   apijson.Field
-	Description    apijson.Field
-	Logo           apijson.Field
-	Type           apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchemaType string
-
-const (
-	SuccessfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchemaTypeFungibleMintAccount SuccessfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchemaType = "FUNGIBLE_MINT_ACCOUNT"
-)
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchemaType) IsKnown() bool {
-	switch r {
-	case SuccessfulSimulationResultSchemaAccountsDetailsFungibleMintAccountDetailsSchemaTypeFungibleMintAccount:
-		return true
-	}
-	return false
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchema struct {
-	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
-	// Name of the mint
-	Name string `json:"name,required"`
-	// Symbol of the mint
-	Symbol string `json:"symbol,required"`
-	// URI of the mint
-	Uri string `json:"uri,required"`
-	// Whether the account had been written to during the simulation
-	WasWrittenTo bool `json:"was_written_to,required"`
-	// Description of the account
-	Description string `json:"description,nullable"`
-	// Logo of the mint
-	Logo string                                                                                 `json:"logo"`
-	Type SuccessfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchemaType `json:"type"`
-	JSON successfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchemaJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchema]
-type successfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchemaJSON struct {
-	AccountAddress apijson.Field
-	Name           apijson.Field
-	Symbol         apijson.Field
-	Uri            apijson.Field
-	WasWrittenTo   apijson.Field
-	Description    apijson.Field
-	Logo           apijson.Field
-	Type           apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchemaType string
-
-const (
-	SuccessfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchemaTypeNonFungibleMintAccount SuccessfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchemaType = "NON_FUNGIBLE_MINT_ACCOUNT"
-)
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchemaType) IsKnown() bool {
-	switch r {
-	case SuccessfulSimulationResultSchemaAccountsDetailsNonFungibleMintAccountDetailsSchemaTypeNonFungibleMintAccount:
-		return true
-	}
-	return false
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchema struct {
-	// Encoded public key of the account
-	AccountAddress string                                                                         `json:"account_address,required"`
-	Type           SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchemaType `json:"type,required"`
-	// Whether the account had been written to during the simulation
-	WasWrittenTo bool `json:"was_written_to,required"`
-	// Description of the account
-	Description string                                                                         `json:"description,nullable"`
-	JSON        successfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchemaJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchema]
-type successfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchemaJSON struct {
-	AccountAddress apijson.Field
-	Type           apijson.Field
-	WasWrittenTo   apijson.Field
-	Description    apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchemaType string
-
-const (
-	SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchemaTypeProgram       SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchemaType = "PROGRAM"
-	SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchemaTypeNativeProgram SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchemaType = "NATIVE_PROGRAM"
-)
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchemaType) IsKnown() bool {
-	switch r {
-	case SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchemaTypeProgram, SuccessfulSimulationResultSchemaAccountsDetailsProgramAccountDetailsSchemaTypeNativeProgram:
-		return true
-	}
-	return false
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsPdaAccountSchema struct {
-	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
-	// The address of the owning program
-	Owner string `json:"owner,required"`
-	// Whether the account had been written to during the simulation
-	WasWrittenTo bool `json:"was_written_to,required"`
-	// Description of the account
-	Description string                                                              `json:"description,nullable"`
-	Type        SuccessfulSimulationResultSchemaAccountsDetailsPdaAccountSchemaType `json:"type"`
-	JSON        successfulSimulationResultSchemaAccountsDetailsPdaAccountSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAccountsDetailsPdaAccountSchemaJSON contains the
-// JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAccountsDetailsPdaAccountSchema]
-type successfulSimulationResultSchemaAccountsDetailsPdaAccountSchemaJSON struct {
-	AccountAddress apijson.Field
-	Owner          apijson.Field
-	WasWrittenTo   apijson.Field
-	Description    apijson.Field
-	Type           apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAccountsDetailsPdaAccountSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAccountsDetailsPdaAccountSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsPdaAccountSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsPdaAccountSchemaType string
-
-const (
-	SuccessfulSimulationResultSchemaAccountsDetailsPdaAccountSchemaTypePda SuccessfulSimulationResultSchemaAccountsDetailsPdaAccountSchemaType = "PDA"
-)
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsPdaAccountSchemaType) IsKnown() bool {
-	switch r {
-	case SuccessfulSimulationResultSchemaAccountsDetailsPdaAccountSchemaTypePda:
-		return true
-	}
-	return false
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchema struct {
-	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
-	// Name of the mint
-	Name string `json:"name,required"`
-	// Symbol of the mint
-	Symbol string `json:"symbol,required"`
-	// URI of the mint
-	Uri string `json:"uri,required"`
-	// Whether the account had been written to during the simulation
-	WasWrittenTo bool `json:"was_written_to,required"`
-	// Description of the account
-	Description string `json:"description,nullable"`
-	// Logo of the mint
-	Logo string                                                                          `json:"logo"`
-	Type SuccessfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchemaType `json:"type"`
-	JSON successfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchemaJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchema]
-type successfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchemaJSON struct {
-	AccountAddress apijson.Field
-	Name           apijson.Field
-	Symbol         apijson.Field
-	Uri            apijson.Field
-	WasWrittenTo   apijson.Field
-	Description    apijson.Field
-	Logo           apijson.Field
-	Type           apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {
-}
-
-type SuccessfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchemaType string
-
-const (
-	SuccessfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchemaTypeCnftMintAccount SuccessfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchemaType = "CNFT_MINT_ACCOUNT"
-)
-
-func (r SuccessfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchemaType) IsKnown() bool {
-	switch r {
-	case SuccessfulSimulationResultSchemaAccountsDetailsCnftMintAccountDetailsSchemaTypeCnftMintAccount:
-		return true
-	}
-	return false
 }
 
 type SuccessfulSimulationResultSchemaAccountsDetailsType string
@@ -2299,24 +1462,13 @@ func (r SuccessfulSimulationResultSchemaAccountsDetailsType) IsKnown() bool {
 }
 
 type SuccessfulSimulationResultSchemaAssetsDiff struct {
-	// This field can have the runtime type of
-	// [SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaAsset],
-	// [SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaAsset],
-	// [SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaAsset],
-	// [SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaAsset].
+	// This field can have the runtime type of [NativeSolDetailsSchema],
+	// [SplFungibleTokenDetailsSchema], [SplNonFungibleTokenDetailsSchema],
+	// [CnftDetailsSchema].
 	Asset interface{} `json:"asset"`
-	// This field can have the runtime type of
-	// [SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaIn],
-	// [SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaIn],
-	// [SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaIn],
-	// [SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaIn].
-	In interface{} `json:"in,required"`
-	// This field can have the runtime type of
-	// [SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaOut],
-	// [SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaOut],
-	// [SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaOut],
-	// [SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaOut].
-	Out   interface{}                                    `json:"out,required"`
+	// Incoming transfers of the asset
+	In    AssetTransferDetailsSchema                     `json:"in,nullable"`
+	Out   AssetTransferDetailsSchema                     `json:"out,nullable"`
 	JSON  successfulSimulationResultSchemaAssetsDiffJSON `json:"-"`
 	union SuccessfulSimulationResultSchemaAssetsDiffUnion
 }
@@ -2346,20 +1498,14 @@ func (r *SuccessfulSimulationResultSchemaAssetsDiff) UnmarshalJSON(data []byte) 
 // AsUnion returns a [SuccessfulSimulationResultSchemaAssetsDiffUnion] interface
 // which you can cast to the specific types for more type safety.
 //
-// Possible runtime types of the union are
-// [SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchema],
-// [SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchema],
-// [SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchema],
-// [SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchema].
+// Possible runtime types of the union are [NativeSolDiffSchema],
+// [SplFungibleTokenDiffSchema], [SplNonFungibleTokenDiffSchema], [CnftDiffSchema].
 func (r SuccessfulSimulationResultSchemaAssetsDiff) AsUnion() SuccessfulSimulationResultSchemaAssetsDiffUnion {
 	return r.union
 }
 
-// Union satisfied by
-// [SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchema],
-// [SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchema],
-// [SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchema] or
-// [SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchema].
+// Union satisfied by [NativeSolDiffSchema], [SplFungibleTokenDiffSchema],
+// [SplNonFungibleTokenDiffSchema] or [CnftDiffSchema].
 type SuccessfulSimulationResultSchemaAssetsDiffUnion interface {
 	implementsSuccessfulSimulationResultSchemaAssetsDiff()
 }
@@ -2370,543 +1516,31 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchema{}),
+			Type:       reflect.TypeOf(NativeSolDiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchema{}),
+			Type:       reflect.TypeOf(SplFungibleTokenDiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchema{}),
+			Type:       reflect.TypeOf(SplNonFungibleTokenDiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchema{}),
+			Type:       reflect.TypeOf(CnftDiffSchema{}),
 		},
 	)
 }
 
-type SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchema struct {
-	Asset SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaAsset `json:"asset,required"`
-	// Incoming transfers of the asset
-	In   SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaIn   `json:"in,nullable"`
-	Out  SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaOut  `json:"out,nullable"`
-	JSON successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaJSON contains the
-// JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchema]
-type successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaJSON struct {
-	Asset       apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsDiff() {
-}
-
-type SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaAsset struct {
-	Decimals int64 `json:"decimals"`
-	// Type of the asset (`"SOL"`)
-	Type string                                                                 `json:"type"`
-	JSON successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaAssetJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaAssetJSON contains
-// the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaAsset]
-type successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaAssetJSON struct {
-	Decimals    apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-// Incoming transfers of the asset
-type SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                             `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaInJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaInJSON contains the
-// JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaIn]
-type successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-type SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                              `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaOutJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaOutJSON contains
-// the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaOut]
-type successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffNativeSolDiffSchemaOutJSON) RawJSON() string {
-	return r.raw
-}
-
-type SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchema struct {
-	Asset SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaAsset `json:"asset,required"`
-	// Incoming transfers of the asset
-	In   SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaIn   `json:"in,nullable"`
-	Out  SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaOut  `json:"out,nullable"`
-	JSON successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchema]
-type successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaJSON struct {
-	Asset       apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsDiff() {
-}
-
-type SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaAsset struct {
-	Address  string `json:"address,required"`
-	Decimals int64  `json:"decimals,required"`
-	Name     string `json:"name,required"`
-	Symbol   string `json:"symbol,required"`
-	Logo     string `json:"logo"`
-	// Type of the asset (`"TOKEN"`)
-	Type string                                                                        `json:"type"`
-	JSON successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaAssetJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaAssetJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaAsset]
-type successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaAssetJSON struct {
-	Address     apijson.Field
-	Decimals    apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-// Incoming transfers of the asset
-type SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                    `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaInJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaInJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaIn]
-type successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-type SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                     `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaOutJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaOutJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaOut]
-type successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffSplFungibleTokenDiffSchemaOutJSON) RawJSON() string {
-	return r.raw
-}
-
-type SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchema struct {
-	Asset SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaAsset `json:"asset,required"`
-	// Incoming transfers of the asset
-	In   SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaIn   `json:"in,nullable"`
-	Out  SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaOut  `json:"out,nullable"`
-	JSON successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchema]
-type successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaJSON struct {
-	Asset       apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsDiff() {
-}
-
-type SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaAsset struct {
-	Address  string `json:"address,required"`
-	Name     string `json:"name,required"`
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
-	Logo     string `json:"logo"`
-	// Type of the asset (`"NFT"`)
-	Type string                                                                           `json:"type"`
-	JSON successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaAssetJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaAssetJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaAsset]
-type successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaAssetJSON struct {
-	Address     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Decimals    apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-// Incoming transfers of the asset
-type SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                       `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaInJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaInJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaIn]
-type successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-type SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                        `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaOutJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaOutJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaOut]
-type successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffSplNonFungibleTokenDiffSchemaOutJSON) RawJSON() string {
-	return r.raw
-}
-
-type SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchema struct {
-	Asset SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaAsset `json:"asset,required"`
-	// Incoming transfers of the asset
-	In   SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaIn   `json:"in,nullable"`
-	Out  SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaOut  `json:"out,nullable"`
-	JSON successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaJSON contains the JSON
-// metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchema]
-type successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaJSON struct {
-	Asset       apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsDiff() {
-}
-
-type SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaAsset struct {
-	Address  string `json:"address,required"`
-	Decimals int64  `json:"decimals,required"`
-	Name     string `json:"name,required"`
-	Symbol   string `json:"symbol,required"`
-	Logo     string `json:"logo"`
-	// Type of the asset (`"CNFT"`)
-	Type string                                                            `json:"type"`
-	JSON successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaAssetJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaAssetJSON contains the
-// JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaAsset]
-type successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaAssetJSON struct {
-	Address     apijson.Field
-	Decimals    apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-// Incoming transfers of the asset
-type SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                        `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaInJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaInJSON contains the JSON
-// metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaIn]
-type successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-type SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                         `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaOutJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaOutJSON contains the
-// JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaOut]
-type successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsDiffCnftDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsDiffCnftDiffSchemaOutJSON) RawJSON() string {
-	return r.raw
-}
-
 type SuccessfulSimulationResultSchemaAssetsOwnershipDiff struct {
-	// This field can have the runtime type of
-	// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaAsset],
-	// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAsset],
-	// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaAsset].
+	// This field can have the runtime type of [NativeSolDetailsSchema],
+	// [SplTokenOwnershipDiffSchemaAsset], [StakedSolAssetDetailsSchema].
 	Asset interface{} `json:"asset,required"`
-	// This field can have the runtime type of
-	// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaIn],
-	// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaIn],
-	// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaIn].
-	In interface{} `json:"in_,required"`
-	// This field can have the runtime type of
-	// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaOut],
-	// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaOut],
-	// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaOut].
-	Out interface{} `json:"out,required"`
+	// Incoming transfers of the asset
+	In AssetTransferDetailsSchema `json:"in_,nullable"`
+	// Details of the moved value
+	Out AssetTransferDetailsSchema `json:"out,nullable"`
 	// The owner prior to the transaction
 	PreOwner string `json:"pre_owner,nullable"`
 	// The owner post the transaction
@@ -2942,19 +1576,14 @@ func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiff) UnmarshalJSON(data
 // AsUnion returns a [SuccessfulSimulationResultSchemaAssetsOwnershipDiffUnion]
 // interface which you can cast to the specific types for more type safety.
 //
-// Possible runtime types of the union are
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchema],
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchema],
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchema].
+// Possible runtime types of the union are [NativeSolOwnershipDiffSchema],
+// [SplTokenOwnershipDiffSchema], [StakedSolWithdrawAuthorityDiffSchema].
 func (r SuccessfulSimulationResultSchemaAssetsOwnershipDiff) AsUnion() SuccessfulSimulationResultSchemaAssetsOwnershipDiffUnion {
 	return r.union
 }
 
-// Union satisfied by
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchema],
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchema]
-// or
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchema].
+// Union satisfied by [NativeSolOwnershipDiffSchema], [SplTokenOwnershipDiffSchema]
+// or [StakedSolWithdrawAuthorityDiffSchema].
 type SuccessfulSimulationResultSchemaAssetsOwnershipDiffUnion interface {
 	implementsSuccessfulSimulationResultSchemaAssetsOwnershipDiff()
 }
@@ -2965,519 +1594,142 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchema{}),
+			Type:       reflect.TypeOf(NativeSolOwnershipDiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchema{}),
+			Type:       reflect.TypeOf(SplTokenOwnershipDiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchema{}),
+			Type:       reflect.TypeOf(StakedSolWithdrawAuthorityDiffSchema{}),
 		},
 	)
 }
 
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchema struct {
-	Asset SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaAsset `json:"asset,required"`
-	// The owner post the transaction
-	PostOwner string `json:"post_owner,required"`
-	// Incoming transfers of the asset
-	In SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaIn `json:"in_,nullable"`
-	// Details of the moved value
-	Out SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaOut `json:"out,nullable"`
-	// The owner prior to the transaction
-	PreOwner string                                                                              `json:"pre_owner,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaJSON `json:"-"`
+type SystemAccountDetailsSchema struct {
+	// Encoded public key of the account
+	AccountAddress string `json:"account_address,required"`
+	// Whether the account had been written to during the simulation
+	WasWrittenTo bool `json:"was_written_to,required"`
+	// Description of the account
+	Description string                         `json:"description,nullable"`
+	Type        SystemAccountDetailsSchemaType `json:"type"`
+	JSON        systemAccountDetailsSchemaJSON `json:"-"`
 }
 
-// successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchema]
-type successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaJSON struct {
-	Asset       apijson.Field
-	PostOwner   apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	PreOwner    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+// systemAccountDetailsSchemaJSON contains the JSON metadata for the struct
+// [SystemAccountDetailsSchema]
+type systemAccountDetailsSchemaJSON struct {
+	AccountAddress apijson.Field
+	WasWrittenTo   apijson.Field
+	Description    apijson.Field
+	Type           apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
 }
 
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *SystemAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaJSON) RawJSON() string {
+func (r systemAccountDetailsSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsOwnershipDiff() {
-}
+func (r SystemAccountDetailsSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {}
 
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaAsset struct {
-	Decimals int64 `json:"decimals"`
-	// Type of the asset (`"SOL"`)
-	Type string                                                                                   `json:"type"`
-	JSON successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaAssetJSON `json:"-"`
-}
+type SystemAccountDetailsSchemaType string
 
-// successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaAssetJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaAsset]
-type successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaAssetJSON struct {
-	Decimals    apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
+const (
+	SystemAccountDetailsSchemaTypeSystemAccount SystemAccountDetailsSchemaType = "SYSTEM_ACCOUNT"
+)
 
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-// Incoming transfers of the asset
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                               `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaInJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaInJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaIn]
-type successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-// Details of the moved value
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                                `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaOutJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaOutJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaOut]
-type successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffNativeSolOwnershipDiffSchemaOutJSON) RawJSON() string {
-	return r.raw
-}
-
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchema struct {
-	Asset SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAsset `json:"asset,required"`
-	// The owner post the transaction
-	PostOwner string `json:"post_owner,required"`
-	// Incoming transfers of the asset
-	In SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaIn `json:"in_,nullable"`
-	// Details of the moved value
-	Out SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaOut `json:"out,nullable"`
-	// The owner prior to the transaction
-	PreOwner string                                                                             `json:"pre_owner,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchema]
-type successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaJSON struct {
-	Asset       apijson.Field
-	PostOwner   apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	PreOwner    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsOwnershipDiff() {
-}
-
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAsset struct {
-	Address string `json:"address,required"`
-	Symbol  string `json:"symbol,required"`
-	Name    string `json:"name,required"`
-	Logo    string `json:"logo"`
-	// Type of the asset (`"TOKEN"`)
-	Type     string                                                                                  `json:"type"`
-	Decimals int64                                                                                   `json:"decimals"`
-	JSON     successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetJSON `json:"-"`
-	union    SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetUnion
-}
-
-// successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAsset]
-type successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetJSON struct {
-	Address     apijson.Field
-	Symbol      apijson.Field
-	Name        apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
-	Decimals    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
+func (r SystemAccountDetailsSchemaType) IsKnown() bool {
+	switch r {
+	case SystemAccountDetailsSchemaTypeSystemAccount:
+		return true
 	}
-	return apijson.Port(r.union, &r)
+	return false
 }
 
-// AsUnion returns a
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetUnion]
-// interface which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema],
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema].
-func (r SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAsset) AsUnion() SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetUnion {
-	return r.union
+type TokenAccountDetailsSchema struct {
+	// Encoded public key of the account
+	AccountAddress string `json:"account_address,required"`
+	// Encoded public key of the mint
+	MintAddress string `json:"mint_address,required"`
+	// Encoded public key of the owner
+	OwnerAddress string `json:"owner_address,required"`
+	// Whether the account had been written to during the simulation
+	WasWrittenTo bool `json:"was_written_to,required"`
+	// Description of the account
+	Description string                        `json:"description,nullable"`
+	Type        TokenAccountDetailsSchemaType `json:"type"`
+	JSON        tokenAccountDetailsSchemaJSON `json:"-"`
 }
 
-// Union satisfied by
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema]
-// or
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema].
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetUnion interface {
-	implementsSuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAsset()
+// tokenAccountDetailsSchemaJSON contains the JSON metadata for the struct
+// [TokenAccountDetailsSchema]
+type tokenAccountDetailsSchemaJSON struct {
+	AccountAddress apijson.Field
+	MintAddress    apijson.Field
+	OwnerAddress   apijson.Field
+	WasWrittenTo   apijson.Field
+	Description    apijson.Field
+	Type           apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
 }
 
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema{}),
-		},
-	)
-}
-
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema struct {
-	Address  string `json:"address,required"`
-	Decimals int64  `json:"decimals,required"`
-	Name     string `json:"name,required"`
-	Symbol   string `json:"symbol,required"`
-	Logo     string `json:"logo"`
-	// Type of the asset (`"TOKEN"`)
-	Type string                                                                                                               `json:"type"`
-	JSON successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchemaJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema]
-type successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchemaJSON struct {
-	Address     apijson.Field
-	Decimals    apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *TokenAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchemaJSON) RawJSON() string {
+func (r tokenAccountDetailsSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplFungibleTokenDetailsSchema) implementsSuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAsset() {
+func (r TokenAccountDetailsSchema) implementsSuccessfulSimulationResultSchemaAccountsDetail() {}
+
+type TokenAccountDetailsSchemaType string
+
+const (
+	TokenAccountDetailsSchemaTypeTokenAccount TokenAccountDetailsSchemaType = "TOKEN_ACCOUNT"
+)
+
+func (r TokenAccountDetailsSchemaType) IsKnown() bool {
+	switch r {
+	case TokenAccountDetailsSchemaTypeTokenAccount:
+		return true
+	}
+	return false
 }
 
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema struct {
-	Address  string `json:"address,required"`
-	Name     string `json:"name,required"`
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
-	Logo     string `json:"logo"`
-	// Type of the asset (`"NFT"`)
-	Type string                                                                                                                  `json:"type"`
-	JSON successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchemaJSON `json:"-"`
+type TotalUsdDiffSchema struct {
+	// Total incoming USD transfers
+	In float64 `json:"in,required"`
+	// Total outgoing USD transfers
+	Out float64 `json:"out,required"`
+	// Total USD transfers
+	Total float64                `json:"total,required"`
+	JSON  totalUsdDiffSchemaJSON `json:"-"`
 }
 
-// successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchemaJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema]
-type successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchemaJSON struct {
-	Address     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Decimals    apijson.Field
-	Logo        apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAssetSplNonFungibleTokenDetailsSchema) implementsSuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaAsset() {
-}
-
-// Incoming transfers of the asset
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                              `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaInJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaInJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaIn]
-type successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-// Details of the moved value
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                               `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaOutJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaOutJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaOut]
-type successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffSplTokenOwnershipDiffSchemaOutJSON) RawJSON() string {
-	return r.raw
-}
-
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchema struct {
-	// The owner post the transaction
-	PostOwner string                                                                                       `json:"post_owner,required"`
-	Asset     SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaAsset `json:"asset"`
-	// Incoming transfers of the asset
-	In SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaIn `json:"in_,nullable"`
-	// Details of the moved value
-	Out SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaOut `json:"out,nullable"`
-	// The owner prior to the transaction
-	PreOwner string                                                                                      `json:"pre_owner,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchema]
-type successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaJSON struct {
-	PostOwner   apijson.Field
-	Asset       apijson.Field
+// totalUsdDiffSchemaJSON contains the JSON metadata for the struct
+// [TotalUsdDiffSchema]
+type totalUsdDiffSchemaJSON struct {
 	In          apijson.Field
 	Out         apijson.Field
-	PreOwner    apijson.Field
+	Total       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *TotalUsdDiffSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchema) implementsSuccessfulSimulationResultSchemaAssetsOwnershipDiff() {
-}
-
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaAsset struct {
-	Decimals int64 `json:"decimals"`
-	// Type of the asset (`"STAKED_SOL"`)
-	Type string                                                                                           `json:"type"`
-	JSON successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaAssetJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaAssetJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaAsset]
-type successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaAssetJSON struct {
-	Decimals    apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-// Incoming transfers of the asset
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaIn struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                                       `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaInJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaInJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaIn]
-type successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaInJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaInJSON) RawJSON() string {
-	return r.raw
-}
-
-// Details of the moved value
-type SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaOut struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// Value of the transfer
-	Value float64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
-	// USD price of the asset
-	UsdPrice float64                                                                                        `json:"usd_price,nullable"`
-	JSON     successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaOutJSON `json:"-"`
-}
-
-// successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaOutJSON
-// contains the JSON metadata for the struct
-// [SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaOut]
-type successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaOutJSON struct {
-	RawValue    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r successfulSimulationResultSchemaAssetsOwnershipDiffStakedSolWithdrawAuthorityDiffSchemaOutJSON) RawJSON() string {
+func (r totalUsdDiffSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
