@@ -72,6 +72,36 @@ Methods:
 
 - <code title="post /v0/evm/post-transaction-bulk/scan">client.Evm.PostTransactionBulk.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmPostTransactionBulkService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmPostTransactionBulkScanParams">EvmPostTransactionBulkScanParams</a>) ([]<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionScanResponse">TransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
+# Solana
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#AssetTransferDetailsSchema">AssetTransferDetailsSchema</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#CnftDetailsSchema">CnftDetailsSchema</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#NativeSolDetailsSchema">NativeSolDetailsSchema</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SplFungibleTokenDetailsSchema">SplFungibleTokenDetailsSchema</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SplNonFungibleTokenDetailsSchema">SplNonFungibleTokenDetailsSchema</a>
+
+## Message
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SolanaMessageScanResponse">SolanaMessageScanResponse</a>
+
+Methods:
+
+- <code title="post /v0/solana/message/scan">client.Solana.Message.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SolanaMessageService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SolanaMessageScanParams">SolanaMessageScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SolanaMessageScanResponse">SolanaMessageScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
+## Address
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SolanaAddressScanResponse">SolanaAddressScanResponse</a>
+
+Methods:
+
+- <code title="post /v0/solana/address/scan">client.Solana.Address.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SolanaAddressService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SolanaAddressScanParams">SolanaAddressScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SolanaAddressScanResponse">SolanaAddressScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
 # Stellar
 
 Params Types:
