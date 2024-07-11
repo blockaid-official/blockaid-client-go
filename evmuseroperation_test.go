@@ -11,6 +11,7 @@ import (
 	"github.com/blockaid-official/blockaid-client-go"
 	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
 	"github.com/blockaid-official/blockaid-client-go/option"
+	"github.com/blockaid-official/blockaid-client-go/shared"
 )
 
 func TestEvmUserOperationScanWithOptionalParams(t *testing.T) {
@@ -47,6 +48,7 @@ func TestEvmUserOperationScanWithOptionalParams(t *testing.T) {
 			Domain: blockaidclientgo.F("example.com"),
 		}),
 		AccountAddress: blockaidclientgo.F("0x77bA5AC3ca4864be26CA3112baDf07286CcC3324"),
+		Block:          blockaidclientgo.F[blockaidclientgo.EvmUserOperationScanParamsBlockUnion](shared.UnionString("0x5c6fd5")),
 		Options:        blockaidclientgo.F([]blockaidclientgo.EvmUserOperationScanParamsOption{blockaidclientgo.EvmUserOperationScanParamsOptionSimulation, blockaidclientgo.EvmUserOperationScanParamsOptionValidation}),
 	})
 	if err != nil {
