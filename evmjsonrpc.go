@@ -50,8 +50,7 @@ type EvmJsonRpcScanParams struct {
 	Metadata param.Field[MetadataParam] `json:"metadata,required"`
 	// The address of the account (wallet) received the request in hex string format
 	AccountAddress param.Field[string] `json:"account_address"`
-	// The relative block for the block validation. Can be "latest", "earliest",
-	// "pending" or a block number.
+	// The relative block for the block validation. Can be "latest" or a block number.
 	Block param.Field[EvmJsonRpcScanParamsBlockUnion] `json:"block"`
 	// list of one or both of options for the desired output. "simulation" - include
 	// simulation output in your response. "validation" - include security validation
@@ -75,8 +74,7 @@ func (r EvmJsonRpcScanParamsData) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// The relative block for the block validation. Can be "latest", "earliest",
-// "pending" or a block number.
+// The relative block for the block validation. Can be "latest" or a block number.
 //
 // Satisfied by [shared.UnionInt], [shared.UnionString].
 type EvmJsonRpcScanParamsBlockUnion interface {
