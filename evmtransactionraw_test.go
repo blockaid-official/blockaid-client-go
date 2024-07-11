@@ -11,6 +11,7 @@ import (
 	"github.com/blockaid-official/blockaid-client-go"
 	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
 	"github.com/blockaid-official/blockaid-client-go/option"
+	"github.com/blockaid-official/blockaid-client-go/shared"
 )
 
 func TestEvmTransactionRawScanWithOptionalParams(t *testing.T) {
@@ -32,6 +33,7 @@ func TestEvmTransactionRawScanWithOptionalParams(t *testing.T) {
 		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
 			Domain: blockaidclientgo.F("https://app.1inch.io"),
 		}),
+		Block:   blockaidclientgo.F[blockaidclientgo.EvmTransactionRawScanParamsBlockUnion](shared.UnionString("17718858")),
 		Options: blockaidclientgo.F([]blockaidclientgo.EvmTransactionRawScanParamsOption{blockaidclientgo.EvmTransactionRawScanParamsOptionSimulation, blockaidclientgo.EvmTransactionRawScanParamsOptionValidation}),
 	})
 	if err != nil {

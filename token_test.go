@@ -29,7 +29,7 @@ func TestTokenScanWithOptionalParams(t *testing.T) {
 		Address: blockaidclientgo.F("0x66587563e933bbf3974b89156b47bb82b921eb35"),
 		Chain:   blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainEthereum),
 		Metadata: blockaidclientgo.F(blockaidclientgo.TokenScanParamsMetadata{
-			Domain: blockaidclientgo.F("string"),
+			Domain: blockaidclientgo.F("domain"),
 		}),
 	})
 	if err != nil {
