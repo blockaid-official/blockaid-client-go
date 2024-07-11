@@ -11,6 +11,7 @@ import (
 	"github.com/blockaid-official/blockaid-client-go"
 	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
 	"github.com/blockaid-official/blockaid-client-go/option"
+	"github.com/blockaid-official/blockaid-client-go/shared"
 )
 
 func TestEvmPostTransactionBulkScanWithOptionalParams(t *testing.T) {
@@ -29,8 +30,9 @@ func TestEvmPostTransactionBulkScanWithOptionalParams(t *testing.T) {
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChain(blockaidclientgo.TransactionScanSupportedChainEthereum)),
 		Data:  blockaidclientgo.F([]string{"0x11c865addc39f1e1c4f0f6c9a84533c501e3705a6397988af942b2103d5e87a2", "0x50a109a2c2dd396e49710613dcf652728656055d90f80094f10c3ddd05150d2e"}),
 		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
-			Domain: blockaidclientgo.F("string"),
+			Domain: blockaidclientgo.F("domain"),
 		}),
+		Block:   blockaidclientgo.F[blockaidclientgo.EvmPostTransactionBulkScanParamsBlockUnion](shared.UnionInt(int64(0))),
 		Options: blockaidclientgo.F([]blockaidclientgo.EvmPostTransactionBulkScanParamsOption{blockaidclientgo.EvmPostTransactionBulkScanParamsOptionValidation, blockaidclientgo.EvmPostTransactionBulkScanParamsOptionSimulation}),
 	})
 	if err != nil {

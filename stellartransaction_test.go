@@ -29,11 +29,11 @@ func TestStellarTransactionScanWithOptionalParams(t *testing.T) {
 		StellarTransactionScanRequest: blockaidclientgo.StellarTransactionScanRequestParam{
 			Chain:          blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestChainPubnet),
 			Options:        blockaidclientgo.F([]blockaidclientgo.StellarTransactionScanRequestOption{blockaidclientgo.StellarTransactionScanRequestOptionValidation}),
-			AccountAddress: blockaidclientgo.F("string"),
+			AccountAddress: blockaidclientgo.F("account_address"),
 			Transactions:   blockaidclientgo.F([]string{"string", "string", "string"}),
 			Metadata: blockaidclientgo.F[blockaidclientgo.StellarTransactionScanRequestMetadataUnionParam](blockaidclientgo.StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam{
 				Type: blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestMetadataStellarWalletRequestMetadataTypeWallet),
-				URL:  blockaidclientgo.F("string"),
+				URL:  blockaidclientgo.F("url"),
 			}),
 		},
 	})
