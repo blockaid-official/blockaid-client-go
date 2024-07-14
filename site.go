@@ -258,6 +258,7 @@ func (r siteScanResponseJSON) RawJSON() string {
 }
 
 func (r *SiteScanResponse) UnmarshalJSON(data []byte) (err error) {
+	*r = SiteScanResponse{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err

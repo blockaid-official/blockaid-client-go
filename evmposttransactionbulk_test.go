@@ -27,7 +27,7 @@ func TestEvmPostTransactionBulkScanWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Evm.PostTransactionBulk.Scan(context.TODO(), blockaidclientgo.EvmPostTransactionBulkScanParams{
-		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChain(blockaidclientgo.TransactionScanSupportedChainEthereum)),
+		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
 		Data:  blockaidclientgo.F([]string{"0x11c865addc39f1e1c4f0f6c9a84533c501e3705a6397988af942b2103d5e87a2", "0x50a109a2c2dd396e49710613dcf652728656055d90f80094f10c3ddd05150d2e"}),
 		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
 			Domain: blockaidclientgo.F("domain"),
