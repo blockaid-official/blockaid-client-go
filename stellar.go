@@ -330,6 +330,7 @@ func (r stellarTransactionScanResponseSimulationJSON) RawJSON() string {
 }
 
 func (r *StellarTransactionScanResponseSimulation) UnmarshalJSON(data []byte) (err error) {
+	*r = StellarTransactionScanResponseSimulation{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -637,6 +638,7 @@ func (r stellarTransactionScanResponseSimulationStellarSimulationResultSchemaAcc
 }
 
 func (r *StellarTransactionScanResponseSimulationStellarSimulationResultSchemaAccountSummaryAssetsDiffsAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = StellarTransactionScanResponseSimulationStellarSimulationResultSchemaAccountSummaryAssetsDiffsAsset{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -926,6 +928,7 @@ func (r stellarTransactionScanResponseSimulationStellarSimulationResultSchemaAss
 }
 
 func (r *StellarTransactionScanResponseSimulationStellarSimulationResultSchemaAssetsDiffsAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = StellarTransactionScanResponseSimulationStellarSimulationResultSchemaAssetsDiffsAsset{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -1282,6 +1285,7 @@ func (r stellarTransactionScanResponseValidationJSON) RawJSON() string {
 }
 
 func (r *StellarTransactionScanResponseValidation) UnmarshalJSON(data []byte) (err error) {
+	*r = StellarTransactionScanResponseValidation{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err

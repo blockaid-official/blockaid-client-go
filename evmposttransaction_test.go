@@ -27,7 +27,7 @@ func TestEvmPostTransactionScanWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Evm.PostTransaction.Scan(context.TODO(), blockaidclientgo.EvmPostTransactionScanParams{
-		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChain(blockaidclientgo.TransactionScanSupportedChainEthereum)),
+		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
 		Data: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsData{
 			TxHash: blockaidclientgo.F("0xc01780dadc107754b331250b4797606949cb3d0087facc0a737122d5e973c83c"),
 		}),
