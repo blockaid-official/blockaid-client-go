@@ -108,6 +108,7 @@ func (r addressAssetExposureAssetJSON) RawJSON() string {
 }
 
 func (r *AddressAssetExposureAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AddressAssetExposureAsset{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -208,6 +209,7 @@ func (r addressAssetExposureSpenderJSON) RawJSON() string {
 }
 
 func (r *AddressAssetExposureSpender) UnmarshalJSON(data []byte) (err error) {
+	*r = AddressAssetExposureSpender{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -314,6 +316,7 @@ func (r assetDiffAssetJSON) RawJSON() string {
 }
 
 func (r *AssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AssetDiffAsset{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -419,6 +422,7 @@ func (r assetDiffInJSON) RawJSON() string {
 }
 
 func (r *AssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	*r = AssetDiffIn{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -497,6 +501,7 @@ func (r assetDiffOutJSON) RawJSON() string {
 }
 
 func (r *AssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	*r = AssetDiffOut{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -648,6 +653,7 @@ func (r erc1155ExposureExposureJSON) RawJSON() string {
 }
 
 func (r *Erc1155ExposureExposure) UnmarshalJSON(data []byte) (err error) {
+	*r = Erc1155ExposureExposure{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -852,6 +858,7 @@ func (r erc20ExposureExposureJSON) RawJSON() string {
 }
 
 func (r *Erc20ExposureExposure) UnmarshalJSON(data []byte) (err error) {
+	*r = Erc20ExposureExposure{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -1056,6 +1063,7 @@ func (r erc721ExposureExposureJSON) RawJSON() string {
 }
 
 func (r *Erc721ExposureExposure) UnmarshalJSON(data []byte) (err error) {
+	*r = Erc721ExposureExposure{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -1526,6 +1534,7 @@ func (r transactionScanResponseGasEstimationJSON) RawJSON() string {
 }
 
 func (r *TransactionScanResponseGasEstimation) UnmarshalJSON(data []byte) (err error) {
+	*r = TransactionScanResponseGasEstimation{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -1706,6 +1715,7 @@ func (r transactionScanResponseSimulationJSON) RawJSON() string {
 }
 
 func (r *TransactionScanResponseSimulation) UnmarshalJSON(data []byte) (err error) {
+	*r = TransactionScanResponseSimulation{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -1799,6 +1809,7 @@ func (r transactionScanResponseValidationJSON) RawJSON() string {
 }
 
 func (r *TransactionScanResponseValidation) UnmarshalJSON(data []byte) (err error) {
+	*r = TransactionScanResponseValidation{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err

@@ -92,6 +92,7 @@ func (r accountSummarySchemaAccountAssetsDiffJSON) RawJSON() string {
 }
 
 func (r *AccountSummarySchemaAccountAssetsDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummarySchemaAccountAssetsDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -170,6 +171,7 @@ func (r accountSummarySchemaAccountOwnershipsDiffJSON) RawJSON() string {
 }
 
 func (r *AccountSummarySchemaAccountOwnershipsDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummarySchemaAccountOwnershipsDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -626,6 +628,7 @@ func (r delegatedAssetDetailsSchemaAssetJSON) RawJSON() string {
 }
 
 func (r *DelegatedAssetDetailsSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = DelegatedAssetDetailsSchemaAsset{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -1197,6 +1200,7 @@ func (r splTokenOwnershipDiffSchemaAssetJSON) RawJSON() string {
 }
 
 func (r *SplTokenOwnershipDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = SplTokenOwnershipDiffSchemaAsset{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -1379,6 +1383,7 @@ func (r successfulSimulationResultSchemaAccountsDetailJSON) RawJSON() string {
 }
 
 func (r *SuccessfulSimulationResultSchemaAccountsDetail) UnmarshalJSON(data []byte) (err error) {
+	*r = SuccessfulSimulationResultSchemaAccountsDetail{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -1488,6 +1493,7 @@ func (r successfulSimulationResultSchemaAssetsDiffJSON) RawJSON() string {
 }
 
 func (r *SuccessfulSimulationResultSchemaAssetsDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = SuccessfulSimulationResultSchemaAssetsDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -1566,6 +1572,7 @@ func (r successfulSimulationResultSchemaAssetsOwnershipDiffJSON) RawJSON() strin
 }
 
 func (r *SuccessfulSimulationResultSchemaAssetsOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = SuccessfulSimulationResultSchemaAssetsOwnershipDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
