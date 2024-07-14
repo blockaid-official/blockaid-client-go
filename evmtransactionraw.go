@@ -51,6 +51,8 @@ type EvmTransactionRawScanParams struct {
 	Data param.Field[string] `json:"data,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[MetadataParam] `json:"metadata,required"`
+	// The relative block for the block validation. Can be "latest" or a block number.
+	Block param.Field[EvmTransactionRawScanParamsBlockUnion] `json:"block"`
 	// list of one or both of options for the desired output. "simulation" - include
 	// simulation output in your response. "validation" - include security validation
 	// of the transaction in your response. Default is ["validation"]
@@ -59,6 +61,13 @@ type EvmTransactionRawScanParams struct {
 
 func (r EvmTransactionRawScanParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// The relative block for the block validation. Can be "latest" or a block number.
+//
+// Satisfied by [shared.UnionInt], [shared.UnionString].
+type EvmTransactionRawScanParamsBlockUnion interface {
+	ImplementsEvmTransactionRawScanParamsBlockUnion()
 }
 
 // An enumeration.

@@ -11,6 +11,7 @@ import (
 	"github.com/blockaid-official/blockaid-client-go"
 	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
 	"github.com/blockaid-official/blockaid-client-go/option"
+	"github.com/blockaid-official/blockaid-client-go/shared"
 )
 
 func TestEvmTransactionBulkScanWithOptionalParams(t *testing.T) {
@@ -26,25 +27,26 @@ func TestEvmTransactionBulkScanWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Evm.TransactionBulk.Scan(context.TODO(), blockaidclientgo.EvmTransactionBulkScanParams{
-		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChain(blockaidclientgo.TransactionScanSupportedChainEthereum)),
+		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
 		Data: blockaidclientgo.F([]blockaidclientgo.EvmTransactionBulkScanParamsData{{
 			From:     blockaidclientgo.F("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"),
 			To:       blockaidclientgo.F("0xA4e5961B58DBE487639929643dCB1Dc3848dAF5E"),
 			Data:     blockaidclientgo.F("0x"),
 			Value:    blockaidclientgo.F("0x100000000000"),
-			Gas:      blockaidclientgo.F("string"),
-			GasPrice: blockaidclientgo.F("string"),
+			Gas:      blockaidclientgo.F("gas"),
+			GasPrice: blockaidclientgo.F("gas_price"),
 		}, {
 			From:     blockaidclientgo.F("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"),
 			To:       blockaidclientgo.F("0x0D524a5B52737C0a02880d5E84F7D20b8d66bfba"),
 			Data:     blockaidclientgo.F("0x"),
 			Value:    blockaidclientgo.F("0xdeadbeef"),
-			Gas:      blockaidclientgo.F("string"),
-			GasPrice: blockaidclientgo.F("string"),
+			Gas:      blockaidclientgo.F("gas"),
+			GasPrice: blockaidclientgo.F("gas_price"),
 		}}),
 		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
 			Domain: blockaidclientgo.F("https://example.com"),
 		}),
+		Block:   blockaidclientgo.F[blockaidclientgo.EvmTransactionBulkScanParamsBlockUnion](shared.UnionString("20224477")),
 		Options: blockaidclientgo.F([]blockaidclientgo.EvmTransactionBulkScanParamsOption{blockaidclientgo.EvmTransactionBulkScanParamsOptionValidation}),
 	})
 	if err != nil {
