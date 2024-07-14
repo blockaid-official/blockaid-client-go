@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.13.0 (2024-07-14)
+
+Full Changelog: [v0.12.0...v0.13.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.12.0...v0.13.0)
+
+### Features
+
+* **api:** OpenAPI spec update via Stainless API ([#101](https://github.com/blockaid-official/blockaid-client-go/issues/101)) ([ea660f7](https://github.com/blockaid-official/blockaid-client-go/commit/ea660f72f5db68da4e221a0887ac4abc8cf79514))
+* **api:** OpenAPI spec update via Stainless API ([#102](https://github.com/blockaid-official/blockaid-client-go/issues/102)) ([bb6a27c](https://github.com/blockaid-official/blockaid-client-go/commit/bb6a27c578219d677332bfd426a2d66d64059ead))
+* **api:** OpenAPI spec update via Stainless API ([#103](https://github.com/blockaid-official/blockaid-client-go/issues/103)) ([e2fda5c](https://github.com/blockaid-official/blockaid-client-go/commit/e2fda5ceb8b175b8cae813965a231ee352024482))
+* **api:** OpenAPI spec update via Stainless API ([#104](https://github.com/blockaid-official/blockaid-client-go/issues/104)) ([d9d53e4](https://github.com/blockaid-official/blockaid-client-go/commit/d9d53e414c62a2bd286291cdd83c26bb4efae22f))
+* **api:** OpenAPI spec update via Stainless API ([#105](https://github.com/blockaid-official/blockaid-client-go/issues/105)) ([a1178ec](https://github.com/blockaid-official/blockaid-client-go/commit/a1178ec301dc8efae2536e36a018bca22083a3b5))
+* **api:** OpenAPI spec update via Stainless API ([#106](https://github.com/blockaid-official/blockaid-client-go/issues/106)) ([e2b5c9e](https://github.com/blockaid-official/blockaid-client-go/commit/e2b5c9e0bd881da2fd65dab1a426efbac99f7f18))
+* **api:** OpenAPI spec update via Stainless API ([#107](https://github.com/blockaid-official/blockaid-client-go/issues/107)) ([fa97a8e](https://github.com/blockaid-official/blockaid-client-go/commit/fa97a8e412170bec2a0a4e5e38bf3e847b2084ce))
+* **api:** OpenAPI spec update via Stainless API ([#99](https://github.com/blockaid-official/blockaid-client-go/issues/99)) ([ec2e183](https://github.com/blockaid-official/blockaid-client-go/commit/ec2e183dfd084d5418eee95e744bd6be1d361b77))
+
 ## 0.12.0 (2024-07-10)
 
 Full Changelog: [v0.11.0...v0.12.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.11.0...v0.12.0)
