@@ -589,6 +589,10 @@ func (r Erc1155Diff) implementsAssetDiffIn() {}
 
 func (r Erc1155Diff) implementsAssetDiffOut() {}
 
+func (r Erc1155Diff) implementsTransactionSimulationAccountSummaryAssetsDiffsIn() {}
+
+func (r Erc1155Diff) implementsTransactionSimulationAccountSummaryAssetsDiffsOut() {}
+
 type Erc1155Exposure struct {
 	Exposure []Erc1155ExposureExposure `json:"exposure,required"`
 	// boolean indicates whether an is_approved_for_all function was used (missing in
@@ -736,6 +740,8 @@ func (r Erc1155TokenDetails) implementsAddressAssetExposureAsset() {}
 
 func (r Erc1155TokenDetails) implementsAssetDiffAsset() {}
 
+func (r Erc1155TokenDetails) implementsTransactionSimulationAccountSummaryAssetsDiffsAsset() {}
+
 // asset type.
 type Erc1155TokenDetailsType string
 
@@ -790,6 +796,10 @@ func (r Erc20Diff) implementsErc1155ExposureExposure() {}
 func (r Erc20Diff) implementsAssetDiffIn() {}
 
 func (r Erc20Diff) implementsAssetDiffOut() {}
+
+func (r Erc20Diff) implementsTransactionSimulationAccountSummaryAssetsDiffsIn() {}
+
+func (r Erc20Diff) implementsTransactionSimulationAccountSummaryAssetsDiffsOut() {}
 
 type Erc20Exposure struct {
 	// the amount that was asked in the approval request for this spender from the
@@ -944,6 +954,8 @@ func (r Erc20TokenDetails) implementsAddressAssetExposureAsset() {}
 
 func (r Erc20TokenDetails) implementsAssetDiffAsset() {}
 
+func (r Erc20TokenDetails) implementsTransactionSimulationAccountSummaryAssetsDiffsAsset() {}
+
 // asset type.
 type Erc20TokenDetailsType string
 
@@ -998,6 +1010,10 @@ func (r Erc721Diff) implementsErc1155ExposureExposure() {}
 func (r Erc721Diff) implementsAssetDiffIn() {}
 
 func (r Erc721Diff) implementsAssetDiffOut() {}
+
+func (r Erc721Diff) implementsTransactionSimulationAccountSummaryAssetsDiffsIn() {}
+
+func (r Erc721Diff) implementsTransactionSimulationAccountSummaryAssetsDiffsOut() {}
 
 type Erc721Exposure struct {
 	Exposure []Erc721ExposureExposure `json:"exposure,required"`
@@ -1146,6 +1162,8 @@ func (r Erc721TokenDetails) implementsAddressAssetExposureAsset() {}
 
 func (r Erc721TokenDetails) implementsAssetDiffAsset() {}
 
+func (r Erc721TokenDetails) implementsTransactionSimulationAccountSummaryAssetsDiffsAsset() {}
+
 // asset type.
 type Erc721TokenDetailsType string
 
@@ -1208,6 +1226,8 @@ func (r nativeAssetDetailsJSON) RawJSON() string {
 
 func (r NativeAssetDetails) implementsAssetDiffAsset() {}
 
+func (r NativeAssetDetails) implementsTransactionSimulationAccountSummaryAssetsDiffsAsset() {}
+
 // asset type.
 type NativeAssetDetailsType string
 
@@ -1263,6 +1283,10 @@ func (r NativeDiff) implementsAssetDiffIn() {}
 
 func (r NativeDiff) implementsAssetDiffOut() {}
 
+func (r NativeDiff) implementsTransactionSimulationAccountSummaryAssetsDiffsIn() {}
+
+func (r NativeDiff) implementsTransactionSimulationAccountSummaryAssetsDiffsOut() {}
+
 type NonercTokenDetails struct {
 	// address of the token
 	Address string `json:"address,required"`
@@ -1300,6 +1324,8 @@ func (r nonercTokenDetailsJSON) RawJSON() string {
 func (r NonercTokenDetails) implementsAddressAssetExposureAsset() {}
 
 func (r NonercTokenDetails) implementsAssetDiffAsset() {}
+
+func (r NonercTokenDetails) implementsTransactionSimulationAccountSummaryAssetsDiffsAsset() {}
 
 // asset type.
 type NonercTokenDetailsType string
@@ -1966,7 +1992,7 @@ func (r TransactionSimulation) implementsTransactionScanResponseSimulation() {}
 // account_address field in the request.
 type TransactionSimulationAccountSummary struct {
 	// All assets diffs related to the account address
-	AssetsDiffs []AssetDiff `json:"assets_diffs,required"`
+	AssetsDiffs []TransactionSimulationAccountSummaryAssetsDiff `json:"assets_diffs,required"`
 	// All assets exposures related to the account address
 	Exposures []AddressAssetExposure `json:"exposures,required"`
 	// Total usd diff related to the account address
@@ -1992,6 +2018,396 @@ func (r *TransactionSimulationAccountSummary) UnmarshalJSON(data []byte) (err er
 }
 
 func (r transactionSimulationAccountSummaryJSON) RawJSON() string {
+	return r.raw
+}
+
+type TransactionSimulationAccountSummaryAssetsDiff struct {
+	// description of the asset for the current diff
+	Asset TransactionSimulationAccountSummaryAssetsDiffsAsset `json:"asset,required"`
+	// amount of the asset that was transferred to the address in this transaction
+	In []TransactionSimulationAccountSummaryAssetsDiffsIn `json:"in,required"`
+	// amount of the asset that was transferred from the address in this transaction
+	Out []TransactionSimulationAccountSummaryAssetsDiffsOut `json:"out,required"`
+	// shows the balance before making the transaction and after
+	BalanceChanges TransactionSimulationAccountSummaryAssetsDiffsBalanceChanges `json:"balance_changes"`
+	JSON           transactionSimulationAccountSummaryAssetsDiffJSON            `json:"-"`
+}
+
+// transactionSimulationAccountSummaryAssetsDiffJSON contains the JSON metadata for
+// the struct [TransactionSimulationAccountSummaryAssetsDiff]
+type transactionSimulationAccountSummaryAssetsDiffJSON struct {
+	Asset          apijson.Field
+	In             apijson.Field
+	Out            apijson.Field
+	BalanceChanges apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *TransactionSimulationAccountSummaryAssetsDiff) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationAccountSummaryAssetsDiffJSON) RawJSON() string {
+	return r.raw
+}
+
+// description of the asset for the current diff
+type TransactionSimulationAccountSummaryAssetsDiffsAsset struct {
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string `json:"symbol"`
+	// address of the token
+	Address string `json:"address"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// asset type.
+	Type TransactionSimulationAccountSummaryAssetsDiffsAssetType `json:"type,required"`
+	// asset's decimals
+	Decimals  int64                                                   `json:"decimals"`
+	ChainName string                                                  `json:"chain_name"`
+	ChainID   int64                                                   `json:"chain_id"`
+	JSON      transactionSimulationAccountSummaryAssetsDiffsAssetJSON `json:"-"`
+	union     TransactionSimulationAccountSummaryAssetsDiffsAssetUnion
+}
+
+// transactionSimulationAccountSummaryAssetsDiffsAssetJSON contains the JSON
+// metadata for the struct [TransactionSimulationAccountSummaryAssetsDiffsAsset]
+type transactionSimulationAccountSummaryAssetsDiffsAssetJSON struct {
+	Name        apijson.Field
+	Symbol      apijson.Field
+	Address     apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	Decimals    apijson.Field
+	ChainName   apijson.Field
+	ChainID     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r transactionSimulationAccountSummaryAssetsDiffsAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *TransactionSimulationAccountSummaryAssetsDiffsAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = TransactionSimulationAccountSummaryAssetsDiffsAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [TransactionSimulationAccountSummaryAssetsDiffsAssetUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc20TokenDetails],
+// [Erc1155TokenDetails], [Erc721TokenDetails], [NonercTokenDetails],
+// [NativeAssetDetails].
+func (r TransactionSimulationAccountSummaryAssetsDiffsAsset) AsUnion() TransactionSimulationAccountSummaryAssetsDiffsAssetUnion {
+	return r.union
+}
+
+// description of the asset for the current diff
+//
+// Union satisfied by [Erc20TokenDetails], [Erc1155TokenDetails],
+// [Erc721TokenDetails], [NonercTokenDetails] or [NativeAssetDetails].
+type TransactionSimulationAccountSummaryAssetsDiffsAssetUnion interface {
+	implementsTransactionSimulationAccountSummaryAssetsDiffsAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TransactionSimulationAccountSummaryAssetsDiffsAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc20TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc1155TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc721TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NativeAssetDetails{}),
+		},
+	)
+}
+
+// asset type.
+type TransactionSimulationAccountSummaryAssetsDiffsAssetType string
+
+const (
+	TransactionSimulationAccountSummaryAssetsDiffsAssetTypeErc20   TransactionSimulationAccountSummaryAssetsDiffsAssetType = "ERC20"
+	TransactionSimulationAccountSummaryAssetsDiffsAssetTypeErc1155 TransactionSimulationAccountSummaryAssetsDiffsAssetType = "ERC1155"
+	TransactionSimulationAccountSummaryAssetsDiffsAssetTypeErc721  TransactionSimulationAccountSummaryAssetsDiffsAssetType = "ERC721"
+	TransactionSimulationAccountSummaryAssetsDiffsAssetTypeNonerc  TransactionSimulationAccountSummaryAssetsDiffsAssetType = "NONERC"
+	TransactionSimulationAccountSummaryAssetsDiffsAssetTypeNative  TransactionSimulationAccountSummaryAssetsDiffsAssetType = "NATIVE"
+)
+
+func (r TransactionSimulationAccountSummaryAssetsDiffsAssetType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationAccountSummaryAssetsDiffsAssetTypeErc20, TransactionSimulationAccountSummaryAssetsDiffsAssetTypeErc1155, TransactionSimulationAccountSummaryAssetsDiffsAssetTypeErc721, TransactionSimulationAccountSummaryAssetsDiffsAssetTypeNonerc, TransactionSimulationAccountSummaryAssetsDiffsAssetTypeNative:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationAccountSummaryAssetsDiffsIn struct {
+	// usd equal of the asset that was transferred from this address
+	UsdPrice string `json:"usd_price"`
+	// user friendly description of the asset transfer
+	Summary string `json:"summary"`
+	// id of the token
+	TokenID int64 `json:"token_id"`
+	// value before divided by decimal, that was transferred from this address
+	Value string `json:"value"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// value before divided by decimal, that was transferred from this address
+	RawValue string                                               `json:"raw_value"`
+	JSON     transactionSimulationAccountSummaryAssetsDiffsInJSON `json:"-"`
+	union    TransactionSimulationAccountSummaryAssetsDiffsInUnion
+}
+
+// transactionSimulationAccountSummaryAssetsDiffsInJSON contains the JSON metadata
+// for the struct [TransactionSimulationAccountSummaryAssetsDiffsIn]
+type transactionSimulationAccountSummaryAssetsDiffsInJSON struct {
+	UsdPrice    apijson.Field
+	Summary     apijson.Field
+	TokenID     apijson.Field
+	Value       apijson.Field
+	LogoURL     apijson.Field
+	RawValue    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r transactionSimulationAccountSummaryAssetsDiffsInJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *TransactionSimulationAccountSummaryAssetsDiffsIn) UnmarshalJSON(data []byte) (err error) {
+	*r = TransactionSimulationAccountSummaryAssetsDiffsIn{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [TransactionSimulationAccountSummaryAssetsDiffsInUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155Diff], [Erc721Diff],
+// [Erc20Diff], [NativeDiff].
+func (r TransactionSimulationAccountSummaryAssetsDiffsIn) AsUnion() TransactionSimulationAccountSummaryAssetsDiffsInUnion {
+	return r.union
+}
+
+// Union satisfied by [Erc1155Diff], [Erc721Diff], [Erc20Diff] or [NativeDiff].
+type TransactionSimulationAccountSummaryAssetsDiffsInUnion interface {
+	implementsTransactionSimulationAccountSummaryAssetsDiffsIn()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TransactionSimulationAccountSummaryAssetsDiffsInUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc1155Diff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc721Diff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc20Diff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NativeDiff{}),
+		},
+	)
+}
+
+type TransactionSimulationAccountSummaryAssetsDiffsOut struct {
+	// usd equal of the asset that was transferred from this address
+	UsdPrice string `json:"usd_price"`
+	// user friendly description of the asset transfer
+	Summary string `json:"summary"`
+	// id of the token
+	TokenID int64 `json:"token_id"`
+	// value before divided by decimal, that was transferred from this address
+	Value string `json:"value"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// value before divided by decimal, that was transferred from this address
+	RawValue string                                                `json:"raw_value"`
+	JSON     transactionSimulationAccountSummaryAssetsDiffsOutJSON `json:"-"`
+	union    TransactionSimulationAccountSummaryAssetsDiffsOutUnion
+}
+
+// transactionSimulationAccountSummaryAssetsDiffsOutJSON contains the JSON metadata
+// for the struct [TransactionSimulationAccountSummaryAssetsDiffsOut]
+type transactionSimulationAccountSummaryAssetsDiffsOutJSON struct {
+	UsdPrice    apijson.Field
+	Summary     apijson.Field
+	TokenID     apijson.Field
+	Value       apijson.Field
+	LogoURL     apijson.Field
+	RawValue    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r transactionSimulationAccountSummaryAssetsDiffsOutJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *TransactionSimulationAccountSummaryAssetsDiffsOut) UnmarshalJSON(data []byte) (err error) {
+	*r = TransactionSimulationAccountSummaryAssetsDiffsOut{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [TransactionSimulationAccountSummaryAssetsDiffsOutUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155Diff], [Erc721Diff],
+// [Erc20Diff], [NativeDiff].
+func (r TransactionSimulationAccountSummaryAssetsDiffsOut) AsUnion() TransactionSimulationAccountSummaryAssetsDiffsOutUnion {
+	return r.union
+}
+
+// Union satisfied by [Erc1155Diff], [Erc721Diff], [Erc20Diff] or [NativeDiff].
+type TransactionSimulationAccountSummaryAssetsDiffsOutUnion interface {
+	implementsTransactionSimulationAccountSummaryAssetsDiffsOut()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TransactionSimulationAccountSummaryAssetsDiffsOutUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc1155Diff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc721Diff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc20Diff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NativeDiff{}),
+		},
+	)
+}
+
+// shows the balance before making the transaction and after
+type TransactionSimulationAccountSummaryAssetsDiffsBalanceChanges struct {
+	// balance of the account after making the transaction
+	After TransactionSimulationAccountSummaryAssetsDiffsBalanceChangesAfter `json:"after,required"`
+	// balance of the account before making the transaction
+	Before TransactionSimulationAccountSummaryAssetsDiffsBalanceChangesBefore `json:"before,required"`
+	JSON   transactionSimulationAccountSummaryAssetsDiffsBalanceChangesJSON   `json:"-"`
+}
+
+// transactionSimulationAccountSummaryAssetsDiffsBalanceChangesJSON contains the
+// JSON metadata for the struct
+// [TransactionSimulationAccountSummaryAssetsDiffsBalanceChanges]
+type transactionSimulationAccountSummaryAssetsDiffsBalanceChangesJSON struct {
+	After       apijson.Field
+	Before      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationAccountSummaryAssetsDiffsBalanceChanges) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationAccountSummaryAssetsDiffsBalanceChangesJSON) RawJSON() string {
+	return r.raw
+}
+
+// balance of the account after making the transaction
+type TransactionSimulationAccountSummaryAssetsDiffsBalanceChangesAfter struct {
+	// value before divided by decimal, that was transferred from this address
+	RawValue string `json:"raw_value,required"`
+	// usd equal of the asset that was transferred from this address
+	UsdPrice string `json:"usd_price"`
+	// value after divided by decimals, that was transferred from this address
+	Value string                                                                `json:"value"`
+	JSON  transactionSimulationAccountSummaryAssetsDiffsBalanceChangesAfterJSON `json:"-"`
+}
+
+// transactionSimulationAccountSummaryAssetsDiffsBalanceChangesAfterJSON contains
+// the JSON metadata for the struct
+// [TransactionSimulationAccountSummaryAssetsDiffsBalanceChangesAfter]
+type transactionSimulationAccountSummaryAssetsDiffsBalanceChangesAfterJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationAccountSummaryAssetsDiffsBalanceChangesAfter) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationAccountSummaryAssetsDiffsBalanceChangesAfterJSON) RawJSON() string {
+	return r.raw
+}
+
+// balance of the account before making the transaction
+type TransactionSimulationAccountSummaryAssetsDiffsBalanceChangesBefore struct {
+	// value before divided by decimal, that was transferred from this address
+	RawValue string `json:"raw_value,required"`
+	// usd equal of the asset that was transferred from this address
+	UsdPrice string `json:"usd_price"`
+	// value after divided by decimals, that was transferred from this address
+	Value string                                                                 `json:"value"`
+	JSON  transactionSimulationAccountSummaryAssetsDiffsBalanceChangesBeforeJSON `json:"-"`
+}
+
+// transactionSimulationAccountSummaryAssetsDiffsBalanceChangesBeforeJSON contains
+// the JSON metadata for the struct
+// [TransactionSimulationAccountSummaryAssetsDiffsBalanceChangesBefore]
+type transactionSimulationAccountSummaryAssetsDiffsBalanceChangesBeforeJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationAccountSummaryAssetsDiffsBalanceChangesBefore) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationAccountSummaryAssetsDiffsBalanceChangesBeforeJSON) RawJSON() string {
 	return r.raw
 }
 
