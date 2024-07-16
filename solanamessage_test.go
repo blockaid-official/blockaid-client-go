@@ -34,7 +34,7 @@ func TestSolanaMessageScanWithOptionalParams(t *testing.T) {
 			Metadata: blockaidclientgo.F(blockaidclientgo.TxScanRequestSchemaMetadataParam{
 				URL: blockaidclientgo.F("https://example.com"),
 			}),
-			Transactions: blockaidclientgo.F([]string{"vxBNpvao9QJmLKXUThbbjRnxm3ufu4Wku97kHd5a67FDjSqeHwcPrBKTjAHp4ECr61eWwoxvUEVTuuWX65P9bCNDJrTJpX64vjdtpHA8cogA4C92Ubj813wUUA8Ey4Bvcrdj5c1bSTCv27zKyx1AHWDepVVoS5ZV2Sb3Nuw8RGrmjsZgU3hvPzE9hRBosY25Xpbyqo4b3Vr1BLfrVRBqsz7PvB74APZ7dHxfH49Xb2edrFS2DZ84SwtsZYLyTGF5wtZ6WHWiZN3ixjKGMAh5NLNmT9imKMBgtxuTMAw"}),
+			Transactions: blockaidclientgo.F([]string{"vxBNpvao9QJmLKXUThbbjRnxm3ufu4Wku97kHd5a67FDjSqeHwcPrBKTjAHp4ECr61eWwoxvUEVTuuWX65P9bCNDJrTJpX64vjdtpHA8cogA4C92Ubj813wUUA8Ey4Bvcrdj5c1bSTrGZVzb8QmCKyzMu9kMiSWpFtaFrNN8zb9grr81N3R3njrFgxCxNSjboFtomLyZ3iUQBaBkRF1DyzGyc1r1kd8FnptaDWteNCXJHUYFeH8wBDwZJzNZfz71CiugXhxBTJSAqSNC8JEWm7kmCqwjUqLd23L2x2s"}),
 		},
 	})
 	if err != nil {
