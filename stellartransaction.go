@@ -3,11 +3,6 @@
 package blockaidclientgo
 
 import (
-	"context"
-	"net/http"
-
-	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
-	"github.com/blockaid-official/blockaid-client-go/internal/requestconfig"
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
@@ -28,20 +23,4 @@ func NewStellarTransactionService(opts ...option.RequestOption) (r *StellarTrans
 	r = &StellarTransactionService{}
 	r.Options = opts
 	return
-}
-
-// Scan Transactions
-func (r *StellarTransactionService) Scan(ctx context.Context, body StellarTransactionScanParams, opts ...option.RequestOption) (res *StellarTransactionScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
-	path := "v0/stellar/scan/transaction"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
-}
-
-type StellarTransactionScanParams struct {
-	StellarTransactionScanRequest StellarTransactionScanRequestParam `json:"StellarTransactionScanRequest,required"`
-}
-
-func (r StellarTransactionScanParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r.StellarTransactionScanRequest)
 }
