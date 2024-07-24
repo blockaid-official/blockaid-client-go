@@ -1356,11 +1356,16 @@ const (
 	TokenScanSupportedChainZora      TokenScanSupportedChain = "zora"
 	TokenScanSupportedChainSolana    TokenScanSupportedChain = "solana"
 	TokenScanSupportedChainStellar   TokenScanSupportedChain = "stellar"
+	TokenScanSupportedChainLinea     TokenScanSupportedChain = "linea"
+	TokenScanSupportedChainBlast     TokenScanSupportedChain = "blast"
+	TokenScanSupportedChainZksync    TokenScanSupportedChain = "zksync"
+	TokenScanSupportedChainScroll    TokenScanSupportedChain = "scroll"
+	TokenScanSupportedChainDegen     TokenScanSupportedChain = "degen"
 )
 
 func (r TokenScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStellar:
+	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainBlast, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainDegen:
 		return true
 	}
 	return false
