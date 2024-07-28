@@ -28,12 +28,12 @@ func TestStellarTransactionScanWithOptionalParams(t *testing.T) {
 	_, err := client.Stellar.Transaction.Scan(context.TODO(), blockaidclientgo.StellarTransactionScanParams{
 		StellarTransactionScanRequest: blockaidclientgo.StellarTransactionScanRequestParam{
 			Chain:          blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestChainPubnet),
-			Options:        blockaidclientgo.F([]blockaidclientgo.StellarTransactionScanRequestOption{blockaidclientgo.StellarTransactionScanRequestOptionValidation}),
-			AccountAddress: blockaidclientgo.F("account_address"),
-			Transactions:   blockaidclientgo.F([]string{"string", "string", "string"}),
+			Options:        blockaidclientgo.F([]blockaidclientgo.StellarTransactionScanRequestOption{blockaidclientgo.StellarTransactionScanRequestOptionSimulation, blockaidclientgo.StellarTransactionScanRequestOptionValidation}),
+			AccountAddress: blockaidclientgo.F("GDPMFLKUGASUTWBN2XGYYKD27QGHCYH4BUFUTER4L23INYQ4JHDWFOIE"),
+			Transactions:   blockaidclientgo.F([]string{"AAAAAgAAAADewq1UMCVJ2C3VzYwoevwMcWD8DQtJkjxetobiHEnHYgAAAAEAAAAAAAAAAgAAAAAAAAAAAAAAAQAAAAEAAAAA3sKtVDAlSdgt1c2MKHr8DHFg/A0LSZI8XraG4hxJx2IAAAABAAAAACI40RTBOFEE7uT5mZkoq30mbvxLPJpMUm9cIFHgK9SRAAAAAAAAAAAAmJaAAAAAAAAAAAA="}),
 			Metadata: blockaidclientgo.F[blockaidclientgo.StellarTransactionScanRequestMetadataUnionParam](blockaidclientgo.StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam{
 				Type: blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestMetadataStellarWalletRequestMetadataTypeWallet),
-				URL:  blockaidclientgo.F("url"),
+				URL:  blockaidclientgo.F("localhost"),
 			}),
 		},
 	})

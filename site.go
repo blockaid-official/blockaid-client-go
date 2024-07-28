@@ -34,6 +34,14 @@ func NewSiteService(opts ...option.RequestOption) (r *SiteService) {
 	return
 }
 
+// Report for misclassification of a site.
+func (r *SiteService) Report(ctx context.Context, body SiteReportParams, opts ...option.RequestOption) (res *SiteReportResponse, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "v0/site/report"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Scan Site
 func (r *SiteService) Scan(ctx context.Context, body SiteScanParams, opts ...option.RequestOption) (res *SiteScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
@@ -209,6 +217,8 @@ func (r SiteScanMissResponseStatus) IsKnown() bool {
 	return false
 }
 
+type SiteReportResponse = interface{}
+
 type SiteScanResponse struct {
 	Status         SiteScanResponseStatus `json:"status,required"`
 	URL            string                 `json:"url"`
@@ -305,6 +315,124 @@ const (
 func (r SiteScanResponseStatus) IsKnown() bool {
 	switch r {
 	case SiteScanResponseStatusHit, SiteScanResponseStatusMiss:
+		return true
+	}
+	return false
+}
+
+type SiteReportParams struct {
+	Details param.Field[string] `json:"details,required"`
+	// An enumeration.
+	Event  param.Field[SiteReportParamsEvent]       `json:"event,required"`
+	Report param.Field[SiteReportParamsReportUnion] `json:"report,required"`
+}
+
+func (r SiteReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// An enumeration.
+type SiteReportParamsEvent string
+
+const (
+	SiteReportParamsEventFalsePositive SiteReportParamsEvent = "FALSE_POSITIVE"
+	SiteReportParamsEventFalseNegative SiteReportParamsEvent = "FALSE_NEGATIVE"
+)
+
+func (r SiteReportParamsEvent) IsKnown() bool {
+	switch r {
+	case SiteReportParamsEventFalsePositive, SiteReportParamsEventFalseNegative:
+		return true
+	}
+	return false
+}
+
+type SiteReportParamsReport struct {
+	Type      param.Field[SiteReportParamsReportType] `json:"type,required"`
+	Params    param.Field[interface{}]                `json:"params,required"`
+	RequestID param.Field[string]                     `json:"request_id"`
+}
+
+func (r SiteReportParamsReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r SiteReportParamsReport) implementsSiteReportParamsReportUnion() {}
+
+// Satisfied by [SiteReportParamsReportParamReportSiteReportParams],
+// [SiteReportParamsReportRequestIDReport], [SiteReportParamsReport].
+type SiteReportParamsReportUnion interface {
+	implementsSiteReportParamsReportUnion()
+}
+
+type SiteReportParamsReportParamReportSiteReportParams struct {
+	Params param.Field[SiteReportParamsReportParamReportSiteReportParamsParams] `json:"params,required"`
+	Type   param.Field[SiteReportParamsReportParamReportSiteReportParamsType]   `json:"type,required"`
+}
+
+func (r SiteReportParamsReportParamReportSiteReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r SiteReportParamsReportParamReportSiteReportParams) implementsSiteReportParamsReportUnion() {}
+
+type SiteReportParamsReportParamReportSiteReportParamsParams struct {
+	URL param.Field[string] `json:"url,required"`
+}
+
+func (r SiteReportParamsReportParamReportSiteReportParamsParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type SiteReportParamsReportParamReportSiteReportParamsType string
+
+const (
+	SiteReportParamsReportParamReportSiteReportParamsTypeParams SiteReportParamsReportParamReportSiteReportParamsType = "params"
+)
+
+func (r SiteReportParamsReportParamReportSiteReportParamsType) IsKnown() bool {
+	switch r {
+	case SiteReportParamsReportParamReportSiteReportParamsTypeParams:
+		return true
+	}
+	return false
+}
+
+type SiteReportParamsReportRequestIDReport struct {
+	RequestID param.Field[string]                                    `json:"request_id,required"`
+	Type      param.Field[SiteReportParamsReportRequestIDReportType] `json:"type,required"`
+}
+
+func (r SiteReportParamsReportRequestIDReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r SiteReportParamsReportRequestIDReport) implementsSiteReportParamsReportUnion() {}
+
+type SiteReportParamsReportRequestIDReportType string
+
+const (
+	SiteReportParamsReportRequestIDReportTypeRequestID SiteReportParamsReportRequestIDReportType = "request_id"
+)
+
+func (r SiteReportParamsReportRequestIDReportType) IsKnown() bool {
+	switch r {
+	case SiteReportParamsReportRequestIDReportTypeRequestID:
+		return true
+	}
+	return false
+}
+
+type SiteReportParamsReportType string
+
+const (
+	SiteReportParamsReportTypeParams    SiteReportParamsReportType = "params"
+	SiteReportParamsReportTypeRequestID SiteReportParamsReportType = "request_id"
+)
+
+func (r SiteReportParamsReportType) IsKnown() bool {
+	switch r {
+	case SiteReportParamsReportTypeParams, SiteReportParamsReportTypeRequestID:
 		return true
 	}
 	return false

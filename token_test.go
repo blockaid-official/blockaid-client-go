@@ -13,6 +13,35 @@ import (
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
+func TestTokenReport(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := blockaidclientgo.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+	)
+	_, err := client.Token.Report(context.TODO(), blockaidclientgo.TokenReportParams{
+		Details: blockaidclientgo.F("Details about the report"),
+		Event:   blockaidclientgo.F(blockaidclientgo.TokenReportParamsEventFalsePositive),
+		Report: blockaidclientgo.F[blockaidclientgo.TokenReportParamsReportUnion](blockaidclientgo.TokenReportParamsReportRequestIDReport{
+			Type:      blockaidclientgo.F(blockaidclientgo.TokenReportParamsReportRequestIDReportTypeRequestID),
+			RequestID: blockaidclientgo.F("def456"),
+		}),
+	})
+	if err != nil {
+		var apierr *blockaidclientgo.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
 func TestTokenScanWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
