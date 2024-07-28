@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.15.0 (2024-07-28)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* **api:** OpenAPI spec update via Stainless API ([#112](https://github.com/blockaid-official/blockaid-client-go/issues/112)) ([24651b6](https://github.com/blockaid-official/blockaid-client-go/commit/24651b6fed0c8f66c824fdff68eecab25061bb69))
+* **api:** OpenAPI spec update via Stainless API ([#114](https://github.com/blockaid-official/blockaid-client-go/issues/114)) ([4b76bc6](https://github.com/blockaid-official/blockaid-client-go/commit/4b76bc6671471758cbd5fd46a5d1c46f06b99431))
+* **api:** OpenAPI spec update via Stainless API ([#117](https://github.com/blockaid-official/blockaid-client-go/issues/117)) ([0c351ec](https://github.com/blockaid-official/blockaid-client-go/commit/0c351ec3be266a3e071eff1e4dc9ab1390799694))
+* **api:** OpenAPI spec update via Stainless API ([#118](https://github.com/blockaid-official/blockaid-client-go/issues/118)) ([7fe1298](https://github.com/blockaid-official/blockaid-client-go/commit/7fe1298aac52f417ef32fca87288e2964355030f))
+* **api:** OpenAPI spec update via Stainless API ([#119](https://github.com/blockaid-official/blockaid-client-go/issues/119)) ([1f6ad1d](https://github.com/blockaid-official/blockaid-client-go/commit/1f6ad1da0aaee31810f1babc8238a4d5febeecd4))
+* **api:** OpenAPI spec update via Stainless API ([#120](https://github.com/blockaid-official/blockaid-client-go/issues/120)) ([25f3651](https://github.com/blockaid-official/blockaid-client-go/commit/25f36510b24104fa3ab2262c22e616c3272afa8d))
+* **api:** OpenAPI spec update via Stainless API ([#121](https://github.com/blockaid-official/blockaid-client-go/issues/121)) ([240311c](https://github.com/blockaid-official/blockaid-client-go/commit/240311c78cf6c427297b535a6c3b82c4ec472533))
+* **api:** OpenAPI spec update via Stainless API ([#122](https://github.com/blockaid-official/blockaid-client-go/issues/122)) ([4a5ad24](https://github.com/blockaid-official/blockaid-client-go/commit/4a5ad246c8e9007f5e9b414e7a4316daf739bd59))
+
+
+### Chores
+
+* **ci:** remove unused release doctor ([#115](https://github.com/blockaid-official/blockaid-client-go/issues/115)) ([9fde49a](https://github.com/blockaid-official/blockaid-client-go/commit/9fde49a2653fd0a9d9e13f9bc5e0ca73d9a43b9a))
+* **tests:** update prism version ([#116](https://github.com/blockaid-official/blockaid-client-go/issues/116)) ([ff4c87e](https://github.com/blockaid-official/blockaid-client-go/commit/ff4c87eb5b1a9cbfd1f89ed1ca40a7d19ea6ff81))
+
 ## 0.14.0 (2024-07-15)
 
 Full Changelog: [v0.13.0...v0.14.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.13.0...v0.14.0)
