@@ -31,6 +31,14 @@ func NewEvmTransactionService(opts ...option.RequestOption) (r *EvmTransactionSe
 	return
 }
 
+// Report for misclassification of a transaction.
+func (r *EvmTransactionService) Report(ctx context.Context, body EvmTransactionReportParams, opts ...option.RequestOption) (res *EvmTransactionReportResponse, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "v0/evm/transaction/report"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Gets a transaction and returns a full simulation indicating what will happen in
 // the transaction together with a recommended action and some textual reasons of
 // why the transaction was flagged that way.
@@ -39,6 +47,134 @@ func (r *EvmTransactionService) Scan(ctx context.Context, body EvmTransactionSca
 	path := "v0/evm/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
+}
+
+type EvmTransactionReportResponse = interface{}
+
+type EvmTransactionReportParams struct {
+	Details param.Field[string] `json:"details,required"`
+	// An enumeration.
+	Event  param.Field[EvmTransactionReportParamsEvent]       `json:"event,required"`
+	Report param.Field[EvmTransactionReportParamsReportUnion] `json:"report,required"`
+}
+
+func (r EvmTransactionReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// An enumeration.
+type EvmTransactionReportParamsEvent string
+
+const (
+	EvmTransactionReportParamsEventFalsePositive EvmTransactionReportParamsEvent = "FALSE_POSITIVE"
+	EvmTransactionReportParamsEventFalseNegative EvmTransactionReportParamsEvent = "FALSE_NEGATIVE"
+)
+
+func (r EvmTransactionReportParamsEvent) IsKnown() bool {
+	switch r {
+	case EvmTransactionReportParamsEventFalsePositive, EvmTransactionReportParamsEventFalseNegative:
+		return true
+	}
+	return false
+}
+
+type EvmTransactionReportParamsReport struct {
+	Type      param.Field[EvmTransactionReportParamsReportType] `json:"type,required"`
+	Params    param.Field[interface{}]                          `json:"params,required"`
+	RequestID param.Field[string]                               `json:"request_id"`
+}
+
+func (r EvmTransactionReportParamsReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionReportParamsReport) implementsEvmTransactionReportParamsReportUnion() {}
+
+// Satisfied by
+// [EvmTransactionReportParamsReportParamReportTransactionReportParams],
+// [EvmTransactionReportParamsReportRequestIDReport],
+// [EvmTransactionReportParamsReport].
+type EvmTransactionReportParamsReportUnion interface {
+	implementsEvmTransactionReportParamsReportUnion()
+}
+
+type EvmTransactionReportParamsReportParamReportTransactionReportParams struct {
+	Params param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParams] `json:"params,required"`
+	Type   param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsType]   `json:"type,required"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParams) implementsEvmTransactionReportParamsReportUnion() {
+}
+
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParams struct {
+	AccountAddress param.Field[string] `json:"account_address,required"`
+	// The chain name
+	Chain    param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	Data     param.Field[interface{}]                   `json:"data,required"`
+	Metadata param.Field[interface{}]                   `json:"metadata,required"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsType string
+
+const (
+	EvmTransactionReportParamsReportParamReportTransactionReportParamsTypeParams EvmTransactionReportParamsReportParamReportTransactionReportParamsType = "params"
+)
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsType) IsKnown() bool {
+	switch r {
+	case EvmTransactionReportParamsReportParamReportTransactionReportParamsTypeParams:
+		return true
+	}
+	return false
+}
+
+type EvmTransactionReportParamsReportRequestIDReport struct {
+	RequestID param.Field[string]                                              `json:"request_id,required"`
+	Type      param.Field[EvmTransactionReportParamsReportRequestIDReportType] `json:"type,required"`
+}
+
+func (r EvmTransactionReportParamsReportRequestIDReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionReportParamsReportRequestIDReport) implementsEvmTransactionReportParamsReportUnion() {
+}
+
+type EvmTransactionReportParamsReportRequestIDReportType string
+
+const (
+	EvmTransactionReportParamsReportRequestIDReportTypeRequestID EvmTransactionReportParamsReportRequestIDReportType = "request_id"
+)
+
+func (r EvmTransactionReportParamsReportRequestIDReportType) IsKnown() bool {
+	switch r {
+	case EvmTransactionReportParamsReportRequestIDReportTypeRequestID:
+		return true
+	}
+	return false
+}
+
+type EvmTransactionReportParamsReportType string
+
+const (
+	EvmTransactionReportParamsReportTypeParams    EvmTransactionReportParamsReportType = "params"
+	EvmTransactionReportParamsReportTypeRequestID EvmTransactionReportParamsReportType = "request_id"
+)
+
+func (r EvmTransactionReportParamsReportType) IsKnown() bool {
+	switch r {
+	case EvmTransactionReportParamsReportTypeParams, EvmTransactionReportParamsReportTypeRequestID:
+		return true
+	}
+	return false
 }
 
 type EvmTransactionScanParams struct {

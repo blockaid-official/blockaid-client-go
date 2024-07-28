@@ -14,6 +14,35 @@ import (
 	"github.com/blockaid-official/blockaid-client-go/shared"
 )
 
+func TestEvmPostTransactionReport(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := blockaidclientgo.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+	)
+	_, err := client.Evm.PostTransaction.Report(context.TODO(), blockaidclientgo.EvmPostTransactionReportParams{
+		Details: blockaidclientgo.F("Details about the report"),
+		Event:   blockaidclientgo.F(blockaidclientgo.EvmPostTransactionReportParamsEventFalseNegative),
+		Report: blockaidclientgo.F[blockaidclientgo.EvmPostTransactionReportParamsReportUnion](blockaidclientgo.EvmPostTransactionReportParamsReportRequestIDReport{
+			Type:      blockaidclientgo.F(blockaidclientgo.EvmPostTransactionReportParamsReportRequestIDReportTypeRequestID),
+			RequestID: blockaidclientgo.F("ghi123"),
+		}),
+	})
+	if err != nil {
+		var apierr *blockaidclientgo.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
 func TestEvmPostTransactionScanWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {

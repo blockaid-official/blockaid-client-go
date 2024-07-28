@@ -31,6 +31,14 @@ func NewEvmPostTransactionService(opts ...option.RequestOption) (r *EvmPostTrans
 	return
 }
 
+// Report for misclassification of an EVM post transaction.
+func (r *EvmPostTransactionService) Report(ctx context.Context, body EvmPostTransactionReportParams, opts ...option.RequestOption) (res *EvmPostTransactionReportResponse, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "v0/evm/post-transaction/report"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Scan a transaction that was already executed on chain, returns validation with
 // features indicating address poisoning entites and malicious operators.
 func (r *EvmPostTransactionService) Scan(ctx context.Context, body EvmPostTransactionScanParams, opts ...option.RequestOption) (res *TransactionScanResponse, err error) {
@@ -38,6 +46,132 @@ func (r *EvmPostTransactionService) Scan(ctx context.Context, body EvmPostTransa
 	path := "v0/evm/post-transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
+}
+
+type EvmPostTransactionReportResponse = interface{}
+
+type EvmPostTransactionReportParams struct {
+	Details param.Field[string] `json:"details,required"`
+	// An enumeration.
+	Event  param.Field[EvmPostTransactionReportParamsEvent]       `json:"event,required"`
+	Report param.Field[EvmPostTransactionReportParamsReportUnion] `json:"report,required"`
+}
+
+func (r EvmPostTransactionReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// An enumeration.
+type EvmPostTransactionReportParamsEvent string
+
+const (
+	EvmPostTransactionReportParamsEventFalsePositive EvmPostTransactionReportParamsEvent = "FALSE_POSITIVE"
+	EvmPostTransactionReportParamsEventFalseNegative EvmPostTransactionReportParamsEvent = "FALSE_NEGATIVE"
+)
+
+func (r EvmPostTransactionReportParamsEvent) IsKnown() bool {
+	switch r {
+	case EvmPostTransactionReportParamsEventFalsePositive, EvmPostTransactionReportParamsEventFalseNegative:
+		return true
+	}
+	return false
+}
+
+type EvmPostTransactionReportParamsReport struct {
+	Type      param.Field[EvmPostTransactionReportParamsReportType] `json:"type,required"`
+	Params    param.Field[interface{}]                              `json:"params,required"`
+	RequestID param.Field[string]                                   `json:"request_id"`
+}
+
+func (r EvmPostTransactionReportParamsReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmPostTransactionReportParamsReport) implementsEvmPostTransactionReportParamsReportUnion() {}
+
+// Satisfied by
+// [EvmPostTransactionReportParamsReportParamReportChainTransactionHashParams],
+// [EvmPostTransactionReportParamsReportRequestIDReport],
+// [EvmPostTransactionReportParamsReport].
+type EvmPostTransactionReportParamsReportUnion interface {
+	implementsEvmPostTransactionReportParamsReportUnion()
+}
+
+type EvmPostTransactionReportParamsReportParamReportChainTransactionHashParams struct {
+	Params param.Field[EvmPostTransactionReportParamsReportParamReportChainTransactionHashParamsParams] `json:"params,required"`
+	Type   param.Field[EvmPostTransactionReportParamsReportParamReportChainTransactionHashParamsType]   `json:"type,required"`
+}
+
+func (r EvmPostTransactionReportParamsReportParamReportChainTransactionHashParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmPostTransactionReportParamsReportParamReportChainTransactionHashParams) implementsEvmPostTransactionReportParamsReportUnion() {
+}
+
+type EvmPostTransactionReportParamsReportParamReportChainTransactionHashParamsParams struct {
+	// The chain name
+	Chain  param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	TxHash param.Field[string]                        `json:"tx_hash,required"`
+}
+
+func (r EvmPostTransactionReportParamsReportParamReportChainTransactionHashParamsParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type EvmPostTransactionReportParamsReportParamReportChainTransactionHashParamsType string
+
+const (
+	EvmPostTransactionReportParamsReportParamReportChainTransactionHashParamsTypeParams EvmPostTransactionReportParamsReportParamReportChainTransactionHashParamsType = "params"
+)
+
+func (r EvmPostTransactionReportParamsReportParamReportChainTransactionHashParamsType) IsKnown() bool {
+	switch r {
+	case EvmPostTransactionReportParamsReportParamReportChainTransactionHashParamsTypeParams:
+		return true
+	}
+	return false
+}
+
+type EvmPostTransactionReportParamsReportRequestIDReport struct {
+	RequestID param.Field[string]                                                  `json:"request_id,required"`
+	Type      param.Field[EvmPostTransactionReportParamsReportRequestIDReportType] `json:"type,required"`
+}
+
+func (r EvmPostTransactionReportParamsReportRequestIDReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmPostTransactionReportParamsReportRequestIDReport) implementsEvmPostTransactionReportParamsReportUnion() {
+}
+
+type EvmPostTransactionReportParamsReportRequestIDReportType string
+
+const (
+	EvmPostTransactionReportParamsReportRequestIDReportTypeRequestID EvmPostTransactionReportParamsReportRequestIDReportType = "request_id"
+)
+
+func (r EvmPostTransactionReportParamsReportRequestIDReportType) IsKnown() bool {
+	switch r {
+	case EvmPostTransactionReportParamsReportRequestIDReportTypeRequestID:
+		return true
+	}
+	return false
+}
+
+type EvmPostTransactionReportParamsReportType string
+
+const (
+	EvmPostTransactionReportParamsReportTypeParams    EvmPostTransactionReportParamsReportType = "params"
+	EvmPostTransactionReportParamsReportTypeRequestID EvmPostTransactionReportParamsReportType = "request_id"
+)
+
+func (r EvmPostTransactionReportParamsReportType) IsKnown() bool {
+	switch r {
+	case EvmPostTransactionReportParamsReportTypeParams, EvmPostTransactionReportParamsReportTypeRequestID:
+		return true
+	}
+	return false
 }
 
 type EvmPostTransactionScanParams struct {
