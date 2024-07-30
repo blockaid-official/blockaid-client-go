@@ -51,9 +51,11 @@ func (r *EvmPostTransactionService) Scan(ctx context.Context, body EvmPostTransa
 type EvmPostTransactionReportResponse = interface{}
 
 type EvmPostTransactionReportParams struct {
+	// Details about the report.
 	Details param.Field[string] `json:"details,required"`
 	// An enumeration.
-	Event  param.Field[EvmPostTransactionReportParamsEvent]       `json:"event,required"`
+	Event param.Field[EvmPostTransactionReportParamsEvent] `json:"event,required"`
+	// The report parameters.
 	Report param.Field[EvmPostTransactionReportParamsReportUnion] `json:"report,required"`
 }
 
@@ -77,6 +79,7 @@ func (r EvmPostTransactionReportParamsEvent) IsKnown() bool {
 	return false
 }
 
+// The report parameters.
 type EvmPostTransactionReportParamsReport struct {
 	Type      param.Field[EvmPostTransactionReportParamsReportType] `json:"type,required"`
 	Params    param.Field[interface{}]                              `json:"params,required"`
@@ -89,6 +92,8 @@ func (r EvmPostTransactionReportParamsReport) MarshalJSON() (data []byte, err er
 
 func (r EvmPostTransactionReportParamsReport) implementsEvmPostTransactionReportParamsReportUnion() {}
 
+// The report parameters.
+//
 // Satisfied by
 // [EvmPostTransactionReportParamsReportParamReportChainTransactionHashParams],
 // [EvmPostTransactionReportParamsReportRequestIDReport],
@@ -111,8 +116,9 @@ func (r EvmPostTransactionReportParamsReportParamReportChainTransactionHashParam
 
 type EvmPostTransactionReportParamsReportParamReportChainTransactionHashParamsParams struct {
 	// The chain name
-	Chain  param.Field[TransactionScanSupportedChain] `json:"chain,required"`
-	TxHash param.Field[string]                        `json:"tx_hash,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	// The transaction hash to report on.
+	TxHash param.Field[string] `json:"tx_hash,required"`
 }
 
 func (r EvmPostTransactionReportParamsReportParamReportChainTransactionHashParamsParams) MarshalJSON() (data []byte, err error) {

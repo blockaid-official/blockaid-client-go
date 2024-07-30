@@ -321,9 +321,11 @@ func (r SiteScanResponseStatus) IsKnown() bool {
 }
 
 type SiteReportParams struct {
+	// Details about the report.
 	Details param.Field[string] `json:"details,required"`
 	// An enumeration.
-	Event  param.Field[SiteReportParamsEvent]       `json:"event,required"`
+	Event param.Field[SiteReportParamsEvent] `json:"event,required"`
+	// The report parameters.
 	Report param.Field[SiteReportParamsReportUnion] `json:"report,required"`
 }
 
@@ -347,6 +349,7 @@ func (r SiteReportParamsEvent) IsKnown() bool {
 	return false
 }
 
+// The report parameters.
 type SiteReportParamsReport struct {
 	Type      param.Field[SiteReportParamsReportType] `json:"type,required"`
 	Params    param.Field[interface{}]                `json:"params,required"`
@@ -359,6 +362,8 @@ func (r SiteReportParamsReport) MarshalJSON() (data []byte, err error) {
 
 func (r SiteReportParamsReport) implementsSiteReportParamsReportUnion() {}
 
+// The report parameters.
+//
 // Satisfied by [SiteReportParamsReportParamReportSiteReportParams],
 // [SiteReportParamsReportRequestIDReport], [SiteReportParamsReport].
 type SiteReportParamsReportUnion interface {
@@ -377,6 +382,7 @@ func (r SiteReportParamsReportParamReportSiteReportParams) MarshalJSON() (data [
 func (r SiteReportParamsReportParamReportSiteReportParams) implementsSiteReportParamsReportUnion() {}
 
 type SiteReportParamsReportParamReportSiteReportParamsParams struct {
+	// The url of the site to report on.
 	URL param.Field[string] `json:"url,required"`
 }
 

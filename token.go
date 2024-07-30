@@ -125,9 +125,11 @@ func (r TokenScanResponseResultType) IsKnown() bool {
 }
 
 type TokenReportParams struct {
+	// Details about the report.
 	Details param.Field[string] `json:"details,required"`
 	// An enumeration.
-	Event  param.Field[TokenReportParamsEvent]       `json:"event,required"`
+	Event param.Field[TokenReportParamsEvent] `json:"event,required"`
+	// The report parameters.
 	Report param.Field[TokenReportParamsReportUnion] `json:"report,required"`
 }
 
@@ -151,6 +153,7 @@ func (r TokenReportParamsEvent) IsKnown() bool {
 	return false
 }
 
+// The report parameters.
 type TokenReportParamsReport struct {
 	Type      param.Field[TokenReportParamsReportType] `json:"type,required"`
 	Params    param.Field[interface{}]                 `json:"params,required"`
@@ -163,43 +166,46 @@ func (r TokenReportParamsReport) MarshalJSON() (data []byte, err error) {
 
 func (r TokenReportParamsReport) implementsTokenReportParamsReportUnion() {}
 
-// Satisfied by [TokenReportParamsReportParamReportAddressChainReportParams],
+// The report parameters.
+//
+// Satisfied by [TokenReportParamsReportParamReportTokenReportParams],
 // [TokenReportParamsReportRequestIDReport], [TokenReportParamsReport].
 type TokenReportParamsReportUnion interface {
 	implementsTokenReportParamsReportUnion()
 }
 
-type TokenReportParamsReportParamReportAddressChainReportParams struct {
-	Params param.Field[TokenReportParamsReportParamReportAddressChainReportParamsParams] `json:"params,required"`
-	Type   param.Field[TokenReportParamsReportParamReportAddressChainReportParamsType]   `json:"type,required"`
+type TokenReportParamsReportParamReportTokenReportParams struct {
+	Params param.Field[TokenReportParamsReportParamReportTokenReportParamsParams] `json:"params,required"`
+	Type   param.Field[TokenReportParamsReportParamReportTokenReportParamsType]   `json:"type,required"`
 }
 
-func (r TokenReportParamsReportParamReportAddressChainReportParams) MarshalJSON() (data []byte, err error) {
+func (r TokenReportParamsReportParamReportTokenReportParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r TokenReportParamsReportParamReportAddressChainReportParams) implementsTokenReportParamsReportUnion() {
+func (r TokenReportParamsReportParamReportTokenReportParams) implementsTokenReportParamsReportUnion() {
 }
 
-type TokenReportParamsReportParamReportAddressChainReportParamsParams struct {
+type TokenReportParamsReportParamReportTokenReportParamsParams struct {
+	// The address of the token to report on.
 	Address param.Field[string] `json:"address,required"`
 	// The chain name
 	Chain param.Field[TokenScanSupportedChain] `json:"chain,required"`
 }
 
-func (r TokenReportParamsReportParamReportAddressChainReportParamsParams) MarshalJSON() (data []byte, err error) {
+func (r TokenReportParamsReportParamReportTokenReportParamsParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-type TokenReportParamsReportParamReportAddressChainReportParamsType string
+type TokenReportParamsReportParamReportTokenReportParamsType string
 
 const (
-	TokenReportParamsReportParamReportAddressChainReportParamsTypeParams TokenReportParamsReportParamReportAddressChainReportParamsType = "params"
+	TokenReportParamsReportParamReportTokenReportParamsTypeParams TokenReportParamsReportParamReportTokenReportParamsType = "params"
 )
 
-func (r TokenReportParamsReportParamReportAddressChainReportParamsType) IsKnown() bool {
+func (r TokenReportParamsReportParamReportTokenReportParamsType) IsKnown() bool {
 	switch r {
-	case TokenReportParamsReportParamReportAddressChainReportParamsTypeParams:
+	case TokenReportParamsReportParamReportTokenReportParamsTypeParams:
 		return true
 	}
 	return false
