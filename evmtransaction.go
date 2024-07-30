@@ -52,9 +52,11 @@ func (r *EvmTransactionService) Scan(ctx context.Context, body EvmTransactionSca
 type EvmTransactionReportResponse = interface{}
 
 type EvmTransactionReportParams struct {
+	// Details about the report.
 	Details param.Field[string] `json:"details,required"`
 	// An enumeration.
-	Event  param.Field[EvmTransactionReportParamsEvent]       `json:"event,required"`
+	Event param.Field[EvmTransactionReportParamsEvent] `json:"event,required"`
+	// The report parameters.
 	Report param.Field[EvmTransactionReportParamsReportUnion] `json:"report,required"`
 }
 
@@ -78,6 +80,7 @@ func (r EvmTransactionReportParamsEvent) IsKnown() bool {
 	return false
 }
 
+// The report parameters.
 type EvmTransactionReportParamsReport struct {
 	Type      param.Field[EvmTransactionReportParamsReportType] `json:"type,required"`
 	Params    param.Field[interface{}]                          `json:"params,required"`
@@ -90,6 +93,8 @@ func (r EvmTransactionReportParamsReport) MarshalJSON() (data []byte, err error)
 
 func (r EvmTransactionReportParamsReport) implementsEvmTransactionReportParamsReportUnion() {}
 
+// The report parameters.
+//
 // Satisfied by
 // [EvmTransactionReportParamsReportParamReportTransactionReportParams],
 // [EvmTransactionReportParamsReportRequestIDReport],
@@ -111,15 +116,91 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParams) impl
 }
 
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParams struct {
+	// The address to relate the transaction to. Account address determines in which
+	// perspective the transaction is simulated and validated.
 	AccountAddress param.Field[string] `json:"account_address,required"`
 	// The chain name
-	Chain    param.Field[TransactionScanSupportedChain] `json:"chain,required"`
-	Data     param.Field[interface{}]                   `json:"data,required"`
-	Metadata param.Field[interface{}]                   `json:"metadata,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	// Transaction parameters
+	Data param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataUnion] `json:"data,required"`
+	// Object of additional information to validate against.
+	Metadata param.Field[MetadataParam] `json:"metadata,required"`
 }
 
 func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// Transaction parameters
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsData struct {
+	// The source address of the transaction in hex string format
+	From param.Field[string] `json:"from"`
+	// The destination address of the transaction in hex string format
+	To param.Field[string] `json:"to"`
+	// The encoded call data of the transaction in hex string format
+	Data param.Field[string] `json:"data"`
+	// The value of the transaction in Wei in hex string format
+	Value param.Field[string] `json:"value"`
+	// The gas required for the transaction in hex string format.
+	Gas param.Field[string] `json:"gas"`
+	// The gas price for the transaction in hex string format.
+	GasPrice param.Field[string] `json:"gas_price"`
+	// The method of the JSON-RPC request
+	Method param.Field[string]      `json:"method"`
+	Params param.Field[interface{}] `json:"params,required"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsData) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsData) implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataUnion() {
+}
+
+// Transaction parameters
+//
+// Satisfied by
+// [EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataTransaction],
+// [EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataJsonRpc],
+// [EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsData].
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataUnion interface {
+	implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataUnion()
+}
+
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataTransaction struct {
+	// The source address of the transaction in hex string format
+	From param.Field[string] `json:"from,required"`
+	// The encoded call data of the transaction in hex string format
+	Data param.Field[string] `json:"data"`
+	// The gas required for the transaction in hex string format.
+	Gas param.Field[string] `json:"gas"`
+	// The gas price for the transaction in hex string format.
+	GasPrice param.Field[string] `json:"gas_price"`
+	// The destination address of the transaction in hex string format
+	To param.Field[string] `json:"to"`
+	// The value of the transaction in Wei in hex string format
+	Value param.Field[string] `json:"value"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataTransaction) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataTransaction) implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataUnion() {
+}
+
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataJsonRpc struct {
+	// The method of the JSON-RPC request
+	Method param.Field[string] `json:"method,required"`
+	// The parameters of the JSON-RPC request in JSON format
+	Params param.Field[[]interface{}] `json:"params,required"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataJsonRpc) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataJsonRpc) implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataUnion() {
 }
 
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsType string

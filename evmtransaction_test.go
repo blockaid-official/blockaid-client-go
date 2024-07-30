@@ -31,7 +31,7 @@ func TestEvmTransactionReport(t *testing.T) {
 		Event:   blockaidclientgo.F(blockaidclientgo.EvmTransactionReportParamsEventFalsePositive),
 		Report: blockaidclientgo.F[blockaidclientgo.EvmTransactionReportParamsReportUnion](blockaidclientgo.EvmTransactionReportParamsReportRequestIDReport{
 			Type:      blockaidclientgo.F(blockaidclientgo.EvmTransactionReportParamsReportRequestIDReportTypeRequestID),
-			RequestID: blockaidclientgo.F("jkl456"),
+			RequestID: blockaidclientgo.F("11111111-1111-1111-1111-111111111111"),
 		}),
 	})
 	if err != nil {
