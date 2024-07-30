@@ -30,7 +30,7 @@ func TestSiteReport(t *testing.T) {
 		Event:   blockaidclientgo.F(blockaidclientgo.SiteReportParamsEventFalsePositive),
 		Report: blockaidclientgo.F[blockaidclientgo.SiteReportParamsReportUnion](blockaidclientgo.SiteReportParamsReportRequestIDReport{
 			Type:      blockaidclientgo.F(blockaidclientgo.SiteReportParamsReportRequestIDReportTypeRequestID),
-			RequestID: blockaidclientgo.F("abc123"),
+			RequestID: blockaidclientgo.F("11111111-1111-1111-1111-111111111111"),
 		}),
 	})
 	if err != nil {
