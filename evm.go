@@ -394,7 +394,7 @@ type AssetDiffIn struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64 `json:"token_id"`
+	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
 	// url of the token logo
@@ -473,7 +473,7 @@ type AssetDiffOut struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64 `json:"token_id"`
+	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
 	// url of the token logo
@@ -548,7 +548,7 @@ func init() {
 
 type Erc1155Diff struct {
 	// id of the token
-	TokenID int64 `json:"token_id,required"`
+	TokenID string `json:"token_id,required"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value,required"`
 	// url of the token logo
@@ -628,7 +628,7 @@ type Erc1155ExposureExposure struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64 `json:"token_id"`
+	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
 	// url of the token logo
@@ -839,7 +839,7 @@ type Erc20ExposureExposure struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64 `json:"token_id"`
+	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
 	// url of the token logo
@@ -973,7 +973,7 @@ func (r Erc20TokenDetailsType) IsKnown() bool {
 
 type Erc721Diff struct {
 	// id of the token
-	TokenID int64 `json:"token_id,required"`
+	TokenID string `json:"token_id,required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -1050,7 +1050,7 @@ type Erc721ExposureExposure struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64 `json:"token_id"`
+	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
 	// url of the token logo
@@ -1932,11 +1932,12 @@ const (
 	TransactionScanSupportedChainDegen           TransactionScanSupportedChain = "degen"
 	TransactionScanSupportedChainAvalancheFuji   TransactionScanSupportedChain = "avalanche-fuji"
 	TransactionScanSupportedChainImmutableZkevm  TransactionScanSupportedChain = "immutable-zkevm"
+	TransactionScanSupportedChainGnosis          TransactionScanSupportedChain = "gnosis"
 )
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainGnosis:
 		return true
 	}
 	return false
@@ -2175,7 +2176,7 @@ type TransactionSimulationAccountSummaryAssetsDiffsIn struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64 `json:"token_id"`
+	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
 	// url of the token logo
@@ -2255,7 +2256,7 @@ type TransactionSimulationAccountSummaryAssetsDiffsOut struct {
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// id of the token
-	TokenID int64 `json:"token_id"`
+	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
 	// url of the token logo
