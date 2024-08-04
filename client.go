@@ -15,12 +15,13 @@ import (
 // interacting with the blockaid API. You should not instantiate this client
 // directly, and instead use the [NewClient] method instead.
 type Client struct {
-	Options []option.RequestOption
-	Evm     *EvmService
-	Solana  *SolanaService
-	Stellar *StellarService
-	Site    *SiteService
-	Token   *TokenService
+	Options   []option.RequestOption
+	Evm       *EvmService
+	Solana    *SolanaService
+	Stellar   *StellarService
+	Site      *SiteService
+	Token     *TokenService
+	TokenBulk *TokenBulkService
 }
 
 // NewClient generates a new client with the default option read from the
@@ -41,6 +42,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.Stellar = NewStellarService(opts...)
 	r.Site = NewSiteService(opts...)
 	r.Token = NewTokenService(opts...)
+	r.TokenBulk = NewTokenBulkService(opts...)
 
 	return
 }
