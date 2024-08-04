@@ -26,8 +26,8 @@ func TestTokenBulkScanWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.TokenBulk.Scan(context.TODO(), blockaidclientgo.TokenBulkScanParams{
-		Chain:  blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainArbitrum),
-		Tokens: blockaidclientgo.F([]string{"string", "string", "string"}),
+		Chain:  blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainEthereum),
+		Tokens: blockaidclientgo.F([]string{"0x66587563e933bbf3974b89156b47bb82b921eb35", "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"}),
 		Metadata: blockaidclientgo.F(blockaidclientgo.TokenBulkScanParamsMetadata{
 			Domain: blockaidclientgo.F("domain"),
 		}),
