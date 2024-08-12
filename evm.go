@@ -2474,7 +2474,7 @@ type TransactionSimulationParams struct {
 	// The data to be sent.
 	Data string `json:"data"`
 	// The address the transaction is sent from.
-	From string `json:"from_"`
+	From string `json:"from"`
 	// The gas to be sent.
 	Gas string `json:"gas"`
 	// The gas price to be sent.
