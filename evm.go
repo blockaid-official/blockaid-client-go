@@ -1720,6 +1720,8 @@ type TransactionScanResponseSimulation struct {
 	AddressDetails interface{} `json:"address_details,required"`
 	// This field can have the runtime type of [TransactionSimulationAccountSummary].
 	AccountSummary interface{} `json:"account_summary,required"`
+	// This field can have the runtime type of [TransactionSimulationParams].
+	Params interface{} `json:"params,required"`
 	// An error message if the simulation failed.
 	Error string                                `json:"error"`
 	JSON  transactionScanResponseSimulationJSON `json:"-"`
@@ -1736,6 +1738,7 @@ type transactionScanResponseSimulationJSON struct {
 	TotalUsdExposure apijson.Field
 	AddressDetails   apijson.Field
 	AccountSummary   apijson.Field
+	Params           apijson.Field
 	Error            apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
@@ -1966,7 +1969,9 @@ type TransactionSimulation struct {
 	// a dictionary representing the usd value each address is exposed to, split by
 	// spenders
 	TotalUsdExposure map[string]map[string]string `json:"total_usd_exposure,required"`
-	JSON             transactionSimulationJSON    `json:"-"`
+	// The parameters of the transaction that was simulated.
+	Params TransactionSimulationParams `json:"params"`
+	JSON   transactionSimulationJSON   `json:"-"`
 }
 
 // transactionSimulationJSON contains the JSON metadata for the struct
@@ -1979,6 +1984,7 @@ type transactionSimulationJSON struct {
 	Status           apijson.Field
 	TotalUsdDiff     apijson.Field
 	TotalUsdExposure apijson.Field
+	Params           apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
@@ -2455,6 +2461,82 @@ func (r TransactionSimulationStatus) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+// The parameters of the transaction that was simulated.
+type TransactionSimulationParams struct {
+	// The block tag to be sent.
+	BlockTag string `json:"block_tag"`
+	// The calldata to be sent.
+	Calldata TransactionSimulationParamsCalldata `json:"calldata"`
+	// The chain to be sent.
+	Chain string `json:"chain"`
+	// The data to be sent.
+	Data string `json:"data"`
+	// The address the transaction is sent from.
+	From string `json:"from_"`
+	// The gas to be sent.
+	Gas string `json:"gas"`
+	// The gas price to be sent.
+	GasPrice string `json:"gas_price"`
+	// The address the transaction is directed to.
+	To string `json:"to"`
+	// The value to be sent.
+	Value string                          `json:"value"`
+	JSON  transactionSimulationParamsJSON `json:"-"`
+}
+
+// transactionSimulationParamsJSON contains the JSON metadata for the struct
+// [TransactionSimulationParams]
+type transactionSimulationParamsJSON struct {
+	BlockTag    apijson.Field
+	Calldata    apijson.Field
+	Chain       apijson.Field
+	Data        apijson.Field
+	From        apijson.Field
+	Gas         apijson.Field
+	GasPrice    apijson.Field
+	To          apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationParams) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationParamsJSON) RawJSON() string {
+	return r.raw
+}
+
+// The calldata to be sent.
+type TransactionSimulationParamsCalldata struct {
+	// The function selector of the function called in the transaction
+	FunctionSelector string `json:"function_selector,required"`
+	// The function declaration of the function called in the transaction
+	FunctionDeclaration string `json:"function_declaration"`
+	// The function signature of the function called in the transaction
+	FunctionSignature string                                  `json:"function_signature"`
+	JSON              transactionSimulationParamsCalldataJSON `json:"-"`
+}
+
+// transactionSimulationParamsCalldataJSON contains the JSON metadata for the
+// struct [TransactionSimulationParamsCalldata]
+type transactionSimulationParamsCalldataJSON struct {
+	FunctionSelector    apijson.Field
+	FunctionDeclaration apijson.Field
+	FunctionSignature   apijson.Field
+	raw                 string
+	ExtraFields         map[string]apijson.Field
+}
+
+func (r *TransactionSimulationParamsCalldata) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationParamsCalldataJSON) RawJSON() string {
+	return r.raw
 }
 
 type TransactionSimulationError struct {
