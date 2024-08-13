@@ -252,7 +252,7 @@ func (r TokenReportParamsReportType) IsKnown() bool {
 }
 
 type TokenScanParams struct {
-	// Token address to validate (EVM / Solana / Stellar)
+	// Token address to validate (EVM / Solana / Stellar / Starknet)
 	Address param.Field[string] `json:"address,required"`
 	// The chain name
 	Chain param.Field[TokenScanSupportedChain] `json:"chain,required"`
