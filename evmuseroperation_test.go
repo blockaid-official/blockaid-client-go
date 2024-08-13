@@ -30,17 +30,17 @@ func TestEvmUserOperationScanWithOptionalParams(t *testing.T) {
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
 		Data: blockaidclientgo.F(blockaidclientgo.EvmUserOperationScanParamsData{
 			Operation: blockaidclientgo.F(blockaidclientgo.EvmUserOperationScanParamsDataOperation{
-				Sender:               blockaidclientgo.F("0x77bA5AC3ca4864be26CA3112baDf07286CcC3324"),
-				Nonce:                blockaidclientgo.F("0x22"),
-				InitCode:             blockaidclientgo.F("0x"),
 				CallData:             blockaidclientgo.F("0x51945447000000000000000000000000aeed57a826a998f9388ce2fd6cdb0b6aa75e3d190000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044095ea7b300000000000000000000000050a9266605ba303b659ff105919205570f2af971000000000000000000000000000000000000000000000000000000000000006400000000000000000000000000000000000000000000000000000000"),
 				CallGasLimit:         blockaidclientgo.F("0x3c38"),
-				VerificationGasLimit: blockaidclientgo.F("0x1659f"),
-				PreVerificationGas:   blockaidclientgo.F("0x2496ebc"),
+				InitCode:             blockaidclientgo.F("0x"),
 				MaxFeePerGas:         blockaidclientgo.F("0x218fe7"),
 				MaxPriorityFeePerGas: blockaidclientgo.F("0xf4240"),
+				Nonce:                blockaidclientgo.F("0x22"),
 				PaymasterAndData:     blockaidclientgo.F("0x9d6ac51b972544251fcc0f2902e633e3f9bd3f290000000000000000000000000000000000000000000000000000000065cc4c990000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001eb8343d03ec9fc28a877c2fcad21d9923c56e6ad156ea6647282a35ce215c931f9fbdf3bec37168f9c9b49e33a0818731c5892ff626852f9465e619538540221c"),
+				PreVerificationGas:   blockaidclientgo.F("0x2496ebc"),
+				Sender:               blockaidclientgo.F("0x77bA5AC3ca4864be26CA3112baDf07286CcC3324"),
 				Signature:            blockaidclientgo.F("0x"),
+				VerificationGasLimit: blockaidclientgo.F("0x1659f"),
 			}),
 			Entrypoint: blockaidclientgo.F("0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"),
 		}),
@@ -49,7 +49,7 @@ func TestEvmUserOperationScanWithOptionalParams(t *testing.T) {
 		}),
 		AccountAddress: blockaidclientgo.F("0x77bA5AC3ca4864be26CA3112baDf07286CcC3324"),
 		Block:          blockaidclientgo.F[blockaidclientgo.EvmUserOperationScanParamsBlockUnion](shared.UnionString("0x5c6fd5")),
-		Options:        blockaidclientgo.F([]blockaidclientgo.EvmUserOperationScanParamsOption{blockaidclientgo.EvmUserOperationScanParamsOptionSimulation, blockaidclientgo.EvmUserOperationScanParamsOptionValidation}),
+		Options:        blockaidclientgo.F([]blockaidclientgo.EvmUserOperationScanParamsOption{blockaidclientgo.EvmUserOperationScanParamsOptionValidation, blockaidclientgo.EvmUserOperationScanParamsOptionSimulation}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error

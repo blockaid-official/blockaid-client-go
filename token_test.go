@@ -29,8 +29,8 @@ func TestTokenReport(t *testing.T) {
 		Details: blockaidclientgo.F("Details about the report"),
 		Event:   blockaidclientgo.F(blockaidclientgo.TokenReportParamsEventFalsePositive),
 		Report: blockaidclientgo.F[blockaidclientgo.TokenReportParamsReportUnion](blockaidclientgo.TokenReportParamsReportRequestIDReport{
-			Type:      blockaidclientgo.F(blockaidclientgo.TokenReportParamsReportRequestIDReportTypeRequestID),
 			RequestID: blockaidclientgo.F("11111111-1111-1111-1111-111111111111"),
+			Type:      blockaidclientgo.F(blockaidclientgo.TokenReportParamsReportRequestIDReportTypeRequestID),
 		}),
 	})
 	if err != nil {
@@ -56,7 +56,7 @@ func TestTokenScanWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Token.Scan(context.TODO(), blockaidclientgo.TokenScanParams{
 		Address: blockaidclientgo.F("0x66587563e933bbf3974b89156b47bb82b921eb35"),
-		Chain:   blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainEthereum),
+		Chain:   blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainArbitrum),
 		Metadata: blockaidclientgo.F(blockaidclientgo.TokenScanParamsMetadata{
 			Domain: blockaidclientgo.F("domain"),
 		}),
