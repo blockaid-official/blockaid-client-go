@@ -29,8 +29,8 @@ func TestSiteReport(t *testing.T) {
 		Details: blockaidclientgo.F("Details about the report"),
 		Event:   blockaidclientgo.F(blockaidclientgo.SiteReportParamsEventFalsePositive),
 		Report: blockaidclientgo.F[blockaidclientgo.SiteReportParamsReportUnion](blockaidclientgo.SiteReportParamsReportRequestIDReport{
-			Type:      blockaidclientgo.F(blockaidclientgo.SiteReportParamsReportRequestIDReportTypeRequestID),
 			RequestID: blockaidclientgo.F("11111111-1111-1111-1111-111111111111"),
+			Type:      blockaidclientgo.F(blockaidclientgo.SiteReportParamsReportRequestIDReportTypeRequestID),
 		}),
 	})
 	if err != nil {

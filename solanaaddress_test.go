@@ -27,11 +27,11 @@ func TestSolanaAddressScanWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Solana.Address.Scan(context.TODO(), blockaidclientgo.SolanaAddressScanParams{
 		AddressScanRequestSchema: blockaidclientgo.AddressScanRequestSchemaParam{
-			Chain:   blockaidclientgo.F("mainnet"),
 			Address: blockaidclientgo.F("2ojv9BAiHUrvsm9gxDe7fJSzbNZSJcxZvf8dqmWGHG8S"),
 			Metadata: blockaidclientgo.F(blockaidclientgo.AddressScanRequestSchemaMetadataParam{
 				URL: blockaidclientgo.F("https://example.com"),
 			}),
+			Chain: blockaidclientgo.F("mainnet"),
 		},
 	})
 	if err != nil {
