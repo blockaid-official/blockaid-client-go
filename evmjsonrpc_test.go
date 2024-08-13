@@ -37,7 +37,7 @@ func TestEvmJsonRpcScanWithOptionalParams(t *testing.T) {
 		}),
 		AccountAddress: blockaidclientgo.F("0x49c73c9d361c04769a452E85D343b41aC38e0EE4"),
 		Block:          blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsBlockUnion](shared.UnionString("18370320")),
-		Options:        blockaidclientgo.F([]blockaidclientgo.EvmJsonRpcScanParamsOption{blockaidclientgo.EvmJsonRpcScanParamsOptionSimulation, blockaidclientgo.EvmJsonRpcScanParamsOptionValidation}),
+		Options:        blockaidclientgo.F([]blockaidclientgo.EvmJsonRpcScanParamsOption{blockaidclientgo.EvmJsonRpcScanParamsOptionValidation, blockaidclientgo.EvmJsonRpcScanParamsOptionSimulation}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
