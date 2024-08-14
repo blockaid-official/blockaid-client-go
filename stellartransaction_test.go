@@ -24,7 +24,6 @@ func TestStellarTransactionScanWithOptionalParams(t *testing.T) {
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
-		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Stellar.Transaction.Scan(context.TODO(), blockaidclientgo.StellarTransactionScanParams{
 		StellarTransactionScanRequest: blockaidclientgo.StellarTransactionScanRequestParam{
