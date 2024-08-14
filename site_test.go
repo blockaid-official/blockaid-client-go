@@ -24,7 +24,6 @@ func TestSiteReport(t *testing.T) {
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
-		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Site.Report(context.TODO(), blockaidclientgo.SiteReportParams{
 		Details: blockaidclientgo.F("Details about the report"),
@@ -54,7 +53,6 @@ func TestSiteScanWithOptionalParams(t *testing.T) {
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
-		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Site.Scan(context.TODO(), blockaidclientgo.SiteScanParams{
 		URL: blockaidclientgo.F("https://app.uniswap.org"),

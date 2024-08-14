@@ -25,7 +25,6 @@ func TestEvmPostTransactionReport(t *testing.T) {
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
-		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Evm.PostTransaction.Report(context.TODO(), blockaidclientgo.EvmPostTransactionReportParams{
 		Details: blockaidclientgo.F("Details about the report"),
@@ -55,7 +54,6 @@ func TestEvmPostTransactionScanWithOptionalParams(t *testing.T) {
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
-		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Evm.PostTransaction.Scan(context.TODO(), blockaidclientgo.EvmPostTransactionScanParams{
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
