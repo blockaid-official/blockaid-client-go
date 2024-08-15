@@ -30,18 +30,18 @@ func TestEvmTransactionBulkScanWithOptionalParams(t *testing.T) {
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
 		Data: blockaidclientgo.F([]blockaidclientgo.EvmTransactionBulkScanParamsData{{
 			From:     blockaidclientgo.F("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"),
-			To:       blockaidclientgo.F("0xA4e5961B58DBE487639929643dCB1Dc3848dAF5E"),
 			Data:     blockaidclientgo.F("0x"),
-			Value:    blockaidclientgo.F("0x100000000000"),
 			Gas:      blockaidclientgo.F("gas"),
 			GasPrice: blockaidclientgo.F("gas_price"),
+			To:       blockaidclientgo.F("0xA4e5961B58DBE487639929643dCB1Dc3848dAF5E"),
+			Value:    blockaidclientgo.F("0x100000000000"),
 		}, {
 			From:     blockaidclientgo.F("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"),
-			To:       blockaidclientgo.F("0x0D524a5B52737C0a02880d5E84F7D20b8d66bfba"),
 			Data:     blockaidclientgo.F("0x"),
-			Value:    blockaidclientgo.F("0xdeadbeef"),
 			Gas:      blockaidclientgo.F("gas"),
 			GasPrice: blockaidclientgo.F("gas_price"),
+			To:       blockaidclientgo.F("0x0D524a5B52737C0a02880d5E84F7D20b8d66bfba"),
+			Value:    blockaidclientgo.F("0xdeadbeef"),
 		}}),
 		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
 			Domain: blockaidclientgo.F("https://example.com"),
