@@ -26,14 +26,16 @@ func TestStellarTransactionScanWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Stellar.Transaction.Scan(context.TODO(), blockaidclientgo.StellarTransactionScanParams{
-		AccountAddress: blockaidclientgo.F("GDPMFLKUGASUTWBN2XGYYKD27QGHCYH4BUFUTER4L23INYQ4JHDWFOIE"),
-		Chain:          blockaidclientgo.F(blockaidclientgo.StellarTransactionScanParamsChainPubnet),
-		Metadata: blockaidclientgo.F[blockaidclientgo.StellarTransactionScanParamsMetadataUnion](blockaidclientgo.StellarTransactionScanParamsMetadataStellarWalletRequestMetadata{
-			Type: blockaidclientgo.F(blockaidclientgo.StellarTransactionScanParamsMetadataStellarWalletRequestMetadataTypeWallet),
-			URL:  blockaidclientgo.F("localhost"),
-		}),
-		Transaction: blockaidclientgo.F("AAAAAgAAAADewq1UMCVJ2C3VzYwoevwMcWD8DQtJkjxetobiHEnHYgAAAAEAAAAAAAAAAgAAAAAAAAAAAAAAAQAAAAEAAAAA3sKtVDAlSdgt1c2MKHr8DHFg/A0LSZI8XraG4hxJx2IAAAABAAAAACI40RTBOFEE7uT5mZkoq30mbvxLPJpMUm9cIFHgK9SRAAAAAAAAAAAAmJaAAAAAAAAAAAA="),
-		Options:     blockaidclientgo.F([]blockaidclientgo.StellarTransactionScanParamsOption{blockaidclientgo.StellarTransactionScanParamsOptionValidation, blockaidclientgo.StellarTransactionScanParamsOptionSimulation}),
+		StellarTransactionScanRequest: blockaidclientgo.StellarTransactionScanRequestParam{
+			AccountAddress: blockaidclientgo.F("GDPMFLKUGASUTWBN2XGYYKD27QGHCYH4BUFUTER4L23INYQ4JHDWFOIE"),
+			Chain:          blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestChainPubnet),
+			Metadata: blockaidclientgo.F[blockaidclientgo.StellarTransactionScanRequestMetadataUnionParam](blockaidclientgo.StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam{
+				Type: blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestMetadataStellarWalletRequestMetadataTypeWallet),
+				URL:  blockaidclientgo.F("localhost"),
+			}),
+			Transaction: blockaidclientgo.F("AAAAAgAAAADewq1UMCVJ2C3VzYwoevwMcWD8DQtJkjxetobiHEnHYgAAAAEAAAAAAAAAAgAAAAAAAAAAAAAAAQAAAAEAAAAA3sKtVDAlSdgt1c2MKHr8DHFg/A0LSZI8XraG4hxJx2IAAAABAAAAACI40RTBOFEE7uT5mZkoq30mbvxLPJpMUm9cIFHgK9SRAAAAAAAAAAAAmJaAAAAAAAAAAAA="),
+			Options:     blockaidclientgo.F([]blockaidclientgo.StellarTransactionScanRequestOption{blockaidclientgo.StellarTransactionScanRequestOptionValidation, blockaidclientgo.StellarTransactionScanRequestOptionSimulation}),
+		},
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
