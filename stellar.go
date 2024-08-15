@@ -120,9 +120,8 @@ type StellarTransactionScanRequestParam struct {
 	// A CAIP-2 chain ID or a Stellar network name
 	Chain param.Field[StellarTransactionScanRequestChain] `json:"chain,required"`
 	// Metadata
-	Metadata param.Field[StellarTransactionScanRequestMetadataUnionParam] `json:"metadata,required"`
-	// List of XDR-encoded transactions to be scanned
-	Transactions param.Field[[]string] `json:"transactions,required"`
+	Metadata    param.Field[StellarTransactionScanRequestMetadataUnionParam] `json:"metadata,required"`
+	Transaction param.Field[string]                                          `json:"transaction,required"`
 	// List of options to include in the response
 	//
 	// - `simulation`: Include simulation output in the response
@@ -1290,7 +1289,7 @@ type StellarTransactionScanResponseValidation struct {
 	Description string `json:"description"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
-	Reason StellarTransactionScanResponseValidationReason `json:"reason"`
+	Reason string `json:"reason"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
@@ -1374,7 +1373,7 @@ type StellarTransactionScanResponseValidationStellarValidationResultSchema struc
 	Features []StellarTransactionScanResponseValidationStellarValidationResultSchemaFeature `json:"features,required"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
-	Reason StellarTransactionScanResponseValidationStellarValidationResultSchemaReason `json:"reason,required"`
+	Reason string `json:"reason,required"`
 	// Verdict of the validation
 	ResultType StellarTransactionScanResponseValidationStellarValidationResultSchemaResultType `json:"result_type,required"`
 	Status     StellarTransactionScanResponseValidationStellarValidationResultSchemaStatus     `json:"status,required"`
@@ -1450,29 +1449,6 @@ const (
 func (r StellarTransactionScanResponseValidationStellarValidationResultSchemaFeaturesType) IsKnown() bool {
 	switch r {
 	case StellarTransactionScanResponseValidationStellarValidationResultSchemaFeaturesTypeBenign, StellarTransactionScanResponseValidationStellarValidationResultSchemaFeaturesTypeWarning, StellarTransactionScanResponseValidationStellarValidationResultSchemaFeaturesTypeMalicious, StellarTransactionScanResponseValidationStellarValidationResultSchemaFeaturesTypeInfo:
-		return true
-	}
-	return false
-}
-
-// A textual description about the reasons the transaction was flagged with
-// result_type
-type StellarTransactionScanResponseValidationStellarValidationResultSchemaReason string
-
-const (
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonEmpty                 StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = ""
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonKnownAttacker         StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "known_attacker"
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonKnownFraudulentAsset  StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "known_fraudulent_asset"
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonMaliciousMemo         StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "malicious_memo"
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonUnfairTrade           StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "unfair_trade"
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonTransferFarming       StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "transfer_farming"
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonNativeOwnershipChange StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "native_ownership_change"
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonOther                 StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "other"
-)
-
-func (r StellarTransactionScanResponseValidationStellarValidationResultSchemaReason) IsKnown() bool {
-	switch r {
-	case StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonEmpty, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonKnownAttacker, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonKnownFraudulentAsset, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonMaliciousMemo, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonUnfairTrade, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonTransferFarming, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonNativeOwnershipChange, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonOther:
 		return true
 	}
 	return false
@@ -1578,29 +1554,6 @@ const (
 func (r StellarTransactionScanResponseValidationResultType) IsKnown() bool {
 	switch r {
 	case StellarTransactionScanResponseValidationResultTypeBenign, StellarTransactionScanResponseValidationResultTypeWarning, StellarTransactionScanResponseValidationResultTypeMalicious:
-		return true
-	}
-	return false
-}
-
-// A textual description about the reasons the transaction was flagged with
-// result_type
-type StellarTransactionScanResponseValidationReason string
-
-const (
-	StellarTransactionScanResponseValidationReasonEmpty                 StellarTransactionScanResponseValidationReason = ""
-	StellarTransactionScanResponseValidationReasonKnownAttacker         StellarTransactionScanResponseValidationReason = "known_attacker"
-	StellarTransactionScanResponseValidationReasonKnownFraudulentAsset  StellarTransactionScanResponseValidationReason = "known_fraudulent_asset"
-	StellarTransactionScanResponseValidationReasonMaliciousMemo         StellarTransactionScanResponseValidationReason = "malicious_memo"
-	StellarTransactionScanResponseValidationReasonUnfairTrade           StellarTransactionScanResponseValidationReason = "unfair_trade"
-	StellarTransactionScanResponseValidationReasonTransferFarming       StellarTransactionScanResponseValidationReason = "transfer_farming"
-	StellarTransactionScanResponseValidationReasonNativeOwnershipChange StellarTransactionScanResponseValidationReason = "native_ownership_change"
-	StellarTransactionScanResponseValidationReasonOther                 StellarTransactionScanResponseValidationReason = "other"
-)
-
-func (r StellarTransactionScanResponseValidationReason) IsKnown() bool {
-	switch r {
-	case StellarTransactionScanResponseValidationReasonEmpty, StellarTransactionScanResponseValidationReasonKnownAttacker, StellarTransactionScanResponseValidationReasonKnownFraudulentAsset, StellarTransactionScanResponseValidationReasonMaliciousMemo, StellarTransactionScanResponseValidationReasonUnfairTrade, StellarTransactionScanResponseValidationReasonTransferFarming, StellarTransactionScanResponseValidationReasonNativeOwnershipChange, StellarTransactionScanResponseValidationReasonOther:
 		return true
 	}
 	return false

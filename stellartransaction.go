@@ -30,10 +30,10 @@ func NewStellarTransactionService(opts ...option.RequestOption) (r *StellarTrans
 	return
 }
 
-// Scan Transactions
+// Scan Transaction
 func (r *StellarTransactionService) Scan(ctx context.Context, body StellarTransactionScanParams, opts ...option.RequestOption) (res *StellarTransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
-	path := "v0/stellar/scan/transaction"
+	path := "v0/stellar/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }

@@ -33,8 +33,8 @@ func TestStellarTransactionScanWithOptionalParams(t *testing.T) {
 				Type: blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestMetadataStellarWalletRequestMetadataTypeWallet),
 				URL:  blockaidclientgo.F("localhost"),
 			}),
-			Transactions: blockaidclientgo.F([]string{"AAAAAgAAAADewq1UMCVJ2C3VzYwoevwMcWD8DQtJkjxetobiHEnHYgAAAAEAAAAAAAAAAgAAAAAAAAAAAAAAAQAAAAEAAAAA3sKtVDAlSdgt1c2MKHr8DHFg/A0LSZI8XraG4hxJx2IAAAABAAAAACI40RTBOFEE7uT5mZkoq30mbvxLPJpMUm9cIFHgK9SRAAAAAAAAAAAAmJaAAAAAAAAAAAA="}),
-			Options:      blockaidclientgo.F([]blockaidclientgo.StellarTransactionScanRequestOption{blockaidclientgo.StellarTransactionScanRequestOptionValidation, blockaidclientgo.StellarTransactionScanRequestOptionSimulation}),
+			Transaction: blockaidclientgo.F("AAAAAgAAAADewq1UMCVJ2C3VzYwoevwMcWD8DQtJkjxetobiHEnHYgAAAAEAAAAAAAAAAgAAAAAAAAAAAAAAAQAAAAEAAAAA3sKtVDAlSdgt1c2MKHr8DHFg/A0LSZI8XraG4hxJx2IAAAABAAAAACI40RTBOFEE7uT5mZkoq30mbvxLPJpMUm9cIFHgK9SRAAAAAAAAAAAAmJaAAAAAAAAAAAA="),
+			Options:     blockaidclientgo.F([]blockaidclientgo.StellarTransactionScanRequestOption{blockaidclientgo.StellarTransactionScanRequestOptionValidation, blockaidclientgo.StellarTransactionScanRequestOptionSimulation}),
 		},
 	})
 	if err != nil {
