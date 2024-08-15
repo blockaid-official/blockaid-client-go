@@ -6,7 +6,6 @@ import (
 	"reflect"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
-	"github.com/blockaid-official/blockaid-client-go/internal/param"
 	"github.com/blockaid-official/blockaid-client-go/option"
 	"github.com/tidwall/gjson"
 )
@@ -113,154 +112,6 @@ func (r *StellarAssetTransferDetailsSchema) UnmarshalJSON(data []byte) (err erro
 
 func (r stellarAssetTransferDetailsSchemaJSON) RawJSON() string {
 	return r.raw
-}
-
-type StellarTransactionScanRequestParam struct {
-	AccountAddress param.Field[string] `json:"account_address,required"`
-	// A CAIP-2 chain ID or a Stellar network name
-	Chain param.Field[StellarTransactionScanRequestChain] `json:"chain,required"`
-	// Metadata
-	Metadata param.Field[StellarTransactionScanRequestMetadataUnionParam] `json:"metadata,required"`
-	// List of XDR-encoded transactions to be scanned
-	Transactions param.Field[[]string] `json:"transactions,required"`
-	// List of options to include in the response
-	//
-	// - `simulation`: Include simulation output in the response
-	// - `validation`: Include security validation of the transaction in the response
-	Options param.Field[[]StellarTransactionScanRequestOption] `json:"options"`
-}
-
-func (r StellarTransactionScanRequestParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// A CAIP-2 chain ID or a Stellar network name
-type StellarTransactionScanRequestChain string
-
-const (
-	StellarTransactionScanRequestChainPubnet    StellarTransactionScanRequestChain = "pubnet"
-	StellarTransactionScanRequestChainFuturenet StellarTransactionScanRequestChain = "futurenet"
-	StellarTransactionScanRequestChainTestnet   StellarTransactionScanRequestChain = "testnet"
-)
-
-func (r StellarTransactionScanRequestChain) IsKnown() bool {
-	switch r {
-	case StellarTransactionScanRequestChainPubnet, StellarTransactionScanRequestChainFuturenet, StellarTransactionScanRequestChainTestnet:
-		return true
-	}
-	return false
-}
-
-// Metadata
-type StellarTransactionScanRequestMetadataParam struct {
-	// Metadata for wallet requests
-	Type param.Field[StellarTransactionScanRequestMetadataType] `json:"type,required"`
-	// URL of the dApp originating the transaction
-	URL param.Field[string] `json:"url"`
-}
-
-func (r StellarTransactionScanRequestMetadataParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r StellarTransactionScanRequestMetadataParam) implementsStellarTransactionScanRequestMetadataUnionParam() {
-}
-
-// Metadata
-//
-// Satisfied by
-// [StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam],
-// [StellarTransactionScanRequestMetadataStellarInAppRequestMetadataParam],
-// [StellarTransactionScanRequestMetadataParam].
-type StellarTransactionScanRequestMetadataUnionParam interface {
-	implementsStellarTransactionScanRequestMetadataUnionParam()
-}
-
-type StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam struct {
-	// Metadata for wallet requests
-	Type param.Field[StellarTransactionScanRequestMetadataStellarWalletRequestMetadataType] `json:"type,required"`
-	// URL of the dApp originating the transaction
-	URL param.Field[string] `json:"url,required"`
-}
-
-func (r StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam) implementsStellarTransactionScanRequestMetadataUnionParam() {
-}
-
-// Metadata for wallet requests
-type StellarTransactionScanRequestMetadataStellarWalletRequestMetadataType string
-
-const (
-	StellarTransactionScanRequestMetadataStellarWalletRequestMetadataTypeWallet StellarTransactionScanRequestMetadataStellarWalletRequestMetadataType = "wallet"
-)
-
-func (r StellarTransactionScanRequestMetadataStellarWalletRequestMetadataType) IsKnown() bool {
-	switch r {
-	case StellarTransactionScanRequestMetadataStellarWalletRequestMetadataTypeWallet:
-		return true
-	}
-	return false
-}
-
-type StellarTransactionScanRequestMetadataStellarInAppRequestMetadataParam struct {
-	// Metadata for in-app requests
-	Type param.Field[StellarTransactionScanRequestMetadataStellarInAppRequestMetadataType] `json:"type,required"`
-}
-
-func (r StellarTransactionScanRequestMetadataStellarInAppRequestMetadataParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r StellarTransactionScanRequestMetadataStellarInAppRequestMetadataParam) implementsStellarTransactionScanRequestMetadataUnionParam() {
-}
-
-// Metadata for in-app requests
-type StellarTransactionScanRequestMetadataStellarInAppRequestMetadataType string
-
-const (
-	StellarTransactionScanRequestMetadataStellarInAppRequestMetadataTypeInApp StellarTransactionScanRequestMetadataStellarInAppRequestMetadataType = "in_app"
-)
-
-func (r StellarTransactionScanRequestMetadataStellarInAppRequestMetadataType) IsKnown() bool {
-	switch r {
-	case StellarTransactionScanRequestMetadataStellarInAppRequestMetadataTypeInApp:
-		return true
-	}
-	return false
-}
-
-// Metadata for wallet requests
-type StellarTransactionScanRequestMetadataType string
-
-const (
-	StellarTransactionScanRequestMetadataTypeWallet StellarTransactionScanRequestMetadataType = "wallet"
-	StellarTransactionScanRequestMetadataTypeInApp  StellarTransactionScanRequestMetadataType = "in_app"
-)
-
-func (r StellarTransactionScanRequestMetadataType) IsKnown() bool {
-	switch r {
-	case StellarTransactionScanRequestMetadataTypeWallet, StellarTransactionScanRequestMetadataTypeInApp:
-		return true
-	}
-	return false
-}
-
-type StellarTransactionScanRequestOption string
-
-const (
-	StellarTransactionScanRequestOptionValidation StellarTransactionScanRequestOption = "validation"
-	StellarTransactionScanRequestOptionSimulation StellarTransactionScanRequestOption = "simulation"
-)
-
-func (r StellarTransactionScanRequestOption) IsKnown() bool {
-	switch r {
-	case StellarTransactionScanRequestOptionValidation, StellarTransactionScanRequestOptionSimulation:
-		return true
-	}
-	return false
 }
 
 type StellarTransactionScanResponse struct {
@@ -1290,7 +1141,7 @@ type StellarTransactionScanResponseValidation struct {
 	Description string `json:"description"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
-	Reason StellarTransactionScanResponseValidationReason `json:"reason"`
+	Reason string `json:"reason"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
@@ -1374,7 +1225,7 @@ type StellarTransactionScanResponseValidationStellarValidationResultSchema struc
 	Features []StellarTransactionScanResponseValidationStellarValidationResultSchemaFeature `json:"features,required"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
-	Reason StellarTransactionScanResponseValidationStellarValidationResultSchemaReason `json:"reason,required"`
+	Reason string `json:"reason,required"`
 	// Verdict of the validation
 	ResultType StellarTransactionScanResponseValidationStellarValidationResultSchemaResultType `json:"result_type,required"`
 	Status     StellarTransactionScanResponseValidationStellarValidationResultSchemaStatus     `json:"status,required"`
@@ -1450,29 +1301,6 @@ const (
 func (r StellarTransactionScanResponseValidationStellarValidationResultSchemaFeaturesType) IsKnown() bool {
 	switch r {
 	case StellarTransactionScanResponseValidationStellarValidationResultSchemaFeaturesTypeBenign, StellarTransactionScanResponseValidationStellarValidationResultSchemaFeaturesTypeWarning, StellarTransactionScanResponseValidationStellarValidationResultSchemaFeaturesTypeMalicious, StellarTransactionScanResponseValidationStellarValidationResultSchemaFeaturesTypeInfo:
-		return true
-	}
-	return false
-}
-
-// A textual description about the reasons the transaction was flagged with
-// result_type
-type StellarTransactionScanResponseValidationStellarValidationResultSchemaReason string
-
-const (
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonEmpty                 StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = ""
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonKnownAttacker         StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "known_attacker"
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonKnownFraudulentAsset  StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "known_fraudulent_asset"
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonMaliciousMemo         StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "malicious_memo"
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonUnfairTrade           StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "unfair_trade"
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonTransferFarming       StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "transfer_farming"
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonNativeOwnershipChange StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "native_ownership_change"
-	StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonOther                 StellarTransactionScanResponseValidationStellarValidationResultSchemaReason = "other"
-)
-
-func (r StellarTransactionScanResponseValidationStellarValidationResultSchemaReason) IsKnown() bool {
-	switch r {
-	case StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonEmpty, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonKnownAttacker, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonKnownFraudulentAsset, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonMaliciousMemo, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonUnfairTrade, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonTransferFarming, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonNativeOwnershipChange, StellarTransactionScanResponseValidationStellarValidationResultSchemaReasonOther:
 		return true
 	}
 	return false
@@ -1578,29 +1406,6 @@ const (
 func (r StellarTransactionScanResponseValidationResultType) IsKnown() bool {
 	switch r {
 	case StellarTransactionScanResponseValidationResultTypeBenign, StellarTransactionScanResponseValidationResultTypeWarning, StellarTransactionScanResponseValidationResultTypeMalicious:
-		return true
-	}
-	return false
-}
-
-// A textual description about the reasons the transaction was flagged with
-// result_type
-type StellarTransactionScanResponseValidationReason string
-
-const (
-	StellarTransactionScanResponseValidationReasonEmpty                 StellarTransactionScanResponseValidationReason = ""
-	StellarTransactionScanResponseValidationReasonKnownAttacker         StellarTransactionScanResponseValidationReason = "known_attacker"
-	StellarTransactionScanResponseValidationReasonKnownFraudulentAsset  StellarTransactionScanResponseValidationReason = "known_fraudulent_asset"
-	StellarTransactionScanResponseValidationReasonMaliciousMemo         StellarTransactionScanResponseValidationReason = "malicious_memo"
-	StellarTransactionScanResponseValidationReasonUnfairTrade           StellarTransactionScanResponseValidationReason = "unfair_trade"
-	StellarTransactionScanResponseValidationReasonTransferFarming       StellarTransactionScanResponseValidationReason = "transfer_farming"
-	StellarTransactionScanResponseValidationReasonNativeOwnershipChange StellarTransactionScanResponseValidationReason = "native_ownership_change"
-	StellarTransactionScanResponseValidationReasonOther                 StellarTransactionScanResponseValidationReason = "other"
-)
-
-func (r StellarTransactionScanResponseValidationReason) IsKnown() bool {
-	switch r {
-	case StellarTransactionScanResponseValidationReasonEmpty, StellarTransactionScanResponseValidationReasonKnownAttacker, StellarTransactionScanResponseValidationReasonKnownFraudulentAsset, StellarTransactionScanResponseValidationReasonMaliciousMemo, StellarTransactionScanResponseValidationReasonUnfairTrade, StellarTransactionScanResponseValidationReasonTransferFarming, StellarTransactionScanResponseValidationReasonNativeOwnershipChange, StellarTransactionScanResponseValidationReasonOther:
 		return true
 	}
 	return false

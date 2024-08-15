@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
+	"github.com/blockaid-official/blockaid-client-go/internal/param"
 	"github.com/blockaid-official/blockaid-client-go/internal/requestconfig"
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
@@ -30,18 +31,155 @@ func NewStellarTransactionService(opts ...option.RequestOption) (r *StellarTrans
 	return
 }
 
-// Scan Transactions
+// Scan Transaction
 func (r *StellarTransactionService) Scan(ctx context.Context, body StellarTransactionScanParams, opts ...option.RequestOption) (res *StellarTransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
-	path := "v0/stellar/scan/transaction"
+	path := "v0/stellar/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
 type StellarTransactionScanParams struct {
-	StellarTransactionScanRequest StellarTransactionScanRequestParam `json:"StellarTransactionScanRequest,required"`
+	AccountAddress param.Field[string] `json:"account_address,required"`
+	// A CAIP-2 chain ID or a Stellar network name
+	Chain param.Field[StellarTransactionScanParamsChain] `json:"chain,required"`
+	// Metadata
+	Metadata    param.Field[StellarTransactionScanParamsMetadataUnion] `json:"metadata,required"`
+	Transaction param.Field[string]                                    `json:"transaction,required"`
+	// List of options to include in the response
+	//
+	// - `simulation`: Include simulation output in the response
+	// - `validation`: Include security validation of the transaction in the response
+	Options param.Field[[]StellarTransactionScanParamsOption] `json:"options"`
 }
 
 func (r StellarTransactionScanParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r.StellarTransactionScanRequest)
+	return apijson.MarshalRoot(r)
+}
+
+// A CAIP-2 chain ID or a Stellar network name
+type StellarTransactionScanParamsChain string
+
+const (
+	StellarTransactionScanParamsChainPubnet    StellarTransactionScanParamsChain = "pubnet"
+	StellarTransactionScanParamsChainFuturenet StellarTransactionScanParamsChain = "futurenet"
+	StellarTransactionScanParamsChainTestnet   StellarTransactionScanParamsChain = "testnet"
+)
+
+func (r StellarTransactionScanParamsChain) IsKnown() bool {
+	switch r {
+	case StellarTransactionScanParamsChainPubnet, StellarTransactionScanParamsChainFuturenet, StellarTransactionScanParamsChainTestnet:
+		return true
+	}
+	return false
+}
+
+// Metadata
+type StellarTransactionScanParamsMetadata struct {
+	// Metadata for wallet requests
+	Type param.Field[StellarTransactionScanParamsMetadataType] `json:"type,required"`
+	// URL of the dApp originating the transaction
+	URL param.Field[string] `json:"url"`
+}
+
+func (r StellarTransactionScanParamsMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionScanParamsMetadata) implementsStellarTransactionScanParamsMetadataUnion() {}
+
+// Metadata
+//
+// Satisfied by [StellarTransactionScanParamsMetadataStellarWalletRequestMetadata],
+// [StellarTransactionScanParamsMetadataStellarInAppRequestMetadata],
+// [StellarTransactionScanParamsMetadata].
+type StellarTransactionScanParamsMetadataUnion interface {
+	implementsStellarTransactionScanParamsMetadataUnion()
+}
+
+type StellarTransactionScanParamsMetadataStellarWalletRequestMetadata struct {
+	// Metadata for wallet requests
+	Type param.Field[StellarTransactionScanParamsMetadataStellarWalletRequestMetadataType] `json:"type,required"`
+	// URL of the dApp originating the transaction
+	URL param.Field[string] `json:"url,required"`
+}
+
+func (r StellarTransactionScanParamsMetadataStellarWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionScanParamsMetadataStellarWalletRequestMetadata) implementsStellarTransactionScanParamsMetadataUnion() {
+}
+
+// Metadata for wallet requests
+type StellarTransactionScanParamsMetadataStellarWalletRequestMetadataType string
+
+const (
+	StellarTransactionScanParamsMetadataStellarWalletRequestMetadataTypeWallet StellarTransactionScanParamsMetadataStellarWalletRequestMetadataType = "wallet"
+)
+
+func (r StellarTransactionScanParamsMetadataStellarWalletRequestMetadataType) IsKnown() bool {
+	switch r {
+	case StellarTransactionScanParamsMetadataStellarWalletRequestMetadataTypeWallet:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionScanParamsMetadataStellarInAppRequestMetadata struct {
+	// Metadata for in-app requests
+	Type param.Field[StellarTransactionScanParamsMetadataStellarInAppRequestMetadataType] `json:"type,required"`
+}
+
+func (r StellarTransactionScanParamsMetadataStellarInAppRequestMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionScanParamsMetadataStellarInAppRequestMetadata) implementsStellarTransactionScanParamsMetadataUnion() {
+}
+
+// Metadata for in-app requests
+type StellarTransactionScanParamsMetadataStellarInAppRequestMetadataType string
+
+const (
+	StellarTransactionScanParamsMetadataStellarInAppRequestMetadataTypeInApp StellarTransactionScanParamsMetadataStellarInAppRequestMetadataType = "in_app"
+)
+
+func (r StellarTransactionScanParamsMetadataStellarInAppRequestMetadataType) IsKnown() bool {
+	switch r {
+	case StellarTransactionScanParamsMetadataStellarInAppRequestMetadataTypeInApp:
+		return true
+	}
+	return false
+}
+
+// Metadata for wallet requests
+type StellarTransactionScanParamsMetadataType string
+
+const (
+	StellarTransactionScanParamsMetadataTypeWallet StellarTransactionScanParamsMetadataType = "wallet"
+	StellarTransactionScanParamsMetadataTypeInApp  StellarTransactionScanParamsMetadataType = "in_app"
+)
+
+func (r StellarTransactionScanParamsMetadataType) IsKnown() bool {
+	switch r {
+	case StellarTransactionScanParamsMetadataTypeWallet, StellarTransactionScanParamsMetadataTypeInApp:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionScanParamsOption string
+
+const (
+	StellarTransactionScanParamsOptionValidation StellarTransactionScanParamsOption = "validation"
+	StellarTransactionScanParamsOptionSimulation StellarTransactionScanParamsOption = "simulation"
+)
+
+func (r StellarTransactionScanParamsOption) IsKnown() bool {
+	switch r {
+	case StellarTransactionScanParamsOptionValidation, StellarTransactionScanParamsOptionSimulation:
+		return true
+	}
+	return false
 }
