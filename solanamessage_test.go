@@ -35,6 +35,7 @@ func TestSolanaMessageScanWithOptionalParams(t *testing.T) {
 			Chain:        blockaidclientgo.F("mainnet"),
 			Encoding:     blockaidclientgo.F("base58"),
 			Method:       blockaidclientgo.F("signAndSendTransaction"),
+			Options:      blockaidclientgo.F([]string{"simulation", "validation"}),
 		},
 	})
 	if err != nil {
