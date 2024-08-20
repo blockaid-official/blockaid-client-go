@@ -322,6 +322,31 @@ func (r AddressScanResponseSchemaResultType) IsKnown() bool {
 	return false
 }
 
+type APIErrorDetails struct {
+	// Advanced message of the error
+	Message string              `json:"message,required"`
+	Type    string              `json:"type"`
+	JSON    apiErrorDetailsJSON `json:"-"`
+}
+
+// apiErrorDetailsJSON contains the JSON metadata for the struct [APIErrorDetails]
+type apiErrorDetailsJSON struct {
+	Message     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *APIErrorDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r apiErrorDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r APIErrorDetails) implementsResponseSchemaErrorDetails() {}
+
 type AssetTransferDetailsSchema struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
@@ -475,18 +500,18 @@ func (r CnftMintAccountDetailsSchemaType) IsKnown() bool {
 }
 
 type CombinedValidationResult struct {
-	// Transaction validation result
-	Validation CombinedValidationResultValidation `json:"validation,required"`
 	// Transaction simulation result
 	Simulation SuccessfulSimulationResultSchema `json:"simulation,nullable"`
-	JSON       combinedValidationResultJSON     `json:"-"`
+	// Transaction validation result
+	Validation CombinedValidationResultValidation `json:"validation,nullable"`
+	JSON       combinedValidationResultJSON       `json:"-"`
 }
 
 // combinedValidationResultJSON contains the JSON metadata for the struct
 // [CombinedValidationResult]
 type combinedValidationResultJSON struct {
-	Validation  apijson.Field
 	Simulation  apijson.Field
+	Validation  apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -726,8 +751,45 @@ func (r FungibleMintAccountDetailsSchemaType) IsKnown() bool {
 	return false
 }
 
+type InstructionErrorDetails struct {
+	// Index of the instruction in the transaction
+	InstructionIndex int64 `json:"instruction_index,required"`
+	// Advanced message of the error
+	Message string `json:"message,required"`
+	// Index of the transaction in the bulk
+	TransactionIndex int64 `json:"transaction_index,required"`
+	// The program account that caused the error
+	ProgramAccount string                      `json:"program_account,nullable"`
+	Type           string                      `json:"type"`
+	JSON           instructionErrorDetailsJSON `json:"-"`
+}
+
+// instructionErrorDetailsJSON contains the JSON metadata for the struct
+// [InstructionErrorDetails]
+type instructionErrorDetailsJSON struct {
+	InstructionIndex apijson.Field
+	Message          apijson.Field
+	TransactionIndex apijson.Field
+	ProgramAccount   apijson.Field
+	Type             apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
+}
+
+func (r *InstructionErrorDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r instructionErrorDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r InstructionErrorDetails) implementsResponseSchemaErrorDetails() {}
+
 type NativeSolDetailsSchema struct {
 	Decimals int64 `json:"decimals"`
+	// Logo of Sol
+	Logo string `json:"logo,nullable"`
 	// Type of the asset (`"SOL"`)
 	Type string                     `json:"type"`
 	JSON nativeSolDetailsSchemaJSON `json:"-"`
@@ -737,6 +799,7 @@ type NativeSolDetailsSchema struct {
 // [NativeSolDetailsSchema]
 type nativeSolDetailsSchemaJSON struct {
 	Decimals    apijson.Field
+	Logo        apijson.Field
 	Type        apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -974,10 +1037,14 @@ func (r ProgramAccountDetailsSchemaType) IsKnown() bool {
 }
 
 type ResponseSchema struct {
+	// An enumeration.
+	Status ResponseSchemaStatus `json:"status,required"`
 	// Encoding of the public keys
 	Encoding string `json:"encoding"`
 	// Error message if the simulation failed
 	Error string `json:"error,nullable"`
+	// Advanced error details
+	ErrorDetails ResponseSchemaErrorDetails `json:"error_details,nullable"`
 	// Summary of the result
 	Result CombinedValidationResult `json:"result,nullable"`
 	JSON   responseSchemaJSON       `json:"-"`
@@ -985,11 +1052,13 @@ type ResponseSchema struct {
 
 // responseSchemaJSON contains the JSON metadata for the struct [ResponseSchema]
 type responseSchemaJSON struct {
-	Encoding    apijson.Field
-	Error       apijson.Field
-	Result      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	Status       apijson.Field
+	Encoding     apijson.Field
+	Error        apijson.Field
+	ErrorDetails apijson.Field
+	Result       apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
 }
 
 func (r *ResponseSchema) UnmarshalJSON(data []byte) (err error) {
@@ -998,6 +1067,98 @@ func (r *ResponseSchema) UnmarshalJSON(data []byte) (err error) {
 
 func (r responseSchemaJSON) RawJSON() string {
 	return r.raw
+}
+
+// An enumeration.
+type ResponseSchemaStatus string
+
+const (
+	ResponseSchemaStatusSuccess ResponseSchemaStatus = "SUCCESS"
+	ResponseSchemaStatusError   ResponseSchemaStatus = "ERROR"
+)
+
+func (r ResponseSchemaStatus) IsKnown() bool {
+	switch r {
+	case ResponseSchemaStatusSuccess, ResponseSchemaStatusError:
+		return true
+	}
+	return false
+}
+
+// Advanced error details
+type ResponseSchemaErrorDetails struct {
+	Type string `json:"type"`
+	// Advanced message of the error
+	Message string `json:"message,required"`
+	// Index of the transaction in the bulk
+	TransactionIndex int64 `json:"transaction_index"`
+	// Index of the instruction in the transaction
+	InstructionIndex int64 `json:"instruction_index"`
+	// The program account that caused the error
+	ProgramAccount string                         `json:"program_account,nullable"`
+	JSON           responseSchemaErrorDetailsJSON `json:"-"`
+	union          ResponseSchemaErrorDetailsUnion
+}
+
+// responseSchemaErrorDetailsJSON contains the JSON metadata for the struct
+// [ResponseSchemaErrorDetails]
+type responseSchemaErrorDetailsJSON struct {
+	Type             apijson.Field
+	Message          apijson.Field
+	TransactionIndex apijson.Field
+	InstructionIndex apijson.Field
+	ProgramAccount   apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
+}
+
+func (r responseSchemaErrorDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *ResponseSchemaErrorDetails) UnmarshalJSON(data []byte) (err error) {
+	*r = ResponseSchemaErrorDetails{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [ResponseSchemaErrorDetailsUnion] interface which you can cast
+// to the specific types for more type safety.
+//
+// Possible runtime types of the union are [APIErrorDetails],
+// [TransactionErrorDetails], [InstructionErrorDetails].
+func (r ResponseSchemaErrorDetails) AsUnion() ResponseSchemaErrorDetailsUnion {
+	return r.union
+}
+
+// Advanced error details
+//
+// Union satisfied by [APIErrorDetails], [TransactionErrorDetails] or
+// [InstructionErrorDetails].
+type ResponseSchemaErrorDetailsUnion interface {
+	implementsResponseSchemaErrorDetails()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*ResponseSchemaErrorDetailsUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(APIErrorDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionErrorDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(InstructionErrorDetails{}),
+		},
+	)
 }
 
 type SplFungibleTokenDetailsSchema struct {
@@ -1240,6 +1401,8 @@ func init() {
 
 type StakedSolAssetDetailsSchema struct {
 	Decimals int64 `json:"decimals"`
+	// Logo of Sol
+	Logo string `json:"logo,nullable"`
 	// Type of the asset (`"STAKED_SOL"`)
 	Type string                          `json:"type"`
 	JSON stakedSolAssetDetailsSchemaJSON `json:"-"`
@@ -1249,6 +1412,7 @@ type StakedSolAssetDetailsSchema struct {
 // [StakedSolAssetDetailsSchema]
 type stakedSolAssetDetailsSchemaJSON struct {
 	Decimals    apijson.Field
+	Logo        apijson.Field
 	Type        apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -1740,6 +1904,35 @@ func (r totalUsdDiffSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
+type TransactionErrorDetails struct {
+	// Advanced message of the error
+	Message string `json:"message,required"`
+	// Index of the transaction in the bulk
+	TransactionIndex int64                       `json:"transaction_index,required"`
+	Type             string                      `json:"type"`
+	JSON             transactionErrorDetailsJSON `json:"-"`
+}
+
+// transactionErrorDetailsJSON contains the JSON metadata for the struct
+// [TransactionErrorDetails]
+type transactionErrorDetailsJSON struct {
+	Message          apijson.Field
+	TransactionIndex apijson.Field
+	Type             apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
+}
+
+func (r *TransactionErrorDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionErrorDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionErrorDetails) implementsResponseSchemaErrorDetails() {}
+
 type TxScanRequestSchemaParam struct {
 	// Encoded public key of the account to simulate the transaction on
 	AccountAddress param.Field[string]                           `json:"account_address,required"`
@@ -1751,7 +1944,8 @@ type TxScanRequestSchemaParam struct {
 	// Encoding of the transaction and public keys
 	Encoding param.Field[string] `json:"encoding"`
 	// The RPC method used by dApp to propose the transaction
-	Method param.Field[string] `json:"method"`
+	Method  param.Field[string]   `json:"method"`
+	Options param.Field[[]string] `json:"options"`
 }
 
 func (r TxScanRequestSchemaParam) MarshalJSON() (data []byte, err error) {
