@@ -57,11 +57,7 @@ type TokenScanResponse struct {
 	MaliciousScore string `json:"malicious_score,required"`
 	// An enumeration.
 	ResultType TokenScanResponseResultType `json:"result_type,required"`
-	// Fees associated with the token
-	Fees TokenScanResponseFees `json:"fees"`
-	// Metadata about the token
-	Metadata TokenScanResponseMetadata `json:"metadata"`
-	JSON     tokenScanResponseJSON     `json:"-"`
+	JSON       tokenScanResponseJSON       `json:"-"`
 }
 
 // tokenScanResponseJSON contains the JSON metadata for the struct
@@ -70,8 +66,6 @@ type tokenScanResponseJSON struct {
 	AttackTypes    apijson.Field
 	MaliciousScore apijson.Field
 	ResultType     apijson.Field
-	Fees           apijson.Field
-	Metadata       apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
@@ -128,64 +122,6 @@ func (r TokenScanResponseResultType) IsKnown() bool {
 		return true
 	}
 	return false
-}
-
-// Fees associated with the token
-type TokenScanResponseFees struct {
-	// Buy fee of the token
-	Buy float64 `json:"buy"`
-	// Sell fee of the token
-	Sell float64 `json:"sell"`
-	// Transfer fee of the token
-	Transfer float64                   `json:"transfer"`
-	JSON     tokenScanResponseFeesJSON `json:"-"`
-}
-
-// tokenScanResponseFeesJSON contains the JSON metadata for the struct
-// [TokenScanResponseFees]
-type tokenScanResponseFeesJSON struct {
-	Buy         apijson.Field
-	Sell        apijson.Field
-	Transfer    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TokenScanResponseFees) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r tokenScanResponseFeesJSON) RawJSON() string {
-	return r.raw
-}
-
-// Metadata about the token
-type TokenScanResponseMetadata struct {
-	// URL of the token image
-	ImageURL string `json:"image_url"`
-	// Name of the token
-	Name string `json:"name"`
-	// Symbol of the token
-	Symbol string                        `json:"symbol"`
-	JSON   tokenScanResponseMetadataJSON `json:"-"`
-}
-
-// tokenScanResponseMetadataJSON contains the JSON metadata for the struct
-// [TokenScanResponseMetadata]
-type tokenScanResponseMetadataJSON struct {
-	ImageURL    apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TokenScanResponseMetadata) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r tokenScanResponseMetadataJSON) RawJSON() string {
-	return r.raw
 }
 
 type TokenReportParams struct {
