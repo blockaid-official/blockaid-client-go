@@ -5,11 +5,13 @@ package blockaidclientgo
 import (
 	"context"
 	"net/http"
+	"reflect"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
 	"github.com/blockaid-official/blockaid-client-go/internal/requestconfig"
 	"github.com/blockaid-official/blockaid-client-go/option"
+	"github.com/tidwall/gjson"
 )
 
 // TokenService contains methods and other services that help with interacting with
@@ -211,123 +213,170 @@ func (r tokenScanResponseFinancialStatsTopHolderJSON) RawJSON() string {
 
 // Metadata of the token
 type TokenScanResponseMetadata struct {
-	FreezeAuthority string `json:"freeze_authority,required"`
-	MintAuthority   string `json:"mint_authority,required"`
-	// internal metadata
-	TokenMetadata   TokenScanResponseMetadataTokenMetadata `json:"token_metadata,required"`
-	UpdateAuthority string                                 `json:"update_authority,required"`
-	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer"`
-	// Description of the token
-	Description string `json:"description"`
-	// URL of the token image
-	ImageURL string `json:"image_url"`
+	// Type of the token
+	Type string `json:"type"`
 	// Name of the token
 	Name string `json:"name"`
-	// Price per unit of the token. For NFT, it's the price of the NFT. For ERC20, it's
-	// the price of a single token. Can be updated daily.
-	PricePerUnit float64 `json:"price_per_unit"`
 	// Symbol of the token
 	Symbol string `json:"symbol"`
-	// Type of the token
-	Type string                        `json:"type"`
-	JSON tokenScanResponseMetadataJSON `json:"-"`
+	// URL of the token image
+	ImageURL string `json:"image_url"`
+	// Description of the token
+	Description string `json:"description"`
+	// Address of the deployer of the fungible token
+	Deployer        string                        `json:"deployer"`
+	MintAuthority   string                        `json:"mint_authority"`
+	UpdateAuthority string                        `json:"update_authority"`
+	FreezeAuthority string                        `json:"freeze_authority"`
+	JSON            tokenScanResponseMetadataJSON `json:"-"`
+	union           TokenScanResponseMetadataUnion
 }
 
 // tokenScanResponseMetadataJSON contains the JSON metadata for the struct
 // [TokenScanResponseMetadata]
 type tokenScanResponseMetadataJSON struct {
-	FreezeAuthority apijson.Field
-	MintAuthority   apijson.Field
-	TokenMetadata   apijson.Field
-	UpdateAuthority apijson.Field
-	Deployer        apijson.Field
-	Description     apijson.Field
-	ImageURL        apijson.Field
-	Name            apijson.Field
-	PricePerUnit    apijson.Field
-	Symbol          apijson.Field
 	Type            apijson.Field
+	Name            apijson.Field
+	Symbol          apijson.Field
+	ImageURL        apijson.Field
+	Description     apijson.Field
+	Deployer        apijson.Field
+	MintAuthority   apijson.Field
+	UpdateAuthority apijson.Field
+	FreezeAuthority apijson.Field
 	raw             string
 	ExtraFields     map[string]apijson.Field
-}
-
-func (r *TokenScanResponseMetadata) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
 }
 
 func (r tokenScanResponseMetadataJSON) RawJSON() string {
 	return r.raw
 }
 
-// internal metadata
-type TokenScanResponseMetadataTokenMetadata struct {
+func (r *TokenScanResponseMetadata) UnmarshalJSON(data []byte) (err error) {
+	*r = TokenScanResponseMetadata{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [TokenScanResponseMetadataUnion] interface which you can cast
+// to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [TokenScanResponseMetadataSolanaMetadata],
+// [TokenScanResponseMetadataBasicMetadataToken].
+func (r TokenScanResponseMetadata) AsUnion() TokenScanResponseMetadataUnion {
+	return r.union
+}
+
+// Metadata of the token
+//
+// Union satisfied by [TokenScanResponseMetadataSolanaMetadata] or
+// [TokenScanResponseMetadataBasicMetadataToken].
+type TokenScanResponseMetadataUnion interface {
+	implementsTokenScanResponseMetadata()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TokenScanResponseMetadataUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TokenScanResponseMetadataSolanaMetadata{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TokenScanResponseMetadataBasicMetadataToken{}),
+		},
+	)
+}
+
+type TokenScanResponseMetadataSolanaMetadata struct {
 	// Address of the deployer of the fungible token
 	Deployer string `json:"deployer"`
 	// Description of the token
-	Description string `json:"description"`
-	// Number of owners of the fungible token, updated daily
-	HoldersCount int64 `json:"holders_count"`
+	Description     string `json:"description"`
+	FreezeAuthority string `json:"freeze_authority"`
 	// URL of the token image
-	ImageURL string `json:"image_url"`
-	// List of malicious_urls
-	MaliciousURLs []string `json:"malicious_urls"`
+	ImageURL      string `json:"image_url"`
+	MintAuthority string `json:"mint_authority"`
 	// Name of the token
 	Name string `json:"name"`
 	// Symbol of the token
 	Symbol string `json:"symbol"`
-	// An enumeration.
-	Type TokenScanResponseMetadataTokenMetadataType `json:"type"`
-	// Uri of the token
-	Uri string `json:"uri"`
-	// List of urls
-	URLs []string                                   `json:"urls"`
-	JSON tokenScanResponseMetadataTokenMetadataJSON `json:"-"`
+	// Type of the token
+	Type            string                                      `json:"type"`
+	UpdateAuthority string                                      `json:"update_authority"`
+	JSON            tokenScanResponseMetadataSolanaMetadataJSON `json:"-"`
 }
 
-// tokenScanResponseMetadataTokenMetadataJSON contains the JSON metadata for the
-// struct [TokenScanResponseMetadataTokenMetadata]
-type tokenScanResponseMetadataTokenMetadataJSON struct {
-	Deployer      apijson.Field
-	Description   apijson.Field
-	HoldersCount  apijson.Field
-	ImageURL      apijson.Field
-	MaliciousURLs apijson.Field
-	Name          apijson.Field
-	Symbol        apijson.Field
-	Type          apijson.Field
-	Uri           apijson.Field
-	URLs          apijson.Field
-	raw           string
-	ExtraFields   map[string]apijson.Field
+// tokenScanResponseMetadataSolanaMetadataJSON contains the JSON metadata for the
+// struct [TokenScanResponseMetadataSolanaMetadata]
+type tokenScanResponseMetadataSolanaMetadataJSON struct {
+	Deployer        apijson.Field
+	Description     apijson.Field
+	FreezeAuthority apijson.Field
+	ImageURL        apijson.Field
+	MintAuthority   apijson.Field
+	Name            apijson.Field
+	Symbol          apijson.Field
+	Type            apijson.Field
+	UpdateAuthority apijson.Field
+	raw             string
+	ExtraFields     map[string]apijson.Field
 }
 
-func (r *TokenScanResponseMetadataTokenMetadata) UnmarshalJSON(data []byte) (err error) {
+func (r *TokenScanResponseMetadataSolanaMetadata) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r tokenScanResponseMetadataTokenMetadataJSON) RawJSON() string {
+func (r tokenScanResponseMetadataSolanaMetadataJSON) RawJSON() string {
 	return r.raw
 }
 
-// An enumeration.
-type TokenScanResponseMetadataTokenMetadataType string
+func (r TokenScanResponseMetadataSolanaMetadata) implementsTokenScanResponseMetadata() {}
 
-const (
-	TokenScanResponseMetadataTokenMetadataTypeErc20       TokenScanResponseMetadataTokenMetadataType = "erc20"
-	TokenScanResponseMetadataTokenMetadataTypeErc721      TokenScanResponseMetadataTokenMetadataType = "erc721"
-	TokenScanResponseMetadataTokenMetadataTypeErc1155     TokenScanResponseMetadataTokenMetadataType = "erc1155"
-	TokenScanResponseMetadataTokenMetadataTypeFungible    TokenScanResponseMetadataTokenMetadataType = "FUNGIBLE"
-	TokenScanResponseMetadataTokenMetadataTypeNonFungible TokenScanResponseMetadataTokenMetadataType = "NonFungible"
-)
-
-func (r TokenScanResponseMetadataTokenMetadataType) IsKnown() bool {
-	switch r {
-	case TokenScanResponseMetadataTokenMetadataTypeErc20, TokenScanResponseMetadataTokenMetadataTypeErc721, TokenScanResponseMetadataTokenMetadataTypeErc1155, TokenScanResponseMetadataTokenMetadataTypeFungible, TokenScanResponseMetadataTokenMetadataTypeNonFungible:
-		return true
-	}
-	return false
+type TokenScanResponseMetadataBasicMetadataToken struct {
+	// Address of the deployer of the fungible token
+	Deployer string `json:"deployer"`
+	// Description of the token
+	Description string `json:"description"`
+	// URL of the token image
+	ImageURL string `json:"image_url"`
+	// Name of the token
+	Name string `json:"name"`
+	// Symbol of the token
+	Symbol string `json:"symbol"`
+	// Type of the token
+	Type string                                          `json:"type"`
+	JSON tokenScanResponseMetadataBasicMetadataTokenJSON `json:"-"`
 }
+
+// tokenScanResponseMetadataBasicMetadataTokenJSON contains the JSON metadata for
+// the struct [TokenScanResponseMetadataBasicMetadataToken]
+type tokenScanResponseMetadataBasicMetadataTokenJSON struct {
+	Deployer    apijson.Field
+	Description apijson.Field
+	ImageURL    apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TokenScanResponseMetadataBasicMetadataToken) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenScanResponseMetadataBasicMetadataTokenJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TokenScanResponseMetadataBasicMetadataToken) implementsTokenScanResponseMetadata() {}
 
 // An enumeration.
 type TokenScanResponseResultType string
