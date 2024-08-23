@@ -1876,7 +1876,7 @@ type StarknetTransactionScanParamsTransaction struct {
 	ClassHash param.Field[string] `json:"class_hash"`
 	// The salt of the contract address.
 	ContractAddressSalt param.Field[string]      `json:"contract_address_salt"`
-	Calldata            param.Field[interface{}] `json:"constructor_calldata,required"`
+	ConstructorCalldata param.Field[interface{}] `json:"constructor_calldata,required"`
 }
 
 func (r StarknetTransactionScanParamsTransaction) MarshalJSON() (data []byte, err error) {
@@ -1991,7 +1991,7 @@ type StarknetTransactionScanParamsTransactionStarknetDeployAccountV1TransactionS
 	// The hash of the contract class.
 	ClassHash param.Field[string] `json:"class_hash,required"`
 	// The arguments that are passed to the constructor function.
-	Calldata param.Field[[]string] `json:"constructor_calldata,required"`
+	ConstructorCalldata param.Field[[]string] `json:"constructor_calldata,required"`
 	// The salt of the contract address.
 	ContractAddressSalt param.Field[string] `json:"contract_address_salt,required"`
 	// The maximum fee that the sender is willing to pay.
@@ -2028,7 +2028,7 @@ type StarknetTransactionScanParamsTransactionStarknetDeployAccountV3TransactionS
 	// The hash of the contract class.
 	ClassHash param.Field[string] `json:"class_hash,required"`
 	// The arguments that are passed to the constructor function.
-	Calldata param.Field[[]string] `json:"constructor_calldata,required"`
+	ConstructorCalldata param.Field[[]string] `json:"constructor_calldata,required"`
 	// The salt of the contract address.
 	ContractAddressSalt param.Field[string] `json:"contract_address_salt,required"`
 	// The maximum fee that the sender is willing to pay.
