@@ -228,13 +228,6 @@ func WithEnvironmentProduction() RequestOption {
 	return WithBaseURL("https://api.blockaid.io/")
 }
 
-// WithEnvironmentSandbox returns a RequestOption that sets the current
-// environment to be the "sandbox" environment. An environment specifies which base URL
-// to use by default.
-func WithEnvironmentSandbox() RequestOption {
-	return WithBaseURL("text/")
-}
-
 // WithAPIKey returns a RequestOption that sets the client setting "api_key".
 func WithAPIKey(value string) RequestOption {
 	return func(r *requestconfig.RequestConfig) error {
