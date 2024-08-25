@@ -23,6 +23,7 @@ func TestTokenBulkScanWithOptionalParams(t *testing.T) {
 	}
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.TokenBulk.Scan(context.TODO(), blockaidclientgo.TokenBulkScanParams{
 		Chain:  blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainArbitrum),
