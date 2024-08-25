@@ -239,7 +239,7 @@ func WithEnvironmentClient() RequestOption {
 func WithAPIKey(value string) RequestOption {
 	return func(r *requestconfig.RequestConfig) error {
 		r.APIKey = value
-		return nil
+		return r.Apply(WithHeader("X-API-Key", r.APIKey))
 	}
 }
 
@@ -247,6 +247,6 @@ func WithAPIKey(value string) RequestOption {
 func WithClientID(value string) RequestOption {
 	return func(r *requestconfig.RequestConfig) error {
 		r.ClientID = value
-		return nil
+		return r.Apply(WithHeader("X-CLIENT-ID", r.ClientID))
 	}
 }
