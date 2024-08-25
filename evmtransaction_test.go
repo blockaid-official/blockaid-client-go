@@ -24,7 +24,6 @@ func TestEvmTransactionReport(t *testing.T) {
 	}
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
 	)
 	_, err := client.Evm.Transaction.Report(context.TODO(), blockaidclientgo.EvmTransactionReportParams{
 		Details: blockaidclientgo.F("Details about the report"),
@@ -53,7 +52,6 @@ func TestEvmTransactionScanWithOptionalParams(t *testing.T) {
 	}
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
 	)
 	_, err := client.Evm.Transaction.Scan(context.TODO(), blockaidclientgo.EvmTransactionScanParams{
 		AccountAddress: blockaidclientgo.F("account_address"),

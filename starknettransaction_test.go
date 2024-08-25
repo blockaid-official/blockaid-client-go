@@ -23,7 +23,6 @@ func TestStarknetTransactionScanWithOptionalParams(t *testing.T) {
 	}
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
 	)
 	_, err := client.Starknet.Transaction.Scan(context.TODO(), blockaidclientgo.StarknetTransactionScanParams{
 		AccountAddress: blockaidclientgo.F("account_address"),
