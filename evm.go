@@ -1723,6 +1723,9 @@ type TransactionScanResponseSimulation struct {
 	AccountSummary interface{} `json:"account_summary,required"`
 	// This field can have the runtime type of [TransactionSimulationParams].
 	Params interface{} `json:"params,required"`
+	// This field can have the runtime type of
+	// [map[string][]TransactionSimulationContractManagement].
+	ContractManagement interface{} `json:"contract_management,required"`
 	// An error message if the simulation failed.
 	Error string                                `json:"error"`
 	JSON  transactionScanResponseSimulationJSON `json:"-"`
@@ -1732,17 +1735,18 @@ type TransactionScanResponseSimulation struct {
 // transactionScanResponseSimulationJSON contains the JSON metadata for the struct
 // [TransactionScanResponseSimulation]
 type transactionScanResponseSimulationJSON struct {
-	Status           apijson.Field
-	AssetsDiffs      apijson.Field
-	TotalUsdDiff     apijson.Field
-	Exposures        apijson.Field
-	TotalUsdExposure apijson.Field
-	AddressDetails   apijson.Field
-	AccountSummary   apijson.Field
-	Params           apijson.Field
-	Error            apijson.Field
-	raw              string
-	ExtraFields      map[string]apijson.Field
+	Status             apijson.Field
+	AssetsDiffs        apijson.Field
+	TotalUsdDiff       apijson.Field
+	Exposures          apijson.Field
+	TotalUsdExposure   apijson.Field
+	AddressDetails     apijson.Field
+	AccountSummary     apijson.Field
+	Params             apijson.Field
+	ContractManagement apijson.Field
+	Error              apijson.Field
+	raw                string
+	ExtraFields        map[string]apijson.Field
 }
 
 func (r transactionScanResponseSimulationJSON) RawJSON() string {
@@ -1937,11 +1941,12 @@ const (
 	TransactionScanSupportedChainAvalancheFuji   TransactionScanSupportedChain = "avalanche-fuji"
 	TransactionScanSupportedChainImmutableZkevm  TransactionScanSupportedChain = "immutable-zkevm"
 	TransactionScanSupportedChainGnosis          TransactionScanSupportedChain = "gnosis"
+	TransactionScanSupportedChainWorldchain      TransactionScanSupportedChain = "worldchain"
 )
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainGnosis:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain:
 		return true
 	}
 	return false
@@ -1970,6 +1975,9 @@ type TransactionSimulation struct {
 	// a dictionary representing the usd value each address is exposed to, split by
 	// spenders
 	TotalUsdExposure map[string]map[string]string `json:"total_usd_exposure,required"`
+	// Describes the state differences as a result of this transaction for every
+	// involved address
+	ContractManagement map[string][]TransactionSimulationContractManagement `json:"contract_management"`
 	// The parameters of the transaction that was simulated.
 	Params TransactionSimulationParams `json:"params"`
 	JSON   transactionSimulationJSON   `json:"-"`
@@ -1978,16 +1986,17 @@ type TransactionSimulation struct {
 // transactionSimulationJSON contains the JSON metadata for the struct
 // [TransactionSimulation]
 type transactionSimulationJSON struct {
-	AccountSummary   apijson.Field
-	AddressDetails   apijson.Field
-	AssetsDiffs      apijson.Field
-	Exposures        apijson.Field
-	Status           apijson.Field
-	TotalUsdDiff     apijson.Field
-	TotalUsdExposure apijson.Field
-	Params           apijson.Field
-	raw              string
-	ExtraFields      map[string]apijson.Field
+	AccountSummary     apijson.Field
+	AddressDetails     apijson.Field
+	AssetsDiffs        apijson.Field
+	Exposures          apijson.Field
+	Status             apijson.Field
+	TotalUsdDiff       apijson.Field
+	TotalUsdExposure   apijson.Field
+	ContractManagement apijson.Field
+	Params             apijson.Field
+	raw                string
+	ExtraFields        map[string]apijson.Field
 }
 
 func (r *TransactionSimulation) UnmarshalJSON(data []byte) (err error) {
@@ -2459,6 +2468,278 @@ const (
 func (r TransactionSimulationStatus) IsKnown() bool {
 	switch r {
 	case TransactionSimulationStatusSuccess:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationContractManagement struct {
+	// The state after the transaction
+	After TransactionSimulationContractManagementAfter `json:"after,required"`
+	// The state before the transaction
+	Before TransactionSimulationContractManagementBefore `json:"before,required"`
+	// An enumeration.
+	Type TransactionSimulationContractManagementType `json:"type,required"`
+	JSON transactionSimulationContractManagementJSON `json:"-"`
+}
+
+// transactionSimulationContractManagementJSON contains the JSON metadata for the
+// struct [TransactionSimulationContractManagement]
+type transactionSimulationContractManagementJSON struct {
+	After       apijson.Field
+	Before      apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationContractManagement) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationContractManagementJSON) RawJSON() string {
+	return r.raw
+}
+
+// The state after the transaction
+type TransactionSimulationContractManagementAfter struct {
+	Address string `json:"address"`
+	// This field can have the runtime type of [[]string].
+	Owners interface{}                                      `json:"owners,required"`
+	JSON   transactionSimulationContractManagementAfterJSON `json:"-"`
+	union  TransactionSimulationContractManagementAfterUnion
+}
+
+// transactionSimulationContractManagementAfterJSON contains the JSON metadata for
+// the struct [TransactionSimulationContractManagementAfter]
+type transactionSimulationContractManagementAfterJSON struct {
+	Address     apijson.Field
+	Owners      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r transactionSimulationContractManagementAfterJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *TransactionSimulationContractManagementAfter) UnmarshalJSON(data []byte) (err error) {
+	*r = TransactionSimulationContractManagementAfter{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [TransactionSimulationContractManagementAfterUnion] interface
+// which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [TransactionSimulationContractManagementAfterAddressChange],
+// [TransactionSimulationContractManagementAfterOwnershipChange].
+func (r TransactionSimulationContractManagementAfter) AsUnion() TransactionSimulationContractManagementAfterUnion {
+	return r.union
+}
+
+// The state after the transaction
+//
+// Union satisfied by [TransactionSimulationContractManagementAfterAddressChange]
+// or [TransactionSimulationContractManagementAfterOwnershipChange].
+type TransactionSimulationContractManagementAfterUnion interface {
+	implementsTransactionSimulationContractManagementAfter()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TransactionSimulationContractManagementAfterUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationContractManagementAfterAddressChange{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationContractManagementAfterOwnershipChange{}),
+		},
+	)
+}
+
+type TransactionSimulationContractManagementAfterAddressChange struct {
+	Address string                                                        `json:"address,required"`
+	JSON    transactionSimulationContractManagementAfterAddressChangeJSON `json:"-"`
+}
+
+// transactionSimulationContractManagementAfterAddressChangeJSON contains the JSON
+// metadata for the struct
+// [TransactionSimulationContractManagementAfterAddressChange]
+type transactionSimulationContractManagementAfterAddressChangeJSON struct {
+	Address     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationContractManagementAfterAddressChange) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationContractManagementAfterAddressChangeJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationContractManagementAfterAddressChange) implementsTransactionSimulationContractManagementAfter() {
+}
+
+type TransactionSimulationContractManagementAfterOwnershipChange struct {
+	Owners []string                                                        `json:"owners,required"`
+	JSON   transactionSimulationContractManagementAfterOwnershipChangeJSON `json:"-"`
+}
+
+// transactionSimulationContractManagementAfterOwnershipChangeJSON contains the
+// JSON metadata for the struct
+// [TransactionSimulationContractManagementAfterOwnershipChange]
+type transactionSimulationContractManagementAfterOwnershipChangeJSON struct {
+	Owners      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationContractManagementAfterOwnershipChange) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationContractManagementAfterOwnershipChangeJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationContractManagementAfterOwnershipChange) implementsTransactionSimulationContractManagementAfter() {
+}
+
+// The state before the transaction
+type TransactionSimulationContractManagementBefore struct {
+	Address string `json:"address"`
+	// This field can have the runtime type of [[]string].
+	Owners interface{}                                       `json:"owners,required"`
+	JSON   transactionSimulationContractManagementBeforeJSON `json:"-"`
+	union  TransactionSimulationContractManagementBeforeUnion
+}
+
+// transactionSimulationContractManagementBeforeJSON contains the JSON metadata for
+// the struct [TransactionSimulationContractManagementBefore]
+type transactionSimulationContractManagementBeforeJSON struct {
+	Address     apijson.Field
+	Owners      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r transactionSimulationContractManagementBeforeJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *TransactionSimulationContractManagementBefore) UnmarshalJSON(data []byte) (err error) {
+	*r = TransactionSimulationContractManagementBefore{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [TransactionSimulationContractManagementBeforeUnion] interface
+// which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [TransactionSimulationContractManagementBeforeAddressChange],
+// [TransactionSimulationContractManagementBeforeOwnershipChange].
+func (r TransactionSimulationContractManagementBefore) AsUnion() TransactionSimulationContractManagementBeforeUnion {
+	return r.union
+}
+
+// The state before the transaction
+//
+// Union satisfied by [TransactionSimulationContractManagementBeforeAddressChange]
+// or [TransactionSimulationContractManagementBeforeOwnershipChange].
+type TransactionSimulationContractManagementBeforeUnion interface {
+	implementsTransactionSimulationContractManagementBefore()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TransactionSimulationContractManagementBeforeUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationContractManagementBeforeAddressChange{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationContractManagementBeforeOwnershipChange{}),
+		},
+	)
+}
+
+type TransactionSimulationContractManagementBeforeAddressChange struct {
+	Address string                                                         `json:"address,required"`
+	JSON    transactionSimulationContractManagementBeforeAddressChangeJSON `json:"-"`
+}
+
+// transactionSimulationContractManagementBeforeAddressChangeJSON contains the JSON
+// metadata for the struct
+// [TransactionSimulationContractManagementBeforeAddressChange]
+type transactionSimulationContractManagementBeforeAddressChangeJSON struct {
+	Address     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationContractManagementBeforeAddressChange) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationContractManagementBeforeAddressChangeJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationContractManagementBeforeAddressChange) implementsTransactionSimulationContractManagementBefore() {
+}
+
+type TransactionSimulationContractManagementBeforeOwnershipChange struct {
+	Owners []string                                                         `json:"owners,required"`
+	JSON   transactionSimulationContractManagementBeforeOwnershipChangeJSON `json:"-"`
+}
+
+// transactionSimulationContractManagementBeforeOwnershipChangeJSON contains the
+// JSON metadata for the struct
+// [TransactionSimulationContractManagementBeforeOwnershipChange]
+type transactionSimulationContractManagementBeforeOwnershipChangeJSON struct {
+	Owners      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationContractManagementBeforeOwnershipChange) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationContractManagementBeforeOwnershipChangeJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationContractManagementBeforeOwnershipChange) implementsTransactionSimulationContractManagementBefore() {
+}
+
+// An enumeration.
+type TransactionSimulationContractManagementType string
+
+const (
+	TransactionSimulationContractManagementTypeProxyUpgrade    TransactionSimulationContractManagementType = "PROXY_UPGRADE"
+	TransactionSimulationContractManagementTypeOwnershipChange TransactionSimulationContractManagementType = "OWNERSHIP_CHANGE"
+)
+
+func (r TransactionSimulationContractManagementType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationContractManagementTypeProxyUpgrade, TransactionSimulationContractManagementTypeOwnershipChange:
 		return true
 	}
 	return false
