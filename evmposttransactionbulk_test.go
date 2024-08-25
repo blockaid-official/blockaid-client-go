@@ -24,7 +24,6 @@ func TestEvmPostTransactionBulkScanWithOptionalParams(t *testing.T) {
 	}
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Evm.PostTransactionBulk.Scan(context.TODO(), blockaidclientgo.EvmPostTransactionBulkScanParams{
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
