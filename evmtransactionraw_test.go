@@ -24,6 +24,7 @@ func TestEvmTransactionRawScanWithOptionalParams(t *testing.T) {
 	}
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
+		option.WithClientID("My Client ID"),
 	)
 	_, err := client.Evm.TransactionRaw.Scan(context.TODO(), blockaidclientgo.EvmTransactionRawScanParams{
 		AccountAddress: blockaidclientgo.F("0x362320f3a3eeeb4c4699b1b9062a84B2612bcdba"),
