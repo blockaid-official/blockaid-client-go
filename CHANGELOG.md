@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.23.0 (2024-08-25)
+
+Full Changelog: [v0.22.1...v0.23.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.22.1...v0.23.0)
+
+### Features
+
+* **api:** OpenAPI spec update via Stainless API ([#198](https://github.com/blockaid-official/blockaid-client-go/issues/198)) ([84b23c1](https://github.com/blockaid-official/blockaid-client-go/commit/84b23c1fe1528f4c595f32e4ec042c881e568906))
+* **api:** OpenAPI spec update via Stainless API ([#200](https://github.com/blockaid-official/blockaid-client-go/issues/200)) ([b17ef53](https://github.com/blockaid-official/blockaid-client-go/commit/b17ef530d1e6732db1687f98514f2dbeec264207))
+* **api:** OpenAPI spec update via Stainless API ([#201](https://github.com/blockaid-official/blockaid-client-go/issues/201)) ([f3e1873](https://github.com/blockaid-official/blockaid-client-go/commit/f3e1873d43cc80275dd7f0adbd45495039307e14))
+* **api:** OpenAPI spec update via Stainless API ([#202](https://github.com/blockaid-official/blockaid-client-go/issues/202)) ([2ea961b](https://github.com/blockaid-official/blockaid-client-go/commit/2ea961b6ef9a039d16b3a336343aa1917bb82848))
+* **api:** OpenAPI spec update via Stainless API ([#203](https://github.com/blockaid-official/blockaid-client-go/issues/203)) ([bed7383](https://github.com/blockaid-official/blockaid-client-go/commit/bed73832337bc4643a6e91563ad0627a25aafb95))
+* **api:** OpenAPI spec update via Stainless API ([#204](https://github.com/blockaid-official/blockaid-client-go/issues/204)) ([e857cbd](https://github.com/blockaid-official/blockaid-client-go/commit/e857cbd35c5b69b038ed7ac774e473df36723b71))
+* **api:** OpenAPI spec update via Stainless API ([#205](https://github.com/blockaid-official/blockaid-client-go/issues/205)) ([f1bd259](https://github.com/blockaid-official/blockaid-client-go/commit/f1bd259c9d7f6bd5712e7513d0cbf0ba949a77b7))
+
 ## 0.22.1 (2024-08-25)
 
 Full Changelog: [v0.21.0...v0.22.1](https://github.com/blockaid-official/blockaid-client-go/compare/v0.21.0...v0.22.1)
