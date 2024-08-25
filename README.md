@@ -24,7 +24,7 @@ Or to pin the version:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/blockaid-official/blockaid-client-go@v0.22.1'
+go get -u 'github.com/blockaid-official/blockaid-client-go@v0.23.0'
 ```
 
 <!-- x-release-please-end -->
@@ -51,6 +51,7 @@ import (
 func main() {
 	client := blockaidclientgo.NewClient(
 		option.WithAPIKey("My API Key"), // defaults to os.LookupEnv("BLOCKAID_CLIENT_API_KEY")
+		option.WithEnvironmentClient(),  // defaults to option.WithEnvironmentProduction()
 	)
 	transactionScanResponse, err := client.Evm.JsonRpc.Scan(context.TODO(), blockaidclientgo.EvmJsonRpcScanParams{
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),

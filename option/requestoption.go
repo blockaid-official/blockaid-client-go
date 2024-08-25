@@ -228,10 +228,25 @@ func WithEnvironmentProduction() RequestOption {
 	return WithBaseURL("https://api.blockaid.io/")
 }
 
+// WithEnvironmentClient returns a RequestOption that sets the current
+// environment to be the "client" environment. An environment specifies which base URL
+// to use by default.
+func WithEnvironmentClient() RequestOption {
+	return WithBaseURL("https://client.blockaid.io/")
+}
+
 // WithAPIKey returns a RequestOption that sets the client setting "api_key".
 func WithAPIKey(value string) RequestOption {
 	return func(r *requestconfig.RequestConfig) error {
 		r.APIKey = value
 		return r.Apply(WithHeader("X-API-Key", r.APIKey))
+	}
+}
+
+// WithClientID returns a RequestOption that sets the client setting "client_id".
+func WithClientID(value string) RequestOption {
+	return func(r *requestconfig.RequestConfig) error {
+		r.ClientID = value
+		return r.Apply(WithHeader("X-CLIENT-ID", r.ClientID))
 	}
 }
