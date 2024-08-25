@@ -23,7 +23,6 @@ func TestSolanaMessageScanWithOptionalParams(t *testing.T) {
 	}
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithClientID("My Client ID"),
 	)
 	_, err := client.Solana.Message.Scan(context.TODO(), blockaidclientgo.SolanaMessageScanParams{
 		TxScanRequestSchema: blockaidclientgo.TxScanRequestSchemaParam{

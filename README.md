@@ -50,8 +50,7 @@ import (
 
 func main() {
 	client := blockaidclientgo.NewClient(
-		option.WithClientID("My Client ID"), // defaults to os.LookupEnv("BLOCKAID_CLIENT_ID_KEY")
-		option.WithEnvironmentClient(),      // defaults to option.WithEnvironmentProduction()
+		option.WithEnvironmentClient(), // defaults to option.WithEnvironmentProduction()
 	)
 	transactionScanResponse, err := client.Evm.JsonRpc.Scan(context.TODO(), blockaidclientgo.EvmJsonRpcScanParams{
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
