@@ -24,6 +24,7 @@ func TestEvmJsonRpcScanWithOptionalParams(t *testing.T) {
 	}
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
+		option.WithClientID("My Client ID"),
 	)
 	_, err := client.Evm.JsonRpc.Scan(context.TODO(), blockaidclientgo.EvmJsonRpcScanParams{
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
