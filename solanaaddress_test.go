@@ -23,6 +23,7 @@ func TestSolanaAddressScanWithOptionalParams(t *testing.T) {
 	}
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
+		option.WithClientID("My Client ID"),
 	)
 	_, err := client.Solana.Address.Scan(context.TODO(), blockaidclientgo.SolanaAddressScanParams{
 		AddressScanRequestSchema: blockaidclientgo.AddressScanRequestSchemaParam{

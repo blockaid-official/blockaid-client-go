@@ -24,6 +24,7 @@ func TestEvmUserOperationScanWithOptionalParams(t *testing.T) {
 	}
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
+		option.WithClientID("My Client ID"),
 	)
 	_, err := client.Evm.UserOperation.Scan(context.TODO(), blockaidclientgo.EvmUserOperationScanParams{
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
