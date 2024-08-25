@@ -23,7 +23,6 @@ func TestTokenReport(t *testing.T) {
 	}
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Token.Report(context.TODO(), blockaidclientgo.TokenReportParams{
 		Details: blockaidclientgo.F("Details about the report"),
@@ -52,7 +51,6 @@ func TestTokenScanWithOptionalParams(t *testing.T) {
 	}
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Token.Scan(context.TODO(), blockaidclientgo.TokenScanParams{
 		Address: blockaidclientgo.F("0x66587563e933bbf3974b89156b47bb82b921eb35"),

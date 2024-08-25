@@ -23,7 +23,6 @@ func TestBitcoinTransactionScanWithOptionalParams(t *testing.T) {
 	}
 	client := blockaidclientgo.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Bitcoin.Transaction.Scan(context.TODO(), blockaidclientgo.BitcoinTransactionScanParams{
 		Options:     blockaidclientgo.F([]blockaidclientgo.BitcoinTransactionScanParamsOption{blockaidclientgo.BitcoinTransactionScanParamsOptionSimulation}),
