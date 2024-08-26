@@ -2505,9 +2505,11 @@ func (r transactionSimulationContractManagementJSON) RawJSON() string {
 type TransactionSimulationContractManagementAfter struct {
 	Address string `json:"address"`
 	// This field can have the runtime type of [[]string].
-	Owners interface{}                                      `json:"owners,required"`
-	JSON   transactionSimulationContractManagementAfterJSON `json:"-"`
-	union  TransactionSimulationContractManagementAfterUnion
+	Owners interface{} `json:"owners,required"`
+	// This field can have the runtime type of [[]string].
+	Modules interface{}                                      `json:"modules,required"`
+	JSON    transactionSimulationContractManagementAfterJSON `json:"-"`
+	union   TransactionSimulationContractManagementAfterUnion
 }
 
 // transactionSimulationContractManagementAfterJSON contains the JSON metadata for
@@ -2515,6 +2517,7 @@ type TransactionSimulationContractManagementAfter struct {
 type transactionSimulationContractManagementAfterJSON struct {
 	Address     apijson.Field
 	Owners      apijson.Field
+	Modules     apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -2537,15 +2540,17 @@ func (r *TransactionSimulationContractManagementAfter) UnmarshalJSON(data []byte
 //
 // Possible runtime types of the union are
 // [TransactionSimulationContractManagementAfterAddressChange],
-// [TransactionSimulationContractManagementAfterOwnershipChange].
+// [TransactionSimulationContractManagementAfterOwnershipChange],
+// [TransactionSimulationContractManagementAfterModulesChange].
 func (r TransactionSimulationContractManagementAfter) AsUnion() TransactionSimulationContractManagementAfterUnion {
 	return r.union
 }
 
 // The state after the transaction
 //
-// Union satisfied by [TransactionSimulationContractManagementAfterAddressChange]
-// or [TransactionSimulationContractManagementAfterOwnershipChange].
+// Union satisfied by [TransactionSimulationContractManagementAfterAddressChange],
+// [TransactionSimulationContractManagementAfterOwnershipChange] or
+// [TransactionSimulationContractManagementAfterModulesChange].
 type TransactionSimulationContractManagementAfterUnion interface {
 	implementsTransactionSimulationContractManagementAfter()
 }
@@ -2561,6 +2566,10 @@ func init() {
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
 			Type:       reflect.TypeOf(TransactionSimulationContractManagementAfterOwnershipChange{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationContractManagementAfterModulesChange{}),
 		},
 	)
 }
@@ -2615,13 +2624,40 @@ func (r transactionSimulationContractManagementAfterOwnershipChangeJSON) RawJSON
 func (r TransactionSimulationContractManagementAfterOwnershipChange) implementsTransactionSimulationContractManagementAfter() {
 }
 
+type TransactionSimulationContractManagementAfterModulesChange struct {
+	Modules []string                                                      `json:"modules,required"`
+	JSON    transactionSimulationContractManagementAfterModulesChangeJSON `json:"-"`
+}
+
+// transactionSimulationContractManagementAfterModulesChangeJSON contains the JSON
+// metadata for the struct
+// [TransactionSimulationContractManagementAfterModulesChange]
+type transactionSimulationContractManagementAfterModulesChangeJSON struct {
+	Modules     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationContractManagementAfterModulesChange) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationContractManagementAfterModulesChangeJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationContractManagementAfterModulesChange) implementsTransactionSimulationContractManagementAfter() {
+}
+
 // The state before the transaction
 type TransactionSimulationContractManagementBefore struct {
 	Address string `json:"address"`
 	// This field can have the runtime type of [[]string].
-	Owners interface{}                                       `json:"owners,required"`
-	JSON   transactionSimulationContractManagementBeforeJSON `json:"-"`
-	union  TransactionSimulationContractManagementBeforeUnion
+	Owners interface{} `json:"owners,required"`
+	// This field can have the runtime type of [[]string].
+	Modules interface{}                                       `json:"modules,required"`
+	JSON    transactionSimulationContractManagementBeforeJSON `json:"-"`
+	union   TransactionSimulationContractManagementBeforeUnion
 }
 
 // transactionSimulationContractManagementBeforeJSON contains the JSON metadata for
@@ -2629,6 +2665,7 @@ type TransactionSimulationContractManagementBefore struct {
 type transactionSimulationContractManagementBeforeJSON struct {
 	Address     apijson.Field
 	Owners      apijson.Field
+	Modules     apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -2651,15 +2688,17 @@ func (r *TransactionSimulationContractManagementBefore) UnmarshalJSON(data []byt
 //
 // Possible runtime types of the union are
 // [TransactionSimulationContractManagementBeforeAddressChange],
-// [TransactionSimulationContractManagementBeforeOwnershipChange].
+// [TransactionSimulationContractManagementBeforeOwnershipChange],
+// [TransactionSimulationContractManagementBeforeModulesChange].
 func (r TransactionSimulationContractManagementBefore) AsUnion() TransactionSimulationContractManagementBeforeUnion {
 	return r.union
 }
 
 // The state before the transaction
 //
-// Union satisfied by [TransactionSimulationContractManagementBeforeAddressChange]
-// or [TransactionSimulationContractManagementBeforeOwnershipChange].
+// Union satisfied by [TransactionSimulationContractManagementBeforeAddressChange],
+// [TransactionSimulationContractManagementBeforeOwnershipChange] or
+// [TransactionSimulationContractManagementBeforeModulesChange].
 type TransactionSimulationContractManagementBeforeUnion interface {
 	implementsTransactionSimulationContractManagementBefore()
 }
@@ -2675,6 +2714,10 @@ func init() {
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
 			Type:       reflect.TypeOf(TransactionSimulationContractManagementBeforeOwnershipChange{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationContractManagementBeforeModulesChange{}),
 		},
 	)
 }
@@ -2729,17 +2772,43 @@ func (r transactionSimulationContractManagementBeforeOwnershipChangeJSON) RawJSO
 func (r TransactionSimulationContractManagementBeforeOwnershipChange) implementsTransactionSimulationContractManagementBefore() {
 }
 
+type TransactionSimulationContractManagementBeforeModulesChange struct {
+	Modules []string                                                       `json:"modules,required"`
+	JSON    transactionSimulationContractManagementBeforeModulesChangeJSON `json:"-"`
+}
+
+// transactionSimulationContractManagementBeforeModulesChangeJSON contains the JSON
+// metadata for the struct
+// [TransactionSimulationContractManagementBeforeModulesChange]
+type transactionSimulationContractManagementBeforeModulesChangeJSON struct {
+	Modules     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationContractManagementBeforeModulesChange) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationContractManagementBeforeModulesChangeJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationContractManagementBeforeModulesChange) implementsTransactionSimulationContractManagementBefore() {
+}
+
 // An enumeration.
 type TransactionSimulationContractManagementType string
 
 const (
 	TransactionSimulationContractManagementTypeProxyUpgrade    TransactionSimulationContractManagementType = "PROXY_UPGRADE"
 	TransactionSimulationContractManagementTypeOwnershipChange TransactionSimulationContractManagementType = "OWNERSHIP_CHANGE"
+	TransactionSimulationContractManagementTypeModuleChange    TransactionSimulationContractManagementType = "MODULE_CHANGE"
 )
 
 func (r TransactionSimulationContractManagementType) IsKnown() bool {
 	switch r {
-	case TransactionSimulationContractManagementTypeProxyUpgrade, TransactionSimulationContractManagementTypeOwnershipChange:
+	case TransactionSimulationContractManagementTypeProxyUpgrade, TransactionSimulationContractManagementTypeOwnershipChange, TransactionSimulationContractManagementTypeModuleChange:
 		return true
 	}
 	return false
