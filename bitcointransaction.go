@@ -196,10 +196,10 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsA
 	Decimals   int64                                                                               `json:"decimals,required"`
 	LogoURL    string                                                                              `json:"logo_url,required"`
 	Name       string                                                                              `json:"name,required"`
-	Symbol     string                                                                              `json:"symbol,required"`
 	Type       BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetType `json:"type,required"`
 	ID         string                                                                              `json:"id"`
 	SpacedName string                                                                              `json:"spaced_name"`
+	Symbol     string                                                                              `json:"symbol"`
 	JSON       bitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetJSON `json:"-"`
 }
 
@@ -211,10 +211,10 @@ type bitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsA
 	Decimals    apijson.Field
 	LogoURL     apijson.Field
 	Name        apijson.Field
-	Symbol      apijson.Field
 	Type        apijson.Field
 	ID          apijson.Field
 	SpacedName  apijson.Field
+	Symbol      apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -230,21 +230,24 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDif
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetType string
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetTypeNative BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetType = "NATIVE"
-	BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetTypeRune   BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetType = "RUNE"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetTypeNative  BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetType = "NATIVE"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetTypeRune    BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetType = "RUNE"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetTypeOrdinal BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetType = "ORDINAL"
 )
 
 func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetType) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetTypeNative, BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetTypeRune:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetTypeNative, BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetTypeRune, BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsAssetTypeOrdinal:
 		return true
 	}
 	return false
 }
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsIn struct {
+	Name     string                                                                           `json:"name"`
 	RawValue string                                                                           `json:"raw_value"`
 	Summary  string                                                                           `json:"summary"`
+	TokenID  string                                                                           `json:"token_id"`
 	UsdPrice string                                                                           `json:"usd_price"`
 	Value    string                                                                           `json:"value"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsInJSON `json:"-"`
@@ -254,8 +257,10 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsI
 // contains the JSON metadata for the struct
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsIn]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsInJSON struct {
+	Name        apijson.Field
 	RawValue    apijson.Field
 	Summary     apijson.Field
+	TokenID     apijson.Field
 	UsdPrice    apijson.Field
 	Value       apijson.Field
 	raw         string
@@ -271,8 +276,10 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDif
 }
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsOut struct {
+	Name     string                                                                            `json:"name"`
 	RawValue string                                                                            `json:"raw_value"`
 	Summary  string                                                                            `json:"summary"`
+	TokenID  string                                                                            `json:"token_id"`
 	UsdPrice string                                                                            `json:"usd_price"`
 	Value    string                                                                            `json:"value"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsOutJSON `json:"-"`
@@ -282,8 +289,10 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsO
 // contains the JSON metadata for the struct
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsOut]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationSchemaAssetsDiffsOutJSON struct {
+	Name        apijson.Field
 	RawValue    apijson.Field
 	Summary     apijson.Field
+	TokenID     apijson.Field
 	UsdPrice    apijson.Field
 	Value       apijson.Field
 	raw         string
@@ -379,8 +388,6 @@ type BitcoinTransactionScanParams struct {
 	Chain       param.Field[BitcoinTransactionScanParamsChain] `json:"chain"`
 	// Metadata
 	Metadata param.Field[BitcoinTransactionScanParamsMetadataUnion] `json:"metadata"`
-	// Allows simulating mined transactions where the UTXOs have already been spent
-	SkipUtxoCheck param.Field[bool] `json:"skip_utxo_check"`
 }
 
 func (r BitcoinTransactionScanParams) MarshalJSON() (data []byte, err error) {
