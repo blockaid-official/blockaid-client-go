@@ -397,6 +397,9 @@ type AssetDiffIn struct {
 	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
+	// Indicates whether the token ID represents an arbitrary token from a collection,
+	// unpredictable while running the simulation
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
@@ -407,14 +410,15 @@ type AssetDiffIn struct {
 
 // assetDiffInJSON contains the JSON metadata for the struct [AssetDiffIn]
 type assetDiffInJSON struct {
-	UsdPrice    apijson.Field
-	Summary     apijson.Field
-	TokenID     apijson.Field
-	Value       apijson.Field
-	LogoURL     apijson.Field
-	RawValue    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	UsdPrice                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	Value                    apijson.Field
+	ArbitraryCollectionToken apijson.Field
+	LogoURL                  apijson.Field
+	RawValue                 apijson.Field
+	raw                      string
+	ExtraFields              map[string]apijson.Field
 }
 
 func (r assetDiffInJSON) RawJSON() string {
@@ -476,6 +480,9 @@ type AssetDiffOut struct {
 	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
+	// Indicates whether the token ID represents an arbitrary token from a collection,
+	// unpredictable while running the simulation
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
@@ -486,14 +493,15 @@ type AssetDiffOut struct {
 
 // assetDiffOutJSON contains the JSON metadata for the struct [AssetDiffOut]
 type assetDiffOutJSON struct {
-	UsdPrice    apijson.Field
-	Summary     apijson.Field
-	TokenID     apijson.Field
-	Value       apijson.Field
-	LogoURL     apijson.Field
-	RawValue    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	UsdPrice                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	Value                    apijson.Field
+	ArbitraryCollectionToken apijson.Field
+	LogoURL                  apijson.Field
+	RawValue                 apijson.Field
+	raw                      string
+	ExtraFields              map[string]apijson.Field
 }
 
 func (r assetDiffOutJSON) RawJSON() string {
@@ -547,6 +555,9 @@ func init() {
 }
 
 type Erc1155Diff struct {
+	// Indicates whether the token ID represents an arbitrary token from a collection,
+	// unpredictable while running the simulation
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
 	// id of the token
 	TokenID string `json:"token_id,required"`
 	// value before divided by decimal, that was transferred from this address
@@ -562,13 +573,14 @@ type Erc1155Diff struct {
 
 // erc1155DiffJSON contains the JSON metadata for the struct [Erc1155Diff]
 type erc1155DiffJSON struct {
-	TokenID     apijson.Field
-	Value       apijson.Field
-	LogoURL     apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	ArbitraryCollectionToken apijson.Field
+	TokenID                  apijson.Field
+	Value                    apijson.Field
+	LogoURL                  apijson.Field
+	Summary                  apijson.Field
+	UsdPrice                 apijson.Field
+	raw                      string
+	ExtraFields              map[string]apijson.Field
 }
 
 func (r *Erc1155Diff) UnmarshalJSON(data []byte) (err error) {
@@ -631,6 +643,9 @@ type Erc1155ExposureExposure struct {
 	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
+	// Indicates whether the token ID represents an arbitrary token from a collection,
+	// unpredictable while running the simulation
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
@@ -642,14 +657,15 @@ type Erc1155ExposureExposure struct {
 // erc1155ExposureExposureJSON contains the JSON metadata for the struct
 // [Erc1155ExposureExposure]
 type erc1155ExposureExposureJSON struct {
-	UsdPrice    apijson.Field
-	Summary     apijson.Field
-	TokenID     apijson.Field
-	Value       apijson.Field
-	LogoURL     apijson.Field
-	RawValue    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	UsdPrice                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	Value                    apijson.Field
+	ArbitraryCollectionToken apijson.Field
+	LogoURL                  apijson.Field
+	RawValue                 apijson.Field
+	raw                      string
+	ExtraFields              map[string]apijson.Field
 }
 
 func (r erc1155ExposureExposureJSON) RawJSON() string {
@@ -842,6 +858,9 @@ type Erc20ExposureExposure struct {
 	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
+	// Indicates whether the token ID represents an arbitrary token from a collection,
+	// unpredictable while running the simulation
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
@@ -853,14 +872,15 @@ type Erc20ExposureExposure struct {
 // erc20ExposureExposureJSON contains the JSON metadata for the struct
 // [Erc20ExposureExposure]
 type erc20ExposureExposureJSON struct {
-	UsdPrice    apijson.Field
-	Summary     apijson.Field
-	TokenID     apijson.Field
-	Value       apijson.Field
-	LogoURL     apijson.Field
-	RawValue    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	UsdPrice                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	Value                    apijson.Field
+	ArbitraryCollectionToken apijson.Field
+	LogoURL                  apijson.Field
+	RawValue                 apijson.Field
+	raw                      string
+	ExtraFields              map[string]apijson.Field
 }
 
 func (r erc20ExposureExposureJSON) RawJSON() string {
@@ -972,6 +992,9 @@ func (r Erc20TokenDetailsType) IsKnown() bool {
 }
 
 type Erc721Diff struct {
+	// Indicates whether the token ID represents an arbitrary token from a collection,
+	// unpredictable while running the simulation
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
 	// id of the token
 	TokenID string `json:"token_id,required"`
 	// url of the token logo
@@ -985,12 +1008,13 @@ type Erc721Diff struct {
 
 // erc721DiffJSON contains the JSON metadata for the struct [Erc721Diff]
 type erc721DiffJSON struct {
-	TokenID     apijson.Field
-	LogoURL     apijson.Field
-	Summary     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	ArbitraryCollectionToken apijson.Field
+	TokenID                  apijson.Field
+	LogoURL                  apijson.Field
+	Summary                  apijson.Field
+	UsdPrice                 apijson.Field
+	raw                      string
+	ExtraFields              map[string]apijson.Field
 }
 
 func (r *Erc721Diff) UnmarshalJSON(data []byte) (err error) {
@@ -1053,6 +1077,9 @@ type Erc721ExposureExposure struct {
 	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
+	// Indicates whether the token ID represents an arbitrary token from a collection,
+	// unpredictable while running the simulation
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
@@ -1064,14 +1091,15 @@ type Erc721ExposureExposure struct {
 // erc721ExposureExposureJSON contains the JSON metadata for the struct
 // [Erc721ExposureExposure]
 type erc721ExposureExposureJSON struct {
-	UsdPrice    apijson.Field
-	Summary     apijson.Field
-	TokenID     apijson.Field
-	Value       apijson.Field
-	LogoURL     apijson.Field
-	RawValue    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	UsdPrice                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	Value                    apijson.Field
+	ArbitraryCollectionToken apijson.Field
+	LogoURL                  apijson.Field
+	RawValue                 apijson.Field
+	raw                      string
+	ExtraFields              map[string]apijson.Field
 }
 
 func (r erc721ExposureExposureJSON) RawJSON() string {
@@ -2195,6 +2223,9 @@ type TransactionSimulationAccountSummaryAssetsDiffsIn struct {
 	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
+	// Indicates whether the token ID represents an arbitrary token from a collection,
+	// unpredictable while running the simulation
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
@@ -2206,14 +2237,15 @@ type TransactionSimulationAccountSummaryAssetsDiffsIn struct {
 // transactionSimulationAccountSummaryAssetsDiffsInJSON contains the JSON metadata
 // for the struct [TransactionSimulationAccountSummaryAssetsDiffsIn]
 type transactionSimulationAccountSummaryAssetsDiffsInJSON struct {
-	UsdPrice    apijson.Field
-	Summary     apijson.Field
-	TokenID     apijson.Field
-	Value       apijson.Field
-	LogoURL     apijson.Field
-	RawValue    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	UsdPrice                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	Value                    apijson.Field
+	ArbitraryCollectionToken apijson.Field
+	LogoURL                  apijson.Field
+	RawValue                 apijson.Field
+	raw                      string
+	ExtraFields              map[string]apijson.Field
 }
 
 func (r transactionSimulationAccountSummaryAssetsDiffsInJSON) RawJSON() string {
@@ -2275,6 +2307,9 @@ type TransactionSimulationAccountSummaryAssetsDiffsOut struct {
 	TokenID string `json:"token_id"`
 	// value before divided by decimal, that was transferred from this address
 	Value string `json:"value"`
+	// Indicates whether the token ID represents an arbitrary token from a collection,
+	// unpredictable while running the simulation
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
@@ -2286,14 +2321,15 @@ type TransactionSimulationAccountSummaryAssetsDiffsOut struct {
 // transactionSimulationAccountSummaryAssetsDiffsOutJSON contains the JSON metadata
 // for the struct [TransactionSimulationAccountSummaryAssetsDiffsOut]
 type transactionSimulationAccountSummaryAssetsDiffsOutJSON struct {
-	UsdPrice    apijson.Field
-	Summary     apijson.Field
-	TokenID     apijson.Field
-	Value       apijson.Field
-	LogoURL     apijson.Field
-	RawValue    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	UsdPrice                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	Value                    apijson.Field
+	ArbitraryCollectionToken apijson.Field
+	LogoURL                  apijson.Field
+	RawValue                 apijson.Field
+	raw                      string
+	ExtraFields              map[string]apijson.Field
 }
 
 func (r transactionSimulationAccountSummaryAssetsDiffsOutJSON) RawJSON() string {
