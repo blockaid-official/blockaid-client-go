@@ -39,7 +39,8 @@ func TestStarknetTransactionScanWithOptionalParams(t *testing.T) {
 			Version:       blockaidclientgo.F(blockaidclientgo.StarknetTransactionScanParamsTransactionStarknetInvokeV1TransactionSchemaVersion1),
 			Calldata:      blockaidclientgo.F([]string{"string", "string", "string"}),
 		}),
-		Options: blockaidclientgo.F([]blockaidclientgo.StarknetTransactionScanParamsOption{blockaidclientgo.StarknetTransactionScanParamsOptionValidation}),
+		BlockNumber: blockaidclientgo.F("block_number"),
+		Options:     blockaidclientgo.F([]blockaidclientgo.StarknetTransactionScanParamsOption{blockaidclientgo.StarknetTransactionScanParamsOptionValidation}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
