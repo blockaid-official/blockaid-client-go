@@ -71,17 +71,19 @@ func (r starknetTransactionScanResponseJSON) RawJSON() string {
 type StarknetTransactionScanResponseSimulation struct {
 	Status StarknetTransactionScanResponseSimulationStatus `json:"status,required"`
 	// This field can have the runtime type of
-	// [map[string][]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiff].
+	// [map[string][]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff].
 	AssetsDiffs interface{} `json:"assets_diffs,required"`
 	// This field can have the runtime type of
-	// [map[string][]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposure].
+	// [map[string][]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure].
 	Exposures interface{} `json:"exposures,required"`
 	// This field can have the runtime type of
-	// [[]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAddressDetail].
+	// [[]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetail].
 	AddressDetails interface{} `json:"address_details,required"`
 	// This field can have the runtime type of
-	// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummary].
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummary].
 	AccountSummary interface{} `json:"account_summary,required"`
+	// Optional block number or tag context for the simulation
+	BlockNumber string `json:"block_number,nullable"`
 	// Error message
 	Error string                                        `json:"error"`
 	JSON  starknetTransactionScanResponseSimulationJSON `json:"-"`
@@ -96,6 +98,7 @@ type starknetTransactionScanResponseSimulationJSON struct {
 	Exposures      apijson.Field
 	AddressDetails apijson.Field
 	AccountSummary apijson.Field
+	BlockNumber    apijson.Field
 	Error          apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
@@ -118,7 +121,7 @@ func (r *StarknetTransactionScanResponseSimulation) UnmarshalJSON(data []byte) (
 // which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchema],
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchema],
 // [StarknetTransactionScanResponseSimulationStarknetSimulationErrorSchema].
 func (r StarknetTransactionScanResponseSimulation) AsUnion() StarknetTransactionScanResponseSimulationUnion {
 	return r.union
@@ -127,8 +130,8 @@ func (r StarknetTransactionScanResponseSimulation) AsUnion() StarknetTransaction
 // Simulation result; Only present if simulation option is included in the request
 //
 // Union satisfied by
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchema] or
-// [StarknetTransactionScanResponseSimulationStarknetSimulationErrorSchema].
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchema]
+// or [StarknetTransactionScanResponseSimulationStarknetSimulationErrorSchema].
 type StarknetTransactionScanResponseSimulationUnion interface {
 	implementsStarknetTransactionScanResponseSimulation()
 }
@@ -139,7 +142,7 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
@@ -148,65 +151,68 @@ func init() {
 	)
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchema struct {
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchema struct {
 	// Summary of the actions and asset transfers that were made by the requested
 	// account address
-	AccountSummary StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummary `json:"account_summary,required"`
-	Status         StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaStatus         `json:"status,required"`
+	AccountSummary StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummary `json:"account_summary,required"`
+	Status         StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaStatus         `json:"status,required"`
 	// Details of addresses involved in the transaction
-	AddressDetails []StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAddressDetail `json:"address_details"`
+	AddressDetails []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetail `json:"address_details"`
 	// Mapping between the address of an account to the assets diff during the
 	// transaction
-	AssetsDiffs map[string][]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiff `json:"assets_diffs"`
+	AssetsDiffs map[string][]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff `json:"assets_diffs"`
+	// Optional block number or tag context for the simulation
+	BlockNumber string `json:"block_number,nullable"`
 	// Mapping between the address of an account to the exposure of the assets during
 	// the transaction
-	Exposures map[string][]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposure `json:"exposures"`
-	JSON      starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaJSON                  `json:"-"`
+	Exposures map[string][]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure `json:"exposures"`
+	JSON      starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaJSON                  `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchema]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaJSON struct {
 	AccountSummary apijson.Field
 	Status         apijson.Field
 	AddressDetails apijson.Field
 	AssetsDiffs    apijson.Field
+	BlockNumber    apijson.Field
 	Exposures      apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchema) implementsStarknetTransactionScanResponseSimulation() {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchema) implementsStarknetTransactionScanResponseSimulation() {
 }
 
 // Summary of the actions and asset transfers that were made by the requested
 // account address
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummary struct {
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummary struct {
 	// Exposures made by the requested account address
-	Exposures []StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposure `json:"exposures,required"`
+	AccountExposures []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure `json:"account_exposures,required"`
 	// Total USD diff for the requested account address
-	TotalUsdDiff StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryTotalUsdDiff `json:"total_usd_diff,required"`
+	TotalUsdDiff StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryTotalUsdDiff `json:"total_usd_diff,required"`
 	// Assets diffs of the requested account address
-	AssetsDiffs []StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiff `json:"assets_diffs"`
+	AssetsDiffs []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiff `json:"assets_diffs"`
 	// Total USD exposure for each of the spender addresses during the transaction
-	TotalUsdExposure map[string]float64                                                                        `json:"total_usd_exposure"`
-	JSON             starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryJSON `json:"-"`
+	TotalUsdExposure map[string]float64                                                                                `json:"total_usd_exposure"`
+	JSON             starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummary]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryJSON struct {
-	Exposures        apijson.Field
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummary]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryJSON struct {
+	AccountExposures apijson.Field
 	TotalUsdDiff     apijson.Field
 	AssetsDiffs      apijson.Field
 	TotalUsdExposure apijson.Field
@@ -214,43 +220,45 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAcco
 	ExtraFields      map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummary) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummary) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryJSON) RawJSON() string {
 	return r.raw
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposure struct {
-	// This field can have the runtime type of [StarknetErc20Details],
-	// [StarknetErc721Details], [StarknetErc1155Details].
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure struct {
+	// This field can have the runtime type of
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAsset],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAsset],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAsset].
 	Asset interface{} `json:"asset"`
 	// This field can have the runtime type of
-	// [map[string]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpender],
-	// [map[string]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpender],
-	// [map[string]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpender].
-	Spenders interface{}                                                                                       `json:"spenders,required"`
-	JSON     starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposureJSON `json:"-"`
-	union    StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresUnion
+	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpender],
+	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpender],
+	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpender].
+	Spenders interface{}                                                                                                      `json:"spenders,required"`
+	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposureJSON `json:"-"`
+	union    StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresUnion
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposureJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposureJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposure]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposureJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposureJSON struct {
 	Asset       apijson.Field
 	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposureJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposureJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposure) UnmarshalJSON(data []byte) (err error) {
-	*r = StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposure{}
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure) UnmarshalJSON(data []byte) (err error) {
+	*r = StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -259,88 +267,141 @@ func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchema
 }
 
 // AsUnion returns a
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresUnion]
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresUnion]
 // interface which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema].
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposure) AsUnion() StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresUnion {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema],
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema],
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema].
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure) AsUnion() StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema]
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema],
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema]
 // or
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema].
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresUnion interface {
-	implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposure()
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema].
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresUnion interface {
+	implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresUnion)(nil)).Elem(),
+		reflect.TypeOf((*StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema{}),
 		},
 	)
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema struct {
-	Asset StarknetErc20Details `json:"asset,required"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema struct {
+	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAsset `json:"asset,required"`
 	// Mapping between the spender address and the exposure of the asset
-	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpender `json:"spenders"`
-	JSON     starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaJSON               `json:"-"`
+	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpender `json:"spenders"`
+	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaJSON               `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaJSON struct {
 	Asset       apijson.Field
 	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposure() {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema) implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure() {
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpender struct {
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAsset struct {
+	// Address of the token's contract
+	Address string `json:"address,required"`
+	// token's decimals
+	Decimals int64 `json:"decimals,required"`
+	// token's name
+	Name string `json:"name,required"`
+	// token's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,nullable"`
+	// Type of the asset (`ERC20`)
+	Type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetType `json:"type"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAsset]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetJSON struct {
+	Address     apijson.Field
+	Decimals    apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Type of the asset (`ERC20`)
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetType string
+
+const (
+	StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetTypeErc20 StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetType = "ERC20"
+)
+
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetTypeErc20:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpender struct {
 	// Approval value of the ERC20 token
-	Approval int64               `json:"approval,required"`
+	Approval string              `json:"approval,required"`
 	Exposure []StarknetErc20Diff `json:"exposure,required"`
 	// Expiration date of the approval
 	Expiration time.Time `json:"expiration,nullable" format:"date-time"`
 	// Summarized description of the exposure
-	Summary string                                                                                                                                                                           `json:"summary,nullable"`
-	JSON    starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpenderJSON `json:"-"`
+	Summary string                                                                                                                                                                                                                                                                                                                  `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpenderJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpenderJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpenderJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpender]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpenderJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpender]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpenderJSON struct {
 	Approval    apijson.Field
 	Exposure    apijson.Field
 	Expiration  apijson.Field
@@ -349,55 +410,105 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAcco
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpender) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpender) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpenderJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpenderJSON) RawJSON() string {
 	return r.raw
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema struct {
-	Asset StarknetErc721Details `json:"asset,required"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema struct {
+	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAsset `json:"asset,required"`
 	// Mapping between the spender address and the exposure of the asset
-	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpender `json:"spenders"`
-	JSON     starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaJSON               `json:"-"`
+	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpender `json:"spenders"`
+	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaJSON               `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaJSON struct {
 	Asset       apijson.Field
 	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposure() {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema) implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure() {
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpender struct {
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAsset struct {
+	// Address of the token's contract
+	Address string `json:"address,required"`
+	// token's name
+	Name string `json:"name,required"`
+	// token's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,nullable"`
+	// Type of the asset (`ERC721`)
+	Type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetType `json:"type"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAsset]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetJSON struct {
+	Address     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Type of the asset (`ERC721`)
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetType string
+
+const (
+	StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetTypeErc721 StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetType = "ERC721"
+)
+
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetTypeErc721:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpender struct {
 	Exposure []StarknetErc721Diff `json:"exposure,required"`
 	// Whether `setApprovalForAll` was invoked
 	IsApprovedForAll bool `json:"is_approved_for_all,required"`
 	// Summarized description of the exposure
-	Summary string                                                                                                                                                                             `json:"summary,nullable"`
-	JSON    starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpenderJSON `json:"-"`
+	Summary string                                                                                                                                                                                                                                                                                                                    `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpenderJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpenderJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpenderJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpender]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpenderJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpender]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpenderJSON struct {
 	Exposure         apijson.Field
 	IsApprovedForAll apijson.Field
 	Summary          apijson.Field
@@ -405,55 +516,105 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAcco
 	ExtraFields      map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpender) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpender) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpenderJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpenderJSON) RawJSON() string {
 	return r.raw
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema struct {
-	Asset StarknetErc1155Details `json:"asset,required"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema struct {
+	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAsset `json:"asset,required"`
 	// Mapping between the spender address and the exposure of the asset
-	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpender `json:"spenders"`
-	JSON     starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaJSON               `json:"-"`
+	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpender `json:"spenders"`
+	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaJSON               `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaJSON struct {
 	Asset       apijson.Field
 	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposure() {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema) implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure() {
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpender struct {
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAsset struct {
+	// Address of the token's contract
+	Address string `json:"address,required"`
+	// token's name
+	Name string `json:"name,required"`
+	// token's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,nullable"`
+	// Type of the asset (`ERC1155`)
+	Type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetType `json:"type"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAsset]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetJSON struct {
+	Address     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Type of the asset (`ERC1155`)
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetType string
+
+const (
+	StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetTypeErc1155 StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetType = "ERC1155"
+)
+
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetTypeErc1155:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpender struct {
 	Exposure []StarknetErc1155Diff `json:"exposure,required"`
 	// Whether `setApprovalForAll` was invoked
 	IsApprovedForAll bool `json:"is_approved_for_all,required"`
 	// Summarized description of the exposure
-	Summary string                                                                                                                                                                               `json:"summary,nullable"`
-	JSON    starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpenderJSON `json:"-"`
+	Summary string                                                                                                                                                                                                                                                                                                                      `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpenderJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpenderJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpenderJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpender]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpenderJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpender]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpenderJSON struct {
 	Exposure         apijson.Field
 	IsApprovedForAll apijson.Field
 	Summary          apijson.Field
@@ -461,29 +622,29 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAcco
 	ExtraFields      map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpender) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpender) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpenderJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpenderJSON) RawJSON() string {
 	return r.raw
 }
 
 // Total USD diff for the requested account address
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryTotalUsdDiff struct {
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryTotalUsdDiff struct {
 	// Total incoming USD transfers
 	In float64 `json:"in,required"`
 	// Total outgoing USD transfers
 	Out float64 `json:"out,required"`
 	// Total USD transfers
-	Total float64                                                                                               `json:"total"`
-	JSON  starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryTotalUsdDiffJSON `json:"-"`
+	Total float64                                                                                                       `json:"total"`
+	JSON  starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryTotalUsdDiffJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryTotalUsdDiffJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryTotalUsdDiffJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryTotalUsdDiff]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryTotalUsdDiffJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryTotalUsdDiff]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryTotalUsdDiffJSON struct {
 	In          apijson.Field
 	Out         apijson.Field
 	Total       apijson.Field
@@ -491,33 +652,34 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAcco
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryTotalUsdDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryTotalUsdDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryTotalUsdDiffJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryTotalUsdDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiff struct {
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiff struct {
 	// This field can have the runtime type of
-	// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset],
-	// [StarknetErc20Details], [StarknetErc721Details], [StarknetErc1155Details].
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAsset],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAsset],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAsset].
 	Asset interface{} `json:"asset"`
-	// This field can have the runtime type of [StarknetNativeDiff],
-	// [StarknetErc20Diff], [StarknetErc721Diff], [StarknetErc1155Diff].
+	// This field can have the runtime type of [StarknetErc20Diff],
+	// [StarknetErc721Diff], [StarknetErc1155Diff].
 	In interface{} `json:"in,required"`
-	// This field can have the runtime type of [StarknetNativeDiff],
-	// [StarknetErc20Diff], [StarknetErc721Diff], [StarknetErc1155Diff].
-	Out   interface{}                                                                                         `json:"out,required"`
-	JSON  starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffJSON `json:"-"`
-	union StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsUnion
+	// This field can have the runtime type of [StarknetErc20Diff],
+	// [StarknetErc721Diff], [StarknetErc1155Diff].
+	Out   interface{}                                                                                                 `json:"out,required"`
+	JSON  starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffJSON `json:"-"`
+	union StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsUnion
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiff]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiff]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffJSON struct {
 	Asset       apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
@@ -525,12 +687,12 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAcco
 	ExtraFields map[string]apijson.Field
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiff) UnmarshalJSON(data []byte) (err error) {
-	*r = StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiff{}
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -539,64 +701,58 @@ func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchema
 }
 
 // AsUnion returns a
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsUnion]
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsUnion]
 // interface which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema].
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiff) AsUnion() StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsUnion {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema],
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema],
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema].
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiff) AsUnion() StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema]
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema],
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema]
 // or
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema].
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsUnion interface {
-	implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiff()
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema].
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsUnion interface {
+	implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiff()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsUnion)(nil)).Elem(),
+		reflect.TypeOf((*StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema{}),
 		},
 	)
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema struct {
-	Asset StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset `json:"asset,required"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema struct {
+	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAsset `json:"asset,required"`
 	// Details of the incoming transfer
-	In StarknetNativeDiff `json:"in,nullable"`
+	In StarknetErc20Diff `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetNativeDiff                                                                                                                                                                   `json:"out,nullable"`
-	JSON starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaJSON `json:"-"`
+	Out  StarknetErc20Diff                                                                                                                                                                                                                               `json:"out,nullable"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaJSON struct {
 	Asset       apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
@@ -604,153 +760,83 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAcco
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiff() {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiff() {
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset struct {
-	// Decimals of the asset
-	Decimals StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals `json:"decimals"`
-	// Name of the asset
-	Name StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetName `json:"name"`
-	// Symbol of the asset
-	Symbol StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbol `json:"symbol"`
-	// Type of the asset (`NATIVE`)
-	Type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetType `json:"type"`
-	JSON starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetJSON `json:"-"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAsset struct {
+	// Address of the token's contract
+	Address string `json:"address,required"`
+	// token's decimals
+	Decimals int64 `json:"decimals,required"`
+	// token's name
+	Name string `json:"name,required"`
+	// token's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,nullable"`
+	// Type of the asset (`ERC20`)
+	Type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetType `json:"type"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAsset]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetJSON struct {
+	Address     apijson.Field
 	Decimals    apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
+	LogoURL     apijson.Field
 	Type        apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-// Decimals of the asset
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals int64
+// Type of the asset (`ERC20`)
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetType string
 
 const (
-	StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals18 StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals = 18
+	StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetTypeErc20 StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetType = "ERC20"
 )
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals) IsKnown() bool {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetType) IsKnown() bool {
 	switch r {
-	case StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals18:
+	case StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetTypeErc20:
 		return true
 	}
 	return false
 }
 
-// Name of the asset
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetName string
-
-const (
-	StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetNameStrk StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetName = "STRK"
-)
-
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetName) IsKnown() bool {
-	switch r {
-	case StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetNameStrk:
-		return true
-	}
-	return false
-}
-
-// Symbol of the asset
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbol string
-
-const (
-	StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbolStrk StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbol = "STRK"
-)
-
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbol) IsKnown() bool {
-	switch r {
-	case StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbolStrk:
-		return true
-	}
-	return false
-}
-
-// Type of the asset (`NATIVE`)
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetType string
-
-const (
-	StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetTypeNative StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetType = "NATIVE"
-)
-
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetType) IsKnown() bool {
-	switch r {
-	case StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetTypeNative:
-		return true
-	}
-	return false
-}
-
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema struct {
-	Asset StarknetErc20Details `json:"asset,required"`
-	// Details of the incoming transfer
-	In StarknetErc20Diff `json:"in,nullable"`
-	// Details of the outgoing transfer
-	Out  StarknetErc20Diff                                                                                                                                                             `json:"out,nullable"`
-	JSON starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchemaJSON `json:"-"`
-}
-
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchemaJSON
-// contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchemaJSON struct {
-	Asset       apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiff() {
-}
-
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema struct {
-	Asset StarknetErc721Details `json:"asset,required"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema struct {
+	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAsset `json:"asset,required"`
 	// Details of the incoming transfer
 	In StarknetErc721Diff `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc721Diff                                                                                                                                                              `json:"out,nullable"`
-	JSON starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchemaJSON `json:"-"`
+	Out  StarknetErc721Diff                                                                                                                                                                                                                                `json:"out,nullable"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchemaJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchemaJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaJSON struct {
 	Asset       apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
@@ -758,107 +844,208 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAcco
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiff() {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiff() {
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema struct {
-	Asset StarknetErc1155Details `json:"asset,required"`
-	// Details of the incoming transfer
-	In StarknetErc1155Diff `json:"in,nullable"`
-	// Details of the outgoing transfer
-	Out  StarknetErc1155Diff                                                                                                                                                               `json:"out,nullable"`
-	JSON starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchemaJSON `json:"-"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAsset struct {
+	// Address of the token's contract
+	Address string `json:"address,required"`
+	// token's name
+	Name string `json:"name,required"`
+	// token's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,nullable"`
+	// Type of the asset (`ERC721`)
+	Type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetType `json:"type"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchemaJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchemaJSON struct {
-	Asset       apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAsset]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetJSON struct {
+	Address     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAccountSummaryAssetsDiff() {
-}
-
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaStatus string
+// Type of the asset (`ERC721`)
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetType string
 
 const (
-	StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaStatusSuccess StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaStatus = "Success"
+	StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetTypeErc721 StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetType = "ERC721"
 )
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaStatus) IsKnown() bool {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetType) IsKnown() bool {
 	switch r {
-	case StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaStatusSuccess:
+	case StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetTypeErc721:
 		return true
 	}
 	return false
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAddressDetail struct {
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema struct {
+	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAsset `json:"asset,required"`
+	// Details of the incoming transfer
+	In StarknetErc1155Diff `json:"in,nullable"`
+	// Details of the outgoing transfer
+	Out  StarknetErc1155Diff                                                                                                                                                                                                                                 `json:"out,nullable"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaJSON struct {
+	Asset       apijson.Field
+	In          apijson.Field
+	Out         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiff() {
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAsset struct {
+	// Address of the token's contract
+	Address string `json:"address,required"`
+	// token's name
+	Name string `json:"name,required"`
+	// token's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,nullable"`
+	// Type of the asset (`ERC1155`)
+	Type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetType `json:"type"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAsset]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetJSON struct {
+	Address     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Type of the asset (`ERC1155`)
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetType string
+
+const (
+	StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetTypeErc1155 StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetType = "ERC1155"
+)
+
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetTypeErc1155:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaStatus string
+
+const (
+	StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaStatusSuccess StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaStatus = "Success"
+)
+
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaStatus) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaStatusSuccess:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetail struct {
 	// Encoded public key of the account
 	AccountAddress string `json:"account_address,required"`
 	// Description of the account
-	Description string                                                                                   `json:"description,nullable"`
-	JSON        starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAddressDetailJSON `json:"-"`
+	Description string                                                                                           `json:"description,nullable"`
+	JSON        starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetailJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAddressDetailJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetailJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAddressDetail]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAddressDetailJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetail]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetailJSON struct {
 	AccountAddress apijson.Field
 	Description    apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAddressDetail) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAddressDetailJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetailJSON) RawJSON() string {
 	return r.raw
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiff struct {
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff struct {
 	// This field can have the runtime type of
-	// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset],
-	// [StarknetErc20Details], [StarknetErc721Details], [StarknetErc1155Details].
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAsset],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAsset],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAsset].
 	Asset interface{} `json:"asset"`
-	// This field can have the runtime type of [StarknetNativeDiff],
-	// [StarknetErc20Diff], [StarknetErc721Diff], [StarknetErc1155Diff].
+	// This field can have the runtime type of [StarknetErc20Diff],
+	// [StarknetErc721Diff], [StarknetErc1155Diff].
 	In interface{} `json:"in,required"`
-	// This field can have the runtime type of [StarknetNativeDiff],
-	// [StarknetErc20Diff], [StarknetErc721Diff], [StarknetErc1155Diff].
-	Out   interface{}                                                                           `json:"out,required"`
-	JSON  starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffJSON `json:"-"`
-	union StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsUnion
+	// This field can have the runtime type of [StarknetErc20Diff],
+	// [StarknetErc721Diff], [StarknetErc1155Diff].
+	Out   interface{}                                                                                   `json:"out,required"`
+	JSON  starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffJSON `json:"-"`
+	union StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsUnion
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiff]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffJSON struct {
 	Asset       apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
@@ -866,12 +1053,12 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAsse
 	ExtraFields map[string]apijson.Field
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiff) UnmarshalJSON(data []byte) (err error) {
-	*r = StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiff{}
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -880,64 +1067,58 @@ func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchema
 }
 
 // AsUnion returns a
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsUnion]
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsUnion]
 // interface which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema].
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiff) AsUnion() StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsUnion {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema],
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema],
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema].
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff) AsUnion() StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema]
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema],
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema]
 // or
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema].
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsUnion interface {
-	implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiff()
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema].
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsUnion interface {
+	implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsUnion)(nil)).Elem(),
+		reflect.TypeOf((*StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema{}),
 		},
 	)
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema struct {
-	Asset StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset `json:"asset,required"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema struct {
+	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAsset `json:"asset,required"`
 	// Details of the incoming transfer
-	In StarknetNativeDiff `json:"in,nullable"`
+	In StarknetErc20Diff `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetNativeDiff                                                                                                                                                     `json:"out,nullable"`
-	JSON starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaJSON `json:"-"`
+	Out  StarknetErc20Diff                                                                                                                                                                                                                 `json:"out,nullable"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaJSON struct {
 	Asset       apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
@@ -945,153 +1126,83 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAsse
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiff() {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff() {
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset struct {
-	// Decimals of the asset
-	Decimals StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals `json:"decimals"`
-	// Name of the asset
-	Name StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetName `json:"name"`
-	// Symbol of the asset
-	Symbol StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbol `json:"symbol"`
-	// Type of the asset (`NATIVE`)
-	Type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetType `json:"type"`
-	JSON starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetJSON `json:"-"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAsset struct {
+	// Address of the token's contract
+	Address string `json:"address,required"`
+	// token's decimals
+	Decimals int64 `json:"decimals,required"`
+	// token's name
+	Name string `json:"name,required"`
+	// token's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,nullable"`
+	// Type of the asset (`ERC20`)
+	Type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetType `json:"type"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAsset]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetJSON struct {
+	Address     apijson.Field
 	Decimals    apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
+	LogoURL     apijson.Field
 	Type        apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-// Decimals of the asset
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals int64
+// Type of the asset (`ERC20`)
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetType string
 
 const (
-	StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals18 StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals = 18
+	StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetTypeErc20 StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetType = "ERC20"
 )
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals) IsKnown() bool {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetType) IsKnown() bool {
 	switch r {
-	case StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals18:
+	case StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DiffSchemaAssetTypeErc20:
 		return true
 	}
 	return false
 }
 
-// Name of the asset
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetName string
-
-const (
-	StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetNameStrk StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetName = "STRK"
-)
-
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetName) IsKnown() bool {
-	switch r {
-	case StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetNameStrk:
-		return true
-	}
-	return false
-}
-
-// Symbol of the asset
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbol string
-
-const (
-	StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbolStrk StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbol = "STRK"
-)
-
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbol) IsKnown() bool {
-	switch r {
-	case StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbolStrk:
-		return true
-	}
-	return false
-}
-
-// Type of the asset (`NATIVE`)
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetType string
-
-const (
-	StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetTypeNative StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetType = "NATIVE"
-)
-
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetType) IsKnown() bool {
-	switch r {
-	case StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetTypeNative:
-		return true
-	}
-	return false
-}
-
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema struct {
-	Asset StarknetErc20Details `json:"asset,required"`
-	// Details of the incoming transfer
-	In StarknetErc20Diff `json:"in,nullable"`
-	// Details of the outgoing transfer
-	Out  StarknetErc20Diff                                                                                                                                               `json:"out,nullable"`
-	JSON starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchemaJSON `json:"-"`
-}
-
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchemaJSON
-// contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchemaJSON struct {
-	Asset       apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc20DetailsSchemaErc20DiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiff() {
-}
-
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema struct {
-	Asset StarknetErc721Details `json:"asset,required"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema struct {
+	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAsset `json:"asset,required"`
 	// Details of the incoming transfer
 	In StarknetErc721Diff `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc721Diff                                                                                                                                                `json:"out,nullable"`
-	JSON starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchemaJSON `json:"-"`
+	Out  StarknetErc721Diff                                                                                                                                                                                                                  `json:"out,nullable"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchemaJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchemaJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaJSON struct {
 	Asset       apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
@@ -1099,30 +1210,80 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAsse
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaErc721DiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiff() {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff() {
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema struct {
-	Asset StarknetErc1155Details `json:"asset,required"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAsset struct {
+	// Address of the token's contract
+	Address string `json:"address,required"`
+	// token's name
+	Name string `json:"name,required"`
+	// token's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,nullable"`
+	// Type of the asset (`ERC721`)
+	Type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetType `json:"type"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAsset]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetJSON struct {
+	Address     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Type of the asset (`ERC721`)
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetType string
+
+const (
+	StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetTypeErc721 StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetType = "ERC721"
+)
+
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DiffSchemaAssetTypeErc721:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema struct {
+	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAsset `json:"asset,required"`
 	// Details of the incoming transfer
 	In StarknetErc1155Diff `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc1155Diff                                                                                                                                                 `json:"out,nullable"`
-	JSON starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchemaJSON `json:"-"`
+	Out  StarknetErc1155Diff                                                                                                                                                                                                                   `json:"out,nullable"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchemaJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchemaJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaJSON struct {
 	Asset       apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
@@ -1130,46 +1291,98 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAsse
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaErc1155DiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaAssetsDiff() {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchema) implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff() {
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposure struct {
-	// This field can have the runtime type of [StarknetErc20Details],
-	// [StarknetErc721Details], [StarknetErc1155Details].
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAsset struct {
+	// Address of the token's contract
+	Address string `json:"address,required"`
+	// token's name
+	Name string `json:"name,required"`
+	// token's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,nullable"`
+	// Type of the asset (`ERC1155`)
+	Type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetType `json:"type"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAsset]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetJSON struct {
+	Address     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Type of the asset (`ERC1155`)
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetType string
+
+const (
+	StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetTypeErc1155 StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetType = "ERC1155"
+)
+
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetAccountSingleAssetDiffSchemaTypeErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DiffSchemaAssetTypeErc1155:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure struct {
+	// This field can have the runtime type of
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAsset],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAsset],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAsset].
 	Asset interface{} `json:"asset"`
 	// This field can have the runtime type of
-	// [map[string]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpender],
-	// [map[string]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpender],
-	// [map[string]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpender].
-	Spenders interface{}                                                                         `json:"spenders,required"`
-	JSON     starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposureJSON `json:"-"`
-	union    StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresUnion
+	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpender],
+	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpender],
+	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpender].
+	Spenders interface{}                                                                                 `json:"spenders,required"`
+	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposureJSON `json:"-"`
+	union    StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresUnion
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposureJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposureJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposure]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposureJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposureJSON struct {
 	Asset       apijson.Field
 	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposureJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposureJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposure) UnmarshalJSON(data []byte) (err error) {
-	*r = StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposure{}
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure) UnmarshalJSON(data []byte) (err error) {
+	*r = StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -1178,88 +1391,141 @@ func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchema
 }
 
 // AsUnion returns a
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresUnion]
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresUnion]
 // interface which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema].
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposure) AsUnion() StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresUnion {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema],
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema],
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema].
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure) AsUnion() StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema],
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema]
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema],
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema]
 // or
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema].
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresUnion interface {
-	implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposure()
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema].
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresUnion interface {
+	implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresUnion)(nil)).Elem(),
+		reflect.TypeOf((*StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema{}),
 		},
 	)
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema struct {
-	Asset StarknetErc20Details `json:"asset,required"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema struct {
+	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAsset `json:"asset,required"`
 	// Mapping between the spender address and the exposure of the asset
-	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpender `json:"spenders"`
-	JSON     starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaJSON               `json:"-"`
+	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpender `json:"spenders"`
+	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaJSON               `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaJSON struct {
 	Asset       apijson.Field
 	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposure() {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchema) implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure() {
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpender struct {
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAsset struct {
+	// Address of the token's contract
+	Address string `json:"address,required"`
+	// token's decimals
+	Decimals int64 `json:"decimals,required"`
+	// token's name
+	Name string `json:"name,required"`
+	// token's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,nullable"`
+	// Type of the asset (`ERC20`)
+	Type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetType `json:"type"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAsset]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetJSON struct {
+	Address     apijson.Field
+	Decimals    apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Type of the asset (`ERC20`)
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetType string
+
+const (
+	StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetTypeErc20 StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetType = "ERC20"
+)
+
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaAssetTypeErc20:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpender struct {
 	// Approval value of the ERC20 token
-	Approval int64               `json:"approval,required"`
+	Approval string              `json:"approval,required"`
 	Exposure []StarknetErc20Diff `json:"exposure,required"`
 	// Expiration date of the approval
 	Expiration time.Time `json:"expiration,nullable" format:"date-time"`
 	// Summarized description of the exposure
-	Summary string                                                                                                                                                             `json:"summary,nullable"`
-	JSON    starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpenderJSON `json:"-"`
+	Summary string                                                                                                                                                                                                                                                                                             `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpenderJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpenderJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpenderJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpender]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpenderJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpender]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpenderJSON struct {
 	Approval    apijson.Field
 	Exposure    apijson.Field
 	Expiration  apijson.Field
@@ -1268,55 +1534,105 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExpo
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpender) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpender) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc20DetailsSchemaErc20ExposureSchemaSpenderJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc20ExposureSchemaSpenderJSON) RawJSON() string {
 	return r.raw
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema struct {
-	Asset StarknetErc721Details `json:"asset,required"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema struct {
+	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAsset `json:"asset,required"`
 	// Mapping between the spender address and the exposure of the asset
-	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpender `json:"spenders"`
-	JSON     starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaJSON               `json:"-"`
+	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpender `json:"spenders"`
+	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaJSON               `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaJSON struct {
 	Asset       apijson.Field
 	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposure() {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchema) implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure() {
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpender struct {
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAsset struct {
+	// Address of the token's contract
+	Address string `json:"address,required"`
+	// token's name
+	Name string `json:"name,required"`
+	// token's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,nullable"`
+	// Type of the asset (`ERC721`)
+	Type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetType `json:"type"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAsset]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetJSON struct {
+	Address     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Type of the asset (`ERC721`)
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetType string
+
+const (
+	StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetTypeErc721 StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetType = "ERC721"
+)
+
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaAssetTypeErc721:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpender struct {
 	Exposure []StarknetErc721Diff `json:"exposure,required"`
 	// Whether `setApprovalForAll` was invoked
 	IsApprovedForAll bool `json:"is_approved_for_all,required"`
 	// Summarized description of the exposure
-	Summary string                                                                                                                                                               `json:"summary,nullable"`
-	JSON    starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpenderJSON `json:"-"`
+	Summary string                                                                                                                                                                                                                                                                                               `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpenderJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpenderJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpenderJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpender]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpenderJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpender]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpenderJSON struct {
 	Exposure         apijson.Field
 	IsApprovedForAll apijson.Field
 	Summary          apijson.Field
@@ -1324,55 +1640,105 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExpo
 	ExtraFields      map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpender) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpender) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc721DetailsSchemaErc721ExposureSchemaSpenderJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc721ExposureSchemaSpenderJSON) RawJSON() string {
 	return r.raw
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema struct {
-	Asset StarknetErc1155Details `json:"asset,required"`
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema struct {
+	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAsset `json:"asset,required"`
 	// Mapping between the spender address and the exposure of the asset
-	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpender `json:"spenders"`
-	JSON     starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaJSON               `json:"-"`
+	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpender `json:"spenders"`
+	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaJSON               `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaJSON struct {
 	Asset       apijson.Field
 	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchema) implementsStarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposure() {
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchema) implementsStarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure() {
 }
 
-type StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpender struct {
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAsset struct {
+	// Address of the token's contract
+	Address string `json:"address,required"`
+	// token's name
+	Name string `json:"name,required"`
+	// token's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,nullable"`
+	// Type of the asset (`ERC1155`)
+	Type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetType `json:"type"`
+	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAsset]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetJSON struct {
+	Address     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Type of the asset (`ERC1155`)
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetType string
+
+const (
+	StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetTypeErc1155 StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetType = "ERC1155"
+)
+
+func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaAssetTypeErc1155:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpender struct {
 	Exposure []StarknetErc1155Diff `json:"exposure,required"`
 	// Whether `setApprovalForAll` was invoked
 	IsApprovedForAll bool `json:"is_approved_for_all,required"`
 	// Summarized description of the exposure
-	Summary string                                                                                                                                                                 `json:"summary,nullable"`
-	JSON    starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpenderJSON `json:"-"`
+	Summary string                                                                                                                                                                                                                                                                                                 `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpenderJSON `json:"-"`
 }
 
-// starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpenderJSON
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpenderJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpender]
-type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpenderJSON struct {
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpender]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpenderJSON struct {
 	Exposure         apijson.Field
 	IsApprovedForAll apijson.Field
 	Summary          apijson.Field
@@ -1380,11 +1746,11 @@ type starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExpo
 	ExtraFields      map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpender) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpender) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseSimulationStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaErc1155DetailsSchemaErc1155ExposureSchemaSpenderJSON) RawJSON() string {
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetAddressAssetExposureSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155DetailsSchemaAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaErc1155ExposureSchemaSpenderJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -1459,7 +1825,7 @@ type StarknetTransactionScanResponseValidation struct {
 	// reason.
 	Classification string `json:"classification"`
 	// This field can have the runtime type of
-	// [[]StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeature].
+	// [[]StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeature].
 	Features interface{} `json:"features,required"`
 	// Error message
 	Error string                                        `json:"error"`
@@ -1498,7 +1864,7 @@ func (r *StarknetTransactionScanResponseValidation) UnmarshalJSON(data []byte) (
 // which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [StarknetTransactionScanResponseValidationStarknetValidationResultSchema],
+// [StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchema],
 // [StarknetTransactionScanResponseValidationStarknetValidationErrorSchema].
 func (r StarknetTransactionScanResponseValidation) AsUnion() StarknetTransactionScanResponseValidationUnion {
 	return r.union
@@ -1507,8 +1873,8 @@ func (r StarknetTransactionScanResponseValidation) AsUnion() StarknetTransaction
 // Validation result; Only present if validation option is included in the request
 //
 // Union satisfied by
-// [StarknetTransactionScanResponseValidationStarknetValidationResultSchema] or
-// [StarknetTransactionScanResponseValidationStarknetValidationErrorSchema].
+// [StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchema]
+// or [StarknetTransactionScanResponseValidationStarknetValidationErrorSchema].
 type StarknetTransactionScanResponseValidationUnion interface {
 	implementsStarknetTransactionScanResponseValidation()
 }
@@ -1519,7 +1885,7 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(StarknetTransactionScanResponseValidationStarknetValidationResultSchema{}),
+			Type:       reflect.TypeOf(StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
@@ -1528,27 +1894,27 @@ func init() {
 	)
 }
 
-type StarknetTransactionScanResponseValidationStarknetValidationResultSchema struct {
+type StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchema struct {
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification,required"`
 	// A textual description about the validation result
 	Description string `json:"description,required"`
 	// A list of features about this transaction explaining the validation
-	Features []StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeature `json:"features,required"`
+	Features []StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeature `json:"features,required"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
 	Reason string `json:"reason,required"`
 	// Verdict of the validation
-	ResultType StarknetTransactionScanResponseValidationStarknetValidationResultSchemaResultType `json:"result_type,required"`
-	Status     StarknetTransactionScanResponseValidationStarknetValidationResultSchemaStatus     `json:"status,required"`
-	JSON       starknetTransactionScanResponseValidationStarknetValidationResultSchemaJSON       `json:"-"`
+	ResultType StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaResultType `json:"result_type,required"`
+	Status     StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaStatus     `json:"status,required"`
+	JSON       starknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaJSON       `json:"-"`
 }
 
-// starknetTransactionScanResponseValidationStarknetValidationResultSchemaJSON
+// starknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseValidationStarknetValidationResultSchema]
-type starknetTransactionScanResponseValidationStarknetValidationResultSchemaJSON struct {
+// [StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchema]
+type starknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaJSON struct {
 	Classification apijson.Field
 	Description    apijson.Field
 	Features       apijson.Field
@@ -1559,32 +1925,32 @@ type starknetTransactionScanResponseValidationStarknetValidationResultSchemaJSON
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseValidationStarknetValidationResultSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseValidationStarknetValidationResultSchemaJSON) RawJSON() string {
+func (r starknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r StarknetTransactionScanResponseValidationStarknetValidationResultSchema) implementsStarknetTransactionScanResponseValidation() {
+func (r StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchema) implementsStarknetTransactionScanResponseValidation() {
 }
 
-type StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeature struct {
+type StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeature struct {
 	// Address the feature refers to
 	Address string `json:"address,required"`
 	// Textual description
 	Description string `json:"description,required"`
 	FeatureID string `json:"feature_id,required"`
 	// Feature Classification
-	Type StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesType `json:"type,required"`
-	JSON starknetTransactionScanResponseValidationStarknetValidationResultSchemaFeatureJSON  `json:"-"`
+	Type StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesType `json:"type,required"`
+	JSON starknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeatureJSON  `json:"-"`
 }
 
-// starknetTransactionScanResponseValidationStarknetValidationResultSchemaFeatureJSON
+// starknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeatureJSON
 // contains the JSON metadata for the struct
-// [StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeature]
-type starknetTransactionScanResponseValidationStarknetValidationResultSchemaFeatureJSON struct {
+// [StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeature]
+type starknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeatureJSON struct {
 	Address     apijson.Field
 	Description apijson.Field
 	FeatureID   apijson.Field
@@ -1593,58 +1959,58 @@ type starknetTransactionScanResponseValidationStarknetValidationResultSchemaFeat
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeature) UnmarshalJSON(data []byte) (err error) {
+func (r *StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeature) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r starknetTransactionScanResponseValidationStarknetValidationResultSchemaFeatureJSON) RawJSON() string {
+func (r starknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeatureJSON) RawJSON() string {
 	return r.raw
 }
 
 // Feature Classification
-type StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesType string
+type StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesType string
 
 const (
-	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesTypeBenign    StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesType = "Benign"
-	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesTypeWarning   StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesType = "Warning"
-	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesTypeMalicious StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesType = "Malicious"
-	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesTypeInfo      StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesType = "Info"
+	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeBenign    StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesType = "Benign"
+	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeWarning   StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesType = "Warning"
+	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeMalicious StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesType = "Malicious"
+	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeInfo      StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesType = "Info"
 )
 
-func (r StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesType) IsKnown() bool {
+func (r StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesType) IsKnown() bool {
 	switch r {
-	case StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesTypeBenign, StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesTypeWarning, StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesTypeMalicious, StarknetTransactionScanResponseValidationStarknetValidationResultSchemaFeaturesTypeInfo:
+	case StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeBenign, StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeWarning, StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeMalicious, StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeInfo:
 		return true
 	}
 	return false
 }
 
 // Verdict of the validation
-type StarknetTransactionScanResponseValidationStarknetValidationResultSchemaResultType string
+type StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaResultType string
 
 const (
-	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaResultTypeBenign    StarknetTransactionScanResponseValidationStarknetValidationResultSchemaResultType = "Benign"
-	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaResultTypeWarning   StarknetTransactionScanResponseValidationStarknetValidationResultSchemaResultType = "Warning"
-	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaResultTypeMalicious StarknetTransactionScanResponseValidationStarknetValidationResultSchemaResultType = "Malicious"
+	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaResultTypeBenign    StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaResultType = "Benign"
+	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaResultTypeWarning   StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaResultType = "Warning"
+	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaResultTypeMalicious StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaResultType = "Malicious"
 )
 
-func (r StarknetTransactionScanResponseValidationStarknetValidationResultSchemaResultType) IsKnown() bool {
+func (r StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaResultType) IsKnown() bool {
 	switch r {
-	case StarknetTransactionScanResponseValidationStarknetValidationResultSchemaResultTypeBenign, StarknetTransactionScanResponseValidationStarknetValidationResultSchemaResultTypeWarning, StarknetTransactionScanResponseValidationStarknetValidationResultSchemaResultTypeMalicious:
+	case StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaResultTypeBenign, StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaResultTypeWarning, StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaResultTypeMalicious:
 		return true
 	}
 	return false
 }
 
-type StarknetTransactionScanResponseValidationStarknetValidationResultSchemaStatus string
+type StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaStatus string
 
 const (
-	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaStatusSuccess StarknetTransactionScanResponseValidationStarknetValidationResultSchemaStatus = "Success"
+	StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaStatusSuccess StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaStatus = "Success"
 )
 
-func (r StarknetTransactionScanResponseValidationStarknetValidationResultSchemaStatus) IsKnown() bool {
+func (r StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaStatus) IsKnown() bool {
 	switch r {
-	case StarknetTransactionScanResponseValidationStarknetValidationResultSchemaStatusSuccess:
+	case StarknetTransactionScanResponseValidationStarknetValidationResultSchemaTypeAnnotatedIntSkipValidationPlainSerializerGetPydanticSchemaStatusSuccess:
 		return true
 	}
 	return false
@@ -1731,10 +2097,13 @@ type StarknetTransactionScanParams struct {
 	// Metadata
 	Metadata    param.Field[StarknetTransactionScanParamsMetadataUnion]    `json:"metadata,required"`
 	Transaction param.Field[StarknetTransactionScanParamsTransactionUnion] `json:"transaction,required"`
+	// Optional block number or tag context for the simulation
+	BlockNumber param.Field[string] `json:"block_number"`
 	// List of options to include in the response
 	//
-	// - `simulation`: Include simulation output in the response
-	// - `validation`: Include security validation of the transaction in the response
+	// - `Options.validation`: Include Options.validation output in the response
+	//
+	// - `Options.simulation`: Include Options.simulation output in the response
 	Options param.Field[[]StarknetTransactionScanParamsOption] `json:"options"`
 }
 
