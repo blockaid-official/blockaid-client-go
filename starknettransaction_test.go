@@ -26,21 +26,32 @@ func TestStarknetTransactionScanWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Starknet.Transaction.Scan(context.TODO(), blockaidclientgo.StarknetTransactionScanParams{
-		AccountAddress: blockaidclientgo.F("account_address"),
+		AccountAddress: blockaidclientgo.F("0x62a2959fa6502b30cbfb51199fbbe72e72ee4f5a86ec754b4172c7d7beb6ff4"),
 		Chain:          blockaidclientgo.F(blockaidclientgo.StarknetTransactionScanParamsChainMainnet),
 		Metadata: blockaidclientgo.F[blockaidclientgo.StarknetTransactionScanParamsMetadataUnion](blockaidclientgo.StarknetTransactionScanParamsMetadataStarknetWalletRequestMetadata{
 			Type: blockaidclientgo.F(blockaidclientgo.StarknetTransactionScanParamsMetadataStarknetWalletRequestMetadataTypeWallet),
-			URL:  blockaidclientgo.F("url"),
+			URL:  blockaidclientgo.F("giftnostra.com"),
 		}),
 		Transaction: blockaidclientgo.F[blockaidclientgo.StarknetTransactionScanParamsTransactionUnion](blockaidclientgo.StarknetTransactionScanParamsTransactionStarknetInvokeV1TransactionSchema{
-			MaxFee:        blockaidclientgo.F("max_fee"),
-			Nonce:         blockaidclientgo.F("nonce"),
-			SenderAddress: blockaidclientgo.F("sender_address"),
-			Version:       blockaidclientgo.F(blockaidclientgo.StarknetTransactionScanParamsTransactionStarknetInvokeV1TransactionSchemaVersion1),
-			Calldata:      blockaidclientgo.F([]string{"string", "string", "string"}),
+			Calldata:      blockaidclientgo.F([]string{"0x1", "0x4b33a775b537a39c8960120806e815764f173e4fa76546e6706c31aa1b0ac4a", "0x994f23fef04108984d50a4f870723cd46f95d592ed3de9a13f97d5c55846fb", "0x9", "0x1", "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8", "0x1", "0x62a2959fa6502b30cbfb51199fbbe72e72ee4f5a86ec754b4172c7d7beb6ff4", "0x1", "0x5f612ce", "0x0", "0x0", "0x0"}),
+			ChainID:       "0x534e5f4d41494e",
+			Nonce:         blockaidclientgo.F("0xc"),
+			SenderAddress: blockaidclientgo.F("0x1840b3c89a446c74a3962647a2a7fb449d83905c4511027dfa9e099c6886691"),
+			Version:       blockaidclientgo.F(blockaidclientgo.StarknetTransactionScanParamsTransactionStarknetInvokeV1TransactionSchemaVersion3),
+			AccountDeploymentData: map[string]interface{}{
+				"0": "string",
+				"1": "string",
+				"2": "string",
+			},
+			NonceDataAvailabilityMode: int64(0),
+			PaymasterData: map[string]interface{}{
+				"0": "string",
+				"1": "string",
+				"2": "string",
+			},
 		}),
-		BlockNumber: blockaidclientgo.F("block_number"),
-		Options:     blockaidclientgo.F([]blockaidclientgo.StarknetTransactionScanParamsOption{blockaidclientgo.StarknetTransactionScanParamsOptionValidation}),
+		BlockNumber: blockaidclientgo.F("0xa12e3"),
+		Options:     blockaidclientgo.F([]blockaidclientgo.StarknetTransactionScanParamsOption{blockaidclientgo.StarknetTransactionScanParamsOptionValidation, blockaidclientgo.StarknetTransactionScanParamsOptionSimulation}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
