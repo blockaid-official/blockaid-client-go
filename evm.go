@@ -182,7 +182,7 @@ type AddressAssetExposureSpender struct {
 	Summary string `json:"summary"`
 	// the amount that was asked in the approval request for this spender from the
 	// current address and asset
-	Approval int64 `json:"approval"`
+	Approval string `json:"approval"`
 	// the expiration time of the permit2 protocol
 	Expiration time.Time `json:"expiration" format:"date-time"`
 	// boolean indicates whether an is_approved_for_all function was used (missing in
@@ -820,7 +820,7 @@ func (r Erc20Diff) implementsTransactionSimulationAccountSummaryAssetsDiffsOut()
 type Erc20Exposure struct {
 	// the amount that was asked in the approval request for this spender from the
 	// current address and asset
-	Approval int64                   `json:"approval,required"`
+	Approval string                  `json:"approval,required"`
 	Exposure []Erc20ExposureExposure `json:"exposure,required"`
 	// the expiration time of the permit2 protocol
 	Expiration time.Time `json:"expiration" format:"date-time"`
