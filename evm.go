@@ -1542,7 +1542,8 @@ func (r transactionScanResponseEventsParamJSON) RawJSON() string {
 	return r.raw
 }
 
-// Union satisfied by [shared.UnionString] or
+// Union satisfied by [shared.UnionString],
+// [TransactionScanResponseEventsParamsValueUnknown] or
 // [TransactionScanResponseEventsParamsValueArray].
 type TransactionScanResponseEventsParamsValueUnion interface {
 	ImplementsTransactionScanResponseEventsParamsValueUnion()
