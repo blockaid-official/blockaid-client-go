@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.27.0 (2024-09-12)
+
+Full Changelog: [v0.26.0...v0.27.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.26.0...v0.27.0)
+
+### Features
+
+* **api:** OpenAPI spec update via Stainless API ([#220](https://github.com/blockaid-official/blockaid-client-go/issues/220)) ([47c0d8b](https://github.com/blockaid-official/blockaid-client-go/commit/47c0d8bfb659fd7ccf61f78b58914a27b48c1d38))
+* **api:** OpenAPI spec update via Stainless API ([#225](https://github.com/blockaid-official/blockaid-client-go/issues/225)) ([0a1ea65](https://github.com/blockaid-official/blockaid-client-go/commit/0a1ea65751cad36aa7047ca124896e3a7948accd))
+* **api:** OpenAPI spec update via Stainless API ([#227](https://github.com/blockaid-official/blockaid-client-go/issues/227)) ([25044e7](https://github.com/blockaid-official/blockaid-client-go/commit/25044e73ddbc23439c517c3a2984fb7be974b627))
+
+
+### Bug Fixes
+
+* fix union variant comments and unknown unions ([#222](https://github.com/blockaid-official/blockaid-client-go/issues/222)) ([ce03d04](https://github.com/blockaid-official/blockaid-client-go/commit/ce03d04eb4d606bcbfbb8f586921caee01c48397))
+* **requestconfig:** copy over more fields when cloning ([#226](https://github.com/blockaid-official/blockaid-client-go/issues/226)) ([14fe1f2](https://github.com/blockaid-official/blockaid-client-go/commit/14fe1f284d842210a37610ae01980f21302b48da))
+
+
+### Chores
+
+* **internal:** codegen related update ([#223](https://github.com/blockaid-official/blockaid-client-go/issues/223)) ([01200f2](https://github.com/blockaid-official/blockaid-client-go/commit/01200f238e6c300d0f8bd14c8bb64482025f08b8))
+* **internal:** codegen related update ([#224](https://github.com/blockaid-official/blockaid-client-go/issues/224)) ([600719f](https://github.com/blockaid-official/blockaid-client-go/commit/600719f65b17a58d1562623520fc4f1db8fbd191))
+
 ## 0.26.0 (2024-09-05)
 
 Full Changelog: [v0.25.0...v0.26.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.25.0...v0.26.0)

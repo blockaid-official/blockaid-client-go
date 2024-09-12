@@ -526,6 +526,9 @@ func (r combinedValidationResultJSON) RawJSON() string {
 
 // Transaction validation result
 type CombinedValidationResultValidation struct {
+	// A list of features explaining what is happening in the transaction in different
+	// levels of severity
+	ExtendedFeatures []ValidationFeature `json:"extended_features,required"`
 	// A list of features about this transaction explaining the validation
 	Features []string `json:"features,required"`
 	// An enumeration.
@@ -538,11 +541,12 @@ type CombinedValidationResultValidation struct {
 // combinedValidationResultValidationJSON contains the JSON metadata for the struct
 // [CombinedValidationResultValidation]
 type combinedValidationResultValidationJSON struct {
-	Features    apijson.Field
-	Reason      apijson.Field
-	Verdict     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	ExtendedFeatures apijson.Field
+	Features         apijson.Field
+	Reason           apijson.Field
+	Verdict          apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
 }
 
 func (r *CombinedValidationResultValidation) UnmarshalJSON(data []byte) (err error) {
@@ -1959,4 +1963,53 @@ type TxScanRequestSchemaMetadataParam struct {
 
 func (r TxScanRequestSchemaMetadataParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type ValidationFeature struct {
+	// Textual description
+	Description string `json:"description,required"`
+	// Feature name
+	FeatureID string `json:"feature_id,required"`
+	// An enumeration.
+	Type ValidationFeatureType `json:"type,required"`
+	// Address the feature refers to
+	Address string                `json:"address,nullable"`
+	JSON    validationFeatureJSON `json:"-"`
+}
+
+// validationFeatureJSON contains the JSON metadata for the struct
+// [ValidationFeature]
+type validationFeatureJSON struct {
+	Description apijson.Field
+	FeatureID   apijson.Field
+	Type        apijson.Field
+	Address     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ValidationFeature) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r validationFeatureJSON) RawJSON() string {
+	return r.raw
+}
+
+// An enumeration.
+type ValidationFeatureType string
+
+const (
+	ValidationFeatureTypeInfo      ValidationFeatureType = "Info"
+	ValidationFeatureTypeBenign    ValidationFeatureType = "Benign"
+	ValidationFeatureTypeWarning   ValidationFeatureType = "Warning"
+	ValidationFeatureTypeMalicious ValidationFeatureType = "Malicious"
+)
+
+func (r ValidationFeatureType) IsKnown() bool {
+	switch r {
+	case ValidationFeatureTypeInfo, ValidationFeatureTypeBenign, ValidationFeatureTypeWarning, ValidationFeatureTypeMalicious:
+		return true
+	}
+	return false
 }

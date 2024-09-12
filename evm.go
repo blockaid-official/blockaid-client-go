@@ -1390,11 +1390,12 @@ const (
 	TokenScanSupportedChainZksync    TokenScanSupportedChain = "zksync"
 	TokenScanSupportedChainScroll    TokenScanSupportedChain = "scroll"
 	TokenScanSupportedChainDegen     TokenScanSupportedChain = "degen"
+	TokenScanSupportedChainBitcoin   TokenScanSupportedChain = "bitcoin"
 )
 
 func (r TokenScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainBlast, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainDegen:
+	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainBlast, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainDegen, TokenScanSupportedChainBitcoin:
 		return true
 	}
 	return false
@@ -1542,8 +1543,7 @@ func (r transactionScanResponseEventsParamJSON) RawJSON() string {
 	return r.raw
 }
 
-// Union satisfied by [shared.UnionString],
-// [TransactionScanResponseEventsParamsValueUnknown] or
+// Union satisfied by [shared.UnionString] or
 // [TransactionScanResponseEventsParamsValueArray].
 type TransactionScanResponseEventsParamsValueUnion interface {
 	ImplementsTransactionScanResponseEventsParamsValueUnion()
@@ -1950,31 +1950,32 @@ func (r TransactionScanResponseValidationResultType) IsKnown() bool {
 type TransactionScanSupportedChain string
 
 const (
-	TransactionScanSupportedChainArbitrum        TransactionScanSupportedChain = "arbitrum"
-	TransactionScanSupportedChainAvalanche       TransactionScanSupportedChain = "avalanche"
-	TransactionScanSupportedChainBase            TransactionScanSupportedChain = "base"
-	TransactionScanSupportedChainBaseSepolia     TransactionScanSupportedChain = "base-sepolia"
-	TransactionScanSupportedChainBsc             TransactionScanSupportedChain = "bsc"
-	TransactionScanSupportedChainEthereum        TransactionScanSupportedChain = "ethereum"
-	TransactionScanSupportedChainOptimism        TransactionScanSupportedChain = "optimism"
-	TransactionScanSupportedChainPolygon         TransactionScanSupportedChain = "polygon"
-	TransactionScanSupportedChainZksync          TransactionScanSupportedChain = "zksync"
-	TransactionScanSupportedChainZksyncSepolia   TransactionScanSupportedChain = "zksync-sepolia"
-	TransactionScanSupportedChainZora            TransactionScanSupportedChain = "zora"
-	TransactionScanSupportedChainLinea           TransactionScanSupportedChain = "linea"
-	TransactionScanSupportedChainBlast           TransactionScanSupportedChain = "blast"
-	TransactionScanSupportedChainScroll          TransactionScanSupportedChain = "scroll"
-	TransactionScanSupportedChainEthereumSepolia TransactionScanSupportedChain = "ethereum-sepolia"
-	TransactionScanSupportedChainDegen           TransactionScanSupportedChain = "degen"
-	TransactionScanSupportedChainAvalancheFuji   TransactionScanSupportedChain = "avalanche-fuji"
-	TransactionScanSupportedChainImmutableZkevm  TransactionScanSupportedChain = "immutable-zkevm"
-	TransactionScanSupportedChainGnosis          TransactionScanSupportedChain = "gnosis"
-	TransactionScanSupportedChainWorldchain      TransactionScanSupportedChain = "worldchain"
+	TransactionScanSupportedChainArbitrum              TransactionScanSupportedChain = "arbitrum"
+	TransactionScanSupportedChainAvalanche             TransactionScanSupportedChain = "avalanche"
+	TransactionScanSupportedChainBase                  TransactionScanSupportedChain = "base"
+	TransactionScanSupportedChainBaseSepolia           TransactionScanSupportedChain = "base-sepolia"
+	TransactionScanSupportedChainBsc                   TransactionScanSupportedChain = "bsc"
+	TransactionScanSupportedChainEthereum              TransactionScanSupportedChain = "ethereum"
+	TransactionScanSupportedChainOptimism              TransactionScanSupportedChain = "optimism"
+	TransactionScanSupportedChainPolygon               TransactionScanSupportedChain = "polygon"
+	TransactionScanSupportedChainZksync                TransactionScanSupportedChain = "zksync"
+	TransactionScanSupportedChainZksyncSepolia         TransactionScanSupportedChain = "zksync-sepolia"
+	TransactionScanSupportedChainZora                  TransactionScanSupportedChain = "zora"
+	TransactionScanSupportedChainLinea                 TransactionScanSupportedChain = "linea"
+	TransactionScanSupportedChainBlast                 TransactionScanSupportedChain = "blast"
+	TransactionScanSupportedChainScroll                TransactionScanSupportedChain = "scroll"
+	TransactionScanSupportedChainEthereumSepolia       TransactionScanSupportedChain = "ethereum-sepolia"
+	TransactionScanSupportedChainDegen                 TransactionScanSupportedChain = "degen"
+	TransactionScanSupportedChainAvalancheFuji         TransactionScanSupportedChain = "avalanche-fuji"
+	TransactionScanSupportedChainImmutableZkevm        TransactionScanSupportedChain = "immutable-zkevm"
+	TransactionScanSupportedChainImmutableZkevmTestnet TransactionScanSupportedChain = "immutable-zkevm-testnet"
+	TransactionScanSupportedChainGnosis                TransactionScanSupportedChain = "gnosis"
+	TransactionScanSupportedChainWorldchain            TransactionScanSupportedChain = "worldchain"
 )
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain:
 		return true
 	}
 	return false
