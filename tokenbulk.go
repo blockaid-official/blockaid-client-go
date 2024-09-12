@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"reflect"
+	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -235,28 +236,61 @@ type TokenBulkScanResponseResultsMetadata struct {
 	// Description of the token
 	Description string `json:"description"`
 	// Address of the deployer of the fungible token
-	Deployer        string                                   `json:"deployer"`
-	MintAuthority   string                                   `json:"mint_authority"`
-	UpdateAuthority string                                   `json:"update_authority"`
-	FreezeAuthority string                                   `json:"freeze_authority"`
-	JSON            tokenBulkScanResponseResultsMetadataJSON `json:"-"`
-	union           TokenBulkScanResponseResultsMetadataUnion
+	Deployer string `json:"deployer"`
+	// This field can have the runtime type of
+	// [TokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinks],
+	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks].
+	ExternalLinks interface{} `json:"external_links,required"`
+	// This field can have the runtime type of
+	// [TokenBulkScanResponseResultsMetadataSolanaMetadataContractBalance],
+	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalance].
+	ContractBalance interface{} `json:"contract_balance,required"`
+	// This field can have the runtime type of
+	// [TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance],
+	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalance].
+	OwnerBalance interface{} `json:"owner_balance,required"`
+	// Contract owner address
+	Owner string `json:"owner"`
+	// Contract deploy date
+	CreationTimestamp time.Time `json:"creation_timestamp" format:"date-time"`
+	// Solana token mint authority account
+	MintAuthority string `json:"mint_authority"`
+	// Solana token update authority account
+	UpdateAuthority string `json:"update_authority"`
+	// Solana token freeze authority account
+	FreezeAuthority string `json:"freeze_authority"`
+	// The unique ID for the Rune
+	ID string `json:"id"`
+	// The rune's unique sequential number.
+	Number int64 `json:"number"`
+	// The formatted name of the rune, with spacers
+	FormattedName string                                   `json:"formatted_name"`
+	JSON          tokenBulkScanResponseResultsMetadataJSON `json:"-"`
+	union         TokenBulkScanResponseResultsMetadataUnion
 }
 
 // tokenBulkScanResponseResultsMetadataJSON contains the JSON metadata for the
 // struct [TokenBulkScanResponseResultsMetadata]
 type tokenBulkScanResponseResultsMetadataJSON struct {
-	Type            apijson.Field
-	Name            apijson.Field
-	Symbol          apijson.Field
-	ImageURL        apijson.Field
-	Description     apijson.Field
-	Deployer        apijson.Field
-	MintAuthority   apijson.Field
-	UpdateAuthority apijson.Field
-	FreezeAuthority apijson.Field
-	raw             string
-	ExtraFields     map[string]apijson.Field
+	Type              apijson.Field
+	Name              apijson.Field
+	Symbol            apijson.Field
+	ImageURL          apijson.Field
+	Description       apijson.Field
+	Deployer          apijson.Field
+	ExternalLinks     apijson.Field
+	ContractBalance   apijson.Field
+	OwnerBalance      apijson.Field
+	Owner             apijson.Field
+	CreationTimestamp apijson.Field
+	MintAuthority     apijson.Field
+	UpdateAuthority   apijson.Field
+	FreezeAuthority   apijson.Field
+	ID                apijson.Field
+	Number            apijson.Field
+	FormattedName     apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
 }
 
 func (r tokenBulkScanResponseResultsMetadataJSON) RawJSON() string {
@@ -277,15 +311,17 @@ func (r *TokenBulkScanResponseResultsMetadata) UnmarshalJSON(data []byte) (err e
 //
 // Possible runtime types of the union are
 // [TokenBulkScanResponseResultsMetadataSolanaMetadata],
-// [TokenBulkScanResponseResultsMetadataBasicMetadataToken].
+// [TokenBulkScanResponseResultsMetadataBitcoinMetadataToken],
+// [TokenBulkScanResponseResultsMetadataEvmMetadataToken].
 func (r TokenBulkScanResponseResultsMetadata) AsUnion() TokenBulkScanResponseResultsMetadataUnion {
 	return r.union
 }
 
 // Metadata of the token
 //
-// Union satisfied by [TokenBulkScanResponseResultsMetadataSolanaMetadata] or
-// [TokenBulkScanResponseResultsMetadataBasicMetadataToken].
+// Union satisfied by [TokenBulkScanResponseResultsMetadataSolanaMetadata],
+// [TokenBulkScanResponseResultsMetadataBitcoinMetadataToken] or
+// [TokenBulkScanResponseResultsMetadataEvmMetadataToken].
 type TokenBulkScanResponseResultsMetadataUnion interface {
 	implementsTokenBulkScanResponseResultsMetadata()
 }
@@ -300,26 +336,43 @@ func init() {
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TokenBulkScanResponseResultsMetadataBasicMetadataToken{}),
+			Type:       reflect.TypeOf(TokenBulkScanResponseResultsMetadataBitcoinMetadataToken{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TokenBulkScanResponseResultsMetadataEvmMetadataToken{}),
 		},
 	)
 }
 
 type TokenBulkScanResponseResultsMetadataSolanaMetadata struct {
+	// Contract balance
+	ContractBalance TokenBulkScanResponseResultsMetadataSolanaMetadataContractBalance `json:"contract_balance"`
+	// Contract deploy date
+	CreationTimestamp time.Time `json:"creation_timestamp" format:"date-time"`
 	// Address of the deployer of the fungible token
 	Deployer string `json:"deployer"`
 	// Description of the token
-	Description     string `json:"description"`
+	Description string `json:"description"`
+	// social links of the token
+	ExternalLinks TokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinks `json:"external_links"`
+	// Solana token freeze authority account
 	FreezeAuthority string `json:"freeze_authority"`
 	// URL of the token image
-	ImageURL      string `json:"image_url"`
+	ImageURL string `json:"image_url"`
+	// Solana token mint authority account
 	MintAuthority string `json:"mint_authority"`
 	// Name of the token
 	Name string `json:"name"`
+	// Contract owner address
+	Owner string `json:"owner"`
+	// Contract owner balance
+	OwnerBalance TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance `json:"owner_balance"`
 	// Symbol of the token
 	Symbol string `json:"symbol"`
 	// Type of the token
-	Type            string                                                 `json:"type"`
+	Type string `json:"type"`
+	// Solana token update authority account
 	UpdateAuthority string                                                 `json:"update_authority"`
 	JSON            tokenBulkScanResponseResultsMetadataSolanaMetadataJSON `json:"-"`
 }
@@ -327,17 +380,22 @@ type TokenBulkScanResponseResultsMetadataSolanaMetadata struct {
 // tokenBulkScanResponseResultsMetadataSolanaMetadataJSON contains the JSON
 // metadata for the struct [TokenBulkScanResponseResultsMetadataSolanaMetadata]
 type tokenBulkScanResponseResultsMetadataSolanaMetadataJSON struct {
-	Deployer        apijson.Field
-	Description     apijson.Field
-	FreezeAuthority apijson.Field
-	ImageURL        apijson.Field
-	MintAuthority   apijson.Field
-	Name            apijson.Field
-	Symbol          apijson.Field
-	Type            apijson.Field
-	UpdateAuthority apijson.Field
-	raw             string
-	ExtraFields     map[string]apijson.Field
+	ContractBalance   apijson.Field
+	CreationTimestamp apijson.Field
+	Deployer          apijson.Field
+	Description       apijson.Field
+	ExternalLinks     apijson.Field
+	FreezeAuthority   apijson.Field
+	ImageURL          apijson.Field
+	MintAuthority     apijson.Field
+	Name              apijson.Field
+	Owner             apijson.Field
+	OwnerBalance      apijson.Field
+	Symbol            apijson.Field
+	Type              apijson.Field
+	UpdateAuthority   apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
 }
 
 func (r *TokenBulkScanResponseResultsMetadataSolanaMetadata) UnmarshalJSON(data []byte) (err error) {
@@ -351,44 +409,254 @@ func (r tokenBulkScanResponseResultsMetadataSolanaMetadataJSON) RawJSON() string
 func (r TokenBulkScanResponseResultsMetadataSolanaMetadata) implementsTokenBulkScanResponseResultsMetadata() {
 }
 
-type TokenBulkScanResponseResultsMetadataBasicMetadataToken struct {
-	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer"`
-	// Description of the token
-	Description string `json:"description"`
-	// URL of the token image
-	ImageURL string `json:"image_url"`
-	// Name of the token
-	Name string `json:"name"`
-	// Symbol of the token
-	Symbol string `json:"symbol"`
-	// Type of the token
-	Type string                                                     `json:"type"`
-	JSON tokenBulkScanResponseResultsMetadataBasicMetadataTokenJSON `json:"-"`
+// Contract balance
+type TokenBulkScanResponseResultsMetadataSolanaMetadataContractBalance struct {
+	Amount    float64                                                               `json:"amount"`
+	AmountWei string                                                                `json:"amount_wei"`
+	JSON      tokenBulkScanResponseResultsMetadataSolanaMetadataContractBalanceJSON `json:"-"`
 }
 
-// tokenBulkScanResponseResultsMetadataBasicMetadataTokenJSON contains the JSON
-// metadata for the struct [TokenBulkScanResponseResultsMetadataBasicMetadataToken]
-type tokenBulkScanResponseResultsMetadataBasicMetadataTokenJSON struct {
-	Deployer    apijson.Field
-	Description apijson.Field
-	ImageURL    apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	Type        apijson.Field
+// tokenBulkScanResponseResultsMetadataSolanaMetadataContractBalanceJSON contains
+// the JSON metadata for the struct
+// [TokenBulkScanResponseResultsMetadataSolanaMetadataContractBalance]
+type tokenBulkScanResponseResultsMetadataSolanaMetadataContractBalanceJSON struct {
+	Amount      apijson.Field
+	AmountWei   apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *TokenBulkScanResponseResultsMetadataBasicMetadataToken) UnmarshalJSON(data []byte) (err error) {
+func (r *TokenBulkScanResponseResultsMetadataSolanaMetadataContractBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r tokenBulkScanResponseResultsMetadataBasicMetadataTokenJSON) RawJSON() string {
+func (r tokenBulkScanResponseResultsMetadataSolanaMetadataContractBalanceJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r TokenBulkScanResponseResultsMetadataBasicMetadataToken) implementsTokenBulkScanResponseResultsMetadata() {
+// social links of the token
+type TokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinks struct {
+	Homepage          string                                                              `json:"homepage"`
+	TelegramChannelID string                                                              `json:"telegram_channel_id"`
+	TwitterPage       string                                                              `json:"twitter_page"`
+	JSON              tokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinksJSON `json:"-"`
+}
+
+// tokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinksJSON contains the
+// JSON metadata for the struct
+// [TokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinks]
+type tokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinksJSON struct {
+	Homepage          apijson.Field
+	TelegramChannelID apijson.Field
+	TwitterPage       apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
+}
+
+func (r *TokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinks) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinksJSON) RawJSON() string {
+	return r.raw
+}
+
+// Contract owner balance
+type TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance struct {
+	Amount    float64                                                            `json:"amount"`
+	AmountWei string                                                             `json:"amount_wei"`
+	JSON      tokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalanceJSON `json:"-"`
+}
+
+// tokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalanceJSON contains the
+// JSON metadata for the struct
+// [TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance]
+type tokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalanceJSON struct {
+	Amount      apijson.Field
+	AmountWei   apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
+type TokenBulkScanResponseResultsMetadataBitcoinMetadataToken struct {
+	// The unique ID for the Rune
+	ID string `json:"id"`
+	// The formatted name of the rune, with spacers
+	FormattedName string `json:"formatted_name"`
+	// Name of the token
+	Name string `json:"name"`
+	// The rune's unique sequential number.
+	Number int64 `json:"number"`
+	// Symbol of the token
+	Symbol string `json:"symbol"`
+	// Type of the token
+	Type string                                                       `json:"type"`
+	JSON tokenBulkScanResponseResultsMetadataBitcoinMetadataTokenJSON `json:"-"`
+}
+
+// tokenBulkScanResponseResultsMetadataBitcoinMetadataTokenJSON contains the JSON
+// metadata for the struct
+// [TokenBulkScanResponseResultsMetadataBitcoinMetadataToken]
+type tokenBulkScanResponseResultsMetadataBitcoinMetadataTokenJSON struct {
+	ID            apijson.Field
+	FormattedName apijson.Field
+	Name          apijson.Field
+	Number        apijson.Field
+	Symbol        apijson.Field
+	Type          apijson.Field
+	raw           string
+	ExtraFields   map[string]apijson.Field
+}
+
+func (r *TokenBulkScanResponseResultsMetadataBitcoinMetadataToken) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenBulkScanResponseResultsMetadataBitcoinMetadataTokenJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TokenBulkScanResponseResultsMetadataBitcoinMetadataToken) implementsTokenBulkScanResponseResultsMetadata() {
+}
+
+type TokenBulkScanResponseResultsMetadataEvmMetadataToken struct {
+	// Contract balance
+	ContractBalance TokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalance `json:"contract_balance"`
+	// Contract deploy date
+	CreationTimestamp time.Time `json:"creation_timestamp" format:"date-time"`
+	// Address of the deployer of the fungible token
+	Deployer string `json:"deployer"`
+	// Description of the token
+	Description string `json:"description"`
+	// social links of the token
+	ExternalLinks TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks `json:"external_links"`
+	// URL of the token image
+	ImageURL string `json:"image_url"`
+	// Name of the token
+	Name string `json:"name"`
+	// Contract owner address
+	Owner string `json:"owner"`
+	// Contract owner balance
+	OwnerBalance TokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalance `json:"owner_balance"`
+	// Symbol of the token
+	Symbol string `json:"symbol"`
+	// Type of the token
+	Type string                                                   `json:"type"`
+	JSON tokenBulkScanResponseResultsMetadataEvmMetadataTokenJSON `json:"-"`
+}
+
+// tokenBulkScanResponseResultsMetadataEvmMetadataTokenJSON contains the JSON
+// metadata for the struct [TokenBulkScanResponseResultsMetadataEvmMetadataToken]
+type tokenBulkScanResponseResultsMetadataEvmMetadataTokenJSON struct {
+	ContractBalance   apijson.Field
+	CreationTimestamp apijson.Field
+	Deployer          apijson.Field
+	Description       apijson.Field
+	ExternalLinks     apijson.Field
+	ImageURL          apijson.Field
+	Name              apijson.Field
+	Owner             apijson.Field
+	OwnerBalance      apijson.Field
+	Symbol            apijson.Field
+	Type              apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
+}
+
+func (r *TokenBulkScanResponseResultsMetadataEvmMetadataToken) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenBulkScanResponseResultsMetadataEvmMetadataTokenJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TokenBulkScanResponseResultsMetadataEvmMetadataToken) implementsTokenBulkScanResponseResultsMetadata() {
+}
+
+// Contract balance
+type TokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalance struct {
+	Amount    float64                                                                 `json:"amount"`
+	AmountWei string                                                                  `json:"amount_wei"`
+	JSON      tokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalanceJSON `json:"-"`
+}
+
+// tokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalanceJSON contains
+// the JSON metadata for the struct
+// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalance]
+type tokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalanceJSON struct {
+	Amount      apijson.Field
+	AmountWei   apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalance) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
+// social links of the token
+type TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks struct {
+	Homepage          string                                                                `json:"homepage"`
+	TelegramChannelID string                                                                `json:"telegram_channel_id"`
+	TwitterPage       string                                                                `json:"twitter_page"`
+	JSON              tokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinksJSON `json:"-"`
+}
+
+// tokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinksJSON contains
+// the JSON metadata for the struct
+// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks]
+type tokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinksJSON struct {
+	Homepage          apijson.Field
+	TelegramChannelID apijson.Field
+	TwitterPage       apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
+}
+
+func (r *TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinksJSON) RawJSON() string {
+	return r.raw
+}
+
+// Contract owner balance
+type TokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalance struct {
+	Amount    float64                                                              `json:"amount"`
+	AmountWei string                                                               `json:"amount_wei"`
+	JSON      tokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalanceJSON `json:"-"`
+}
+
+// tokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalanceJSON contains
+// the JSON metadata for the struct
+// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalance]
+type tokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalanceJSON struct {
+	Amount      apijson.Field
+	AmountWei   apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalance) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalanceJSON) RawJSON() string {
+	return r.raw
 }
 
 // An enumeration.
@@ -562,39 +830,40 @@ func (r tokenBulkScanResponseResultsFeatureJSON) RawJSON() string {
 type TokenBulkScanResponseResultsFeaturesFeatureID string
 
 const (
-	TokenBulkScanResponseResultsFeaturesFeatureIDVerifiedContract        TokenBulkScanResponseResultsFeaturesFeatureID = "VERIFIED_CONTRACT"
-	TokenBulkScanResponseResultsFeaturesFeatureIDHighTradeVolume         TokenBulkScanResponseResultsFeaturesFeatureID = "HIGH_TRADE_VOLUME"
-	TokenBulkScanResponseResultsFeaturesFeatureIDMarketPlaceSalesHistory TokenBulkScanResponseResultsFeaturesFeatureID = "MARKET_PLACE_SALES_HISTORY"
-	TokenBulkScanResponseResultsFeaturesFeatureIDHighReputationToken     TokenBulkScanResponseResultsFeaturesFeatureID = "HIGH_REPUTATION_TOKEN"
-	TokenBulkScanResponseResultsFeaturesFeatureIDStaticCodeSignature     TokenBulkScanResponseResultsFeaturesFeatureID = "STATIC_CODE_SIGNATURE"
-	TokenBulkScanResponseResultsFeaturesFeatureIDKnownMalicious          TokenBulkScanResponseResultsFeaturesFeatureID = "KNOWN_MALICIOUS"
-	TokenBulkScanResponseResultsFeaturesFeatureIDMetadata                TokenBulkScanResponseResultsFeaturesFeatureID = "METADATA"
-	TokenBulkScanResponseResultsFeaturesFeatureIDAirdropPattern          TokenBulkScanResponseResultsFeaturesFeatureID = "AIRDROP_PATTERN"
-	TokenBulkScanResponseResultsFeaturesFeatureIDImpersonator            TokenBulkScanResponseResultsFeaturesFeatureID = "IMPERSONATOR"
-	TokenBulkScanResponseResultsFeaturesFeatureIDInorganicVolume         TokenBulkScanResponseResultsFeaturesFeatureID = "INORGANIC_VOLUME"
-	TokenBulkScanResponseResultsFeaturesFeatureIDDynamicAnalysis         TokenBulkScanResponseResultsFeaturesFeatureID = "DYNAMIC_ANALYSIS"
-	TokenBulkScanResponseResultsFeaturesFeatureIDUnstableTokenPrice      TokenBulkScanResponseResultsFeaturesFeatureID = "UNSTABLE_TOKEN_PRICE"
-	TokenBulkScanResponseResultsFeaturesFeatureIDRugpull                 TokenBulkScanResponseResultsFeaturesFeatureID = "RUGPULL"
-	TokenBulkScanResponseResultsFeaturesFeatureIDConsumerOverride        TokenBulkScanResponseResultsFeaturesFeatureID = "CONSUMER_OVERRIDE"
-	TokenBulkScanResponseResultsFeaturesFeatureIDInappropriateContent    TokenBulkScanResponseResultsFeaturesFeatureID = "INAPPROPRIATE_CONTENT"
-	TokenBulkScanResponseResultsFeaturesFeatureIDHighTransferFee         TokenBulkScanResponseResultsFeaturesFeatureID = "HIGH_TRANSFER_FEE"
-	TokenBulkScanResponseResultsFeaturesFeatureIDHighBuyFee              TokenBulkScanResponseResultsFeaturesFeatureID = "HIGH_BUY_FEE"
-	TokenBulkScanResponseResultsFeaturesFeatureIDHighSellFee             TokenBulkScanResponseResultsFeaturesFeatureID = "HIGH_SELL_FEE"
-	TokenBulkScanResponseResultsFeaturesFeatureIDIsMintable              TokenBulkScanResponseResultsFeaturesFeatureID = "IS_MINTABLE"
-	TokenBulkScanResponseResultsFeaturesFeatureIDModifiableTaxes         TokenBulkScanResponseResultsFeaturesFeatureID = "MODIFIABLE_TAXES"
-	TokenBulkScanResponseResultsFeaturesFeatureIDCanBlacklist            TokenBulkScanResponseResultsFeaturesFeatureID = "CAN_BLACKLIST"
-	TokenBulkScanResponseResultsFeaturesFeatureIDCanWhitelist            TokenBulkScanResponseResultsFeaturesFeatureID = "CAN_WHITELIST"
-	TokenBulkScanResponseResultsFeaturesFeatureIDHasTradingCooldown      TokenBulkScanResponseResultsFeaturesFeatureID = "HAS_TRADING_COOLDOWN"
-	TokenBulkScanResponseResultsFeaturesFeatureIDExternalFunctions       TokenBulkScanResponseResultsFeaturesFeatureID = "EXTERNAL_FUNCTIONS"
-	TokenBulkScanResponseResultsFeaturesFeatureIDHiddenOwner             TokenBulkScanResponseResultsFeaturesFeatureID = "HIDDEN_OWNER"
-	TokenBulkScanResponseResultsFeaturesFeatureIDTransferPauseable       TokenBulkScanResponseResultsFeaturesFeatureID = "TRANSFER_PAUSEABLE"
-	TokenBulkScanResponseResultsFeaturesFeatureIDOwnershipRenounced      TokenBulkScanResponseResultsFeaturesFeatureID = "OWNERSHIP_RENOUNCED"
-	TokenBulkScanResponseResultsFeaturesFeatureIDProxyContract           TokenBulkScanResponseResultsFeaturesFeatureID = "PROXY_CONTRACT"
+	TokenBulkScanResponseResultsFeaturesFeatureIDVerifiedContract         TokenBulkScanResponseResultsFeaturesFeatureID = "VERIFIED_CONTRACT"
+	TokenBulkScanResponseResultsFeaturesFeatureIDHighTradeVolume          TokenBulkScanResponseResultsFeaturesFeatureID = "HIGH_TRADE_VOLUME"
+	TokenBulkScanResponseResultsFeaturesFeatureIDMarketPlaceSalesHistory  TokenBulkScanResponseResultsFeaturesFeatureID = "MARKET_PLACE_SALES_HISTORY"
+	TokenBulkScanResponseResultsFeaturesFeatureIDHighReputationToken      TokenBulkScanResponseResultsFeaturesFeatureID = "HIGH_REPUTATION_TOKEN"
+	TokenBulkScanResponseResultsFeaturesFeatureIDOnchainActivityValidator TokenBulkScanResponseResultsFeaturesFeatureID = "ONCHAIN_ACTIVITY_VALIDATOR"
+	TokenBulkScanResponseResultsFeaturesFeatureIDStaticCodeSignature      TokenBulkScanResponseResultsFeaturesFeatureID = "STATIC_CODE_SIGNATURE"
+	TokenBulkScanResponseResultsFeaturesFeatureIDKnownMalicious           TokenBulkScanResponseResultsFeaturesFeatureID = "KNOWN_MALICIOUS"
+	TokenBulkScanResponseResultsFeaturesFeatureIDMetadata                 TokenBulkScanResponseResultsFeaturesFeatureID = "METADATA"
+	TokenBulkScanResponseResultsFeaturesFeatureIDAirdropPattern           TokenBulkScanResponseResultsFeaturesFeatureID = "AIRDROP_PATTERN"
+	TokenBulkScanResponseResultsFeaturesFeatureIDImpersonator             TokenBulkScanResponseResultsFeaturesFeatureID = "IMPERSONATOR"
+	TokenBulkScanResponseResultsFeaturesFeatureIDInorganicVolume          TokenBulkScanResponseResultsFeaturesFeatureID = "INORGANIC_VOLUME"
+	TokenBulkScanResponseResultsFeaturesFeatureIDDynamicAnalysis          TokenBulkScanResponseResultsFeaturesFeatureID = "DYNAMIC_ANALYSIS"
+	TokenBulkScanResponseResultsFeaturesFeatureIDUnstableTokenPrice       TokenBulkScanResponseResultsFeaturesFeatureID = "UNSTABLE_TOKEN_PRICE"
+	TokenBulkScanResponseResultsFeaturesFeatureIDRugpull                  TokenBulkScanResponseResultsFeaturesFeatureID = "RUGPULL"
+	TokenBulkScanResponseResultsFeaturesFeatureIDConsumerOverride         TokenBulkScanResponseResultsFeaturesFeatureID = "CONSUMER_OVERRIDE"
+	TokenBulkScanResponseResultsFeaturesFeatureIDInappropriateContent     TokenBulkScanResponseResultsFeaturesFeatureID = "INAPPROPRIATE_CONTENT"
+	TokenBulkScanResponseResultsFeaturesFeatureIDHighTransferFee          TokenBulkScanResponseResultsFeaturesFeatureID = "HIGH_TRANSFER_FEE"
+	TokenBulkScanResponseResultsFeaturesFeatureIDHighBuyFee               TokenBulkScanResponseResultsFeaturesFeatureID = "HIGH_BUY_FEE"
+	TokenBulkScanResponseResultsFeaturesFeatureIDHighSellFee              TokenBulkScanResponseResultsFeaturesFeatureID = "HIGH_SELL_FEE"
+	TokenBulkScanResponseResultsFeaturesFeatureIDIsMintable               TokenBulkScanResponseResultsFeaturesFeatureID = "IS_MINTABLE"
+	TokenBulkScanResponseResultsFeaturesFeatureIDModifiableTaxes          TokenBulkScanResponseResultsFeaturesFeatureID = "MODIFIABLE_TAXES"
+	TokenBulkScanResponseResultsFeaturesFeatureIDCanBlacklist             TokenBulkScanResponseResultsFeaturesFeatureID = "CAN_BLACKLIST"
+	TokenBulkScanResponseResultsFeaturesFeatureIDCanWhitelist             TokenBulkScanResponseResultsFeaturesFeatureID = "CAN_WHITELIST"
+	TokenBulkScanResponseResultsFeaturesFeatureIDHasTradingCooldown       TokenBulkScanResponseResultsFeaturesFeatureID = "HAS_TRADING_COOLDOWN"
+	TokenBulkScanResponseResultsFeaturesFeatureIDExternalFunctions        TokenBulkScanResponseResultsFeaturesFeatureID = "EXTERNAL_FUNCTIONS"
+	TokenBulkScanResponseResultsFeaturesFeatureIDHiddenOwner              TokenBulkScanResponseResultsFeaturesFeatureID = "HIDDEN_OWNER"
+	TokenBulkScanResponseResultsFeaturesFeatureIDTransferPauseable        TokenBulkScanResponseResultsFeaturesFeatureID = "TRANSFER_PAUSEABLE"
+	TokenBulkScanResponseResultsFeaturesFeatureIDOwnershipRenounced       TokenBulkScanResponseResultsFeaturesFeatureID = "OWNERSHIP_RENOUNCED"
+	TokenBulkScanResponseResultsFeaturesFeatureIDProxyContract            TokenBulkScanResponseResultsFeaturesFeatureID = "PROXY_CONTRACT"
 )
 
 func (r TokenBulkScanResponseResultsFeaturesFeatureID) IsKnown() bool {
 	switch r {
-	case TokenBulkScanResponseResultsFeaturesFeatureIDVerifiedContract, TokenBulkScanResponseResultsFeaturesFeatureIDHighTradeVolume, TokenBulkScanResponseResultsFeaturesFeatureIDMarketPlaceSalesHistory, TokenBulkScanResponseResultsFeaturesFeatureIDHighReputationToken, TokenBulkScanResponseResultsFeaturesFeatureIDStaticCodeSignature, TokenBulkScanResponseResultsFeaturesFeatureIDKnownMalicious, TokenBulkScanResponseResultsFeaturesFeatureIDMetadata, TokenBulkScanResponseResultsFeaturesFeatureIDAirdropPattern, TokenBulkScanResponseResultsFeaturesFeatureIDImpersonator, TokenBulkScanResponseResultsFeaturesFeatureIDInorganicVolume, TokenBulkScanResponseResultsFeaturesFeatureIDDynamicAnalysis, TokenBulkScanResponseResultsFeaturesFeatureIDUnstableTokenPrice, TokenBulkScanResponseResultsFeaturesFeatureIDRugpull, TokenBulkScanResponseResultsFeaturesFeatureIDConsumerOverride, TokenBulkScanResponseResultsFeaturesFeatureIDInappropriateContent, TokenBulkScanResponseResultsFeaturesFeatureIDHighTransferFee, TokenBulkScanResponseResultsFeaturesFeatureIDHighBuyFee, TokenBulkScanResponseResultsFeaturesFeatureIDHighSellFee, TokenBulkScanResponseResultsFeaturesFeatureIDIsMintable, TokenBulkScanResponseResultsFeaturesFeatureIDModifiableTaxes, TokenBulkScanResponseResultsFeaturesFeatureIDCanBlacklist, TokenBulkScanResponseResultsFeaturesFeatureIDCanWhitelist, TokenBulkScanResponseResultsFeaturesFeatureIDHasTradingCooldown, TokenBulkScanResponseResultsFeaturesFeatureIDExternalFunctions, TokenBulkScanResponseResultsFeaturesFeatureIDHiddenOwner, TokenBulkScanResponseResultsFeaturesFeatureIDTransferPauseable, TokenBulkScanResponseResultsFeaturesFeatureIDOwnershipRenounced, TokenBulkScanResponseResultsFeaturesFeatureIDProxyContract:
+	case TokenBulkScanResponseResultsFeaturesFeatureIDVerifiedContract, TokenBulkScanResponseResultsFeaturesFeatureIDHighTradeVolume, TokenBulkScanResponseResultsFeaturesFeatureIDMarketPlaceSalesHistory, TokenBulkScanResponseResultsFeaturesFeatureIDHighReputationToken, TokenBulkScanResponseResultsFeaturesFeatureIDOnchainActivityValidator, TokenBulkScanResponseResultsFeaturesFeatureIDStaticCodeSignature, TokenBulkScanResponseResultsFeaturesFeatureIDKnownMalicious, TokenBulkScanResponseResultsFeaturesFeatureIDMetadata, TokenBulkScanResponseResultsFeaturesFeatureIDAirdropPattern, TokenBulkScanResponseResultsFeaturesFeatureIDImpersonator, TokenBulkScanResponseResultsFeaturesFeatureIDInorganicVolume, TokenBulkScanResponseResultsFeaturesFeatureIDDynamicAnalysis, TokenBulkScanResponseResultsFeaturesFeatureIDUnstableTokenPrice, TokenBulkScanResponseResultsFeaturesFeatureIDRugpull, TokenBulkScanResponseResultsFeaturesFeatureIDConsumerOverride, TokenBulkScanResponseResultsFeaturesFeatureIDInappropriateContent, TokenBulkScanResponseResultsFeaturesFeatureIDHighTransferFee, TokenBulkScanResponseResultsFeaturesFeatureIDHighBuyFee, TokenBulkScanResponseResultsFeaturesFeatureIDHighSellFee, TokenBulkScanResponseResultsFeaturesFeatureIDIsMintable, TokenBulkScanResponseResultsFeaturesFeatureIDModifiableTaxes, TokenBulkScanResponseResultsFeaturesFeatureIDCanBlacklist, TokenBulkScanResponseResultsFeaturesFeatureIDCanWhitelist, TokenBulkScanResponseResultsFeaturesFeatureIDHasTradingCooldown, TokenBulkScanResponseResultsFeaturesFeatureIDExternalFunctions, TokenBulkScanResponseResultsFeaturesFeatureIDHiddenOwner, TokenBulkScanResponseResultsFeaturesFeatureIDTransferPauseable, TokenBulkScanResponseResultsFeaturesFeatureIDOwnershipRenounced, TokenBulkScanResponseResultsFeaturesFeatureIDProxyContract:
 		return true
 	}
 	return false
