@@ -1041,6 +1041,8 @@ func (r ProgramAccountDetailsSchemaType) IsKnown() bool {
 }
 
 type ResponseSchema struct {
+	// Unique identifier of the request
+	RequestID string `json:"request_id,required"`
 	// An enumeration.
 	Status ResponseSchemaStatus `json:"status,required"`
 	// Encoding of the public keys
@@ -1056,6 +1058,7 @@ type ResponseSchema struct {
 
 // responseSchemaJSON contains the JSON metadata for the struct [ResponseSchema]
 type responseSchemaJSON struct {
+	RequestID    apijson.Field
 	Status       apijson.Field
 	Encoding     apijson.Field
 	Error        apijson.Field
