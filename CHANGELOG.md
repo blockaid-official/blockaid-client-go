@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.27.1 (2024-09-23)
+
+Full Changelog: [v0.27.0...v0.27.1](https://github.com/blockaid-official/blockaid-client-go/compare/v0.27.0...v0.27.1)
+
+### Features
+
+* **api:** OpenAPI spec update via Stainless API ([#229](https://github.com/blockaid-official/blockaid-client-go/issues/229)) ([de9c9ad](https://github.com/blockaid-official/blockaid-client-go/commit/de9c9adc235c35f47bd6b9a8b4fa1e783efc72ee))
+* **api:** OpenAPI spec update via Stainless API ([#234](https://github.com/blockaid-official/blockaid-client-go/issues/234)) ([811a4b7](https://github.com/blockaid-official/blockaid-client-go/commit/811a4b76867cac4be509814416bbd09b2f162a88))
+* **api:** OpenAPI spec update via Stainless API ([#235](https://github.com/blockaid-official/blockaid-client-go/issues/235)) ([7081c72](https://github.com/blockaid-official/blockaid-client-go/commit/7081c72416f790c6b965c71700db629cff037431))
+* **api:** OpenAPI spec update via Stainless API ([#236](https://github.com/blockaid-official/blockaid-client-go/issues/236)) ([d45c5c6](https://github.com/blockaid-official/blockaid-client-go/commit/d45c5c6597f63f25de79b5ec14754ad885a611ad))
+
+
+### Bug Fixes
+
+* starknet test ([79e359c](https://github.com/blockaid-official/blockaid-client-go/commit/79e359cbcd6969cd29e77df9a891bbc167ffd4f7))
+
+
+### Chores
+
+* **internal:** codegen related update ([#232](https://github.com/blockaid-official/blockaid-client-go/issues/232)) ([a2a21b4](https://github.com/blockaid-official/blockaid-client-go/commit/a2a21b43bcb10cd514c52e8e01747bc1f4e78a6e))
+
+
+### Documentation
+
+* update CONTRIBUTING.md ([#231](https://github.com/blockaid-official/blockaid-client-go/issues/231)) ([ccc1eda](https://github.com/blockaid-official/blockaid-client-go/commit/ccc1edacd9014d37c235fa0f806d2d56f4eaabc8))
+
 ## 0.27.0 (2024-09-12)
 
 Full Changelog: [v0.26.0...v0.27.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.26.0...v0.27.0)

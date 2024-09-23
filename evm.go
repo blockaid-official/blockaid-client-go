@@ -253,6 +253,8 @@ func init() {
 type AssetDiff struct {
 	// description of the asset for the current diff
 	Asset AssetDiffAsset `json:"asset,required"`
+	// An enumeration.
+	AssetType AssetDiffAssetType `json:"asset_type,required"`
 	// amount of the asset that was transferred to the address in this transaction
 	In []AssetDiffIn `json:"in,required"`
 	// amount of the asset that was transferred from the address in this transaction
@@ -263,6 +265,7 @@ type AssetDiff struct {
 // assetDiffJSON contains the JSON metadata for the struct [AssetDiff]
 type assetDiffJSON struct {
 	Asset       apijson.Field
+	AssetType   apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
 	raw         string
@@ -1971,11 +1974,12 @@ const (
 	TransactionScanSupportedChainImmutableZkevmTestnet TransactionScanSupportedChain = "immutable-zkevm-testnet"
 	TransactionScanSupportedChainGnosis                TransactionScanSupportedChain = "gnosis"
 	TransactionScanSupportedChainWorldchain            TransactionScanSupportedChain = "worldchain"
+	TransactionScanSupportedChainSoneiumMinato         TransactionScanSupportedChain = "soneium-minato"
 )
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato:
 		return true
 	}
 	return false
@@ -2075,6 +2079,8 @@ func (r transactionSimulationAccountSummaryJSON) RawJSON() string {
 type TransactionSimulationAccountSummaryAssetsDiff struct {
 	// description of the asset for the current diff
 	Asset TransactionSimulationAccountSummaryAssetsDiffsAsset `json:"asset,required"`
+	// An enumeration.
+	AssetType TransactionSimulationAccountSummaryAssetsDiffsAssetType `json:"asset_type,required"`
 	// amount of the asset that was transferred to the address in this transaction
 	In []TransactionSimulationAccountSummaryAssetsDiffsIn `json:"in,required"`
 	// amount of the asset that was transferred from the address in this transaction
@@ -2088,6 +2094,7 @@ type TransactionSimulationAccountSummaryAssetsDiff struct {
 // the struct [TransactionSimulationAccountSummaryAssetsDiff]
 type transactionSimulationAccountSummaryAssetsDiffJSON struct {
 	Asset          apijson.Field
+	AssetType      apijson.Field
 	In             apijson.Field
 	Out            apijson.Field
 	BalanceChanges apijson.Field
