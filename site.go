@@ -454,8 +454,11 @@ func (r SiteScanParams) MarshalJSON() (data []byte, err error) {
 }
 
 type SiteScanParamsMetadata struct {
-	Type           param.Field[SiteScanParamsMetadataType] `json:"type,required"`
-	AccountAddress param.Field[string]                     `json:"account_address"`
+	Type                     param.Field[SiteScanParamsMetadataType] `json:"type,required"`
+	AccountAddress           param.Field[string]                     `json:"account_address"`
+	AccountAddresses         param.Field[interface{}]                `json:"account_addresses,required"`
+	WalletconnectName        param.Field[string]                     `json:"walletconnect_name"`
+	WalletconnectDescription param.Field[string]                     `json:"walletconnect_description"`
 }
 
 func (r SiteScanParamsMetadata) MarshalJSON() (data []byte, err error) {
@@ -497,6 +500,12 @@ func (r SiteScanParamsMetadataCatalogRequestMetadataType) IsKnown() bool {
 type SiteScanParamsMetadataWalletRequestMetadata struct {
 	AccountAddress param.Field[string]                                          `json:"account_address,required"`
 	Type           param.Field[SiteScanParamsMetadataWalletRequestMetadataType] `json:"type,required"`
+	// List of all account addresses in different chains based on the CAIPs standard
+	// (https://github.com/ChainAgnostic/CAIPs). Ethereum mainnet example:
+	// eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb
+	AccountAddresses         param.Field[[]string] `json:"account_addresses"`
+	WalletconnectDescription param.Field[string]   `json:"walletconnect_description"`
+	WalletconnectName        param.Field[string]   `json:"walletconnect_name"`
 }
 
 func (r SiteScanParamsMetadataWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
