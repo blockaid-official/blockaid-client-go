@@ -24,7 +24,7 @@ Or to pin the version:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/blockaid-official/blockaid-client-go@v0.27.1'
+go get -u 'github.com/blockaid-official/blockaid-client-go@v0.27.2'
 ```
 
 <!-- x-release-please-end -->
