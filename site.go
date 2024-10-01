@@ -455,10 +455,10 @@ func (r SiteScanParams) MarshalJSON() (data []byte, err error) {
 
 type SiteScanParamsMetadata struct {
 	Type                     param.Field[SiteScanParamsMetadataType] `json:"type,required"`
-	AccountAddress           param.Field[string]                     `json:"account_address"`
-	AccountAddresses         param.Field[interface{}]                `json:"account_addresses,required"`
 	WalletconnectName        param.Field[string]                     `json:"walletconnect_name"`
 	WalletconnectDescription param.Field[string]                     `json:"walletconnect_description"`
+	AccountAddress           param.Field[string]                     `json:"account_address"`
+	AccountAddresses         param.Field[interface{}]                `json:"account_addresses,required"`
 }
 
 func (r SiteScanParamsMetadata) MarshalJSON() (data []byte, err error) {
@@ -468,7 +468,8 @@ func (r SiteScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 func (r SiteScanParamsMetadata) implementsSiteScanParamsMetadataUnion() {}
 
 // Satisfied by [SiteScanParamsMetadataCatalogRequestMetadata],
-// [SiteScanParamsMetadataWalletRequestMetadata], [SiteScanParamsMetadata].
+// [SiteScanParamsMetadataWalletRequestMetadata],
+// [SiteScanParamsMetadataMultipleWalletRequestMetadata], [SiteScanParamsMetadata].
 type SiteScanParamsMetadataUnion interface {
 	implementsSiteScanParamsMetadataUnion()
 }
@@ -498,14 +499,10 @@ func (r SiteScanParamsMetadataCatalogRequestMetadataType) IsKnown() bool {
 }
 
 type SiteScanParamsMetadataWalletRequestMetadata struct {
-	AccountAddress param.Field[string]                                          `json:"account_address,required"`
-	Type           param.Field[SiteScanParamsMetadataWalletRequestMetadataType] `json:"type,required"`
-	// List of all account addresses in different chains based on the CAIPs standard
-	// (https://github.com/ChainAgnostic/CAIPs). Ethereum mainnet example:
-	// eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb
-	AccountAddresses         param.Field[[]string] `json:"account_addresses"`
-	WalletconnectDescription param.Field[string]   `json:"walletconnect_description"`
-	WalletconnectName        param.Field[string]   `json:"walletconnect_name"`
+	AccountAddress           param.Field[string]                                          `json:"account_address,required"`
+	Type                     param.Field[SiteScanParamsMetadataWalletRequestMetadataType] `json:"type,required"`
+	WalletconnectDescription param.Field[string]                                          `json:"walletconnect_description"`
+	WalletconnectName        param.Field[string]                                          `json:"walletconnect_name"`
 }
 
 func (r SiteScanParamsMetadataWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
@@ -523,6 +520,37 @@ const (
 func (r SiteScanParamsMetadataWalletRequestMetadataType) IsKnown() bool {
 	switch r {
 	case SiteScanParamsMetadataWalletRequestMetadataTypeWallet:
+		return true
+	}
+	return false
+}
+
+type SiteScanParamsMetadataMultipleWalletRequestMetadata struct {
+	Type param.Field[SiteScanParamsMetadataMultipleWalletRequestMetadataType] `json:"type,required"`
+	// List of all account addresses in different chains based on the CAIPs standard
+	// (https://github.com/ChainAgnostic/CAIPs). Ethereum mainnet example:
+	// eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb
+	AccountAddresses         param.Field[[]string] `json:"account_addresses"`
+	WalletconnectDescription param.Field[string]   `json:"walletconnect_description"`
+	WalletconnectName        param.Field[string]   `json:"walletconnect_name"`
+}
+
+func (r SiteScanParamsMetadataMultipleWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r SiteScanParamsMetadataMultipleWalletRequestMetadata) implementsSiteScanParamsMetadataUnion() {
+}
+
+type SiteScanParamsMetadataMultipleWalletRequestMetadataType string
+
+const (
+	SiteScanParamsMetadataMultipleWalletRequestMetadataTypeWallet SiteScanParamsMetadataMultipleWalletRequestMetadataType = "wallet"
+)
+
+func (r SiteScanParamsMetadataMultipleWalletRequestMetadataType) IsKnown() bool {
+	switch r {
+	case SiteScanParamsMetadataMultipleWalletRequestMetadataTypeWallet:
 		return true
 	}
 	return false
