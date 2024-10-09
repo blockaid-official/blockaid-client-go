@@ -1975,11 +1975,12 @@ const (
 	TransactionScanSupportedChainGnosis                TransactionScanSupportedChain = "gnosis"
 	TransactionScanSupportedChainWorldchain            TransactionScanSupportedChain = "worldchain"
 	TransactionScanSupportedChainSoneiumMinato         TransactionScanSupportedChain = "soneium-minato"
+	TransactionScanSupportedChainRonin                 TransactionScanSupportedChain = "ronin"
 )
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin:
 		return true
 	}
 	return false
@@ -2480,6 +2481,8 @@ func (r transactionSimulationAccountSummaryAssetsDiffsBalanceChangesBeforeJSON) 
 type TransactionSimulationAddressDetail struct {
 	// contains the contract's name if the address is a verified contract
 	ContractName string `json:"contract_name"`
+	// Whether the address is an eoa or a contract
+	IsEoa bool `json:"is_eoa"`
 	// known name tag for the address
 	NameTag string                                 `json:"name_tag"`
 	JSON    transactionSimulationAddressDetailJSON `json:"-"`
@@ -2489,6 +2492,7 @@ type TransactionSimulationAddressDetail struct {
 // [TransactionSimulationAddressDetail]
 type transactionSimulationAddressDetailJSON struct {
 	ContractName apijson.Field
+	IsEoa        apijson.Field
 	NameTag      apijson.Field
 	raw          string
 	ExtraFields  map[string]apijson.Field
