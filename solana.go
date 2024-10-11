@@ -1115,6 +1115,10 @@ type ResponseSchemaErrorDetails struct {
 	Type string `json:"type"`
 	// Advanced message of the error
 	Message string `json:"message,required"`
+	// Error number
+	Number int64 `json:"number,nullable"`
+	// Machine readable error code
+	Code string `json:"code,nullable"`
 	// Index of the transaction in the bulk
 	TransactionIndex int64 `json:"transaction_index"`
 	// Index of the instruction in the transaction
@@ -1130,6 +1134,8 @@ type ResponseSchemaErrorDetails struct {
 type responseSchemaErrorDetailsJSON struct {
 	Type             apijson.Field
 	Message          apijson.Field
+	Number           apijson.Field
+	Code             apijson.Field
 	TransactionIndex apijson.Field
 	InstructionIndex apijson.Field
 	ProgramAccount   apijson.Field
@@ -1948,12 +1954,16 @@ func (r totalUsdDiffSchemaJSON) RawJSON() string {
 }
 
 type TransactionErrorDetails struct {
-	// Advanced message of the error
+	// Human readable error
 	Message string `json:"message,required"`
 	// Index of the transaction in the bulk
-	TransactionIndex int64                       `json:"transaction_index,required"`
-	Type             string                      `json:"type"`
-	JSON             transactionErrorDetailsJSON `json:"-"`
+	TransactionIndex int64 `json:"transaction_index,required"`
+	// Machine readable error code
+	Code string `json:"code,nullable"`
+	// Error number
+	Number int64                       `json:"number,nullable"`
+	Type   string                      `json:"type"`
+	JSON   transactionErrorDetailsJSON `json:"-"`
 }
 
 // transactionErrorDetailsJSON contains the JSON metadata for the struct
@@ -1961,6 +1971,8 @@ type TransactionErrorDetails struct {
 type transactionErrorDetailsJSON struct {
 	Message          apijson.Field
 	TransactionIndex apijson.Field
+	Code             apijson.Field
+	Number           apijson.Field
 	Type             apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
