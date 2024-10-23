@@ -543,8 +543,8 @@ type CombinedValidationResultValidation struct {
 	// An enumeration.
 	Reason CombinedValidationResultValidationReason `json:"reason,required"`
 	// An enumeration.
-	Verdict CombinedValidationResultValidationVerdict `json:"verdict,required"`
-	JSON    combinedValidationResultValidationJSON    `json:"-"`
+	ResultType CombinedValidationResultValidationResultType `json:"result_type,required"`
+	JSON       combinedValidationResultValidationJSON       `json:"-"`
 }
 
 // combinedValidationResultValidationJSON contains the JSON metadata for the struct
@@ -553,7 +553,7 @@ type combinedValidationResultValidationJSON struct {
 	ExtendedFeatures apijson.Field
 	Features         apijson.Field
 	Reason           apijson.Field
-	Verdict          apijson.Field
+	ResultType       apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
@@ -593,17 +593,17 @@ func (r CombinedValidationResultValidationReason) IsKnown() bool {
 }
 
 // An enumeration.
-type CombinedValidationResultValidationVerdict string
+type CombinedValidationResultValidationResultType string
 
 const (
-	CombinedValidationResultValidationVerdictBenign    CombinedValidationResultValidationVerdict = "Benign"
-	CombinedValidationResultValidationVerdictWarning   CombinedValidationResultValidationVerdict = "Warning"
-	CombinedValidationResultValidationVerdictMalicious CombinedValidationResultValidationVerdict = "Malicious"
+	CombinedValidationResultValidationResultTypeBenign    CombinedValidationResultValidationResultType = "Benign"
+	CombinedValidationResultValidationResultTypeWarning   CombinedValidationResultValidationResultType = "Warning"
+	CombinedValidationResultValidationResultTypeMalicious CombinedValidationResultValidationResultType = "Malicious"
 )
 
-func (r CombinedValidationResultValidationVerdict) IsKnown() bool {
+func (r CombinedValidationResultValidationResultType) IsKnown() bool {
 	switch r {
-	case CombinedValidationResultValidationVerdictBenign, CombinedValidationResultValidationVerdictWarning, CombinedValidationResultValidationVerdictMalicious:
+	case CombinedValidationResultValidationResultTypeBenign, CombinedValidationResultValidationResultTypeWarning, CombinedValidationResultValidationResultTypeMalicious:
 		return true
 	}
 	return false
@@ -1115,6 +1115,10 @@ type ResponseSchemaErrorDetails struct {
 	Type string `json:"type"`
 	// Advanced message of the error
 	Message string `json:"message,required"`
+	// Error number
+	Number int64 `json:"number,nullable"`
+	// Machine readable error code
+	Code string `json:"code,nullable"`
 	// Index of the transaction in the bulk
 	TransactionIndex int64 `json:"transaction_index"`
 	// Index of the instruction in the transaction
@@ -1130,6 +1134,8 @@ type ResponseSchemaErrorDetails struct {
 type responseSchemaErrorDetailsJSON struct {
 	Type             apijson.Field
 	Message          apijson.Field
+	Number           apijson.Field
+	Code             apijson.Field
 	TransactionIndex apijson.Field
 	InstructionIndex apijson.Field
 	ProgramAccount   apijson.Field
@@ -1948,12 +1954,16 @@ func (r totalUsdDiffSchemaJSON) RawJSON() string {
 }
 
 type TransactionErrorDetails struct {
-	// Advanced message of the error
+	// Human readable error
 	Message string `json:"message,required"`
 	// Index of the transaction in the bulk
-	TransactionIndex int64                       `json:"transaction_index,required"`
-	Type             string                      `json:"type"`
-	JSON             transactionErrorDetailsJSON `json:"-"`
+	TransactionIndex int64 `json:"transaction_index,required"`
+	// Machine readable error code
+	Code string `json:"code,nullable"`
+	// Error number
+	Number int64                       `json:"number,nullable"`
+	Type   string                      `json:"type"`
+	JSON   transactionErrorDetailsJSON `json:"-"`
 }
 
 // transactionErrorDetailsJSON contains the JSON metadata for the struct
@@ -1961,6 +1971,8 @@ type TransactionErrorDetails struct {
 type transactionErrorDetailsJSON struct {
 	Message          apijson.Field
 	TransactionIndex apijson.Field
+	Code             apijson.Field
+	Number           apijson.Field
 	Type             apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
