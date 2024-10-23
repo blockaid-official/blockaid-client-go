@@ -543,8 +543,8 @@ type CombinedValidationResultValidation struct {
 	// An enumeration.
 	Reason CombinedValidationResultValidationReason `json:"reason,required"`
 	// An enumeration.
-	Verdict CombinedValidationResultValidationVerdict `json:"verdict,required"`
-	JSON    combinedValidationResultValidationJSON    `json:"-"`
+	ResultType CombinedValidationResultValidationResultType `json:"result_type,required"`
+	JSON       combinedValidationResultValidationJSON       `json:"-"`
 }
 
 // combinedValidationResultValidationJSON contains the JSON metadata for the struct
@@ -553,7 +553,7 @@ type combinedValidationResultValidationJSON struct {
 	ExtendedFeatures apijson.Field
 	Features         apijson.Field
 	Reason           apijson.Field
-	Verdict          apijson.Field
+	ResultType       apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
@@ -593,17 +593,17 @@ func (r CombinedValidationResultValidationReason) IsKnown() bool {
 }
 
 // An enumeration.
-type CombinedValidationResultValidationVerdict string
+type CombinedValidationResultValidationResultType string
 
 const (
-	CombinedValidationResultValidationVerdictBenign    CombinedValidationResultValidationVerdict = "Benign"
-	CombinedValidationResultValidationVerdictWarning   CombinedValidationResultValidationVerdict = "Warning"
-	CombinedValidationResultValidationVerdictMalicious CombinedValidationResultValidationVerdict = "Malicious"
+	CombinedValidationResultValidationResultTypeBenign    CombinedValidationResultValidationResultType = "Benign"
+	CombinedValidationResultValidationResultTypeWarning   CombinedValidationResultValidationResultType = "Warning"
+	CombinedValidationResultValidationResultTypeMalicious CombinedValidationResultValidationResultType = "Malicious"
 )
 
-func (r CombinedValidationResultValidationVerdict) IsKnown() bool {
+func (r CombinedValidationResultValidationResultType) IsKnown() bool {
 	switch r {
-	case CombinedValidationResultValidationVerdictBenign, CombinedValidationResultValidationVerdictWarning, CombinedValidationResultValidationVerdictMalicious:
+	case CombinedValidationResultValidationResultTypeBenign, CombinedValidationResultValidationResultTypeWarning, CombinedValidationResultValidationResultTypeMalicious:
 		return true
 	}
 	return false
