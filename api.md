@@ -138,17 +138,16 @@ Methods:
 
 # Stellar
 
-Params Types:
-
-- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanRequestParam">StellarTransactionScanRequestParam</a>
-
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarAssetContractDetailsSchema">StellarAssetContractDetailsSchema</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarAssetTransferDetailsSchema">StellarAssetTransferDetailsSchema</a>
-- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanResponse">StellarTransactionScanResponse</a>
 
 ## Transaction
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanResponse">StellarTransactionScanResponse</a>
 
 Methods:
 
