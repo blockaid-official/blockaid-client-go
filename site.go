@@ -220,45 +220,45 @@ func (r SiteScanMissResponseStatus) IsKnown() bool {
 type SiteReportResponse = interface{}
 
 type SiteScanResponse struct {
-	Status         SiteScanResponseStatus `json:"status,required"`
-	URL            string                 `json:"url"`
-	ScanStartTime  time.Time              `json:"scan_start_time" format:"date-time"`
-	ScanEndTime    time.Time              `json:"scan_end_time" format:"date-time"`
-	MaliciousScore float64                `json:"malicious_score"`
-	IsReachable    bool                   `json:"is_reachable"`
-	IsWeb3Site     bool                   `json:"is_web3_site"`
-	IsMalicious    bool                   `json:"is_malicious"`
 	// This field can have the runtime type of
 	// [map[string]SiteScanHitResponseAttackType].
 	AttackTypes interface{} `json:"attack_types,required"`
-	// This field can have the runtime type of [[]string].
-	NetworkOperations interface{} `json:"network_operations,required"`
-	// This field can have the runtime type of [[]string].
-	JsonRpcOperations interface{} `json:"json_rpc_operations,required"`
+	// This field can have the runtime type of [SiteScanHitResponseContractRead].
+	ContractRead interface{} `json:"contract_read,required"`
 	// This field can have the runtime type of [SiteScanHitResponseContractWrite].
 	ContractWrite interface{} `json:"contract_write,required"`
-	// This field can have the runtime type of [SiteScanHitResponseContractRead].
-	ContractRead interface{}          `json:"contract_read,required"`
-	JSON         siteScanResponseJSON `json:"-"`
-	union        SiteScanResponseUnion
+	// This field can have the runtime type of [[]string].
+	JsonRpcOperations interface{} `json:"json_rpc_operations,required"`
+	// This field can have the runtime type of [[]string].
+	NetworkOperations interface{}            `json:"network_operations,required"`
+	Status            SiteScanResponseStatus `json:"status,required"`
+	IsMalicious       bool                   `json:"is_malicious"`
+	IsReachable       bool                   `json:"is_reachable"`
+	IsWeb3Site        bool                   `json:"is_web3_site"`
+	MaliciousScore    float64                `json:"malicious_score"`
+	ScanEndTime       time.Time              `json:"scan_end_time" format:"date-time"`
+	ScanStartTime     time.Time              `json:"scan_start_time" format:"date-time"`
+	URL               string                 `json:"url"`
+	JSON              siteScanResponseJSON   `json:"-"`
+	union             SiteScanResponseUnion
 }
 
 // siteScanResponseJSON contains the JSON metadata for the struct
 // [SiteScanResponse]
 type siteScanResponseJSON struct {
+	AttackTypes       apijson.Field
+	ContractRead      apijson.Field
+	ContractWrite     apijson.Field
+	JsonRpcOperations apijson.Field
+	NetworkOperations apijson.Field
 	Status            apijson.Field
-	URL               apijson.Field
-	ScanStartTime     apijson.Field
-	ScanEndTime       apijson.Field
-	MaliciousScore    apijson.Field
+	IsMalicious       apijson.Field
 	IsReachable       apijson.Field
 	IsWeb3Site        apijson.Field
-	IsMalicious       apijson.Field
-	AttackTypes       apijson.Field
-	NetworkOperations apijson.Field
-	JsonRpcOperations apijson.Field
-	ContractWrite     apijson.Field
-	ContractRead      apijson.Field
+	MaliciousScore    apijson.Field
+	ScanEndTime       apijson.Field
+	ScanStartTime     apijson.Field
+	URL               apijson.Field
 	raw               string
 	ExtraFields       map[string]apijson.Field
 }
@@ -351,8 +351,8 @@ func (r SiteReportParamsEvent) IsKnown() bool {
 
 // The report parameters.
 type SiteReportParamsReport struct {
-	Type      param.Field[SiteReportParamsReportType] `json:"type,required"`
 	Params    param.Field[interface{}]                `json:"params,required"`
+	Type      param.Field[SiteReportParamsReportType] `json:"type,required"`
 	RequestID param.Field[string]                     `json:"request_id"`
 }
 
@@ -454,11 +454,11 @@ func (r SiteScanParams) MarshalJSON() (data []byte, err error) {
 }
 
 type SiteScanParamsMetadata struct {
-	Type                     param.Field[SiteScanParamsMetadataType] `json:"type,required"`
-	WalletconnectName        param.Field[string]                     `json:"walletconnect_name"`
-	WalletconnectDescription param.Field[string]                     `json:"walletconnect_description"`
-	AccountAddress           param.Field[string]                     `json:"account_address"`
 	AccountAddresses         param.Field[interface{}]                `json:"account_addresses,required"`
+	Type                     param.Field[SiteScanParamsMetadataType] `json:"type,required"`
+	AccountAddress           param.Field[string]                     `json:"account_address"`
+	WalletconnectDescription param.Field[string]                     `json:"walletconnect_description"`
+	WalletconnectName        param.Field[string]                     `json:"walletconnect_name"`
 }
 
 func (r SiteScanParamsMetadata) MarshalJSON() (data []byte, err error) {
