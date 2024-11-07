@@ -74,31 +74,31 @@ func (r addressAssetExposureJSON) RawJSON() string {
 
 // description of the asset for the current diff
 type AddressAssetExposureAsset struct {
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string `json:"symbol"`
 	// address of the token
 	Address string `json:"address,required"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
 	// asset type.
 	Type AddressAssetExposureAssetType `json:"type,required"`
 	// asset's decimals
-	Decimals int64                         `json:"decimals"`
-	JSON     addressAssetExposureAssetJSON `json:"-"`
-	union    AddressAssetExposureAssetUnion
+	Decimals int64 `json:"decimals"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                        `json:"symbol"`
+	JSON   addressAssetExposureAssetJSON `json:"-"`
+	union  AddressAssetExposureAssetUnion
 }
 
 // addressAssetExposureAssetJSON contains the JSON metadata for the struct
 // [AddressAssetExposureAsset]
 type addressAssetExposureAssetJSON struct {
-	Name        apijson.Field
-	Symbol      apijson.Field
 	Address     apijson.Field
-	LogoURL     apijson.Field
 	Type        apijson.Field
 	Decimals    apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -175,31 +175,31 @@ func (r AddressAssetExposureAssetType) IsKnown() bool {
 }
 
 type AddressAssetExposureSpender struct {
-	// This field can have the runtime type of [[]Erc20ExposureExposure],
-	// [[]Erc721ExposureExposure], [[]Erc1155ExposureExposure].
-	Exposure interface{} `json:"exposure"`
-	// user friendly description of the approval
-	Summary string `json:"summary"`
 	// the amount that was asked in the approval request for this spender from the
 	// current address and asset
 	Approval string `json:"approval"`
 	// the expiration time of the permit2 protocol
 	Expiration time.Time `json:"expiration" format:"date-time"`
+	// This field can have the runtime type of [[]Erc20ExposureExposure],
+	// [[]Erc721ExposureExposure], [[]Erc1155ExposureExposure].
+	Exposure interface{} `json:"exposure"`
 	// boolean indicates whether an is_approved_for_all function was used (missing in
 	// case of ERC20 / ERC1155)
-	IsApprovedForAll bool                            `json:"is_approved_for_all"`
-	JSON             addressAssetExposureSpenderJSON `json:"-"`
-	union            AddressAssetExposureSpendersUnion
+	IsApprovedForAll bool `json:"is_approved_for_all"`
+	// user friendly description of the approval
+	Summary string                          `json:"summary"`
+	JSON    addressAssetExposureSpenderJSON `json:"-"`
+	union   AddressAssetExposureSpendersUnion
 }
 
 // addressAssetExposureSpenderJSON contains the JSON metadata for the struct
 // [AddressAssetExposureSpender]
 type addressAssetExposureSpenderJSON struct {
-	Exposure         apijson.Field
-	Summary          apijson.Field
 	Approval         apijson.Field
 	Expiration       apijson.Field
+	Exposure         apijson.Field
 	IsApprovedForAll apijson.Field
+	Summary          apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
@@ -282,34 +282,34 @@ func (r assetDiffJSON) RawJSON() string {
 
 // description of the asset for the current diff
 type AssetDiffAsset struct {
+	// asset type.
+	Type AssetDiffAssetType `json:"type,required"`
+	// address of the token
+	Address   string `json:"address"`
+	ChainID   int64  `json:"chain_id"`
+	ChainName string `json:"chain_name"`
+	// asset's decimals
+	Decimals int64 `json:"decimals"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
 	Name string `json:"name"`
 	// asset's symbol name
-	Symbol string `json:"symbol"`
-	// address of the token
-	Address string `json:"address"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// asset type.
-	Type AssetDiffAssetType `json:"type,required"`
-	// asset's decimals
-	Decimals  int64              `json:"decimals"`
-	ChainName string             `json:"chain_name"`
-	ChainID   int64              `json:"chain_id"`
-	JSON      assetDiffAssetJSON `json:"-"`
-	union     AssetDiffAssetUnion
+	Symbol string             `json:"symbol"`
+	JSON   assetDiffAssetJSON `json:"-"`
+	union  AssetDiffAssetUnion
 }
 
 // assetDiffAssetJSON contains the JSON metadata for the struct [AssetDiffAsset]
 type assetDiffAssetJSON struct {
+	Type        apijson.Field
+	Address     apijson.Field
+	ChainID     apijson.Field
+	ChainName   apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
-	Address     apijson.Field
-	LogoURL     apijson.Field
-	Type        apijson.Field
-	Decimals    apijson.Field
-	ChainName   apijson.Field
-	ChainID     apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -392,34 +392,34 @@ func (r AssetDiffAssetType) IsKnown() bool {
 }
 
 type AssetDiffIn struct {
-	// usd equal of the asset that was transferred from this address
-	UsdPrice string `json:"usd_price"`
-	// user friendly description of the asset transfer
-	Summary string `json:"summary"`
-	// id of the token
-	TokenID string `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value"`
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
 	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
-	RawValue string          `json:"raw_value"`
-	JSON     assetDiffInJSON `json:"-"`
-	union    AssetDiffInUnion
+	RawValue string `json:"raw_value"`
+	// user friendly description of the asset transfer
+	Summary string `json:"summary"`
+	// id of the token
+	TokenID string `json:"token_id"`
+	// usd equal of the asset that was transferred from this address
+	UsdPrice string `json:"usd_price"`
+	// value before divided by decimal, that was transferred from this address
+	Value string          `json:"value"`
+	JSON  assetDiffInJSON `json:"-"`
+	union AssetDiffInUnion
 }
 
 // assetDiffInJSON contains the JSON metadata for the struct [AssetDiffIn]
 type assetDiffInJSON struct {
-	UsdPrice                 apijson.Field
-	Summary                  apijson.Field
-	TokenID                  apijson.Field
-	Value                    apijson.Field
 	ArbitraryCollectionToken apijson.Field
 	LogoURL                  apijson.Field
 	RawValue                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	UsdPrice                 apijson.Field
+	Value                    apijson.Field
 	raw                      string
 	ExtraFields              map[string]apijson.Field
 }
@@ -475,34 +475,34 @@ func init() {
 }
 
 type AssetDiffOut struct {
-	// usd equal of the asset that was transferred from this address
-	UsdPrice string `json:"usd_price"`
-	// user friendly description of the asset transfer
-	Summary string `json:"summary"`
-	// id of the token
-	TokenID string `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value"`
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
 	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
-	RawValue string           `json:"raw_value"`
-	JSON     assetDiffOutJSON `json:"-"`
-	union    AssetDiffOutUnion
+	RawValue string `json:"raw_value"`
+	// user friendly description of the asset transfer
+	Summary string `json:"summary"`
+	// id of the token
+	TokenID string `json:"token_id"`
+	// usd equal of the asset that was transferred from this address
+	UsdPrice string `json:"usd_price"`
+	// value before divided by decimal, that was transferred from this address
+	Value string           `json:"value"`
+	JSON  assetDiffOutJSON `json:"-"`
+	union AssetDiffOutUnion
 }
 
 // assetDiffOutJSON contains the JSON metadata for the struct [AssetDiffOut]
 type assetDiffOutJSON struct {
-	UsdPrice                 apijson.Field
-	Summary                  apijson.Field
-	TokenID                  apijson.Field
-	Value                    apijson.Field
 	ArbitraryCollectionToken apijson.Field
 	LogoURL                  apijson.Field
 	RawValue                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	UsdPrice                 apijson.Field
+	Value                    apijson.Field
 	raw                      string
 	ExtraFields              map[string]apijson.Field
 }
@@ -638,35 +638,35 @@ func (r erc1155ExposureJSON) RawJSON() string {
 func (r Erc1155Exposure) implementsAddressAssetExposureSpender() {}
 
 type Erc1155ExposureExposure struct {
-	// usd equal of the asset that was transferred from this address
-	UsdPrice string `json:"usd_price"`
-	// user friendly description of the asset transfer
-	Summary string `json:"summary"`
-	// id of the token
-	TokenID string `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value"`
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
 	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
-	RawValue string                      `json:"raw_value"`
-	JSON     erc1155ExposureExposureJSON `json:"-"`
-	union    Erc1155ExposureExposureUnion
+	RawValue string `json:"raw_value"`
+	// user friendly description of the asset transfer
+	Summary string `json:"summary"`
+	// id of the token
+	TokenID string `json:"token_id"`
+	// usd equal of the asset that was transferred from this address
+	UsdPrice string `json:"usd_price"`
+	// value before divided by decimal, that was transferred from this address
+	Value string                      `json:"value"`
+	JSON  erc1155ExposureExposureJSON `json:"-"`
+	union Erc1155ExposureExposureUnion
 }
 
 // erc1155ExposureExposureJSON contains the JSON metadata for the struct
 // [Erc1155ExposureExposure]
 type erc1155ExposureExposureJSON struct {
-	UsdPrice                 apijson.Field
-	Summary                  apijson.Field
-	TokenID                  apijson.Field
-	Value                    apijson.Field
 	ArbitraryCollectionToken apijson.Field
 	LogoURL                  apijson.Field
 	RawValue                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	UsdPrice                 apijson.Field
+	Value                    apijson.Field
 	raw                      string
 	ExtraFields              map[string]apijson.Field
 }
@@ -853,35 +853,35 @@ func (r erc20ExposureJSON) RawJSON() string {
 func (r Erc20Exposure) implementsAddressAssetExposureSpender() {}
 
 type Erc20ExposureExposure struct {
-	// usd equal of the asset that was transferred from this address
-	UsdPrice string `json:"usd_price"`
-	// user friendly description of the asset transfer
-	Summary string `json:"summary"`
-	// id of the token
-	TokenID string `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value"`
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
 	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
-	RawValue string                    `json:"raw_value"`
-	JSON     erc20ExposureExposureJSON `json:"-"`
-	union    Erc20ExposureExposureUnion
+	RawValue string `json:"raw_value"`
+	// user friendly description of the asset transfer
+	Summary string `json:"summary"`
+	// id of the token
+	TokenID string `json:"token_id"`
+	// usd equal of the asset that was transferred from this address
+	UsdPrice string `json:"usd_price"`
+	// value before divided by decimal, that was transferred from this address
+	Value string                    `json:"value"`
+	JSON  erc20ExposureExposureJSON `json:"-"`
+	union Erc20ExposureExposureUnion
 }
 
 // erc20ExposureExposureJSON contains the JSON metadata for the struct
 // [Erc20ExposureExposure]
 type erc20ExposureExposureJSON struct {
-	UsdPrice                 apijson.Field
-	Summary                  apijson.Field
-	TokenID                  apijson.Field
-	Value                    apijson.Field
 	ArbitraryCollectionToken apijson.Field
 	LogoURL                  apijson.Field
 	RawValue                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	UsdPrice                 apijson.Field
+	Value                    apijson.Field
 	raw                      string
 	ExtraFields              map[string]apijson.Field
 }
@@ -1072,35 +1072,35 @@ func (r erc721ExposureJSON) RawJSON() string {
 func (r Erc721Exposure) implementsAddressAssetExposureSpender() {}
 
 type Erc721ExposureExposure struct {
-	// usd equal of the asset that was transferred from this address
-	UsdPrice string `json:"usd_price"`
-	// user friendly description of the asset transfer
-	Summary string `json:"summary"`
-	// id of the token
-	TokenID string `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value"`
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
 	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
-	RawValue string                     `json:"raw_value"`
-	JSON     erc721ExposureExposureJSON `json:"-"`
-	union    Erc721ExposureExposureUnion
+	RawValue string `json:"raw_value"`
+	// user friendly description of the asset transfer
+	Summary string `json:"summary"`
+	// id of the token
+	TokenID string `json:"token_id"`
+	// usd equal of the asset that was transferred from this address
+	UsdPrice string `json:"usd_price"`
+	// value before divided by decimal, that was transferred from this address
+	Value string                     `json:"value"`
+	JSON  erc721ExposureExposureJSON `json:"-"`
+	union Erc721ExposureExposureUnion
 }
 
 // erc721ExposureExposureJSON contains the JSON metadata for the struct
 // [Erc721ExposureExposure]
 type erc721ExposureExposureJSON struct {
-	UsdPrice                 apijson.Field
-	Summary                  apijson.Field
-	TokenID                  apijson.Field
-	Value                    apijson.Field
 	ArbitraryCollectionToken apijson.Field
 	LogoURL                  apijson.Field
 	RawValue                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	UsdPrice                 apijson.Field
+	Value                    apijson.Field
 	raw                      string
 	ExtraFields              map[string]apijson.Field
 }
@@ -1574,9 +1574,9 @@ func (r TransactionScanResponseEventsParamsValueArray) ImplementsTransactionScan
 
 type TransactionScanResponseGasEstimation struct {
 	Status   TransactionScanResponseGasEstimationStatus `json:"status,required"`
-	Used     int64                                      `json:"used"`
-	Estimate int64                                      `json:"estimate"`
 	Error    string                                     `json:"error"`
+	Estimate int64                                      `json:"estimate"`
+	Used     int64                                      `json:"used"`
 	JSON     transactionScanResponseGasEstimationJSON   `json:"-"`
 	union    TransactionScanResponseGasEstimationUnion
 }
@@ -1585,9 +1585,9 @@ type TransactionScanResponseGasEstimation struct {
 // struct [TransactionScanResponseGasEstimation]
 type transactionScanResponseGasEstimationJSON struct {
 	Status      apijson.Field
-	Used        apijson.Field
-	Estimate    apijson.Field
 	Error       apijson.Field
+	Estimate    apijson.Field
+	Used        apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -1737,26 +1737,26 @@ func (r TransactionScanResponseGasEstimationStatus) IsKnown() bool {
 }
 
 type TransactionScanResponseSimulation struct {
-	// A string indicating if the simulation was successful or not.
-	Status TransactionScanResponseSimulationStatus `json:"status,required"`
-	// This field can have the runtime type of [map[string][]AssetDiff].
-	AssetsDiffs interface{} `json:"assets_diffs,required"`
-	// This field can have the runtime type of [map[string]UsdDiff].
-	TotalUsdDiff interface{} `json:"total_usd_diff,required"`
-	// This field can have the runtime type of [map[string][]AddressAssetExposure].
-	Exposures interface{} `json:"exposures,required"`
-	// This field can have the runtime type of [map[string]map[string]string].
-	TotalUsdExposure interface{} `json:"total_usd_exposure,required"`
+	// This field can have the runtime type of [TransactionSimulationAccountSummary].
+	AccountSummary interface{} `json:"account_summary,required"`
 	// This field can have the runtime type of
 	// [map[string]TransactionSimulationAddressDetail].
 	AddressDetails interface{} `json:"address_details,required"`
-	// This field can have the runtime type of [TransactionSimulationAccountSummary].
-	AccountSummary interface{} `json:"account_summary,required"`
-	// This field can have the runtime type of [TransactionSimulationParams].
-	Params interface{} `json:"params,required"`
+	// This field can have the runtime type of [map[string][]AssetDiff].
+	AssetsDiffs interface{} `json:"assets_diffs,required"`
 	// This field can have the runtime type of
 	// [map[string][]TransactionSimulationContractManagement].
 	ContractManagement interface{} `json:"contract_management,required"`
+	// This field can have the runtime type of [map[string][]AddressAssetExposure].
+	Exposures interface{} `json:"exposures,required"`
+	// This field can have the runtime type of [TransactionSimulationParams].
+	Params interface{} `json:"params,required"`
+	// A string indicating if the simulation was successful or not.
+	Status TransactionScanResponseSimulationStatus `json:"status,required"`
+	// This field can have the runtime type of [map[string]UsdDiff].
+	TotalUsdDiff interface{} `json:"total_usd_diff,required"`
+	// This field can have the runtime type of [map[string]map[string]string].
+	TotalUsdExposure interface{} `json:"total_usd_exposure,required"`
 	// An error message if the simulation failed.
 	Error string                                `json:"error"`
 	JSON  transactionScanResponseSimulationJSON `json:"-"`
@@ -1766,15 +1766,15 @@ type TransactionScanResponseSimulation struct {
 // transactionScanResponseSimulationJSON contains the JSON metadata for the struct
 // [TransactionScanResponseSimulation]
 type transactionScanResponseSimulationJSON struct {
-	Status             apijson.Field
-	AssetsDiffs        apijson.Field
-	TotalUsdDiff       apijson.Field
-	Exposures          apijson.Field
-	TotalUsdExposure   apijson.Field
-	AddressDetails     apijson.Field
 	AccountSummary     apijson.Field
-	Params             apijson.Field
+	AddressDetails     apijson.Field
+	AssetsDiffs        apijson.Field
 	ContractManagement apijson.Field
+	Exposures          apijson.Field
+	Params             apijson.Field
+	Status             apijson.Field
+	TotalUsdDiff       apijson.Field
+	TotalUsdExposure   apijson.Field
 	Error              apijson.Field
 	raw                string
 	ExtraFields        map[string]apijson.Field
@@ -1839,37 +1839,37 @@ func (r TransactionScanResponseSimulationStatus) IsKnown() bool {
 }
 
 type TransactionScanResponseValidation struct {
-	// A string indicating if the simulation was successful or not.
-	Status TransactionScanResponseValidationStatus `json:"status,required"`
 	// An enumeration.
 	ResultType TransactionScanResponseValidationResultType `json:"result_type,required"`
-	// A textual description that can be presented to the user about what this
-	// transaction is doing.
-	Description string `json:"description"`
-	// A textual description about the reasons the transaction was flagged with
-	// result_type.
-	Reason string `json:"reason"`
+	// A string indicating if the simulation was successful or not.
+	Status TransactionScanResponseValidationStatus `json:"status,required"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
+	// A textual description that can be presented to the user about what this
+	// transaction is doing.
+	Description string `json:"description"`
+	// An error message if the validation failed.
+	Error string `json:"error"`
 	// This field can have the runtime type of [[]TransactionScanFeature].
 	Features interface{} `json:"features"`
-	// An error message if the validation failed.
-	Error string                                `json:"error"`
-	JSON  transactionScanResponseValidationJSON `json:"-"`
-	union TransactionScanResponseValidationUnion
+	// A textual description about the reasons the transaction was flagged with
+	// result_type.
+	Reason string                                `json:"reason"`
+	JSON   transactionScanResponseValidationJSON `json:"-"`
+	union  TransactionScanResponseValidationUnion
 }
 
 // transactionScanResponseValidationJSON contains the JSON metadata for the struct
 // [TransactionScanResponseValidation]
 type transactionScanResponseValidationJSON struct {
-	Status         apijson.Field
 	ResultType     apijson.Field
-	Description    apijson.Field
-	Reason         apijson.Field
+	Status         apijson.Field
 	Classification apijson.Field
-	Features       apijson.Field
+	Description    apijson.Field
 	Error          apijson.Field
+	Features       apijson.Field
+	Reason         apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
@@ -1916,21 +1916,6 @@ func init() {
 	)
 }
 
-// A string indicating if the simulation was successful or not.
-type TransactionScanResponseValidationStatus string
-
-const (
-	TransactionScanResponseValidationStatusSuccess TransactionScanResponseValidationStatus = "Success"
-)
-
-func (r TransactionScanResponseValidationStatus) IsKnown() bool {
-	switch r {
-	case TransactionScanResponseValidationStatusSuccess:
-		return true
-	}
-	return false
-}
-
 // An enumeration.
 type TransactionScanResponseValidationResultType string
 
@@ -1944,6 +1929,21 @@ const (
 func (r TransactionScanResponseValidationResultType) IsKnown() bool {
 	switch r {
 	case TransactionScanResponseValidationResultTypeBenign, TransactionScanResponseValidationResultTypeWarning, TransactionScanResponseValidationResultTypeMalicious, TransactionScanResponseValidationResultTypeError:
+		return true
+	}
+	return false
+}
+
+// A string indicating if the simulation was successful or not.
+type TransactionScanResponseValidationStatus string
+
+const (
+	TransactionScanResponseValidationStatusSuccess TransactionScanResponseValidationStatus = "Success"
+)
+
+func (r TransactionScanResponseValidationStatus) IsKnown() bool {
+	switch r {
+	case TransactionScanResponseValidationStatusSuccess:
 		return true
 	}
 	return false
@@ -2114,35 +2114,35 @@ func (r transactionSimulationAccountSummaryAssetsDiffJSON) RawJSON() string {
 
 // description of the asset for the current diff
 type TransactionSimulationAccountSummaryAssetsDiffsAsset struct {
+	// asset type.
+	Type TransactionSimulationAccountSummaryAssetsDiffsAssetType `json:"type,required"`
+	// address of the token
+	Address   string `json:"address"`
+	ChainID   int64  `json:"chain_id"`
+	ChainName string `json:"chain_name"`
+	// asset's decimals
+	Decimals int64 `json:"decimals"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
 	Name string `json:"name"`
 	// asset's symbol name
-	Symbol string `json:"symbol"`
-	// address of the token
-	Address string `json:"address"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// asset type.
-	Type TransactionSimulationAccountSummaryAssetsDiffsAssetType `json:"type,required"`
-	// asset's decimals
-	Decimals  int64                                                   `json:"decimals"`
-	ChainName string                                                  `json:"chain_name"`
-	ChainID   int64                                                   `json:"chain_id"`
-	JSON      transactionSimulationAccountSummaryAssetsDiffsAssetJSON `json:"-"`
-	union     TransactionSimulationAccountSummaryAssetsDiffsAssetUnion
+	Symbol string                                                  `json:"symbol"`
+	JSON   transactionSimulationAccountSummaryAssetsDiffsAssetJSON `json:"-"`
+	union  TransactionSimulationAccountSummaryAssetsDiffsAssetUnion
 }
 
 // transactionSimulationAccountSummaryAssetsDiffsAssetJSON contains the JSON
 // metadata for the struct [TransactionSimulationAccountSummaryAssetsDiffsAsset]
 type transactionSimulationAccountSummaryAssetsDiffsAssetJSON struct {
+	Type        apijson.Field
+	Address     apijson.Field
+	ChainID     apijson.Field
+	ChainName   apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
-	Address     apijson.Field
-	LogoURL     apijson.Field
-	Type        apijson.Field
-	Decimals    apijson.Field
-	ChainName   apijson.Field
-	ChainID     apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -2225,35 +2225,35 @@ func (r TransactionSimulationAccountSummaryAssetsDiffsAssetType) IsKnown() bool 
 }
 
 type TransactionSimulationAccountSummaryAssetsDiffsIn struct {
-	// usd equal of the asset that was transferred from this address
-	UsdPrice string `json:"usd_price"`
-	// user friendly description of the asset transfer
-	Summary string `json:"summary"`
-	// id of the token
-	TokenID string `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value"`
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
 	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
-	RawValue string                                               `json:"raw_value"`
-	JSON     transactionSimulationAccountSummaryAssetsDiffsInJSON `json:"-"`
-	union    TransactionSimulationAccountSummaryAssetsDiffsInUnion
+	RawValue string `json:"raw_value"`
+	// user friendly description of the asset transfer
+	Summary string `json:"summary"`
+	// id of the token
+	TokenID string `json:"token_id"`
+	// usd equal of the asset that was transferred from this address
+	UsdPrice string `json:"usd_price"`
+	// value before divided by decimal, that was transferred from this address
+	Value string                                               `json:"value"`
+	JSON  transactionSimulationAccountSummaryAssetsDiffsInJSON `json:"-"`
+	union TransactionSimulationAccountSummaryAssetsDiffsInUnion
 }
 
 // transactionSimulationAccountSummaryAssetsDiffsInJSON contains the JSON metadata
 // for the struct [TransactionSimulationAccountSummaryAssetsDiffsIn]
 type transactionSimulationAccountSummaryAssetsDiffsInJSON struct {
-	UsdPrice                 apijson.Field
-	Summary                  apijson.Field
-	TokenID                  apijson.Field
-	Value                    apijson.Field
 	ArbitraryCollectionToken apijson.Field
 	LogoURL                  apijson.Field
 	RawValue                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	UsdPrice                 apijson.Field
+	Value                    apijson.Field
 	raw                      string
 	ExtraFields              map[string]apijson.Field
 }
@@ -2309,35 +2309,35 @@ func init() {
 }
 
 type TransactionSimulationAccountSummaryAssetsDiffsOut struct {
-	// usd equal of the asset that was transferred from this address
-	UsdPrice string `json:"usd_price"`
-	// user friendly description of the asset transfer
-	Summary string `json:"summary"`
-	// id of the token
-	TokenID string `json:"token_id"`
-	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value"`
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
 	ArbitraryCollectionToken bool `json:"arbitrary_collection_token"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// value before divided by decimal, that was transferred from this address
-	RawValue string                                                `json:"raw_value"`
-	JSON     transactionSimulationAccountSummaryAssetsDiffsOutJSON `json:"-"`
-	union    TransactionSimulationAccountSummaryAssetsDiffsOutUnion
+	RawValue string `json:"raw_value"`
+	// user friendly description of the asset transfer
+	Summary string `json:"summary"`
+	// id of the token
+	TokenID string `json:"token_id"`
+	// usd equal of the asset that was transferred from this address
+	UsdPrice string `json:"usd_price"`
+	// value before divided by decimal, that was transferred from this address
+	Value string                                                `json:"value"`
+	JSON  transactionSimulationAccountSummaryAssetsDiffsOutJSON `json:"-"`
+	union TransactionSimulationAccountSummaryAssetsDiffsOutUnion
 }
 
 // transactionSimulationAccountSummaryAssetsDiffsOutJSON contains the JSON metadata
 // for the struct [TransactionSimulationAccountSummaryAssetsDiffsOut]
 type transactionSimulationAccountSummaryAssetsDiffsOutJSON struct {
-	UsdPrice                 apijson.Field
-	Summary                  apijson.Field
-	TokenID                  apijson.Field
-	Value                    apijson.Field
 	ArbitraryCollectionToken apijson.Field
 	LogoURL                  apijson.Field
 	RawValue                 apijson.Field
+	Summary                  apijson.Field
+	TokenID                  apijson.Field
+	UsdPrice                 apijson.Field
+	Value                    apijson.Field
 	raw                      string
 	ExtraFields              map[string]apijson.Field
 }
@@ -2552,11 +2552,11 @@ func (r transactionSimulationContractManagementJSON) RawJSON() string {
 
 // The state after the transaction
 type TransactionSimulationContractManagementAfter struct {
-	Address string `json:"address"`
 	// This field can have the runtime type of [[]string].
-	Owners interface{} `json:"owners,required"`
+	Modules interface{} `json:"modules,required"`
 	// This field can have the runtime type of [[]string].
-	Modules interface{}                                      `json:"modules,required"`
+	Owners  interface{}                                      `json:"owners,required"`
+	Address string                                           `json:"address"`
 	JSON    transactionSimulationContractManagementAfterJSON `json:"-"`
 	union   TransactionSimulationContractManagementAfterUnion
 }
@@ -2564,9 +2564,9 @@ type TransactionSimulationContractManagementAfter struct {
 // transactionSimulationContractManagementAfterJSON contains the JSON metadata for
 // the struct [TransactionSimulationContractManagementAfter]
 type transactionSimulationContractManagementAfterJSON struct {
-	Address     apijson.Field
-	Owners      apijson.Field
 	Modules     apijson.Field
+	Owners      apijson.Field
+	Address     apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -2700,11 +2700,11 @@ func (r TransactionSimulationContractManagementAfterModulesChange) implementsTra
 
 // The state before the transaction
 type TransactionSimulationContractManagementBefore struct {
-	Address string `json:"address"`
 	// This field can have the runtime type of [[]string].
-	Owners interface{} `json:"owners,required"`
+	Modules interface{} `json:"modules,required"`
 	// This field can have the runtime type of [[]string].
-	Modules interface{}                                       `json:"modules,required"`
+	Owners  interface{}                                       `json:"owners,required"`
+	Address string                                            `json:"address"`
 	JSON    transactionSimulationContractManagementBeforeJSON `json:"-"`
 	union   TransactionSimulationContractManagementBeforeUnion
 }
@@ -2712,9 +2712,9 @@ type TransactionSimulationContractManagementBefore struct {
 // transactionSimulationContractManagementBeforeJSON contains the JSON metadata for
 // the struct [TransactionSimulationContractManagementBefore]
 type transactionSimulationContractManagementBeforeJSON struct {
-	Address     apijson.Field
-	Owners      apijson.Field
 	Modules     apijson.Field
+	Owners      apijson.Field
+	Address     apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
