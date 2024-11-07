@@ -225,70 +225,70 @@ func (r tokenBulkScanResponseResultsFinancialStatsTopHolderJSON) RawJSON() strin
 
 // Metadata of the token
 type TokenBulkScanResponseResultsMetadata struct {
-	// Type of the token
-	Type string `json:"type"`
-	// Name of the token
-	Name string `json:"name"`
-	// Symbol of the token
-	Symbol string `json:"symbol"`
-	// URL of the token image
-	ImageURL string `json:"image_url"`
-	// Description of the token
-	Description string `json:"description"`
-	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer"`
-	// This field can have the runtime type of
-	// [TokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinks],
-	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks].
-	ExternalLinks interface{} `json:"external_links,required"`
 	// This field can have the runtime type of
 	// [TokenBulkScanResponseResultsMetadataSolanaMetadataContractBalance],
 	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalance].
 	ContractBalance interface{} `json:"contract_balance,required"`
 	// This field can have the runtime type of
+	// [TokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinks],
+	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks].
+	ExternalLinks interface{} `json:"external_links,required"`
+	// This field can have the runtime type of
 	// [TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance],
 	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalance].
 	OwnerBalance interface{} `json:"owner_balance,required"`
-	// Contract owner address
-	Owner string `json:"owner"`
-	// Contract deploy date
-	CreationTimestamp time.Time `json:"creation_timestamp" format:"date-time"`
-	// Solana token mint authority account
-	MintAuthority string `json:"mint_authority"`
-	// Solana token update authority account
-	UpdateAuthority string `json:"update_authority"`
-	// Solana token freeze authority account
-	FreezeAuthority string `json:"freeze_authority"`
 	// The unique ID for the Rune
 	ID string `json:"id"`
+	// Contract deploy date
+	CreationTimestamp time.Time `json:"creation_timestamp" format:"date-time"`
+	// Address of the deployer of the fungible token
+	Deployer string `json:"deployer"`
+	// Description of the token
+	Description string `json:"description"`
+	// The formatted name of the rune, with spacers
+	FormattedName string `json:"formatted_name"`
+	// Solana token freeze authority account
+	FreezeAuthority string `json:"freeze_authority"`
+	// URL of the token image
+	ImageURL string `json:"image_url"`
+	// Solana token mint authority account
+	MintAuthority string `json:"mint_authority"`
+	// Name of the token
+	Name string `json:"name"`
 	// The rune's unique sequential number.
 	Number int64 `json:"number"`
-	// The formatted name of the rune, with spacers
-	FormattedName string                                   `json:"formatted_name"`
-	JSON          tokenBulkScanResponseResultsMetadataJSON `json:"-"`
-	union         TokenBulkScanResponseResultsMetadataUnion
+	// Contract owner address
+	Owner string `json:"owner"`
+	// Symbol of the token
+	Symbol string `json:"symbol"`
+	// Type of the token
+	Type string `json:"type"`
+	// Solana token update authority account
+	UpdateAuthority string                                   `json:"update_authority"`
+	JSON            tokenBulkScanResponseResultsMetadataJSON `json:"-"`
+	union           TokenBulkScanResponseResultsMetadataUnion
 }
 
 // tokenBulkScanResponseResultsMetadataJSON contains the JSON metadata for the
 // struct [TokenBulkScanResponseResultsMetadata]
 type tokenBulkScanResponseResultsMetadataJSON struct {
-	Type              apijson.Field
-	Name              apijson.Field
-	Symbol            apijson.Field
-	ImageURL          apijson.Field
-	Description       apijson.Field
-	Deployer          apijson.Field
-	ExternalLinks     apijson.Field
 	ContractBalance   apijson.Field
+	ExternalLinks     apijson.Field
 	OwnerBalance      apijson.Field
-	Owner             apijson.Field
-	CreationTimestamp apijson.Field
-	MintAuthority     apijson.Field
-	UpdateAuthority   apijson.Field
-	FreezeAuthority   apijson.Field
 	ID                apijson.Field
-	Number            apijson.Field
+	CreationTimestamp apijson.Field
+	Deployer          apijson.Field
+	Description       apijson.Field
 	FormattedName     apijson.Field
+	FreezeAuthority   apijson.Field
+	ImageURL          apijson.Field
+	MintAuthority     apijson.Field
+	Name              apijson.Field
+	Number            apijson.Field
+	Owner             apijson.Field
+	Symbol            apijson.Field
+	Type              apijson.Field
+	UpdateAuthority   apijson.Field
 	raw               string
 	ExtraFields       map[string]apijson.Field
 }
