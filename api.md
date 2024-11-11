@@ -137,15 +137,13 @@ Response Types:
 
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarAssetContractDetailsSchema">StellarAssetContractDetailsSchema</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarAssetTransferDetailsSchema">StellarAssetTransferDetailsSchema</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanResponse">StellarTransactionScanResponse</a>
 
 ## Transaction
 
-Response Types:
-
-- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanResponse">StellarTransactionScanResponse</a>
-
 Methods:
 
+- <code title="post /v0/stellar/transaction/report">client.Stellar.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionService.Report">Report</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionReportParams">StellarTransactionReportParams</a>) (<a href="https://pkg.go.dev/builtin#int64">int64</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="post /v0/stellar/transaction/scan">client.Stellar.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanParams">StellarTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanResponse">StellarTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Bitcoin
@@ -158,6 +156,7 @@ Response Types:
 
 Methods:
 
+- <code title="post /v0/bitcoin/transaction/report">client.Bitcoin.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionService.Report">Report</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionReportParams">BitcoinTransactionReportParams</a>) (<a href="https://pkg.go.dev/builtin#int64">int64</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="post /v0/bitcoin/transaction/scan">client.Bitcoin.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionScanParams">BitcoinTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionScanResponse">BitcoinTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Starknet
@@ -176,6 +175,7 @@ Response Types:
 
 Methods:
 
+- <code title="post /v0/starknet/transaction/report">client.Starknet.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetTransactionService.Report">Report</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetTransactionReportParams">StarknetTransactionReportParams</a>) (<a href="https://pkg.go.dev/builtin#int64">int64</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="post /v0/starknet/transaction/scan">client.Starknet.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetTransactionScanParams">StarknetTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetTransactionScanResponse">StarknetTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Site
