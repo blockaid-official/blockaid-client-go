@@ -3,7 +3,6 @@
 package blockaidclientgo
 
 import (
-	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
@@ -26,94 +25,4 @@ func NewStarknetService(opts ...option.RequestOption) (r *StarknetService) {
 	r.Options = opts
 	r.Transaction = NewStarknetTransactionService(opts...)
 	return
-}
-
-type StarknetErc1155Diff struct {
-	// Token ID of the transfer
-	TokenID string `json:"token_id,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
-	// Value of the transfer
-	Value int64 `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string                  `json:"summary,nullable"`
-	JSON    starknetErc1155DiffJSON `json:"-"`
-}
-
-// starknetErc1155DiffJSON contains the JSON metadata for the struct
-// [StarknetErc1155Diff]
-type starknetErc1155DiffJSON struct {
-	TokenID     apijson.Field
-	UsdPrice    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *StarknetErc1155Diff) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r starknetErc1155DiffJSON) RawJSON() string {
-	return r.raw
-}
-
-type StarknetErc20Diff struct {
-	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
-	// Value of the transfer
-	Value string `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string                `json:"summary,nullable"`
-	JSON    starknetErc20DiffJSON `json:"-"`
-}
-
-// starknetErc20DiffJSON contains the JSON metadata for the struct
-// [StarknetErc20Diff]
-type starknetErc20DiffJSON struct {
-	RawValue    apijson.Field
-	UsdPrice    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *StarknetErc20Diff) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r starknetErc20DiffJSON) RawJSON() string {
-	return r.raw
-}
-
-type StarknetErc721Diff struct {
-	// Token ID of the transfer
-	TokenID string `json:"token_id,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
-	// Summarized description of the transfer
-	Summary string                 `json:"summary,nullable"`
-	JSON    starknetErc721DiffJSON `json:"-"`
-}
-
-// starknetErc721DiffJSON contains the JSON metadata for the struct
-// [StarknetErc721Diff]
-type starknetErc721DiffJSON struct {
-	TokenID     apijson.Field
-	UsdPrice    apijson.Field
-	Summary     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *StarknetErc721Diff) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r starknetErc721DiffJSON) RawJSON() string {
-	return r.raw
 }

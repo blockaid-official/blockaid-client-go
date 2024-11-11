@@ -34,6 +34,14 @@ func NewStarknetTransactionService(opts ...option.RequestOption) (r *StarknetTra
 	return
 }
 
+// Report Transaction
+func (r *StarknetTransactionService) Report(ctx context.Context, body StarknetTransactionReportParams, opts ...option.RequestOption) (res *int64, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "v0/starknet/transaction/report"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Scan Transactions
 func (r *StarknetTransactionService) Scan(ctx context.Context, body StarknetTransactionScanParams, opts ...option.RequestOption) (res *StarknetTransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
@@ -389,8 +397,8 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpender struct {
 	// Approval value of the ERC20 token
-	Approval string              `json:"approval,required"`
-	Exposure []StarknetErc20Diff `json:"exposure,required"`
+	Approval string                                                                                                                                               `json:"approval,required"`
+	Exposure []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpendersExposure `json:"exposure,required"`
 	// Expiration date of the approval
 	Expiration time.Time `json:"expiration,nullable" format:"date-time"`
 	// Summarized description of the exposure
@@ -415,6 +423,38 @@ func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResu
 }
 
 func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpenderJSON) RawJSON() string {
+	return r.raw
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpendersExposure struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                                                 `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpendersExposureJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpendersExposureJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpendersExposure]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpendersExposureJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpendersExposure) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpendersExposureJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -497,7 +537,7 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpender struct {
-	Exposure []StarknetErc721Diff `json:"exposure,required"`
+	Exposure []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpendersExposure `json:"exposure,required"`
 	// Whether `setApprovalForAll` was invoked
 	IsApprovedForAll bool `json:"is_approved_for_all,required"`
 	// Summarized description of the exposure
@@ -521,6 +561,35 @@ func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResu
 }
 
 func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpenderJSON) RawJSON() string {
+	return r.raw
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpendersExposure struct {
+	// Token ID of the transfer
+	TokenID string `json:"token_id,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                                                  `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpendersExposureJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpendersExposureJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpendersExposure]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpendersExposureJSON struct {
+	TokenID     apijson.Field
+	UsdPrice    apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpendersExposure) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpendersExposureJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -603,7 +672,7 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpender struct {
-	Exposure []StarknetErc1155Diff `json:"exposure,required"`
+	Exposure []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpendersExposure `json:"exposure,required"`
 	// Whether `setApprovalForAll` was invoked
 	IsApprovedForAll bool `json:"is_approved_for_all,required"`
 	// Summarized description of the exposure
@@ -627,6 +696,38 @@ func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResu
 }
 
 func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpenderJSON) RawJSON() string {
+	return r.raw
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpendersExposure struct {
+	// Token ID of the transfer
+	TokenID string `json:"token_id,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value int64 `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                                                   `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpendersExposureJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpendersExposureJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpendersExposure]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpendersExposureJSON struct {
+	TokenID     apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpendersExposure) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpendersExposureJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -663,11 +764,15 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiff struct {
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
-	// This field can have the runtime type of [StarknetErc20Diff],
-	// [StarknetErc721Diff], [StarknetErc1155Diff].
+	// This field can have the runtime type of
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffIn],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffIn],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffIn].
 	In interface{} `json:"in,required"`
-	// This field can have the runtime type of [StarknetErc20Diff],
-	// [StarknetErc721Diff], [StarknetErc1155Diff].
+	// This field can have the runtime type of
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffOut],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffOut],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffOut].
 	Out interface{} `json:"out,required"`
 	// This field can have the runtime type of
 	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffAsset],
@@ -748,9 +853,9 @@ type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSc
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In StarknetErc20Diff `json:"in,nullable"`
+	In StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc20Diff                                                                                                                         `json:"out,nullable"`
+	Out  StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffOut  `json:"out,nullable"`
 	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffJSON `json:"-"`
 }
 
@@ -830,14 +935,80 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 	return false
 }
 
+// Details of the incoming transfer
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffIn struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                                      `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffInJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffInJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffIn]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffInJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffOut struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                                       `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffOutJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffOutJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffOut]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffOutJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffOutJSON) RawJSON() string {
+	return r.raw
+}
+
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiff struct {
 	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In StarknetErc721Diff `json:"in,nullable"`
+	In StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc721Diff                                                                                                                         `json:"out,nullable"`
+	Out  StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffOut  `json:"out,nullable"`
 	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffJSON `json:"-"`
 }
 
@@ -914,14 +1085,74 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 	return false
 }
 
+// Details of the incoming transfer
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffIn struct {
+	// Token ID of the transfer
+	TokenID string `json:"token_id,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                                       `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffInJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffInJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffIn]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffInJSON struct {
+	TokenID     apijson.Field
+	UsdPrice    apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffOut struct {
+	// Token ID of the transfer
+	TokenID string `json:"token_id,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                                        `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffOutJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffOutJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffOut]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffOutJSON struct {
+	TokenID     apijson.Field
+	UsdPrice    apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffOutJSON) RawJSON() string {
+	return r.raw
+}
+
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiff struct {
 	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In StarknetErc1155Diff `json:"in,nullable"`
+	In StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc1155Diff                                                                                                                         `json:"out,nullable"`
+	Out  StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffOut  `json:"out,nullable"`
 	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffJSON `json:"-"`
 }
 
@@ -998,6 +1229,72 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 	return false
 }
 
+// Details of the incoming transfer
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffIn struct {
+	// Token ID of the transfer
+	TokenID string `json:"token_id,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value int64 `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                                        `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffInJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffInJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffIn]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffInJSON struct {
+	TokenID     apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffOut struct {
+	// Token ID of the transfer
+	TokenID string `json:"token_id,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value int64 `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                                         `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffOutJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffOutJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffOut]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffOutJSON struct {
+	TokenID     apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffOutJSON) RawJSON() string {
+	return r.raw
+}
+
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaStatus string
 
 const (
@@ -1041,11 +1338,15 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff struct {
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
-	// This field can have the runtime type of [StarknetErc20Diff],
-	// [StarknetErc721Diff], [StarknetErc1155Diff].
+	// This field can have the runtime type of
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffIn],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffIn],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffIn].
 	In interface{} `json:"in,required"`
-	// This field can have the runtime type of [StarknetErc20Diff],
-	// [StarknetErc721Diff], [StarknetErc1155Diff].
+	// This field can have the runtime type of
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffOut],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffOut],
+	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffOut].
 	Out interface{} `json:"out,required"`
 	// This field can have the runtime type of
 	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffAsset],
@@ -1126,9 +1427,9 @@ type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSc
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In StarknetErc20Diff `json:"in,nullable"`
+	In StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc20Diff                                                                                                    `json:"out,nullable"`
+	Out  StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffOut  `json:"out,nullable"`
 	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffJSON `json:"-"`
 }
 
@@ -1208,14 +1509,80 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 	return false
 }
 
+// Details of the incoming transfer
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffIn struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                 `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffInJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffInJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffIn]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffInJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffOut struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                  `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffOutJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffOutJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffOut]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffOutJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffOutJSON) RawJSON() string {
+	return r.raw
+}
+
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiff struct {
 	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In StarknetErc721Diff `json:"in,nullable"`
+	In StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc721Diff                                                                                                    `json:"out,nullable"`
+	Out  StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffOut  `json:"out,nullable"`
 	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffJSON `json:"-"`
 }
 
@@ -1292,14 +1659,74 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 	return false
 }
 
+// Details of the incoming transfer
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffIn struct {
+	// Token ID of the transfer
+	TokenID string `json:"token_id,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                  `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffInJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffInJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffIn]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffInJSON struct {
+	TokenID     apijson.Field
+	UsdPrice    apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffOut struct {
+	// Token ID of the transfer
+	TokenID string `json:"token_id,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                   `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffOutJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffOutJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffOut]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffOutJSON struct {
+	TokenID     apijson.Field
+	UsdPrice    apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffOutJSON) RawJSON() string {
+	return r.raw
+}
+
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiff struct {
 	Asset StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In StarknetErc1155Diff `json:"in,nullable"`
+	In StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc1155Diff                                                                                                    `json:"out,nullable"`
+	Out  StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffOut  `json:"out,nullable"`
 	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffJSON `json:"-"`
 }
 
@@ -1374,6 +1801,72 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 		return true
 	}
 	return false
+}
+
+// Details of the incoming transfer
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffIn struct {
+	// Token ID of the transfer
+	TokenID string `json:"token_id,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value int64 `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                   `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffInJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffInJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffIn]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffInJSON struct {
+	TokenID     apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffOut struct {
+	// Token ID of the transfer
+	TokenID string `json:"token_id,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value int64 `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                    `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffOutJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffOutJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffOut]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffOutJSON struct {
+	TokenID     apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffOutJSON) RawJSON() string {
+	return r.raw
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure struct {
@@ -1537,8 +2030,8 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpender struct {
 	// Approval value of the ERC20 token
-	Approval string              `json:"approval,required"`
-	Exposure []StarknetErc20Diff `json:"exposure,required"`
+	Approval string                                                                                                                          `json:"approval,required"`
+	Exposure []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpendersExposure `json:"exposure,required"`
 	// Expiration date of the approval
 	Expiration time.Time `json:"expiration,nullable" format:"date-time"`
 	// Summarized description of the exposure
@@ -1563,6 +2056,38 @@ func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResu
 }
 
 func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpenderJSON) RawJSON() string {
+	return r.raw
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpendersExposure struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                            `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpendersExposureJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpendersExposureJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpendersExposure]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpendersExposureJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpendersExposure) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpendersExposureJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -1645,7 +2170,7 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpender struct {
-	Exposure []StarknetErc721Diff `json:"exposure,required"`
+	Exposure []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpendersExposure `json:"exposure,required"`
 	// Whether `setApprovalForAll` was invoked
 	IsApprovedForAll bool `json:"is_approved_for_all,required"`
 	// Summarized description of the exposure
@@ -1669,6 +2194,35 @@ func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResu
 }
 
 func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpenderJSON) RawJSON() string {
+	return r.raw
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpendersExposure struct {
+	// Token ID of the transfer
+	TokenID string `json:"token_id,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                             `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpendersExposureJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpendersExposureJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpendersExposure]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpendersExposureJSON struct {
+	TokenID     apijson.Field
+	UsdPrice    apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpendersExposure) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpendersExposureJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -1751,7 +2305,7 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpender struct {
-	Exposure []StarknetErc1155Diff `json:"exposure,required"`
+	Exposure []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpendersExposure `json:"exposure,required"`
 	// Whether `setApprovalForAll` was invoked
 	IsApprovedForAll bool `json:"is_approved_for_all,required"`
 	// Summarized description of the exposure
@@ -1775,6 +2329,38 @@ func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResu
 }
 
 func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpenderJSON) RawJSON() string {
+	return r.raw
+}
+
+type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpendersExposure struct {
+	// Token ID of the transfer
+	TokenID string `json:"token_id,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value int64 `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                              `json:"summary,nullable"`
+	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpendersExposureJSON `json:"-"`
+}
+
+// starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpendersExposureJSON
+// contains the JSON metadata for the struct
+// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpendersExposure]
+type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpendersExposureJSON struct {
+	TokenID     apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpendersExposure) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpendersExposureJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -2108,6 +2694,504 @@ const (
 func (r StarknetTransactionScanResponseValidationResultType) IsKnown() bool {
 	switch r {
 	case StarknetTransactionScanResponseValidationResultTypeBenign, StarknetTransactionScanResponseValidationResultTypeWarning, StarknetTransactionScanResponseValidationResultTypeMalicious:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParams struct {
+	Details param.Field[string]                                     `json:"details,required"`
+	Event   param.Field[StarknetTransactionReportParamsEvent]       `json:"event,required"`
+	Report  param.Field[StarknetTransactionReportParamsReportUnion] `json:"report,required"`
+}
+
+func (r StarknetTransactionReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type StarknetTransactionReportParamsEvent string
+
+const (
+	StarknetTransactionReportParamsEventShouldBeMalicious StarknetTransactionReportParamsEvent = "should_be_malicious"
+	StarknetTransactionReportParamsEventShouldBeBenign    StarknetTransactionReportParamsEvent = "should_be_benign"
+)
+
+func (r StarknetTransactionReportParamsEvent) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsEventShouldBeMalicious, StarknetTransactionReportParamsEventShouldBeBenign:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReport struct {
+	Params param.Field[interface{}]                               `json:"params,required"`
+	ID     param.Field[string]                                    `json:"id"`
+	Type   param.Field[StarknetTransactionReportParamsReportType] `json:"type"`
+}
+
+func (r StarknetTransactionReportParamsReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReport) implementsStarknetTransactionReportParamsReportUnion() {
+}
+
+// Satisfied by [StarknetTransactionReportParamsReportStarknetAppealRequestID],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReport],
+// [StarknetTransactionReportParamsReport].
+type StarknetTransactionReportParamsReportUnion interface {
+	implementsStarknetTransactionReportParamsReportUnion()
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealRequestID struct {
+	ID   param.Field[string]                                                           `json:"id,required"`
+	Type param.Field[StarknetTransactionReportParamsReportStarknetAppealRequestIDType] `json:"type"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealRequestID) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealRequestID) implementsStarknetTransactionReportParamsReportUnion() {
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealRequestIDType string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealRequestIDTypeRequestID StarknetTransactionReportParamsReportStarknetAppealRequestIDType = "request_id"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealRequestIDType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealRequestIDTypeRequestID:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReport struct {
+	Params param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParams] `json:"params,required"`
+	Type   param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportType]   `json:"type"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReport) implementsStarknetTransactionReportParamsReportUnion() {
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParams struct {
+	AccountAddress param.Field[string] `json:"account_address,required"`
+	// The chain name or chain ID
+	Chain param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsChain] `json:"chain,required"`
+	// Metadata
+	Metadata    param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataUnion]    `json:"metadata,required"`
+	Transaction param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionUnion] `json:"transaction,required"`
+	// Optional block number or tag context for the simulation
+	BlockNumber param.Field[string] `json:"block_number"`
+	// List of options to include in the response
+	//
+	// - `Options.validation`: Include Options.validation output in the response
+	//
+	// - `Options.simulation`: Include Options.simulation output in the response
+	Options param.Field[[]StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsOption] `json:"options"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A CAIP-2 or a Starknet network name or a Starknet network name
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsChain string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsChainMainnet            StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsChain = "mainnet"
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsChainSepolia            StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsChain = "sepolia"
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsChainSepoliaIntegration StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsChain = "sepolia_integration"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsChain) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsChainMainnet, StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsChainSepolia, StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsChainSepoliaIntegration:
+		return true
+	}
+	return false
+}
+
+// Metadata
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadata struct {
+	// Metadata for wallet requests
+	Type param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataType] `json:"type"`
+	// URL of the dApp originating the transaction
+	URL param.Field[string] `json:"url"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadata) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataUnion() {
+}
+
+// Metadata
+//
+// Satisfied by
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetWalletRequestMetadata],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetInAppRequestMetadata],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadata].
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataUnion interface {
+	implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataUnion()
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetWalletRequestMetadata struct {
+	// Metadata for wallet requests
+	Type param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetWalletRequestMetadataType] `json:"type,required"`
+	// URL of the dApp originating the transaction
+	URL param.Field[string] `json:"url,required"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetWalletRequestMetadata) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataUnion() {
+}
+
+// Metadata for wallet requests
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetWalletRequestMetadataType string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetWalletRequestMetadataTypeWallet StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetWalletRequestMetadataType = "wallet"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetWalletRequestMetadataType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetWalletRequestMetadataTypeWallet:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetInAppRequestMetadata struct {
+	// Metadata for in-app requests
+	Type param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetInAppRequestMetadataType] `json:"type"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetInAppRequestMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetInAppRequestMetadata) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataUnion() {
+}
+
+// Metadata for in-app requests
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetInAppRequestMetadataType string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetInAppRequestMetadataTypeInApp StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetInAppRequestMetadataType = "in_app"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetInAppRequestMetadataType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataStarknetInAppRequestMetadataTypeInApp:
+		return true
+	}
+	return false
+}
+
+// Metadata for wallet requests
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataType string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataTypeWallet StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataType = "wallet"
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataTypeInApp  StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataType = "in_app"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataTypeWallet, StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsMetadataTypeInApp:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransaction struct {
+	AccountDeploymentData param.Field[interface{}] `json:"account_deployment_data,required"`
+	Calldata              param.Field[interface{}] `json:"calldata,required"`
+	ConstructorCalldata   param.Field[interface{}] `json:"constructor_calldata,required"`
+	// The nonce of the transaction.
+	Nonce         param.Field[string]      `json:"nonce,required"`
+	PaymasterData param.Field[interface{}] `json:"paymaster_data,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionVersion] `json:"version,required"`
+	// The id of the chain to which the transaction is sent.
+	ChainID param.Field[string] `json:"chain_id"`
+	// The hash of the contract class.
+	ClassHash param.Field[string] `json:"class_hash"`
+	// The salt of the contract address.
+	ContractAddressSalt param.Field[string] `json:"contract_address_salt"`
+	// The maximum fee that the sender is willing to pay.
+	MaxFee param.Field[string] `json:"max_fee"`
+	// The nonce data availability mode.
+	NonceDataAvailabilityMode param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionNonceDataAvailabilityMode] `json:"nonce_data_availability_mode"`
+	// The address of the sender.
+	SenderAddress param.Field[string] `json:"sender_address"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransaction) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransaction) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionUnion() {
+}
+
+// Satisfied by
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV1TransactionSchema],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchema],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV1TransactionSchema],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV3TransactionSchema],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransaction].
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionUnion interface {
+	implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionUnion()
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV1TransactionSchema struct {
+	// The maximum fee that the sender is willing to pay.
+	MaxFee param.Field[string] `json:"max_fee,required"`
+	// The nonce of the transaction.
+	Nonce param.Field[string] `json:"nonce,required"`
+	// The address of the sender.
+	SenderAddress param.Field[string] `json:"sender_address,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV1TransactionSchemaVersion] `json:"version,required"`
+	// The arguments that are passed to the validate and execute functions.
+	Calldata param.Field[[]string] `json:"calldata"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV1TransactionSchema) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV1TransactionSchema) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionUnion() {
+}
+
+// The version of the transaction.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV1TransactionSchemaVersion int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV1TransactionSchemaVersion1 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV1TransactionSchemaVersion = 1
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV1TransactionSchemaVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV1TransactionSchemaVersion1:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchema struct {
+	// The arguments that are passed to the validate and execute functions.
+	Calldata param.Field[[]string] `json:"calldata,required"`
+	// The id of the chain to which the transaction is sent.
+	ChainID param.Field[string] `json:"chain_id,required"`
+	// The nonce of the transaction.
+	Nonce param.Field[string] `json:"nonce,required"`
+	// The address of the sender.
+	SenderAddress param.Field[string] `json:"sender_address,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchemaVersion] `json:"version,required"`
+	// For future use. Currently this value is always empty.
+	AccountDeploymentData param.Field[[]string] `json:"account_deployment_data"`
+	// The nonce data availability mode.
+	NonceDataAvailabilityMode param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode] `json:"nonce_data_availability_mode"`
+	// For future use. Currently this value is always empty.
+	PaymasterData param.Field[[]string] `json:"paymaster_data"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchema) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchema) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionUnion() {
+}
+
+// The version of the transaction.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchemaVersion int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchemaVersion3 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchemaVersion = 3
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchemaVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchemaVersion3:
+		return true
+	}
+	return false
+}
+
+// The nonce data availability mode.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode0 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode = 0
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode0:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV1TransactionSchema struct {
+	// The hash of the contract class.
+	ClassHash param.Field[string] `json:"class_hash,required"`
+	// The arguments that are passed to the constructor function.
+	ConstructorCalldata param.Field[[]string] `json:"constructor_calldata,required"`
+	// The salt of the contract address.
+	ContractAddressSalt param.Field[string] `json:"contract_address_salt,required"`
+	// The maximum fee that the sender is willing to pay.
+	MaxFee param.Field[string] `json:"max_fee,required"`
+	// The nonce of the transaction.
+	Nonce param.Field[string] `json:"nonce,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV1TransactionSchemaVersion] `json:"version,required"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV1TransactionSchema) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV1TransactionSchema) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionUnion() {
+}
+
+// The version of the transaction.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV1TransactionSchemaVersion int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV1TransactionSchemaVersion1 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV1TransactionSchemaVersion = 1
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV1TransactionSchemaVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV1TransactionSchemaVersion1:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV3TransactionSchema struct {
+	// The hash of the contract class.
+	ClassHash param.Field[string] `json:"class_hash,required"`
+	// The arguments that are passed to the constructor function.
+	ConstructorCalldata param.Field[[]string] `json:"constructor_calldata,required"`
+	// The salt of the contract address.
+	ContractAddressSalt param.Field[string] `json:"contract_address_salt,required"`
+	// The maximum fee that the sender is willing to pay.
+	MaxFee param.Field[string] `json:"max_fee,required"`
+	// The nonce of the transaction.
+	Nonce param.Field[string] `json:"nonce,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV3TransactionSchemaVersion] `json:"version,required"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV3TransactionSchema) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV3TransactionSchema) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionUnion() {
+}
+
+// The version of the transaction.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV3TransactionSchemaVersion int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV3TransactionSchemaVersion3 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV3TransactionSchemaVersion = 3
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV3TransactionSchemaVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionStarknetDeployAccountV3TransactionSchemaVersion3:
+		return true
+	}
+	return false
+}
+
+// The version of the transaction.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionVersion int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionVersion1 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionVersion = 1
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionVersion3 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionVersion = 3
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionVersion1, StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionVersion3:
+		return true
+	}
+	return false
+}
+
+// The nonce data availability mode.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionNonceDataAvailabilityMode int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionNonceDataAvailabilityMode0 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionNonceDataAvailabilityMode = 0
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionNonceDataAvailabilityMode) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionNonceDataAvailabilityMode0:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsOption string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsOptionValidation StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsOption = "validation"
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsOptionSimulation StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsOption = "simulation"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsOption) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsOptionValidation, StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsOptionSimulation:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportType string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportTypeParams StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportType = "params"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportTypeParams:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportType string
+
+const (
+	StarknetTransactionReportParamsReportTypeRequestID StarknetTransactionReportParamsReportType = "request_id"
+	StarknetTransactionReportParamsReportTypeParams    StarknetTransactionReportParamsReportType = "params"
+)
+
+func (r StarknetTransactionReportParamsReportType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportTypeRequestID, StarknetTransactionReportParamsReportTypeParams:
 		return true
 	}
 	return false
