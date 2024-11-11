@@ -33,6 +33,14 @@ func NewBitcoinTransactionService(opts ...option.RequestOption) (r *BitcoinTrans
 	return
 }
 
+// Report Transaction
+func (r *BitcoinTransactionService) Report(ctx context.Context, body BitcoinTransactionReportParams, opts ...option.RequestOption) (res *int64, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "v0/bitcoin/transaction/report"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Scan Transaction
 func (r *BitcoinTransactionService) Scan(ctx context.Context, body BitcoinTransactionScanParams, opts ...option.RequestOption) (res *BitcoinTransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
@@ -1133,6 +1141,261 @@ const (
 func (r BitcoinTransactionScanResponseValidationResultType) IsKnown() bool {
 	switch r {
 	case BitcoinTransactionScanResponseValidationResultTypeBenign, BitcoinTransactionScanResponseValidationResultTypeWarning, BitcoinTransactionScanResponseValidationResultTypeMalicious:
+		return true
+	}
+	return false
+}
+
+type BitcoinTransactionReportParams struct {
+	Details param.Field[string]                                    `json:"details,required"`
+	Event   param.Field[BitcoinTransactionReportParamsEvent]       `json:"event,required"`
+	Report  param.Field[BitcoinTransactionReportParamsReportUnion] `json:"report,required"`
+}
+
+func (r BitcoinTransactionReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type BitcoinTransactionReportParamsEvent string
+
+const (
+	BitcoinTransactionReportParamsEventShouldBeMalicious BitcoinTransactionReportParamsEvent = "should_be_malicious"
+	BitcoinTransactionReportParamsEventShouldBeBenign    BitcoinTransactionReportParamsEvent = "should_be_benign"
+)
+
+func (r BitcoinTransactionReportParamsEvent) IsKnown() bool {
+	switch r {
+	case BitcoinTransactionReportParamsEventShouldBeMalicious, BitcoinTransactionReportParamsEventShouldBeBenign:
+		return true
+	}
+	return false
+}
+
+type BitcoinTransactionReportParamsReport struct {
+	Params param.Field[interface{}]                              `json:"params,required"`
+	ID     param.Field[string]                                   `json:"id"`
+	Type   param.Field[BitcoinTransactionReportParamsReportType] `json:"type"`
+}
+
+func (r BitcoinTransactionReportParamsReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r BitcoinTransactionReportParamsReport) implementsBitcoinTransactionReportParamsReportUnion() {}
+
+// Satisfied by [BitcoinTransactionReportParamsReportBitcoinAppealRequestID],
+// [BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReport],
+// [BitcoinTransactionReportParamsReport].
+type BitcoinTransactionReportParamsReportUnion interface {
+	implementsBitcoinTransactionReportParamsReportUnion()
+}
+
+type BitcoinTransactionReportParamsReportBitcoinAppealRequestID struct {
+	ID   param.Field[string]                                                         `json:"id,required"`
+	Type param.Field[BitcoinTransactionReportParamsReportBitcoinAppealRequestIDType] `json:"type"`
+}
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealRequestID) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealRequestID) implementsBitcoinTransactionReportParamsReportUnion() {
+}
+
+type BitcoinTransactionReportParamsReportBitcoinAppealRequestIDType string
+
+const (
+	BitcoinTransactionReportParamsReportBitcoinAppealRequestIDTypeRequestID BitcoinTransactionReportParamsReportBitcoinAppealRequestIDType = "request_id"
+)
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealRequestIDType) IsKnown() bool {
+	switch r {
+	case BitcoinTransactionReportParamsReportBitcoinAppealRequestIDTypeRequestID:
+		return true
+	}
+	return false
+}
+
+type BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReport struct {
+	Params param.Field[BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParams] `json:"params,required"`
+	Type   param.Field[BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportType]   `json:"type"`
+}
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReport) implementsBitcoinTransactionReportParamsReportUnion() {
+}
+
+type BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParams struct {
+	AccountAddress param.Field[string]                                                                            `json:"account_address,required"`
+	Chain          param.Field[BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsChain] `json:"chain,required"`
+	// Metadata
+	Metadata    param.Field[BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataUnion] `json:"metadata,required"`
+	Transaction param.Field[string]                                                                                    `json:"transaction,required"`
+	// List of options to include in the response
+	//
+	// - `Options.validation`: Include Options.validation output in the response
+	//
+	// - `Options.simulation`: Include Options.simulation output in the response
+	Options param.Field[[]BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsOption] `json:"options"`
+}
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsChain string
+
+const (
+	BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsChainBitcoin BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsChain = "bitcoin"
+)
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsChain) IsKnown() bool {
+	switch r {
+	case BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsChainBitcoin:
+		return true
+	}
+	return false
+}
+
+// Metadata
+type BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadata struct {
+	// Metadata for wallet requests
+	Type param.Field[BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataType] `json:"type"`
+	// URL of the dApp originating the transaction
+	URL param.Field[string] `json:"url"`
+}
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadata) implementsBitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataUnion() {
+}
+
+// Metadata
+//
+// Satisfied by
+// [BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinWalletRequestMetadata],
+// [BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinInAppRequestMetadata],
+// [BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadata].
+type BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataUnion interface {
+	implementsBitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataUnion()
+}
+
+type BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinWalletRequestMetadata struct {
+	// Metadata for wallet requests
+	Type param.Field[BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinWalletRequestMetadataType] `json:"type,required"`
+	// URL of the dApp originating the transaction
+	URL param.Field[string] `json:"url,required"`
+}
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinWalletRequestMetadata) implementsBitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataUnion() {
+}
+
+// Metadata for wallet requests
+type BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinWalletRequestMetadataType string
+
+const (
+	BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinWalletRequestMetadataTypeWallet BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinWalletRequestMetadataType = "wallet"
+)
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinWalletRequestMetadataType) IsKnown() bool {
+	switch r {
+	case BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinWalletRequestMetadataTypeWallet:
+		return true
+	}
+	return false
+}
+
+type BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinInAppRequestMetadata struct {
+	// Metadata for in-app requests
+	Type param.Field[BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinInAppRequestMetadataType] `json:"type"`
+}
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinInAppRequestMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinInAppRequestMetadata) implementsBitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataUnion() {
+}
+
+// Metadata for in-app requests
+type BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinInAppRequestMetadataType string
+
+const (
+	BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinInAppRequestMetadataTypeInApp BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinInAppRequestMetadataType = "in_app"
+)
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinInAppRequestMetadataType) IsKnown() bool {
+	switch r {
+	case BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataBitcoinInAppRequestMetadataTypeInApp:
+		return true
+	}
+	return false
+}
+
+// Metadata for wallet requests
+type BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataType string
+
+const (
+	BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataTypeWallet BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataType = "wallet"
+	BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataTypeInApp  BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataType = "in_app"
+)
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataType) IsKnown() bool {
+	switch r {
+	case BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataTypeWallet, BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsMetadataTypeInApp:
+		return true
+	}
+	return false
+}
+
+type BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsOption string
+
+const (
+	BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsOptionValidation BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsOption = "validation"
+	BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsOptionSimulation BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsOption = "simulation"
+)
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsOption) IsKnown() bool {
+	switch r {
+	case BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsOptionValidation, BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportParamsOptionSimulation:
+		return true
+	}
+	return false
+}
+
+type BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportType string
+
+const (
+	BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportTypeParams BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportType = "params"
+)
+
+func (r BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportType) IsKnown() bool {
+	switch r {
+	case BitcoinTransactionReportParamsReportBitcoinAppealTransactionDataReportTypeParams:
+		return true
+	}
+	return false
+}
+
+type BitcoinTransactionReportParamsReportType string
+
+const (
+	BitcoinTransactionReportParamsReportTypeRequestID BitcoinTransactionReportParamsReportType = "request_id"
+	BitcoinTransactionReportParamsReportTypeParams    BitcoinTransactionReportParamsReportType = "params"
+)
+
+func (r BitcoinTransactionReportParamsReportType) IsKnown() bool {
+	switch r {
+	case BitcoinTransactionReportParamsReportTypeRequestID, BitcoinTransactionReportParamsReportTypeParams:
 		return true
 	}
 	return false
