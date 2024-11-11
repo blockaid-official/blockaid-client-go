@@ -101,6 +101,8 @@ Response Types:
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#DelegatedAssetDetailsSchema">DelegatedAssetDetailsSchema</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#FungibleMintAccountDetailsSchema">FungibleMintAccountDetailsSchema</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#InstructionErrorDetails">InstructionErrorDetails</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#NativeDetailsSchema">NativeDetailsSchema</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#NativeDiffSchema">NativeDiffSchema</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#NativeSolOwnershipDiffSchema">NativeSolOwnershipDiffSchema</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#NonFungibleMintAccountDetailsSchema">NonFungibleMintAccountDetailsSchema</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#PdaAccountSchema">PdaAccountSchema</a>
@@ -111,6 +113,7 @@ Response Types:
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SplNonFungibleTokenDetailsSchema">SplNonFungibleTokenDetailsSchema</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SplNonFungibleTokenDiffSchema">SplNonFungibleTokenDiffSchema</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SplTokenOwnershipDiffSchema">SplTokenOwnershipDiffSchema</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StakedAssetDetailsSchema">StakedAssetDetailsSchema</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StakedSolWithdrawAuthorityDiffSchema">StakedSolWithdrawAuthorityDiffSchema</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuccessfulSimulationResultSchema">SuccessfulSimulationResultSchema</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SystemAccountDetailsSchema">SystemAccountDetailsSchema</a>
@@ -133,11 +136,20 @@ Methods:
 
 # Stellar
 
-## Transaction
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanRequestParam">StellarTransactionScanRequestParam</a>
 
 Response Types:
 
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarAssetContractDetails">StellarAssetContractDetails</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarAssetTransferDetails">StellarAssetTransferDetails</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarLegacyAssetDetails">StellarLegacyAssetDetails</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarNativeAssetDetails">StellarNativeAssetDetails</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarSingleAssetExposure">StellarSingleAssetExposure</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanResponse">StellarTransactionScanResponse</a>
+
+## Transaction
 
 Methods:
 
@@ -158,6 +170,15 @@ Methods:
 - <code title="post /v0/bitcoin/transaction/scan">client.Bitcoin.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionScanParams">BitcoinTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionScanResponse">BitcoinTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Starknet
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetAccountErc1155Exposure">StarknetAccountErc1155Exposure</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetAccountErc20Exposure">StarknetAccountErc20Exposure</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetAccountErc721Exposure">StarknetAccountErc721Exposure</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetErc1155Diff">StarknetErc1155Diff</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetErc20Diff">StarknetErc20Diff</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetErc721Diff">StarknetErc721Diff</a>
 
 ## Transaction
 
