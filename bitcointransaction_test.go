@@ -28,8 +28,8 @@ func TestBitcoinTransactionScanWithOptionalParams(t *testing.T) {
 	_, err := client.Bitcoin.Transaction.Scan(context.TODO(), blockaidclientgo.BitcoinTransactionScanParams{
 		AccountAddress: blockaidclientgo.F("account_address"),
 		Chain:          blockaidclientgo.F(blockaidclientgo.BitcoinTransactionScanParamsChainBitcoin),
-		Metadata: blockaidclientgo.F[blockaidclientgo.BitcoinTransactionScanParamsMetadataUnion](blockaidclientgo.BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIWalletRequestMetadata{
-			Type: blockaidclientgo.F(blockaidclientgo.BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIWalletRequestMetadataTypeWallet),
+		Metadata: blockaidclientgo.F[blockaidclientgo.BitcoinTransactionScanParamsMetadataUnion](blockaidclientgo.BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadata{
+			Type: blockaidclientgo.F(blockaidclientgo.BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadataTypeWallet),
 			URL:  blockaidclientgo.F("url"),
 		}),
 		Transaction: blockaidclientgo.F("transaction"),
