@@ -34,6 +34,14 @@ func NewStarknetTransactionService(opts ...option.RequestOption) (r *StarknetTra
 	return
 }
 
+// Report Transaction
+func (r *StarknetTransactionService) Report(ctx context.Context, body StarknetTransactionReportParams, opts ...option.RequestOption) (res *int64, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "v0/starknet/transaction/report"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Scan Transactions
 func (r *StarknetTransactionService) Scan(ctx context.Context, body StarknetTransactionScanParams, opts ...option.RequestOption) (res *StarknetTransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
@@ -2109,6 +2117,504 @@ const (
 func (r StarknetTransactionScanResponseValidationResultType) IsKnown() bool {
 	switch r {
 	case StarknetTransactionScanResponseValidationResultTypeBenign, StarknetTransactionScanResponseValidationResultTypeWarning, StarknetTransactionScanResponseValidationResultTypeMalicious:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParams struct {
+	Details param.Field[string]                                     `json:"details,required"`
+	Event   param.Field[StarknetTransactionReportParamsEvent]       `json:"event,required"`
+	Report  param.Field[StarknetTransactionReportParamsReportUnion] `json:"report,required"`
+}
+
+func (r StarknetTransactionReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type StarknetTransactionReportParamsEvent string
+
+const (
+	StarknetTransactionReportParamsEventShouldBeMalicious StarknetTransactionReportParamsEvent = "should_be_malicious"
+	StarknetTransactionReportParamsEventShouldBeBenign    StarknetTransactionReportParamsEvent = "should_be_benign"
+)
+
+func (r StarknetTransactionReportParamsEvent) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsEventShouldBeMalicious, StarknetTransactionReportParamsEventShouldBeBenign:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReport struct {
+	Params param.Field[interface{}]                               `json:"params,required"`
+	ID     param.Field[string]                                    `json:"id"`
+	Type   param.Field[StarknetTransactionReportParamsReportType] `json:"type"`
+}
+
+func (r StarknetTransactionReportParamsReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReport) implementsStarknetTransactionReportParamsReportUnion() {
+}
+
+// Satisfied by [StarknetTransactionReportParamsReportStarknetAppealRequestID],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaType],
+// [StarknetTransactionReportParamsReport].
+type StarknetTransactionReportParamsReportUnion interface {
+	implementsStarknetTransactionReportParamsReportUnion()
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealRequestID struct {
+	ID   param.Field[string]                                                           `json:"id,required"`
+	Type param.Field[StarknetTransactionReportParamsReportStarknetAppealRequestIDType] `json:"type"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealRequestID) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealRequestID) implementsStarknetTransactionReportParamsReportUnion() {
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealRequestIDType string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealRequestIDTypeRequestID StarknetTransactionReportParamsReportStarknetAppealRequestIDType = "request_id"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealRequestIDType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealRequestIDTypeRequestID:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaType struct {
+	Params param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParams] `json:"params,required"`
+	Type   param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeType]   `json:"type"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaType) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaType) implementsStarknetTransactionReportParamsReportUnion() {
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParams struct {
+	AccountAddress param.Field[string] `json:"account_address,required"`
+	// The chain name or chain ID
+	Chain param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsChain] `json:"chain,required"`
+	// Metadata
+	Metadata    param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataUnion]    `json:"metadata,required"`
+	Transaction param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionUnion] `json:"transaction,required"`
+	// Optional block number or tag context for the simulation
+	BlockNumber param.Field[string] `json:"block_number"`
+	// List of options to include in the response
+	//
+	// - `Options.validation`: Include Options.validation output in the response
+	//
+	// - `Options.simulation`: Include Options.simulation output in the response
+	Options param.Field[[]StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsOption] `json:"options"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A CAIP-2 or a Starknet network name or a Starknet network name
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsChain string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsChainMainnet            StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsChain = "mainnet"
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsChainSepolia            StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsChain = "sepolia"
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsChainSepoliaIntegration StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsChain = "sepolia_integration"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsChain) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsChainMainnet, StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsChainSepolia, StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsChainSepoliaIntegration:
+		return true
+	}
+	return false
+}
+
+// Metadata
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadata struct {
+	// Metadata for wallet requests
+	Type param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataType] `json:"type"`
+	// URL of the dApp originating the transaction
+	URL param.Field[string] `json:"url"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadata) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataUnion() {
+}
+
+// Metadata
+//
+// Satisfied by
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetWalletRequestMetadata],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetInAppRequestMetadata],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadata].
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataUnion interface {
+	implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataUnion()
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetWalletRequestMetadata struct {
+	// Metadata for wallet requests
+	Type param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetWalletRequestMetadataType] `json:"type,required"`
+	// URL of the dApp originating the transaction
+	URL param.Field[string] `json:"url,required"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetWalletRequestMetadata) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataUnion() {
+}
+
+// Metadata for wallet requests
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetWalletRequestMetadataType string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetWalletRequestMetadataTypeWallet StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetWalletRequestMetadataType = "wallet"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetWalletRequestMetadataType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetWalletRequestMetadataTypeWallet:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetInAppRequestMetadata struct {
+	// Metadata for in-app requests
+	Type param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetInAppRequestMetadataType] `json:"type"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetInAppRequestMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetInAppRequestMetadata) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataUnion() {
+}
+
+// Metadata for in-app requests
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetInAppRequestMetadataType string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetInAppRequestMetadataTypeInApp StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetInAppRequestMetadataType = "in_app"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetInAppRequestMetadataType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataStarknetInAppRequestMetadataTypeInApp:
+		return true
+	}
+	return false
+}
+
+// Metadata for wallet requests
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataType string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataTypeWallet StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataType = "wallet"
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataTypeInApp  StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataType = "in_app"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataTypeWallet, StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsMetadataTypeInApp:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransaction struct {
+	AccountDeploymentData param.Field[interface{}] `json:"account_deployment_data,required"`
+	Calldata              param.Field[interface{}] `json:"calldata,required"`
+	ConstructorCalldata   param.Field[interface{}] `json:"constructor_calldata,required"`
+	// The nonce of the transaction.
+	Nonce         param.Field[string]      `json:"nonce,required"`
+	PaymasterData param.Field[interface{}] `json:"paymaster_data,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionVersion] `json:"version,required"`
+	// The id of the chain to which the transaction is sent.
+	ChainID param.Field[string] `json:"chain_id"`
+	// The hash of the contract class.
+	ClassHash param.Field[string] `json:"class_hash"`
+	// The salt of the contract address.
+	ContractAddressSalt param.Field[string] `json:"contract_address_salt"`
+	// The maximum fee that the sender is willing to pay.
+	MaxFee param.Field[string] `json:"max_fee"`
+	// The nonce data availability mode.
+	NonceDataAvailabilityMode param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionNonceDataAvailabilityMode] `json:"nonce_data_availability_mode"`
+	// The address of the sender.
+	SenderAddress param.Field[string] `json:"sender_address"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransaction) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransaction) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionUnion() {
+}
+
+// Satisfied by
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV1TransactionSchema],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchema],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV1TransactionSchema],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV3TransactionSchema],
+// [StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransaction].
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionUnion interface {
+	implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionUnion()
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV1TransactionSchema struct {
+	// The maximum fee that the sender is willing to pay.
+	MaxFee param.Field[string] `json:"max_fee,required"`
+	// The nonce of the transaction.
+	Nonce param.Field[string] `json:"nonce,required"`
+	// The address of the sender.
+	SenderAddress param.Field[string] `json:"sender_address,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV1TransactionSchemaVersion] `json:"version,required"`
+	// The arguments that are passed to the validate and execute functions.
+	Calldata param.Field[[]string] `json:"calldata"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV1TransactionSchema) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV1TransactionSchema) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionUnion() {
+}
+
+// The version of the transaction.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV1TransactionSchemaVersion int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV1TransactionSchemaVersion1 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV1TransactionSchemaVersion = 1
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV1TransactionSchemaVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV1TransactionSchemaVersion1:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchema struct {
+	// The arguments that are passed to the validate and execute functions.
+	Calldata param.Field[[]string] `json:"calldata,required"`
+	// The id of the chain to which the transaction is sent.
+	ChainID param.Field[string] `json:"chain_id,required"`
+	// The nonce of the transaction.
+	Nonce param.Field[string] `json:"nonce,required"`
+	// The address of the sender.
+	SenderAddress param.Field[string] `json:"sender_address,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchemaVersion] `json:"version,required"`
+	// For future use. Currently this value is always empty.
+	AccountDeploymentData param.Field[[]string] `json:"account_deployment_data"`
+	// The nonce data availability mode.
+	NonceDataAvailabilityMode param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode] `json:"nonce_data_availability_mode"`
+	// For future use. Currently this value is always empty.
+	PaymasterData param.Field[[]string] `json:"paymaster_data"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchema) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchema) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionUnion() {
+}
+
+// The version of the transaction.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchemaVersion int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchemaVersion3 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchemaVersion = 3
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchemaVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchemaVersion3:
+		return true
+	}
+	return false
+}
+
+// The nonce data availability mode.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode0 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode = 0
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode0:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV1TransactionSchema struct {
+	// The hash of the contract class.
+	ClassHash param.Field[string] `json:"class_hash,required"`
+	// The arguments that are passed to the constructor function.
+	ConstructorCalldata param.Field[[]string] `json:"constructor_calldata,required"`
+	// The salt of the contract address.
+	ContractAddressSalt param.Field[string] `json:"contract_address_salt,required"`
+	// The maximum fee that the sender is willing to pay.
+	MaxFee param.Field[string] `json:"max_fee,required"`
+	// The nonce of the transaction.
+	Nonce param.Field[string] `json:"nonce,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV1TransactionSchemaVersion] `json:"version,required"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV1TransactionSchema) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV1TransactionSchema) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionUnion() {
+}
+
+// The version of the transaction.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV1TransactionSchemaVersion int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV1TransactionSchemaVersion1 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV1TransactionSchemaVersion = 1
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV1TransactionSchemaVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV1TransactionSchemaVersion1:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV3TransactionSchema struct {
+	// The hash of the contract class.
+	ClassHash param.Field[string] `json:"class_hash,required"`
+	// The arguments that are passed to the constructor function.
+	ConstructorCalldata param.Field[[]string] `json:"constructor_calldata,required"`
+	// The salt of the contract address.
+	ContractAddressSalt param.Field[string] `json:"contract_address_salt,required"`
+	// The maximum fee that the sender is willing to pay.
+	MaxFee param.Field[string] `json:"max_fee,required"`
+	// The nonce of the transaction.
+	Nonce param.Field[string] `json:"nonce,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV3TransactionSchemaVersion] `json:"version,required"`
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV3TransactionSchema) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV3TransactionSchema) implementsStarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionUnion() {
+}
+
+// The version of the transaction.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV3TransactionSchemaVersion int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV3TransactionSchemaVersion3 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV3TransactionSchemaVersion = 3
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV3TransactionSchemaVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionStarknetDeployAccountV3TransactionSchemaVersion3:
+		return true
+	}
+	return false
+}
+
+// The version of the transaction.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionVersion int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionVersion1 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionVersion = 1
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionVersion3 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionVersion = 3
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionVersion1, StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionVersion3:
+		return true
+	}
+	return false
+}
+
+// The nonce data availability mode.
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionNonceDataAvailabilityMode int64
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionNonceDataAvailabilityMode0 StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionNonceDataAvailabilityMode = 0
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionNonceDataAvailabilityMode) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsTransactionNonceDataAvailabilityMode0:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsOption string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsOptionValidation StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsOption = "validation"
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsOptionSimulation StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsOption = "simulation"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsOption) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsOptionValidation, StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeParamsOptionSimulation:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeType string
+
+const (
+	StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeTypeParams StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeType = "params"
+)
+
+func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportStarknetRequestSchemaTypeTypeParams:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionReportParamsReportType string
+
+const (
+	StarknetTransactionReportParamsReportTypeRequestID StarknetTransactionReportParamsReportType = "request_id"
+	StarknetTransactionReportParamsReportTypeParams    StarknetTransactionReportParamsReportType = "params"
+)
+
+func (r StarknetTransactionReportParamsReportType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionReportParamsReportTypeRequestID, StarknetTransactionReportParamsReportTypeParams:
 		return true
 	}
 	return false
