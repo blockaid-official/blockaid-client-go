@@ -69,10 +69,10 @@ func (r bitcoinTransactionScanResponseJSON) RawJSON() string {
 // Simulation result; Only present if simulation option is included in the request
 type BitcoinTransactionScanResponseSimulation struct {
 	// This field can have the runtime type of
-	// [[]BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAddressDetail].
+	// [[]BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetail].
 	AddressDetails interface{} `json:"address_details,required"`
 	// This field can have the runtime type of
-	// [map[string][]BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiff].
+	// [map[string][]BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff].
 	AssetsDiffs    interface{}                                    `json:"assets_diffs,required"`
 	Status         BitcoinTransactionScanResponseSimulationStatus `json:"status,required"`
 	AccountSummary interface{}                                    `json:"account_summary"`
@@ -111,7 +111,7 @@ func (r *BitcoinTransactionScanResponseSimulation) UnmarshalJSON(data []byte) (e
 // which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfiguration],
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse],
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationErrorSchema].
 func (r BitcoinTransactionScanResponseSimulation) AsUnion() BitcoinTransactionScanResponseSimulationUnion {
 	return r.union
@@ -120,8 +120,8 @@ func (r BitcoinTransactionScanResponseSimulation) AsUnion() BitcoinTransactionSc
 // Simulation result; Only present if simulation option is included in the request
 //
 // Union satisfied by
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfiguration]
-// or [BitcoinTransactionScanResponseSimulationBitcoinSimulationErrorSchema].
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse] or
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationErrorSchema].
 type BitcoinTransactionScanResponseSimulationUnion interface {
 	implementsBitcoinTransactionScanResponseSimulation()
 }
@@ -132,7 +132,7 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfiguration{}),
+			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
@@ -141,21 +141,21 @@ func init() {
 	)
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfiguration struct {
-	Status         BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationStatus `json:"status,required"`
-	AccountSummary interface{}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   `json:"account_summary"`
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse struct {
+	Status         BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseStatus `json:"status,required"`
+	AccountSummary interface{}                                                             `json:"account_summary"`
 	// Details of addresses involved in the transaction
-	AddressDetails []BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAddressDetail `json:"address_details"`
+	AddressDetails []BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetail `json:"address_details"`
 	// Mapping between the address of an account to the assets diff during the
 	// transaction
-	AssetsDiffs map[string][]BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiff `json:"assets_diffs"`
-	JSON        bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationJSON                    `json:"-"`
+	AssetsDiffs map[string][]BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff `json:"assets_diffs"`
+	JSON        bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseJSON                    `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationJSON
-// contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfiguration]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationJSON struct {
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseJSON contains
+// the JSON metadata for the struct
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseJSON struct {
 	Status         apijson.Field
 	AccountSummary apijson.Field
 	AddressDetails apijson.Field
@@ -164,83 +164,83 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfiguration) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfiguration) implementsBitcoinTransactionScanResponseSimulation() {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse) implementsBitcoinTransactionScanResponseSimulation() {
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationStatus string
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseStatus string
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationStatusSuccess BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationStatus = "Success"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseStatusSuccess BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseStatus = "Success"
 )
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationStatus) IsKnown() bool {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseStatus) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationStatusSuccess:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseStatusSuccess:
 		return true
 	}
 	return false
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAddressDetail struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetail struct {
 	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
+	AccountAddress interface{} `json:"account_address,required"`
 	// Description of the account
-	Description string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   `json:"description,nullable"`
-	JSON        bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAddressDetailJSON `json:"-"`
+	Description string                                                                             `json:"description,nullable"`
+	JSON        bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetailJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAddressDetailJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetailJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAddressDetail]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAddressDetailJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetail]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetailJSON struct {
 	AccountAddress apijson.Field
 	Description    apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAddressDetail) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAddressDetailJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetailJSON) RawJSON() string {
 	return r.raw
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiff struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff struct {
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// This field can have the runtime type of
-	// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaIn],
-	// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaIn],
-	// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaIn].
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffIn],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffIn],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffIn].
 	In interface{} `json:"in,required"`
 	// This field can have the runtime type of
-	// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaOut],
-	// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaOut],
-	// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaOut].
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOut],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOut],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOut].
 	Out interface{} `json:"out,required"`
 	// This field can have the runtime type of
-	// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset],
-	// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAsset],
-	// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAsset].
-	Asset interface{}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           `json:"asset"`
-	JSON  bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffJSON `json:"-"`
-	union BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsUnion
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAsset],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAsset],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAsset].
+	Asset interface{}                                                                     `json:"asset"`
+	JSON  bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffJSON `json:"-"`
+	union BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsUnion
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiff]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffJSON struct {
 	AssetType   apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
@@ -249,12 +249,12 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields map[string]apijson.Field
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiff) UnmarshalJSON(data []byte) (err error) {
-	*r = BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiff{}
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -263,60 +263,60 @@ func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaT
 }
 
 // AsUnion returns a
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsUnion]
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsUnion]
 // interface which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema],
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchema],
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchema].
-func (r BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiff) AsUnion() BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsUnion {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff],
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff],
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff].
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff) AsUnion() BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema],
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchema]
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff],
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff]
 // or
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchema].
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsUnion interface {
-	implementsBitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiff()
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff].
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsUnion interface {
+	implementsBitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsUnion)(nil)).Elem(),
+		reflect.TypeOf((*BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema{}),
+			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchema{}),
+			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchema{}),
+			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff{}),
 		},
 	)
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema struct {
-	Asset BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset `json:"asset,required"`
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff struct {
+	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaIn `json:"in,nullable"`
+	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaOut  `json:"out,nullable"`
-	JSON bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaJSON `json:"-"`
+	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOut  `json:"out,nullable"`
+	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -325,35 +325,35 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchema) implementsBitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiff() {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff) implementsBitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff() {
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAsset struct {
 	// URL of the asset's logo
 	LogoURL string `json:"logo_url,required,nullable"`
 	// Decimals of the asset
-	Decimals BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals `json:"decimals"`
+	Decimals BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetDecimals `json:"decimals"`
 	// Name of the asset
-	Name BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetName `json:"name"`
+	Name BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetName `json:"name"`
 	// Symbol of the asset
-	Symbol BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbol `json:"symbol"`
+	Symbol BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetSymbol `json:"symbol"`
 	// Type of the asset (`NATIVE`)
-	Type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetType `json:"type"`
-	JSON bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetJSON `json:"-"`
+	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetType `json:"type"`
+	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAsset]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetJSON struct {
 	LogoURL     apijson.Field
 	Decimals    apijson.Field
 	Name        apijson.Field
@@ -363,76 +363,76 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
 // Decimals of the asset
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals int64
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetDecimals int64
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals8 BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals = 8
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetDecimals8 BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetDecimals = 8
 )
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals) IsKnown() bool {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetDecimals) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetDecimals8:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetDecimals8:
 		return true
 	}
 	return false
 }
 
 // Name of the asset
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetName string
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetName string
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetNameBitcoin BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetName = "Bitcoin"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetNameBitcoin BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetName = "Bitcoin"
 )
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetName) IsKnown() bool {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetName) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetNameBitcoin:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetNameBitcoin:
 		return true
 	}
 	return false
 }
 
 // Symbol of the asset
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbol string
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetSymbol string
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbolBtc BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbol = "BTC"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetSymbolBtc BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetSymbol = "BTC"
 )
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbol) IsKnown() bool {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetSymbol) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetSymbolBtc:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetSymbolBtc:
 		return true
 	}
 	return false
 }
 
 // Type of the asset (`NATIVE`)
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetType string
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetType string
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetTypeNative BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetType = "NATIVE"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetTypeNative BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetType = "NATIVE"
 )
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetType) IsKnown() bool {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaAssetTypeNative:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetTypeNative:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaIn struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue string `json:"raw_value,required"`
 	// USD price of the asset
@@ -440,14 +440,14 @@ type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaInJSON `json:"-"`
+	Summary string                                                                                                   `json:"summary,nullable"`
+	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffInJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaInJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffInJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaIn]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaInJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffIn]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffInJSON struct {
 	RawValue    apijson.Field
 	UsdPrice    apijson.Field
 	Value       apijson.Field
@@ -456,16 +456,16 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaInJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaOut struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue string `json:"raw_value,required"`
 	// USD price of the asset
@@ -473,14 +473,14 @@ type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaOutJSON `json:"-"`
+	Summary string                                                                                                    `json:"summary,nullable"`
+	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOutJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaOutJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOutJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaOut]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaOutJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOut]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOutJSON struct {
 	RawValue    apijson.Field
 	UsdPrice    apijson.Field
 	Value       apijson.Field
@@ -489,29 +489,29 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaOutJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchema struct {
-	Asset BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAsset `json:"asset,required"`
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff struct {
+	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaIn `json:"in,nullable"`
+	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaOut  `json:"out,nullable"`
-	JSON bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaJSON `json:"-"`
+	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOut  `json:"out,nullable"`
+	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchema]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -520,31 +520,31 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchema) implementsBitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiff() {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff) implementsBitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff() {
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAsset struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAsset struct {
 	// token's name
 	Name string `json:"name,required"`
 	// URL of the asset's logo
 	LogoURL string `json:"logo_url,nullable"`
 	// Type of the asset (`ORDINAL`)
-	Type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAssetType `json:"type"`
-	JSON bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAssetJSON `json:"-"`
+	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetType `json:"type"`
+	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAssetJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAsset]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAssetJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAsset]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetJSON struct {
 	Name        apijson.Field
 	LogoURL     apijson.Field
 	Type        apijson.Field
@@ -552,31 +552,31 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAssetJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
 // Type of the asset (`ORDINAL`)
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAssetType string
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetType string
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAssetTypeOrdinal BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAssetType = "ORDINAL"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetTypeOrdinal BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetType = "ORDINAL"
 )
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAssetType) IsKnown() bool {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaAssetTypeOrdinal:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetTypeOrdinal:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaIn struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffIn struct {
 	// Id of the ordinal
 	ID string `json:"id,required"`
 	// Raw value of the transfer
@@ -586,14 +586,14 @@ type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaInJSON `json:"-"`
+	Summary string                                                                                                    `json:"summary,nullable"`
+	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffInJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaInJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffInJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaIn]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaInJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffIn]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffInJSON struct {
 	ID          apijson.Field
 	RawValue    apijson.Field
 	UsdPrice    apijson.Field
@@ -603,16 +603,16 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaInJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaOut struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOut struct {
 	// Id of the ordinal
 	ID string `json:"id,required"`
 	// Raw value of the transfer
@@ -622,14 +622,14 @@ type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaOutJSON `json:"-"`
+	Summary string                                                                                                     `json:"summary,nullable"`
+	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOutJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaOutJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOutJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaOut]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaOutJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOut]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOutJSON struct {
 	ID          apijson.Field
 	RawValue    apijson.Field
 	UsdPrice    apijson.Field
@@ -639,29 +639,29 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaOutJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchema struct {
-	Asset BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAsset `json:"asset,required"`
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff struct {
+	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaIn `json:"in,nullable"`
+	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaOut  `json:"out,nullable"`
-	JSON bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaJSON `json:"-"`
+	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOut  `json:"out,nullable"`
+	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchema]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -670,18 +670,18 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchema) implementsBitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiff() {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff) implementsBitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff() {
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAsset struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAsset struct {
 	// The Rune ID
 	ID string `json:"id,required"`
 	// Decimals of the asset
@@ -695,14 +695,14 @@ type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	// URL of the asset's logo
 	LogoURL string `json:"logo_url,nullable"`
 	// Type of the asset (`RUNE`)
-	Type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAssetType `json:"type"`
-	JSON bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAssetJSON `json:"-"`
+	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetType `json:"type"`
+	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAssetJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAsset]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAssetJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAsset]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetJSON struct {
 	ID          apijson.Field
 	Decimals    apijson.Field
 	Name        apijson.Field
@@ -714,31 +714,31 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAssetJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
 // Type of the asset (`RUNE`)
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAssetType string
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetType string
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAssetTypeRune BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAssetType = "RUNE"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetTypeRune BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetType = "RUNE"
 )
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAssetType) IsKnown() bool {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaAssetTypeRune:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetTypeRune:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaIn struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue string `json:"raw_value,required"`
 	// USD price of the asset
@@ -746,14 +746,14 @@ type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaInJSON `json:"-"`
+	Summary string                                                                                                  `json:"summary,nullable"`
+	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffInJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaInJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffInJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaIn]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaInJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffIn]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffInJSON struct {
 	RawValue    apijson.Field
 	UsdPrice    apijson.Field
 	Value       apijson.Field
@@ -762,16 +762,16 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaIn) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaInJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaOut struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue string `json:"raw_value,required"`
 	// USD price of the asset
@@ -779,14 +779,14 @@ type BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaOutJSON `json:"-"`
+	Summary string                                                                                                   `json:"summary,nullable"`
+	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOutJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaOutJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOutJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaOut]
-type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaOutJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOut]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOutJSON struct {
 	RawValue    apijson.Field
 	UsdPrice    apijson.Field
 	Value       apijson.Field
@@ -795,11 +795,11 @@ type bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeA
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaOut) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinBitcoinSimulationSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaUnionAnnotatedAccountSingleAssetDiffSchemaTypeNativeAssetDetailsSchemaNativeDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleNativeAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeOrdinalDetailsSchemaOrdinalDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleOrdinalAssetDiffAnnotatedAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaFieldInfoAnnotationNoneTypeRequiredTrueTitleRunesAssetDiffEmptyModelEmptyModelAddressDetailsBaseSchemaAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaAnnotatedEmptyModelSimulationSchemaConfigurationAssetsDiffsBitcoinAccountSingleAssetDiffSchemaTypeRuneDetailsSchemaRuneDiffSchemaOutJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -863,7 +863,7 @@ func (r BitcoinTransactionScanResponseSimulationStatus) IsKnown() bool {
 // Validation result; Only present if validation option is included in the request
 type BitcoinTransactionScanResponseValidation struct {
 	// This field can have the runtime type of
-	// [[]BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeature].
+	// [[]BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature].
 	Features interface{}                                    `json:"features,required"`
 	Status   BitcoinTransactionScanResponseValidationStatus `json:"status,required"`
 	// A textual classification that can be presented to the user explaining the
@@ -913,7 +913,7 @@ func (r *BitcoinTransactionScanResponseValidation) UnmarshalJSON(data []byte) (e
 // which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchema],
+// [BitcoinTransactionScanResponseValidationBitcoinValidationResult],
 // [BitcoinTransactionScanResponseValidationBitcoinValidationErrorSchema].
 func (r BitcoinTransactionScanResponseValidation) AsUnion() BitcoinTransactionScanResponseValidationUnion {
 	return r.union
@@ -922,8 +922,8 @@ func (r BitcoinTransactionScanResponseValidation) AsUnion() BitcoinTransactionSc
 // Validation result; Only present if validation option is included in the request
 //
 // Union satisfied by
-// [BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchema]
-// or [BitcoinTransactionScanResponseValidationBitcoinValidationErrorSchema].
+// [BitcoinTransactionScanResponseValidationBitcoinValidationResult] or
+// [BitcoinTransactionScanResponseValidationBitcoinValidationErrorSchema].
 type BitcoinTransactionScanResponseValidationUnion interface {
 	implementsBitcoinTransactionScanResponseValidation()
 }
@@ -934,7 +934,7 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchema{}),
+			Type:       reflect.TypeOf(BitcoinTransactionScanResponseValidationBitcoinValidationResult{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
@@ -943,27 +943,26 @@ func init() {
 	)
 }
 
-type BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchema struct {
+type BitcoinTransactionScanResponseValidationBitcoinValidationResult struct {
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification,required"`
 	// A textual description about the validation result
-	Description string `json:"description,required"`
-	// A list of features about this transaction explaining the validation
-	Features []BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeature `json:"features,required"`
+	Description string                                                                   `json:"description,required"`
+	Features    []BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature `json:"features,required"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
 	Reason string `json:"reason,required"`
 	// Verdict of the validation
-	ResultType BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaResultType `json:"result_type,required"`
-	Status     BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaStatus     `json:"status,required"`
-	JSON       bitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaJSON       `json:"-"`
+	ResultType BitcoinTransactionScanResponseValidationBitcoinValidationResultResultType `json:"result_type,required"`
+	Status     BitcoinTransactionScanResponseValidationBitcoinValidationResultStatus     `json:"status,required"`
+	JSON       bitcoinTransactionScanResponseValidationBitcoinValidationResultJSON       `json:"-"`
 }
 
-// bitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaJSON
-// contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchema]
-type bitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaJSON struct {
+// bitcoinTransactionScanResponseValidationBitcoinValidationResultJSON contains the
+// JSON metadata for the struct
+// [BitcoinTransactionScanResponseValidationBitcoinValidationResult]
+type bitcoinTransactionScanResponseValidationBitcoinValidationResultJSON struct {
 	Classification apijson.Field
 	Description    apijson.Field
 	Features       apijson.Field
@@ -974,32 +973,32 @@ type bitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAn
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseValidationBitcoinValidationResult) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseValidationBitcoinValidationResultJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchema) implementsBitcoinTransactionScanResponseValidation() {
+func (r BitcoinTransactionScanResponseValidationBitcoinValidationResult) implementsBitcoinTransactionScanResponseValidation() {
 }
 
-type BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeature struct {
+type BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature struct {
 	// Address the feature refers to
 	Address string `json:"address,required"`
 	// Textual description
 	Description string `json:"description,required"`
 	FeatureID string `json:"feature_id,required"`
 	// Feature Classification
-	Type BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesType `json:"type,required"`
-	JSON bitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeatureJSON  `json:"-"`
+	Type BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesType `json:"type,required"`
+	JSON bitcoinTransactionScanResponseValidationBitcoinValidationResultFeatureJSON  `json:"-"`
 }
 
-// bitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeatureJSON
+// bitcoinTransactionScanResponseValidationBitcoinValidationResultFeatureJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeature]
-type bitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeatureJSON struct {
+// [BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature]
+type bitcoinTransactionScanResponseValidationBitcoinValidationResultFeatureJSON struct {
 	Address     apijson.Field
 	Description apijson.Field
 	FeatureID   apijson.Field
@@ -1008,58 +1007,58 @@ type bitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAn
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeature) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeatureJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseValidationBitcoinValidationResultFeatureJSON) RawJSON() string {
 	return r.raw
 }
 
 // Feature Classification
-type BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesType string
+type BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesType string
 
 const (
-	BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeBenign    BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesType = "Benign"
-	BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeWarning   BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesType = "Warning"
-	BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeMalicious BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesType = "Malicious"
-	BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeInfo      BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesType = "Info"
+	BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesTypeBenign    BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesType = "Benign"
+	BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesTypeWarning   BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesType = "Warning"
+	BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesTypeMalicious BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesType = "Malicious"
+	BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesTypeInfo      BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesType = "Info"
 )
 
-func (r BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesType) IsKnown() bool {
+func (r BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesType) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeBenign, BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeWarning, BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeMalicious, BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaFeaturesTypeInfo:
+	case BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesTypeBenign, BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesTypeWarning, BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesTypeMalicious, BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesTypeInfo:
 		return true
 	}
 	return false
 }
 
 // Verdict of the validation
-type BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaResultType string
+type BitcoinTransactionScanResponseValidationBitcoinValidationResultResultType string
 
 const (
-	BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaResultTypeBenign    BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaResultType = "Benign"
-	BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaResultTypeWarning   BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaResultType = "Warning"
-	BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaResultTypeMalicious BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaResultType = "Malicious"
+	BitcoinTransactionScanResponseValidationBitcoinValidationResultResultTypeBenign    BitcoinTransactionScanResponseValidationBitcoinValidationResultResultType = "Benign"
+	BitcoinTransactionScanResponseValidationBitcoinValidationResultResultTypeWarning   BitcoinTransactionScanResponseValidationBitcoinValidationResultResultType = "Warning"
+	BitcoinTransactionScanResponseValidationBitcoinValidationResultResultTypeMalicious BitcoinTransactionScanResponseValidationBitcoinValidationResultResultType = "Malicious"
 )
 
-func (r BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaResultType) IsKnown() bool {
+func (r BitcoinTransactionScanResponseValidationBitcoinValidationResultResultType) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaResultTypeBenign, BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaResultTypeWarning, BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaResultTypeMalicious:
+	case BitcoinTransactionScanResponseValidationBitcoinValidationResultResultTypeBenign, BitcoinTransactionScanResponseValidationBitcoinValidationResultResultTypeWarning, BitcoinTransactionScanResponseValidationBitcoinValidationResultResultTypeMalicious:
 		return true
 	}
 	return false
 }
 
-type BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaStatus string
+type BitcoinTransactionScanResponseValidationBitcoinValidationResultStatus string
 
 const (
-	BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaStatusSuccess BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaStatus = "Success"
+	BitcoinTransactionScanResponseValidationBitcoinValidationResultStatusSuccess BitcoinTransactionScanResponseValidationBitcoinValidationResultStatus = "Success"
 )
 
-func (r BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaStatus) IsKnown() bool {
+func (r BitcoinTransactionScanResponseValidationBitcoinValidationResultStatus) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseValidationBitcoinValidationResultSchemaTypeAnnotatedStrSkipValidationPlainSerializerGetPydanticSchemaStatusSuccess:
+	case BitcoinTransactionScanResponseValidationBitcoinValidationResultStatusSuccess:
 		return true
 	}
 	return false
@@ -1187,65 +1186,64 @@ func (r BitcoinTransactionScanParamsMetadata) implementsBitcoinTransactionScanPa
 
 // Metadata
 //
-// Satisfied by
-// [BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIWalletRequestMetadata],
-// [BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIInAppRequestMetadata],
+// Satisfied by [BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadata],
+// [BitcoinTransactionScanParamsMetadataBitcoinInAppRequestMetadata],
 // [BitcoinTransactionScanParamsMetadata].
 type BitcoinTransactionScanParamsMetadataUnion interface {
 	implementsBitcoinTransactionScanParamsMetadataUnion()
 }
 
-type BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIWalletRequestMetadata struct {
+type BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadata struct {
 	// Metadata for wallet requests
-	Type param.Field[BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIWalletRequestMetadataType] `json:"type,required"`
+	Type param.Field[BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadataType] `json:"type,required"`
 	// URL of the dApp originating the transaction
 	URL param.Field[string] `json:"url,required"`
 }
 
-func (r BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
+func (r BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIWalletRequestMetadata) implementsBitcoinTransactionScanParamsMetadataUnion() {
+func (r BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadata) implementsBitcoinTransactionScanParamsMetadataUnion() {
 }
 
 // Metadata for wallet requests
-type BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIWalletRequestMetadataType string
+type BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadataType string
 
 const (
-	BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIWalletRequestMetadataTypeWallet BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIWalletRequestMetadataType = "wallet"
+	BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadataTypeWallet BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadataType = "wallet"
 )
 
-func (r BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIWalletRequestMetadataType) IsKnown() bool {
+func (r BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadataType) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIWalletRequestMetadataTypeWallet:
+	case BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadataTypeWallet:
 		return true
 	}
 	return false
 }
 
-type BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIInAppRequestMetadata struct {
+type BitcoinTransactionScanParamsMetadataBitcoinInAppRequestMetadata struct {
 	// Metadata for in-app requests
-	Type param.Field[BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIInAppRequestMetadataType] `json:"type"`
+	Type param.Field[BitcoinTransactionScanParamsMetadataBitcoinInAppRequestMetadataType] `json:"type"`
 }
 
-func (r BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIInAppRequestMetadata) MarshalJSON() (data []byte, err error) {
+func (r BitcoinTransactionScanParamsMetadataBitcoinInAppRequestMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIInAppRequestMetadata) implementsBitcoinTransactionScanParamsMetadataUnion() {
+func (r BitcoinTransactionScanParamsMetadataBitcoinInAppRequestMetadata) implementsBitcoinTransactionScanParamsMetadataUnion() {
 }
 
 // Metadata for in-app requests
-type BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIInAppRequestMetadataType string
+type BitcoinTransactionScanParamsMetadataBitcoinInAppRequestMetadataType string
 
 const (
-	BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIInAppRequestMetadataTypeInApp BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIInAppRequestMetadataType = "in_app"
+	BitcoinTransactionScanParamsMetadataBitcoinInAppRequestMetadataTypeInApp BitcoinTransactionScanParamsMetadataBitcoinInAppRequestMetadataType = "in_app"
 )
 
-func (r BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIInAppRequestMetadataType) IsKnown() bool {
+func (r BitcoinTransactionScanParamsMetadataBitcoinInAppRequestMetadataType) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanParamsMetadataBitcoinblockaidApplicationRunnerAppSchemasTransactionScanningAPIInAppRequestMetadataTypeInApp:
+	case BitcoinTransactionScanParamsMetadataBitcoinInAppRequestMetadataTypeInApp:
 		return true
 	}
 	return false
