@@ -34,6 +34,14 @@ func NewStellarTransactionService(opts ...option.RequestOption) (r *StellarTrans
 	return
 }
 
+// Report Transaction
+func (r *StellarTransactionService) Report(ctx context.Context, body StellarTransactionReportParams, opts ...option.RequestOption) (res *int64, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "v0/stellar/transaction/report"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Scan Transaction
 func (r *StellarTransactionService) Scan(ctx context.Context, body StellarTransactionScanParams, opts ...option.RequestOption) (res *StellarTransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
@@ -666,14 +674,20 @@ type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSum
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// This field can have the runtime type of
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffIn],
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffIn],
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffIn].
+	In interface{} `json:"in,required"`
+	// This field can have the runtime type of
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffOut],
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffOut],
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffOut].
+	Out interface{} `json:"out,required"`
+	// This field can have the runtime type of
 	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffAsset],
 	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffAsset],
-	// [StellarAssetContractDetailsSchema].
-	Asset interface{} `json:"asset"`
-	// Details of the incoming transfer
-	In StellarAssetTransferDetailsSchema `json:"in,nullable"`
-	// Details of the outgoing transfer
-	Out   StellarAssetTransferDetailsSchema                                                                    `json:"out,nullable"`
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAsset].
+	Asset interface{}                                                                                          `json:"asset"`
 	JSON  stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffJSON `json:"-"`
 	union StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsUnion
 }
@@ -683,9 +697,9 @@ type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSum
 // [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiff]
 type stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffJSON struct {
 	AssetType   apijson.Field
-	Asset       apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
+	Asset       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -748,9 +762,9 @@ type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSum
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetailsSchema `json:"in,nullable"`
+	In StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StellarAssetTransferDetailsSchema                                                                                           `json:"out,nullable"`
+	Out  StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffOut  `json:"out,nullable"`
 	JSON stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffJSON `json:"-"`
 }
 
@@ -827,14 +841,80 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResponseAccount
 	return false
 }
 
+// Details of the incoming transfer
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffIn struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                        `json:"summary,nullable"`
+	JSON    stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffInJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffInJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffIn]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffInJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffOut struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                         `json:"summary,nullable"`
+	JSON    stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffOutJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffOutJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffOut]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffOutJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffOutJSON) RawJSON() string {
+	return r.raw
+}
+
 type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiff struct {
 	Asset StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetailsSchema `json:"in,nullable"`
+	In StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StellarAssetTransferDetailsSchema                                                                                           `json:"out,nullable"`
+	Out  StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffOut  `json:"out,nullable"`
 	JSON stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffJSON `json:"-"`
 }
 
@@ -917,14 +997,80 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResponseAccount
 	return false
 }
 
+// Details of the incoming transfer
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffIn struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                        `json:"summary,nullable"`
+	JSON    stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffInJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffInJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffIn]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffInJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffOut struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                         `json:"summary,nullable"`
+	JSON    stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffOutJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffOutJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffOut]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffOutJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffOutJSON) RawJSON() string {
+	return r.raw
+}
+
 type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiff struct {
-	Asset StellarAssetContractDetailsSchema `json:"asset,required"`
+	Asset StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetailsSchema `json:"in,nullable"`
+	In StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StellarAssetTransferDetailsSchema                                                                                             `json:"out,nullable"`
+	Out  StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffOut  `json:"out,nullable"`
 	JSON stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffJSON `json:"-"`
 }
 
@@ -949,6 +1095,119 @@ func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAccount
 }
 
 func (r StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiff) implementsStellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiff() {
+}
+
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAsset struct {
+	// Address of the asset's contract
+	Address string `json:"address,required"`
+	// Asset code
+	Name string `json:"name,required"`
+	// Asset symbol
+	Symbol string `json:"symbol,required"`
+	// Type of the asset (`CONTRACT`)
+	Type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAssetType `json:"type"`
+	JSON stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAssetJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAssetJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAsset]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAssetJSON struct {
+	Address     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Type of the asset (`CONTRACT`)
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAssetType string
+
+const (
+	StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAssetTypeContract StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAssetType = "CONTRACT"
+)
+
+func (r StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAssetType) IsKnown() bool {
+	switch r {
+	case StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffAssetTypeContract:
+		return true
+	}
+	return false
+}
+
+// Details of the incoming transfer
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffIn struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                          `json:"summary,nullable"`
+	JSON    stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffInJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffInJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffIn]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffInJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffOut struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                                           `json:"summary,nullable"`
+	JSON    stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffOutJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffOutJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffOut]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffOutJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffsStellarContractAssetDiffOutJSON) RawJSON() string {
+	return r.raw
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsOwnershipDiff struct {
@@ -1037,14 +1296,20 @@ type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiff
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// This field can have the runtime type of
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffIn],
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffIn],
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffIn].
+	In interface{} `json:"in,required"`
+	// This field can have the runtime type of
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffOut],
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffOut],
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffOut].
+	Out interface{} `json:"out,required"`
+	// This field can have the runtime type of
 	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffAsset],
 	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffAsset],
-	// [StellarAssetContractDetailsSchema].
-	Asset interface{} `json:"asset"`
-	// Details of the incoming transfer
-	In StellarAssetTransferDetailsSchema `json:"in,nullable"`
-	// Details of the outgoing transfer
-	Out   StellarAssetTransferDetailsSchema                                               `json:"out,nullable"`
+	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAsset].
+	Asset interface{}                                                                     `json:"asset"`
 	JSON  stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffJSON `json:"-"`
 	union StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsUnion
 }
@@ -1054,9 +1319,9 @@ type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiff
 // [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiff]
 type stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffJSON struct {
 	AssetType   apijson.Field
-	Asset       apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
+	Asset       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -1119,9 +1384,9 @@ type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiff
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetailsSchema `json:"in,nullable"`
+	In StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StellarAssetTransferDetailsSchema                                                                      `json:"out,nullable"`
+	Out  StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffOut  `json:"out,nullable"`
 	JSON stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffJSON `json:"-"`
 }
 
@@ -1198,14 +1463,80 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsD
 	return false
 }
 
+// Details of the incoming transfer
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffIn struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                   `json:"summary,nullable"`
+	JSON    stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffInJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffInJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffIn]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffInJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffOut struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                    `json:"summary,nullable"`
+	JSON    stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffOutJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffOutJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffOut]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffOutJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarLegacyAssetDiffOutJSON) RawJSON() string {
+	return r.raw
+}
+
 type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiff struct {
 	Asset StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetailsSchema `json:"in,nullable"`
+	In StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StellarAssetTransferDetailsSchema                                                                      `json:"out,nullable"`
+	Out  StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffOut  `json:"out,nullable"`
 	JSON stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffJSON `json:"-"`
 }
 
@@ -1288,14 +1619,80 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsD
 	return false
 }
 
+// Details of the incoming transfer
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffIn struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                   `json:"summary,nullable"`
+	JSON    stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffInJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffInJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffIn]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffInJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffOut struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                    `json:"summary,nullable"`
+	JSON    stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffOutJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffOutJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffOut]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffOutJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarNativeAssetDiffOutJSON) RawJSON() string {
+	return r.raw
+}
+
 type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiff struct {
-	Asset StellarAssetContractDetailsSchema `json:"asset,required"`
+	Asset StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetailsSchema `json:"in,nullable"`
+	In StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  StellarAssetTransferDetailsSchema                                                                        `json:"out,nullable"`
+	Out  StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffOut  `json:"out,nullable"`
 	JSON stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffJSON `json:"-"`
 }
 
@@ -1320,6 +1717,119 @@ func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsD
 }
 
 func (r StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiff) implementsStellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiff() {
+}
+
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAsset struct {
+	// Address of the asset's contract
+	Address string `json:"address,required"`
+	// Asset code
+	Name string `json:"name,required"`
+	// Asset symbol
+	Symbol string `json:"symbol,required"`
+	// Type of the asset (`CONTRACT`)
+	Type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAssetType `json:"type"`
+	JSON stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAssetJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAssetJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAsset]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAssetJSON struct {
+	Address     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Type of the asset (`CONTRACT`)
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAssetType string
+
+const (
+	StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAssetTypeContract StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAssetType = "CONTRACT"
+)
+
+func (r StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAssetType) IsKnown() bool {
+	switch r {
+	case StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffAssetTypeContract:
+		return true
+	}
+	return false
+}
+
+// Details of the incoming transfer
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffIn struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                     `json:"summary,nullable"`
+	JSON    stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffInJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffInJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffIn]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffInJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffOut struct {
+	// Raw value of the transfer
+	RawValue int64 `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                      `json:"summary,nullable"`
+	JSON    stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffOutJSON `json:"-"`
+}
+
+// stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffOutJSON
+// contains the JSON metadata for the struct
+// [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffOut]
+type stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffOutJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffsStellarContractAssetDiffOutJSON) RawJSON() string {
+	return r.raw
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResponseExposure struct {
@@ -2010,6 +2520,265 @@ const (
 func (r StellarTransactionScanResponseValidationResultType) IsKnown() bool {
 	switch r {
 	case StellarTransactionScanResponseValidationResultTypeBenign, StellarTransactionScanResponseValidationResultTypeWarning, StellarTransactionScanResponseValidationResultTypeMalicious:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionReportParams struct {
+	Details param.Field[string]                                    `json:"details,required"`
+	Event   param.Field[StellarTransactionReportParamsEvent]       `json:"event,required"`
+	Report  param.Field[StellarTransactionReportParamsReportUnion] `json:"report,required"`
+}
+
+func (r StellarTransactionReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type StellarTransactionReportParamsEvent string
+
+const (
+	StellarTransactionReportParamsEventShouldBeMalicious StellarTransactionReportParamsEvent = "should_be_malicious"
+	StellarTransactionReportParamsEventShouldBeBenign    StellarTransactionReportParamsEvent = "should_be_benign"
+)
+
+func (r StellarTransactionReportParamsEvent) IsKnown() bool {
+	switch r {
+	case StellarTransactionReportParamsEventShouldBeMalicious, StellarTransactionReportParamsEventShouldBeBenign:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionReportParamsReport struct {
+	Params param.Field[interface{}]                              `json:"params,required"`
+	ID     param.Field[string]                                   `json:"id"`
+	Type   param.Field[StellarTransactionReportParamsReportType] `json:"type"`
+}
+
+func (r StellarTransactionReportParamsReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionReportParamsReport) implementsStellarTransactionReportParamsReportUnion() {}
+
+// Satisfied by [StellarTransactionReportParamsReportStellarAppealRequestID],
+// [StellarTransactionReportParamsReportStellarAppealTransactionDataReport],
+// [StellarTransactionReportParamsReport].
+type StellarTransactionReportParamsReportUnion interface {
+	implementsStellarTransactionReportParamsReportUnion()
+}
+
+type StellarTransactionReportParamsReportStellarAppealRequestID struct {
+	ID   param.Field[string]                                                         `json:"id,required"`
+	Type param.Field[StellarTransactionReportParamsReportStellarAppealRequestIDType] `json:"type"`
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealRequestID) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealRequestID) implementsStellarTransactionReportParamsReportUnion() {
+}
+
+type StellarTransactionReportParamsReportStellarAppealRequestIDType string
+
+const (
+	StellarTransactionReportParamsReportStellarAppealRequestIDTypeRequestID StellarTransactionReportParamsReportStellarAppealRequestIDType = "request_id"
+)
+
+func (r StellarTransactionReportParamsReportStellarAppealRequestIDType) IsKnown() bool {
+	switch r {
+	case StellarTransactionReportParamsReportStellarAppealRequestIDTypeRequestID:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReport struct {
+	Params param.Field[StellarTransactionReportParamsReportStellarAppealTransactionDataReportParams] `json:"params,required"`
+	Type   param.Field[StellarTransactionReportParamsReportStellarAppealTransactionDataReportType]   `json:"type"`
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReport) implementsStellarTransactionReportParamsReportUnion() {
+}
+
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReportParams struct {
+	AccountAddress param.Field[string] `json:"account_address,required"`
+	// A CAIP-2 chain ID or a Stellar network name
+	Chain param.Field[StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsChain] `json:"chain,required"`
+	// Metadata
+	Metadata    param.Field[StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataUnion] `json:"metadata,required"`
+	Transaction param.Field[string]                                                                                    `json:"transaction,required"`
+	// List of options to include in the response
+	//
+	// - `Options.validation`: Include Options.validation output in the response
+	//
+	// - `Options.simulation`: Include Options.simulation output in the response
+	Options param.Field[[]StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsOption] `json:"options"`
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A CAIP-2 chain ID or a Stellar network name
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsChain string
+
+const (
+	StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsChainPubnet    StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsChain = "pubnet"
+	StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsChainFuturenet StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsChain = "futurenet"
+	StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsChainTestnet   StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsChain = "testnet"
+)
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsChain) IsKnown() bool {
+	switch r {
+	case StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsChainPubnet, StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsChainFuturenet, StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsChainTestnet:
+		return true
+	}
+	return false
+}
+
+// Metadata
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadata struct {
+	// Metadata for wallet requests
+	Type param.Field[StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataType] `json:"type"`
+	// URL of the dApp originating the transaction
+	URL param.Field[string] `json:"url"`
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadata) implementsStellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataUnion() {
+}
+
+// Metadata
+//
+// Satisfied by
+// [StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarWalletRequestMetadata],
+// [StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarInAppRequestMetadata],
+// [StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadata].
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataUnion interface {
+	implementsStellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataUnion()
+}
+
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarWalletRequestMetadata struct {
+	// Metadata for wallet requests
+	Type param.Field[StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarWalletRequestMetadataType] `json:"type,required"`
+	// URL of the dApp originating the transaction
+	URL param.Field[string] `json:"url,required"`
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarWalletRequestMetadata) implementsStellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataUnion() {
+}
+
+// Metadata for wallet requests
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarWalletRequestMetadataType string
+
+const (
+	StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarWalletRequestMetadataTypeWallet StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarWalletRequestMetadataType = "wallet"
+)
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarWalletRequestMetadataType) IsKnown() bool {
+	switch r {
+	case StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarWalletRequestMetadataTypeWallet:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarInAppRequestMetadata struct {
+	// Metadata for in-app requests
+	Type param.Field[StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarInAppRequestMetadataType] `json:"type"`
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarInAppRequestMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarInAppRequestMetadata) implementsStellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataUnion() {
+}
+
+// Metadata for in-app requests
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarInAppRequestMetadataType string
+
+const (
+	StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarInAppRequestMetadataTypeInApp StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarInAppRequestMetadataType = "in_app"
+)
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarInAppRequestMetadataType) IsKnown() bool {
+	switch r {
+	case StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataStellarInAppRequestMetadataTypeInApp:
+		return true
+	}
+	return false
+}
+
+// Metadata for wallet requests
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataType string
+
+const (
+	StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataTypeWallet StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataType = "wallet"
+	StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataTypeInApp  StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataType = "in_app"
+)
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataType) IsKnown() bool {
+	switch r {
+	case StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataTypeWallet, StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsMetadataTypeInApp:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsOption string
+
+const (
+	StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsOptionValidation StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsOption = "validation"
+	StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsOptionSimulation StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsOption = "simulation"
+)
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsOption) IsKnown() bool {
+	switch r {
+	case StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsOptionValidation, StellarTransactionReportParamsReportStellarAppealTransactionDataReportParamsOptionSimulation:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReportType string
+
+const (
+	StellarTransactionReportParamsReportStellarAppealTransactionDataReportTypeParams StellarTransactionReportParamsReportStellarAppealTransactionDataReportType = "params"
+)
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportType) IsKnown() bool {
+	switch r {
+	case StellarTransactionReportParamsReportStellarAppealTransactionDataReportTypeParams:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionReportParamsReportType string
+
+const (
+	StellarTransactionReportParamsReportTypeRequestID StellarTransactionReportParamsReportType = "request_id"
+	StellarTransactionReportParamsReportTypeParams    StellarTransactionReportParamsReportType = "params"
+)
+
+func (r StellarTransactionReportParamsReportType) IsKnown() bool {
+	switch r {
+	case StellarTransactionReportParamsReportTypeRequestID, StellarTransactionReportParamsReportTypeParams:
 		return true
 	}
 	return false
