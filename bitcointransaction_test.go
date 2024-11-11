@@ -13,35 +13,6 @@ import (
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
-func TestBitcoinTransactionReportWithOptionalParams(t *testing.T) {
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := blockaidclientgo.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
-	)
-	_, err := client.Bitcoin.Transaction.Report(context.TODO(), blockaidclientgo.BitcoinTransactionReportParams{
-		Details: blockaidclientgo.F("details"),
-		Event:   blockaidclientgo.F(blockaidclientgo.BitcoinTransactionReportParamsEventShouldBeMalicious),
-		Report: blockaidclientgo.F[blockaidclientgo.BitcoinTransactionReportParamsReportUnion](blockaidclientgo.BitcoinTransactionReportParamsReportBitcoinAppealRequestID{
-			ID:   blockaidclientgo.F("id"),
-			Type: blockaidclientgo.F(blockaidclientgo.BitcoinTransactionReportParamsReportBitcoinAppealRequestIDTypeRequestID),
-		}),
-	})
-	if err != nil {
-		var apierr *blockaidclientgo.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-}
-
 func TestBitcoinTransactionScanWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
