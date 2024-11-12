@@ -450,38 +450,38 @@ func (r stellarTransactionScanResponseJSON) RawJSON() string {
 
 // Simulation result; Only present if simulation option is included in the request
 type StellarTransactionScanResponseSimulation struct {
+	Status StellarTransactionScanResponseSimulationStatus `json:"status,required"`
 	// This field can have the runtime type of
 	// [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummary].
-	AccountSummary interface{} `json:"account_summary,required"`
+	AccountSummary interface{} `json:"account_summary"`
 	// This field can have the runtime type of
 	// [[]StellarTransactionScanResponseSimulationStellarSimulationResponseAddressDetail].
-	AddressDetails interface{} `json:"address_details,required"`
+	AddressDetails interface{} `json:"address_details"`
 	// This field can have the runtime type of
 	// [map[string][]StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiff].
-	AssetsDiffs interface{} `json:"assets_diffs,required"`
+	AssetsDiffs interface{} `json:"assets_diffs"`
 	// This field can have the runtime type of
 	// [map[string][]StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsOwnershipDiff].
-	AssetsOwnershipDiff interface{} `json:"assets_ownership_diff,required"`
+	AssetsOwnershipDiff interface{} `json:"assets_ownership_diff"`
+	// Error message
+	Error string `json:"error"`
 	// This field can have the runtime type of
 	// [map[string][]StellarTransactionScanResponseSimulationStellarSimulationResponseExposure].
-	Exposures interface{}                                    `json:"exposures,required"`
-	Status    StellarTransactionScanResponseSimulationStatus `json:"status,required"`
-	// Error message
-	Error string                                       `json:"error"`
-	JSON  stellarTransactionScanResponseSimulationJSON `json:"-"`
-	union StellarTransactionScanResponseSimulationUnion
+	Exposures interface{}                                  `json:"exposures"`
+	JSON      stellarTransactionScanResponseSimulationJSON `json:"-"`
+	union     StellarTransactionScanResponseSimulationUnion
 }
 
 // stellarTransactionScanResponseSimulationJSON contains the JSON metadata for the
 // struct [StellarTransactionScanResponseSimulation]
 type stellarTransactionScanResponseSimulationJSON struct {
+	Status              apijson.Field
 	AccountSummary      apijson.Field
 	AddressDetails      apijson.Field
 	AssetsDiffs         apijson.Field
 	AssetsOwnershipDiff apijson.Field
-	Exposures           apijson.Field
-	Status              apijson.Field
 	Error               apijson.Field
+	Exposures           apijson.Field
 	raw                 string
 	ExtraFields         map[string]apijson.Field
 }
@@ -614,21 +614,21 @@ func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAccount
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountExposure struct {
-	// This field can have the runtime type of [map[string]StellarSingleAssetExposure].
-	Spenders interface{} `json:"spenders,required"`
 	// This field can have the runtime type of [StellarLegacyAssetDetails],
 	// [StellarNativeAssetDetails].
-	Asset interface{}                                                                                        `json:"asset"`
-	JSON  stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountExposureJSON `json:"-"`
-	union StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountExposuresUnion
+	Asset interface{} `json:"asset,required"`
+	// This field can have the runtime type of [map[string]StellarSingleAssetExposure].
+	Spenders interface{}                                                                                        `json:"spenders"`
+	JSON     stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountExposureJSON `json:"-"`
+	union    StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountExposuresUnion
 }
 
 // stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountExposureJSON
 // contains the JSON metadata for the struct
 // [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountExposure]
 type stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountExposureJSON struct {
-	Spenders    apijson.Field
 	Asset       apijson.Field
+	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -809,11 +809,11 @@ func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAccount
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiff struct {
-	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
 	// This field can have the runtime type of [StellarLegacyAssetDetails],
 	// [StellarNativeAssetDetails], [StellarAssetContractDetails].
-	Asset interface{} `json:"asset"`
+	Asset interface{} `json:"asset,required"`
+	// The type of the assets in this diff
+	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
 	In StellarAssetTransferDetails `json:"in,nullable"`
 	// Details of the outgoing transfer
@@ -826,8 +826,8 @@ type StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSum
 // contains the JSON metadata for the struct
 // [StellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiff]
 type stellarTransactionScanResponseSimulationStellarSimulationResponseAccountSummaryAccountAssetsDiffJSON struct {
-	AssetType   apijson.Field
 	Asset       apijson.Field
+	AssetType   apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
 	raw         string
@@ -1072,11 +1072,11 @@ func (r stellarTransactionScanResponseSimulationStellarSimulationResponseAddress
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiff struct {
-	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
 	// This field can have the runtime type of [StellarLegacyAssetDetails],
 	// [StellarNativeAssetDetails], [StellarAssetContractDetails].
-	Asset interface{} `json:"asset"`
+	Asset interface{} `json:"asset,required"`
+	// The type of the assets in this diff
+	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
 	In StellarAssetTransferDetails `json:"in,nullable"`
 	// Details of the outgoing transfer
@@ -1089,8 +1089,8 @@ type StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiff
 // contains the JSON metadata for the struct
 // [StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiff]
 type stellarTransactionScanResponseSimulationStellarSimulationResponseAssetsDiffJSON struct {
-	AssetType   apijson.Field
 	Asset       apijson.Field
+	AssetType   apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
 	raw         string
@@ -1253,21 +1253,21 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResponseAssetsD
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResponseExposure struct {
-	// This field can have the runtime type of [map[string]StellarSingleAssetExposure].
-	Spenders interface{} `json:"spenders,required"`
 	// This field can have the runtime type of [StellarLegacyAssetDetails],
 	// [StellarNativeAssetDetails].
-	Asset interface{}                                                                   `json:"asset"`
-	JSON  stellarTransactionScanResponseSimulationStellarSimulationResponseExposureJSON `json:"-"`
-	union StellarTransactionScanResponseSimulationStellarSimulationResponseExposuresUnion
+	Asset interface{} `json:"asset,required"`
+	// This field can have the runtime type of [map[string]StellarSingleAssetExposure].
+	Spenders interface{}                                                                   `json:"spenders"`
+	JSON     stellarTransactionScanResponseSimulationStellarSimulationResponseExposureJSON `json:"-"`
+	union    StellarTransactionScanResponseSimulationStellarSimulationResponseExposuresUnion
 }
 
 // stellarTransactionScanResponseSimulationStellarSimulationResponseExposureJSON
 // contains the JSON metadata for the struct
 // [StellarTransactionScanResponseSimulationStellarSimulationResponseExposure]
 type stellarTransactionScanResponseSimulationStellarSimulationResponseExposureJSON struct {
-	Spenders    apijson.Field
 	Asset       apijson.Field
+	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -1434,10 +1434,7 @@ func (r StellarTransactionScanResponseSimulationStatus) IsKnown() bool {
 
 // Validation result; Only present if validation option is included in the request
 type StellarTransactionScanResponseValidation struct {
-	// This field can have the runtime type of
-	// [[]StellarTransactionScanResponseValidationStellarValidationResultFeature].
-	Features interface{}                                    `json:"features,required"`
-	Status   StellarTransactionScanResponseValidationStatus `json:"status,required"`
+	Status StellarTransactionScanResponseValidationStatus `json:"status,required"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
@@ -1445,6 +1442,9 @@ type StellarTransactionScanResponseValidation struct {
 	Description string `json:"description"`
 	// Error message
 	Error string `json:"error"`
+	// This field can have the runtime type of
+	// [[]StellarTransactionScanResponseValidationStellarValidationResultFeature].
+	Features interface{} `json:"features"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
 	Reason string `json:"reason"`
@@ -1457,11 +1457,11 @@ type StellarTransactionScanResponseValidation struct {
 // stellarTransactionScanResponseValidationJSON contains the JSON metadata for the
 // struct [StellarTransactionScanResponseValidation]
 type stellarTransactionScanResponseValidationJSON struct {
-	Features       apijson.Field
 	Status         apijson.Field
 	Classification apijson.Field
 	Description    apijson.Field
 	Error          apijson.Field
+	Features       apijson.Field
 	Reason         apijson.Field
 	ResultType     apijson.Field
 	raw            string
