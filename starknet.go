@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
+	"github.com/blockaid-official/blockaid-client-go/internal/param"
 	"github.com/blockaid-official/blockaid-client-go/option"
 	"github.com/tidwall/gjson"
 )
@@ -270,6 +271,392 @@ func (r *StarknetErc721Diff) UnmarshalJSON(data []byte) (err error) {
 
 func (r starknetErc721DiffJSON) RawJSON() string {
 	return r.raw
+}
+
+type StarknetTransactionScanRequestParam struct {
+	AccountAddress param.Field[string] `json:"account_address,required"`
+	// The chain name or chain ID
+	Chain param.Field[StarknetTransactionScanRequestChain] `json:"chain,required"`
+	// Metadata
+	Metadata    param.Field[StarknetTransactionScanRequestMetadataUnionParam]    `json:"metadata,required"`
+	Transaction param.Field[StarknetTransactionScanRequestTransactionUnionParam] `json:"transaction,required"`
+	// Optional block number or tag context for the simulation
+	BlockNumber param.Field[string] `json:"block_number"`
+	// List of options to include in the response
+	//
+	// - `Options.validation`: Include Options.validation output in the response
+	//
+	// - `Options.simulation`: Include Options.simulation output in the response
+	Options param.Field[[]StarknetTransactionScanRequestOption] `json:"options"`
+}
+
+func (r StarknetTransactionScanRequestParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A CAIP-2 or a Starknet network name or a Starknet network name
+type StarknetTransactionScanRequestChain string
+
+const (
+	StarknetTransactionScanRequestChainMainnet            StarknetTransactionScanRequestChain = "mainnet"
+	StarknetTransactionScanRequestChainSepolia            StarknetTransactionScanRequestChain = "sepolia"
+	StarknetTransactionScanRequestChainSepoliaIntegration StarknetTransactionScanRequestChain = "sepolia_integration"
+)
+
+func (r StarknetTransactionScanRequestChain) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanRequestChainMainnet, StarknetTransactionScanRequestChainSepolia, StarknetTransactionScanRequestChainSepoliaIntegration:
+		return true
+	}
+	return false
+}
+
+// Metadata
+type StarknetTransactionScanRequestMetadataParam struct {
+	// Metadata for wallet requests
+	Type param.Field[StarknetTransactionScanRequestMetadataType] `json:"type"`
+	// URL of the dApp originating the transaction
+	URL param.Field[string] `json:"url"`
+}
+
+func (r StarknetTransactionScanRequestMetadataParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionScanRequestMetadataParam) implementsStarknetTransactionScanRequestMetadataUnionParam() {
+}
+
+// Metadata
+//
+// Satisfied by
+// [StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataParam],
+// [StarknetTransactionScanRequestMetadataStarknetInAppRequestMetadataParam],
+// [StarknetTransactionScanRequestMetadataParam].
+type StarknetTransactionScanRequestMetadataUnionParam interface {
+	implementsStarknetTransactionScanRequestMetadataUnionParam()
+}
+
+type StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataParam struct {
+	// Metadata for wallet requests
+	Type param.Field[StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataType] `json:"type,required"`
+	// URL of the dApp originating the transaction
+	URL param.Field[string] `json:"url,required"`
+}
+
+func (r StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataParam) implementsStarknetTransactionScanRequestMetadataUnionParam() {
+}
+
+// Metadata for wallet requests
+type StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataType string
+
+const (
+	StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataTypeWallet StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataType = "wallet"
+)
+
+func (r StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataTypeWallet:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanRequestMetadataStarknetInAppRequestMetadataParam struct {
+	// Metadata for in-app requests
+	Type param.Field[StarknetTransactionScanRequestMetadataStarknetInAppRequestMetadataType] `json:"type"`
+}
+
+func (r StarknetTransactionScanRequestMetadataStarknetInAppRequestMetadataParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionScanRequestMetadataStarknetInAppRequestMetadataParam) implementsStarknetTransactionScanRequestMetadataUnionParam() {
+}
+
+// Metadata for in-app requests
+type StarknetTransactionScanRequestMetadataStarknetInAppRequestMetadataType string
+
+const (
+	StarknetTransactionScanRequestMetadataStarknetInAppRequestMetadataTypeInApp StarknetTransactionScanRequestMetadataStarknetInAppRequestMetadataType = "in_app"
+)
+
+func (r StarknetTransactionScanRequestMetadataStarknetInAppRequestMetadataType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanRequestMetadataStarknetInAppRequestMetadataTypeInApp:
+		return true
+	}
+	return false
+}
+
+// Metadata for wallet requests
+type StarknetTransactionScanRequestMetadataType string
+
+const (
+	StarknetTransactionScanRequestMetadataTypeWallet StarknetTransactionScanRequestMetadataType = "wallet"
+	StarknetTransactionScanRequestMetadataTypeInApp  StarknetTransactionScanRequestMetadataType = "in_app"
+)
+
+func (r StarknetTransactionScanRequestMetadataType) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanRequestMetadataTypeWallet, StarknetTransactionScanRequestMetadataTypeInApp:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanRequestTransactionParam struct {
+	// The nonce of the transaction.
+	Nonce param.Field[string] `json:"nonce,required"`
+	// The version of the transaction.
+	Version               param.Field[StarknetTransactionScanRequestTransactionVersion] `json:"version,required"`
+	AccountDeploymentData param.Field[interface{}]                                      `json:"account_deployment_data"`
+	Calldata              param.Field[interface{}]                                      `json:"calldata"`
+	// The id of the chain to which the transaction is sent.
+	ChainID param.Field[string] `json:"chain_id"`
+	// The hash of the contract class.
+	ClassHash           param.Field[string]      `json:"class_hash"`
+	ConstructorCalldata param.Field[interface{}] `json:"constructor_calldata"`
+	// The salt of the contract address.
+	ContractAddressSalt param.Field[string] `json:"contract_address_salt"`
+	// The maximum fee that the sender is willing to pay.
+	MaxFee param.Field[string] `json:"max_fee"`
+	// The nonce data availability mode.
+	NonceDataAvailabilityMode param.Field[StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode] `json:"nonce_data_availability_mode"`
+	PaymasterData             param.Field[interface{}]                                                        `json:"paymaster_data"`
+	// The address of the sender.
+	SenderAddress param.Field[string] `json:"sender_address"`
+}
+
+func (r StarknetTransactionScanRequestTransactionParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionScanRequestTransactionParam) implementsStarknetTransactionScanRequestTransactionUnionParam() {
+}
+
+// Satisfied by
+// [StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSchemaParam],
+// [StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaParam],
+// [StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaParam],
+// [StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaParam],
+// [StarknetTransactionScanRequestTransactionParam].
+type StarknetTransactionScanRequestTransactionUnionParam interface {
+	implementsStarknetTransactionScanRequestTransactionUnionParam()
+}
+
+type StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSchemaParam struct {
+	// The maximum fee that the sender is willing to pay.
+	MaxFee param.Field[string] `json:"max_fee,required"`
+	// The nonce of the transaction.
+	Nonce param.Field[string] `json:"nonce,required"`
+	// The address of the sender.
+	SenderAddress param.Field[string] `json:"sender_address,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSchemaVersion] `json:"version,required"`
+	// The arguments that are passed to the validate and execute functions.
+	Calldata param.Field[[]string] `json:"calldata"`
+}
+
+func (r StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSchemaParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSchemaParam) implementsStarknetTransactionScanRequestTransactionUnionParam() {
+}
+
+// The version of the transaction.
+type StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSchemaVersion int64
+
+const (
+	StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSchemaVersion1 StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSchemaVersion = 1
+)
+
+func (r StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSchemaVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSchemaVersion1:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaParam struct {
+	// The arguments that are passed to the validate and execute functions.
+	Calldata param.Field[[]string] `json:"calldata,required"`
+	// The id of the chain to which the transaction is sent.
+	ChainID param.Field[string] `json:"chain_id,required"`
+	// The nonce of the transaction.
+	Nonce param.Field[string] `json:"nonce,required"`
+	// The address of the sender.
+	SenderAddress param.Field[string] `json:"sender_address,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaVersion] `json:"version,required"`
+	// For future use. Currently this value is always empty.
+	AccountDeploymentData param.Field[[]string] `json:"account_deployment_data"`
+	// The nonce data availability mode.
+	NonceDataAvailabilityMode param.Field[StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode] `json:"nonce_data_availability_mode"`
+	// For future use. Currently this value is always empty.
+	PaymasterData param.Field[[]string] `json:"paymaster_data"`
+}
+
+func (r StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaParam) implementsStarknetTransactionScanRequestTransactionUnionParam() {
+}
+
+// The version of the transaction.
+type StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaVersion int64
+
+const (
+	StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaVersion3 StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaVersion = 3
+)
+
+func (r StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaVersion3:
+		return true
+	}
+	return false
+}
+
+// The nonce data availability mode.
+type StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode int64
+
+const (
+	StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode0 StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode = 0
+)
+
+func (r StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode0:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaParam struct {
+	// The hash of the contract class.
+	ClassHash param.Field[string] `json:"class_hash,required"`
+	// The arguments that are passed to the constructor function.
+	ConstructorCalldata param.Field[[]string] `json:"constructor_calldata,required"`
+	// The salt of the contract address.
+	ContractAddressSalt param.Field[string] `json:"contract_address_salt,required"`
+	// The maximum fee that the sender is willing to pay.
+	MaxFee param.Field[string] `json:"max_fee,required"`
+	// The nonce of the transaction.
+	Nonce param.Field[string] `json:"nonce,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaVersion] `json:"version,required"`
+}
+
+func (r StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaParam) implementsStarknetTransactionScanRequestTransactionUnionParam() {
+}
+
+// The version of the transaction.
+type StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaVersion int64
+
+const (
+	StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaVersion1 StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaVersion = 1
+)
+
+func (r StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaVersion1:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaParam struct {
+	// The hash of the contract class.
+	ClassHash param.Field[string] `json:"class_hash,required"`
+	// The arguments that are passed to the constructor function.
+	ConstructorCalldata param.Field[[]string] `json:"constructor_calldata,required"`
+	// The salt of the contract address.
+	ContractAddressSalt param.Field[string] `json:"contract_address_salt,required"`
+	// The maximum fee that the sender is willing to pay.
+	MaxFee param.Field[string] `json:"max_fee,required"`
+	// The nonce of the transaction.
+	Nonce param.Field[string] `json:"nonce,required"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaVersion] `json:"version,required"`
+}
+
+func (r StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaParam) implementsStarknetTransactionScanRequestTransactionUnionParam() {
+}
+
+// The version of the transaction.
+type StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaVersion int64
+
+const (
+	StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaVersion3 StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaVersion = 3
+)
+
+func (r StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaVersion3:
+		return true
+	}
+	return false
+}
+
+// The version of the transaction.
+type StarknetTransactionScanRequestTransactionVersion int64
+
+const (
+	StarknetTransactionScanRequestTransactionVersion1 StarknetTransactionScanRequestTransactionVersion = 1
+	StarknetTransactionScanRequestTransactionVersion3 StarknetTransactionScanRequestTransactionVersion = 3
+)
+
+func (r StarknetTransactionScanRequestTransactionVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanRequestTransactionVersion1, StarknetTransactionScanRequestTransactionVersion3:
+		return true
+	}
+	return false
+}
+
+// The nonce data availability mode.
+type StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode int64
+
+const (
+	StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode0 StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode = 0
+)
+
+func (r StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode0:
+		return true
+	}
+	return false
+}
+
+type StarknetTransactionScanRequestOption string
+
+const (
+	StarknetTransactionScanRequestOptionValidation StarknetTransactionScanRequestOption = "validation"
+	StarknetTransactionScanRequestOptionSimulation StarknetTransactionScanRequestOption = "simulation"
+)
+
+func (r StarknetTransactionScanRequestOption) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanRequestOptionValidation, StarknetTransactionScanRequestOptionSimulation:
+		return true
+	}
+	return false
 }
 
 type StarknetTransactionScanResponse struct {
