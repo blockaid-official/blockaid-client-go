@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.29.0 (2024-11-12)
+
+Full Changelog: [v0.27.4...v0.29.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.27.4...v0.29.0)
+
+### Features
+
+* **api:** api update ([#254](https://github.com/blockaid-official/blockaid-client-go/issues/254)) ([f68eb96](https://github.com/blockaid-official/blockaid-client-go/commit/f68eb96542eb49c5b5e39b6ff85fe6216767ef19))
+* **api:** api update ([#255](https://github.com/blockaid-official/blockaid-client-go/issues/255)) ([9d80c5c](https://github.com/blockaid-official/blockaid-client-go/commit/9d80c5c29bf5c0bf022122500409542dedfec63c))
+* **api:** api update ([#256](https://github.com/blockaid-official/blockaid-client-go/issues/256)) ([2e24e35](https://github.com/blockaid-official/blockaid-client-go/commit/2e24e357fc0b4506c4293f00633ab2b064b045e2))
+* **api:** api update ([#257](https://github.com/blockaid-official/blockaid-client-go/issues/257)) ([c31e1cf](https://github.com/blockaid-official/blockaid-client-go/commit/c31e1cf0c0c55f2246083fdca08944edfcee43ea))
+* **api:** api update ([#258](https://github.com/blockaid-official/blockaid-client-go/issues/258)) ([ffb3050](https://github.com/blockaid-official/blockaid-client-go/commit/ffb305030bb9f46db8b31b6017fc3ff209716726))
+* **api:** api update ([#260](https://github.com/blockaid-official/blockaid-client-go/issues/260)) ([62992b7](https://github.com/blockaid-official/blockaid-client-go/commit/62992b703fd4eb43bde3de686b1f4b642049ad29))
+* **api:** api update ([#261](https://github.com/blockaid-official/blockaid-client-go/issues/261)) ([7bd1556](https://github.com/blockaid-official/blockaid-client-go/commit/7bd1556f1c39f5155fc2d70b40c691bcca3b05d4))
+* **api:** api update ([#262](https://github.com/blockaid-official/blockaid-client-go/issues/262)) ([19d7261](https://github.com/blockaid-official/blockaid-client-go/commit/19d7261b8cfd63d199ab39ec0702f4fa6df3260c))
+* **api:** api update ([#264](https://github.com/blockaid-official/blockaid-client-go/issues/264)) ([7e8fd75](https://github.com/blockaid-official/blockaid-client-go/commit/7e8fd7563d49bd219c3dcdd4d6c90a3746e70311))
+* **api:** api update ([#265](https://github.com/blockaid-official/blockaid-client-go/issues/265)) ([e7404ed](https://github.com/blockaid-official/blockaid-client-go/commit/e7404ed2559bb61a3c533c1167398475bdcc7e85))
+* **api:** api update ([#269](https://github.com/blockaid-official/blockaid-client-go/issues/269)) ([df7844b](https://github.com/blockaid-official/blockaid-client-go/commit/df7844b30e498916118d9fa6a1ff748bbbda6e2e))
+* **api:** api update ([#270](https://github.com/blockaid-official/blockaid-client-go/issues/270)) ([a837ea6](https://github.com/blockaid-official/blockaid-client-go/commit/a837ea6d79b9047fa7ee2f7395cda0dcdae840b9))
+* **api:** api update ([#273](https://github.com/blockaid-official/blockaid-client-go/issues/273)) ([6fe82ec](https://github.com/blockaid-official/blockaid-client-go/commit/6fe82ec5816162c4b0801124e725b4bceb51bd7b))
+* **api:** api update ([#274](https://github.com/blockaid-official/blockaid-client-go/issues/274)) ([ae00340](https://github.com/blockaid-official/blockaid-client-go/commit/ae00340e6b089f540181ff5fa3522fdee0fe276c))
+* **api:** manual updates ([#263](https://github.com/blockaid-official/blockaid-client-go/issues/263)) ([69fc2d5](https://github.com/blockaid-official/blockaid-client-go/commit/69fc2d58799bb42efbde2b7781b2acf5cb948eb1))
+* **api:** manual updates ([#266](https://github.com/blockaid-official/blockaid-client-go/issues/266)) ([fc802e6](https://github.com/blockaid-official/blockaid-client-go/commit/fc802e6830853e077a072a3315aa6ab4d3bcba92))
+* **api:** manual updates ([#267](https://github.com/blockaid-official/blockaid-client-go/issues/267)) ([2e30827](https://github.com/blockaid-official/blockaid-client-go/commit/2e30827b71a96ee8d415d75c07a88b5fe4f44708))
+* **api:** manual updates ([#271](https://github.com/blockaid-official/blockaid-client-go/issues/271)) ([77e4899](https://github.com/blockaid-official/blockaid-client-go/commit/77e4899a5c25a1cc6e42aed414126d1e396df336))
+* **api:** manual updates ([#272](https://github.com/blockaid-official/blockaid-client-go/issues/272)) ([39fa748](https://github.com/blockaid-official/blockaid-client-go/commit/39fa748d7872dfdd5e5bb72375df1f702acc3a4b))
+* **api:** OpenAPI spec update via Stainless API ([#252](https://github.com/blockaid-official/blockaid-client-go/issues/252)) ([77d04f7](https://github.com/blockaid-official/blockaid-client-go/commit/77d04f7cc9e54afaafd224f7f99324e92f788917))
+
+
+### Chores
+
+* rebuild project due to codegen change ([#259](https://github.com/blockaid-official/blockaid-client-go/issues/259)) ([effff20](https://github.com/blockaid-official/blockaid-client-go/commit/effff200d4631a93a7884d817f825e3efa009e1a))
+* rebuild project due to codegen change ([#268](https://github.com/blockaid-official/blockaid-client-go/issues/268)) ([4ed8306](https://github.com/blockaid-official/blockaid-client-go/commit/4ed830647f300d67cfdae45d53b95eed3d7b75ee))
+
 ## 0.27.4 (2024-10-09)
 
 Full Changelog: [v0.27.3...v0.27.4](https://github.com/blockaid-official/blockaid-client-go/compare/v0.27.3...v0.27.4)
