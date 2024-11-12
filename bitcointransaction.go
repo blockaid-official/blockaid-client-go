@@ -76,14 +76,14 @@ func (r bitcoinTransactionScanResponseJSON) RawJSON() string {
 
 // Simulation result; Only present if simulation option is included in the request
 type BitcoinTransactionScanResponseSimulation struct {
-	// This field can have the runtime type of
-	// [[]BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetail].
-	AddressDetails interface{} `json:"address_details,required"`
-	// This field can have the runtime type of
-	// [map[string][]BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff].
-	AssetsDiffs    interface{}                                    `json:"assets_diffs,required"`
 	Status         BitcoinTransactionScanResponseSimulationStatus `json:"status,required"`
 	AccountSummary interface{}                                    `json:"account_summary"`
+	// This field can have the runtime type of
+	// [[]BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetail].
+	AddressDetails interface{} `json:"address_details"`
+	// This field can have the runtime type of
+	// [map[string][]BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff].
+	AssetsDiffs interface{} `json:"assets_diffs"`
 	// Error message
 	Error string                                       `json:"error"`
 	JSON  bitcoinTransactionScanResponseSimulationJSON `json:"-"`
@@ -93,10 +93,10 @@ type BitcoinTransactionScanResponseSimulation struct {
 // bitcoinTransactionScanResponseSimulationJSON contains the JSON metadata for the
 // struct [BitcoinTransactionScanResponseSimulation]
 type bitcoinTransactionScanResponseSimulationJSON struct {
-	AddressDetails apijson.Field
-	AssetsDiffs    apijson.Field
 	Status         apijson.Field
 	AccountSummary apijson.Field
+	AddressDetails apijson.Field
+	AssetsDiffs    apijson.Field
 	Error          apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
@@ -224,23 +224,23 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddress
 }
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff struct {
+	// This field can have the runtime type of
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAsset],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAsset],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAsset].
+	Asset interface{} `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// This field can have the runtime type of
 	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffIn],
 	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffIn],
 	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffIn].
-	In interface{} `json:"in,required"`
+	In interface{} `json:"in"`
 	// This field can have the runtime type of
 	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOut],
 	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOut],
 	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOut].
-	Out interface{} `json:"out,required"`
-	// This field can have the runtime type of
-	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAsset],
-	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAsset],
-	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAsset].
-	Asset interface{}                                                                     `json:"asset"`
+	Out   interface{}                                                                     `json:"out"`
 	JSON  bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffJSON `json:"-"`
 	union BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsUnion
 }
@@ -249,10 +249,10 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff
 // contains the JSON metadata for the struct
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffJSON struct {
+	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
-	Asset       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -870,10 +870,7 @@ func (r BitcoinTransactionScanResponseSimulationStatus) IsKnown() bool {
 
 // Validation result; Only present if validation option is included in the request
 type BitcoinTransactionScanResponseValidation struct {
-	// This field can have the runtime type of
-	// [[]BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature].
-	Features interface{}                                    `json:"features,required"`
-	Status   BitcoinTransactionScanResponseValidationStatus `json:"status,required"`
+	Status BitcoinTransactionScanResponseValidationStatus `json:"status,required"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
@@ -881,6 +878,9 @@ type BitcoinTransactionScanResponseValidation struct {
 	Description string `json:"description"`
 	// Error message
 	Error string `json:"error"`
+	// This field can have the runtime type of
+	// [[]BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature].
+	Features interface{} `json:"features"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
 	Reason string `json:"reason"`
@@ -893,11 +893,11 @@ type BitcoinTransactionScanResponseValidation struct {
 // bitcoinTransactionScanResponseValidationJSON contains the JSON metadata for the
 // struct [BitcoinTransactionScanResponseValidation]
 type bitcoinTransactionScanResponseValidationJSON struct {
-	Features       apijson.Field
 	Status         apijson.Field
 	Classification apijson.Field
 	Description    apijson.Field
 	Error          apijson.Field
+	Features       apijson.Field
 	Reason         apijson.Field
 	ResultType     apijson.Field
 	raw            string
@@ -1172,8 +1172,8 @@ func (r BitcoinTransactionReportParamsEvent) IsKnown() bool {
 }
 
 type BitcoinTransactionReportParamsReport struct {
-	Params param.Field[interface{}]                              `json:"params,required"`
 	ID     param.Field[string]                                   `json:"id"`
+	Params param.Field[interface{}]                              `json:"params"`
 	Type   param.Field[BitcoinTransactionReportParamsReportType] `json:"type"`
 }
 

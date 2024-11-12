@@ -77,37 +77,37 @@ func (r starknetTransactionScanResponseJSON) RawJSON() string {
 
 // Simulation result; Only present if simulation option is included in the request
 type StarknetTransactionScanResponseSimulation struct {
+	Status StarknetTransactionScanResponseSimulationStatus `json:"status,required"`
 	// This field can have the runtime type of
 	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummary].
-	AccountSummary interface{} `json:"account_summary,required"`
+	AccountSummary interface{} `json:"account_summary"`
 	// This field can have the runtime type of
 	// [[]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetail].
-	AddressDetails interface{} `json:"address_details,required"`
+	AddressDetails interface{} `json:"address_details"`
 	// This field can have the runtime type of
 	// [map[string][]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff].
-	AssetsDiffs interface{} `json:"assets_diffs,required"`
-	// This field can have the runtime type of
-	// [map[string][]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure].
-	Exposures interface{}                                     `json:"exposures,required"`
-	Status    StarknetTransactionScanResponseSimulationStatus `json:"status,required"`
+	AssetsDiffs interface{} `json:"assets_diffs"`
 	// Optional block number or tag context for the simulation
 	BlockNumber string `json:"block_number,nullable"`
 	// Error message
-	Error string                                        `json:"error"`
-	JSON  starknetTransactionScanResponseSimulationJSON `json:"-"`
-	union StarknetTransactionScanResponseSimulationUnion
+	Error string `json:"error"`
+	// This field can have the runtime type of
+	// [map[string][]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure].
+	Exposures interface{}                                   `json:"exposures"`
+	JSON      starknetTransactionScanResponseSimulationJSON `json:"-"`
+	union     StarknetTransactionScanResponseSimulationUnion
 }
 
 // starknetTransactionScanResponseSimulationJSON contains the JSON metadata for the
 // struct [StarknetTransactionScanResponseSimulation]
 type starknetTransactionScanResponseSimulationJSON struct {
+	Status         apijson.Field
 	AccountSummary apijson.Field
 	AddressDetails apijson.Field
 	AssetsDiffs    apijson.Field
-	Exposures      apijson.Field
-	Status         apijson.Field
 	BlockNumber    apijson.Field
 	Error          apijson.Field
+	Exposures      apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
@@ -237,24 +237,24 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure struct {
+	// This field can have the runtime type of [StarknetAccountErc20Exposure],
+	// [StarknetAccountErc721Exposure], [StarknetAccountErc1155Exposure].
+	Asset interface{} `json:"asset,required"`
 	// This field can have the runtime type of
 	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpender],
 	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpender],
 	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpender].
-	Spenders interface{} `json:"spenders,required"`
-	// This field can have the runtime type of [StarknetAccountErc20Exposure],
-	// [StarknetAccountErc721Exposure], [StarknetAccountErc1155Exposure].
-	Asset interface{}                                                                                                      `json:"asset"`
-	JSON  starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposureJSON `json:"-"`
-	union StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresUnion
+	Spenders interface{}                                                                                                      `json:"spenders"`
+	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposureJSON `json:"-"`
+	union    StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresUnion
 }
 
 // starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposureJSON
 // contains the JSON metadata for the struct
 // [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure]
 type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposureJSON struct {
-	Spenders    apijson.Field
 	Asset       apijson.Field
+	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -514,17 +514,17 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiff struct {
+	// This field can have the runtime type of [StarknetAccountErc20Exposure],
+	// [StarknetAccountErc721Exposure], [StarknetAccountErc1155Exposure].
+	Asset interface{} `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// This field can have the runtime type of [StarknetErc20Diff],
 	// [StarknetErc721Diff], [StarknetErc1155Diff].
-	In interface{} `json:"in,required"`
+	In interface{} `json:"in"`
 	// This field can have the runtime type of [StarknetErc20Diff],
 	// [StarknetErc721Diff], [StarknetErc1155Diff].
-	Out interface{} `json:"out,required"`
-	// This field can have the runtime type of [StarknetAccountErc20Exposure],
-	// [StarknetAccountErc721Exposure], [StarknetAccountErc1155Exposure].
-	Asset interface{}                                                                                                        `json:"asset"`
+	Out   interface{}                                                                                                        `json:"out"`
 	JSON  starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffJSON `json:"-"`
 	union StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsUnion
 }
@@ -533,10 +533,10 @@ type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSc
 // contains the JSON metadata for the struct
 // [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiff]
 type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffJSON struct {
+	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
-	Asset       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -737,17 +737,17 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff struct {
+	// This field can have the runtime type of [StarknetAccountErc20Exposure],
+	// [StarknetAccountErc721Exposure], [StarknetAccountErc1155Exposure].
+	Asset interface{} `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// This field can have the runtime type of [StarknetErc20Diff],
 	// [StarknetErc721Diff], [StarknetErc1155Diff].
-	In interface{} `json:"in,required"`
+	In interface{} `json:"in"`
 	// This field can have the runtime type of [StarknetErc20Diff],
 	// [StarknetErc721Diff], [StarknetErc1155Diff].
-	Out interface{} `json:"out,required"`
-	// This field can have the runtime type of [StarknetAccountErc20Exposure],
-	// [StarknetAccountErc721Exposure], [StarknetAccountErc1155Exposure].
-	Asset interface{}                                                                                   `json:"asset"`
+	Out   interface{}                                                                                   `json:"out"`
 	JSON  starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffJSON `json:"-"`
 	union StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsUnion
 }
@@ -756,10 +756,10 @@ type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSc
 // contains the JSON metadata for the struct
 // [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff]
 type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffJSON struct {
+	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
-	Asset       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -920,24 +920,24 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure struct {
+	// This field can have the runtime type of [StarknetAccountErc20Exposure],
+	// [StarknetAccountErc721Exposure], [StarknetAccountErc1155Exposure].
+	Asset interface{} `json:"asset,required"`
 	// This field can have the runtime type of
 	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpender],
 	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpender],
 	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpender].
-	Spenders interface{} `json:"spenders,required"`
-	// This field can have the runtime type of [StarknetAccountErc20Exposure],
-	// [StarknetAccountErc721Exposure], [StarknetAccountErc1155Exposure].
-	Asset interface{}                                                                                 `json:"asset"`
-	JSON  starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposureJSON `json:"-"`
-	union StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresUnion
+	Spenders interface{}                                                                                 `json:"spenders"`
+	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposureJSON `json:"-"`
+	union    StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresUnion
 }
 
 // starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposureJSON
 // contains the JSON metadata for the struct
 // [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure]
 type starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposureJSON struct {
-	Spenders    apijson.Field
 	Asset       apijson.Field
+	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -1225,10 +1225,7 @@ func (r StarknetTransactionScanResponseSimulationStatus) IsKnown() bool {
 
 // Validation result; Only present if validation option is included in the request
 type StarknetTransactionScanResponseValidation struct {
-	// This field can have the runtime type of
-	// [[]StarknetTransactionScanResponseValidationStarknetValidationResultFeature].
-	Features interface{}                                     `json:"features,required"`
-	Status   StarknetTransactionScanResponseValidationStatus `json:"status,required"`
+	Status StarknetTransactionScanResponseValidationStatus `json:"status,required"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
@@ -1236,6 +1233,9 @@ type StarknetTransactionScanResponseValidation struct {
 	Description string `json:"description"`
 	// Error message
 	Error string `json:"error"`
+	// This field can have the runtime type of
+	// [[]StarknetTransactionScanResponseValidationStarknetValidationResultFeature].
+	Features interface{} `json:"features"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
 	Reason string `json:"reason"`
@@ -1248,11 +1248,11 @@ type StarknetTransactionScanResponseValidation struct {
 // starknetTransactionScanResponseValidationJSON contains the JSON metadata for the
 // struct [StarknetTransactionScanResponseValidation]
 type starknetTransactionScanResponseValidationJSON struct {
-	Features       apijson.Field
 	Status         apijson.Field
 	Classification apijson.Field
 	Description    apijson.Field
 	Error          apijson.Field
+	Features       apijson.Field
 	Reason         apijson.Field
 	ResultType     apijson.Field
 	raw            string
@@ -1527,8 +1527,8 @@ func (r StarknetTransactionReportParamsEvent) IsKnown() bool {
 }
 
 type StarknetTransactionReportParamsReport struct {
-	Params param.Field[interface{}]                               `json:"params,required"`
 	ID     param.Field[string]                                    `json:"id"`
+	Params param.Field[interface{}]                               `json:"params"`
 	Type   param.Field[StarknetTransactionReportParamsReportType] `json:"type"`
 }
 
@@ -1720,24 +1720,24 @@ func (r StarknetTransactionReportParamsReportStarknetAppealTransactionDataReport
 }
 
 type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransaction struct {
-	AccountDeploymentData param.Field[interface{}] `json:"account_deployment_data,required"`
-	Calldata              param.Field[interface{}] `json:"calldata,required"`
-	ConstructorCalldata   param.Field[interface{}] `json:"constructor_calldata,required"`
 	// The nonce of the transaction.
-	Nonce         param.Field[string]      `json:"nonce,required"`
-	PaymasterData param.Field[interface{}] `json:"paymaster_data,required"`
+	Nonce param.Field[string] `json:"nonce,required"`
 	// The version of the transaction.
-	Version param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionVersion] `json:"version,required"`
+	Version               param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionVersion] `json:"version,required"`
+	AccountDeploymentData param.Field[interface{}]                                                                                      `json:"account_deployment_data"`
+	Calldata              param.Field[interface{}]                                                                                      `json:"calldata"`
 	// The id of the chain to which the transaction is sent.
 	ChainID param.Field[string] `json:"chain_id"`
 	// The hash of the contract class.
-	ClassHash param.Field[string] `json:"class_hash"`
+	ClassHash           param.Field[string]      `json:"class_hash"`
+	ConstructorCalldata param.Field[interface{}] `json:"constructor_calldata"`
 	// The salt of the contract address.
 	ContractAddressSalt param.Field[string] `json:"contract_address_salt"`
 	// The maximum fee that the sender is willing to pay.
 	MaxFee param.Field[string] `json:"max_fee"`
 	// The nonce data availability mode.
 	NonceDataAvailabilityMode param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportParamsTransactionNonceDataAvailabilityMode] `json:"nonce_data_availability_mode"`
+	PaymasterData             param.Field[interface{}]                                                                                                        `json:"paymaster_data"`
 	// The address of the sender.
 	SenderAddress param.Field[string] `json:"sender_address"`
 }
@@ -2135,24 +2135,24 @@ func (r StarknetTransactionScanParamsMetadataType) IsKnown() bool {
 }
 
 type StarknetTransactionScanParamsTransaction struct {
-	AccountDeploymentData param.Field[interface{}] `json:"account_deployment_data,required"`
-	Calldata              param.Field[interface{}] `json:"calldata,required"`
-	ConstructorCalldata   param.Field[interface{}] `json:"constructor_calldata,required"`
 	// The nonce of the transaction.
-	Nonce         param.Field[string]      `json:"nonce,required"`
-	PaymasterData param.Field[interface{}] `json:"paymaster_data,required"`
+	Nonce param.Field[string] `json:"nonce,required"`
 	// The version of the transaction.
-	Version param.Field[StarknetTransactionScanParamsTransactionVersion] `json:"version,required"`
+	Version               param.Field[StarknetTransactionScanParamsTransactionVersion] `json:"version,required"`
+	AccountDeploymentData param.Field[interface{}]                                     `json:"account_deployment_data"`
+	Calldata              param.Field[interface{}]                                     `json:"calldata"`
 	// The id of the chain to which the transaction is sent.
 	ChainID param.Field[string] `json:"chain_id"`
 	// The hash of the contract class.
-	ClassHash param.Field[string] `json:"class_hash"`
+	ClassHash           param.Field[string]      `json:"class_hash"`
+	ConstructorCalldata param.Field[interface{}] `json:"constructor_calldata"`
 	// The salt of the contract address.
 	ContractAddressSalt param.Field[string] `json:"contract_address_salt"`
 	// The maximum fee that the sender is willing to pay.
 	MaxFee param.Field[string] `json:"max_fee"`
 	// The nonce data availability mode.
 	NonceDataAvailabilityMode param.Field[StarknetTransactionScanParamsTransactionNonceDataAvailabilityMode] `json:"nonce_data_availability_mode"`
+	PaymasterData             param.Field[interface{}]                                                       `json:"paymaster_data"`
 	// The address of the sender.
 	SenderAddress param.Field[string] `json:"sender_address"`
 }

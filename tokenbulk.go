@@ -225,26 +225,22 @@ func (r tokenBulkScanResponseResultsFinancialStatsTopHolderJSON) RawJSON() strin
 
 // Metadata of the token
 type TokenBulkScanResponseResultsMetadata struct {
+	// The unique ID for the Rune
+	ID string `json:"id"`
 	// This field can have the runtime type of
 	// [TokenBulkScanResponseResultsMetadataSolanaMetadataContractBalance],
 	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalance].
-	ContractBalance interface{} `json:"contract_balance,required"`
-	// This field can have the runtime type of
-	// [TokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinks],
-	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks].
-	ExternalLinks interface{} `json:"external_links,required"`
-	// This field can have the runtime type of
-	// [TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance],
-	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalance].
-	OwnerBalance interface{} `json:"owner_balance,required"`
-	// The unique ID for the Rune
-	ID string `json:"id"`
+	ContractBalance interface{} `json:"contract_balance"`
 	// Contract deploy date
 	CreationTimestamp time.Time `json:"creation_timestamp" format:"date-time"`
 	// Address of the deployer of the fungible token
 	Deployer string `json:"deployer"`
 	// Description of the token
 	Description string `json:"description"`
+	// This field can have the runtime type of
+	// [TokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinks],
+	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks].
+	ExternalLinks interface{} `json:"external_links"`
 	// The formatted name of the rune, with spacers
 	FormattedName string `json:"formatted_name"`
 	// Solana token freeze authority account
@@ -259,6 +255,10 @@ type TokenBulkScanResponseResultsMetadata struct {
 	Number int64 `json:"number"`
 	// Contract owner address
 	Owner string `json:"owner"`
+	// This field can have the runtime type of
+	// [TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance],
+	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalance].
+	OwnerBalance interface{} `json:"owner_balance"`
 	// Symbol of the token
 	Symbol string `json:"symbol"`
 	// Type of the token
@@ -272,13 +272,12 @@ type TokenBulkScanResponseResultsMetadata struct {
 // tokenBulkScanResponseResultsMetadataJSON contains the JSON metadata for the
 // struct [TokenBulkScanResponseResultsMetadata]
 type tokenBulkScanResponseResultsMetadataJSON struct {
-	ContractBalance   apijson.Field
-	ExternalLinks     apijson.Field
-	OwnerBalance      apijson.Field
 	ID                apijson.Field
+	ContractBalance   apijson.Field
 	CreationTimestamp apijson.Field
 	Deployer          apijson.Field
 	Description       apijson.Field
+	ExternalLinks     apijson.Field
 	FormattedName     apijson.Field
 	FreezeAuthority   apijson.Field
 	ImageURL          apijson.Field
@@ -286,6 +285,7 @@ type tokenBulkScanResponseResultsMetadataJSON struct {
 	Name              apijson.Field
 	Number            apijson.Field
 	Owner             apijson.Field
+	OwnerBalance      apijson.Field
 	Symbol            apijson.Field
 	Type              apijson.Field
 	UpdateAuthority   apijson.Field
