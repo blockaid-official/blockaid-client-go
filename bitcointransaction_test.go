@@ -26,14 +26,16 @@ func TestBitcoinTransactionScanWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Bitcoin.Transaction.Scan(context.TODO(), blockaidclientgo.BitcoinTransactionScanParams{
-		AccountAddress: blockaidclientgo.F("account_address"),
-		Chain:          blockaidclientgo.F(blockaidclientgo.BitcoinTransactionScanParamsChainBitcoin),
-		Metadata: blockaidclientgo.F[blockaidclientgo.BitcoinTransactionScanParamsMetadataUnion](blockaidclientgo.BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadata{
-			Type: blockaidclientgo.F(blockaidclientgo.BitcoinTransactionScanParamsMetadataBitcoinWalletRequestMetadataTypeWallet),
-			URL:  blockaidclientgo.F("url"),
-		}),
-		Transaction: blockaidclientgo.F("transaction"),
-		Options:     blockaidclientgo.F([]blockaidclientgo.BitcoinTransactionScanParamsOption{blockaidclientgo.BitcoinTransactionScanParamsOptionValidation}),
+		BitcoinTransactionScanRequest: blockaidclientgo.BitcoinTransactionScanRequestParam{
+			AccountAddress: blockaidclientgo.F("account_address"),
+			Chain:          blockaidclientgo.F(blockaidclientgo.BitcoinTransactionScanRequestChainBitcoin),
+			Metadata: blockaidclientgo.F[blockaidclientgo.BitcoinTransactionScanRequestMetadataUnionParam](blockaidclientgo.BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataParam{
+				Type: blockaidclientgo.F(blockaidclientgo.BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataTypeWallet),
+				URL:  blockaidclientgo.F("url"),
+			}),
+			Transaction: blockaidclientgo.F("transaction"),
+			Options:     blockaidclientgo.F([]blockaidclientgo.BitcoinTransactionScanRequestOption{blockaidclientgo.BitcoinTransactionScanRequestOptionValidation}),
+		},
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
