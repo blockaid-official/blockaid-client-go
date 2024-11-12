@@ -157,11 +157,15 @@ Methods:
 
 # Bitcoin
 
-## Transaction
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionScanRequestParam">BitcoinTransactionScanRequestParam</a>
 
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionScanResponse">BitcoinTransactionScanResponse</a>
+
+## Transaction
 
 Methods:
 
@@ -177,12 +181,9 @@ Response Types:
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetErc20Diff">StarknetErc20Diff</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetErc721Details">StarknetErc721Details</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetErc721Diff">StarknetErc721Diff</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetTransactionScanResponse">StarknetTransactionScanResponse</a>
 
 ## Transaction
-
-Response Types:
-
-- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetTransactionScanResponse">StarknetTransactionScanResponse</a>
 
 Methods:
 
