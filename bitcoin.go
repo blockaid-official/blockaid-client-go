@@ -206,10 +206,10 @@ type BitcoinTransactionScanResponseSimulation struct {
 	Status         BitcoinTransactionScanResponseSimulationStatus `json:"status,required"`
 	AccountSummary interface{}                                    `json:"account_summary"`
 	// This field can have the runtime type of
-	// [[]BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetail].
+	// [[]BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAddressDetail].
 	AddressDetails interface{} `json:"address_details"`
 	// This field can have the runtime type of
-	// [map[string][]BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff].
+	// [map[string][]BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff].
 	AssetsDiffs interface{} `json:"assets_diffs"`
 	// Error message
 	Error string                                       `json:"error"`
@@ -246,7 +246,7 @@ func (r *BitcoinTransactionScanResponseSimulation) UnmarshalJSON(data []byte) (e
 // which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse],
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResult],
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationErrorSchema].
 func (r BitcoinTransactionScanResponseSimulation) AsUnion() BitcoinTransactionScanResponseSimulationUnion {
 	return r.union
@@ -255,7 +255,7 @@ func (r BitcoinTransactionScanResponseSimulation) AsUnion() BitcoinTransactionSc
 // Simulation result; Only present if simulation option is included in the request
 //
 // Union satisfied by
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse] or
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResult] or
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationErrorSchema].
 type BitcoinTransactionScanResponseSimulationUnion interface {
 	implementsBitcoinTransactionScanResponseSimulation()
@@ -267,7 +267,7 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse{}),
+			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinSimulationResult{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
@@ -276,21 +276,21 @@ func init() {
 	)
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse struct {
-	Status         BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseStatus `json:"status,required"`
-	AccountSummary interface{}                                                             `json:"account_summary"`
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResult struct {
+	Status         BitcoinTransactionScanResponseSimulationBitcoinSimulationResultStatus `json:"status,required"`
+	AccountSummary interface{}                                                           `json:"account_summary"`
 	// Details of addresses involved in the transaction
-	AddressDetails []BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetail `json:"address_details"`
+	AddressDetails []BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAddressDetail `json:"address_details"`
 	// Mapping between the address of an account to the assets diff during the
 	// transaction
-	AssetsDiffs map[string][]BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff `json:"assets_diffs"`
-	JSON        bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseJSON                    `json:"-"`
+	AssetsDiffs map[string][]BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff `json:"assets_diffs"`
+	JSON        bitcoinTransactionScanResponseSimulationBitcoinSimulationResultJSON                    `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseJSON contains
-// the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseJSON struct {
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultJSON contains the
+// JSON metadata for the struct
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResult]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultJSON struct {
 	Status         apijson.Field
 	AccountSummary apijson.Field
 	AddressDetails apijson.Field
@@ -299,83 +299,83 @@ type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseJSON struc
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResult) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponse) implementsBitcoinTransactionScanResponseSimulation() {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResult) implementsBitcoinTransactionScanResponseSimulation() {
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseStatus string
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultStatus string
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseStatusSuccess BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseStatus = "Success"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResultStatusSuccess BitcoinTransactionScanResponseSimulationBitcoinSimulationResultStatus = "Success"
 )
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseStatus) IsKnown() bool {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultStatus) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseStatusSuccess:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResultStatusSuccess:
 		return true
 	}
 	return false
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetail struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAddressDetail struct {
 	// Encoded public key of the account
 	AccountAddress interface{} `json:"account_address,required"`
 	// Description of the account
-	Description string                                                                             `json:"description,nullable"`
-	JSON        bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetailJSON `json:"-"`
+	Description string                                                                           `json:"description,nullable"`
+	JSON        bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAddressDetailJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetailJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAddressDetailJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetail]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetailJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAddressDetail]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAddressDetailJSON struct {
 	AccountAddress apijson.Field
 	Description    apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetail) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAddressDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAddressDetailJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAddressDetailJSON) RawJSON() string {
 	return r.raw
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff struct {
 	// This field can have the runtime type of
-	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAsset],
-	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAsset],
-	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAsset].
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAsset],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAsset],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAsset].
 	Asset interface{} `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// This field can have the runtime type of
-	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffIn],
-	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffIn],
-	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffIn].
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffIn],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffIn],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffIn].
 	In interface{} `json:"in"`
 	// This field can have the runtime type of
-	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOut],
-	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOut],
-	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOut].
-	Out   interface{}                                                                     `json:"out"`
-	JSON  bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffJSON `json:"-"`
-	union BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsUnion
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOut],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffOut],
+	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOut].
+	Out   interface{}                                                                   `json:"out"`
+	JSON  bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffJSON `json:"-"`
+	union BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsUnion
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -384,12 +384,12 @@ type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff
 	ExtraFields map[string]apijson.Field
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff) UnmarshalJSON(data []byte) (err error) {
-	*r = BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff{}
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -398,60 +398,60 @@ func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssets
 }
 
 // AsUnion returns a
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsUnion]
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsUnion]
 // interface which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff],
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff],
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff].
-func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff) AsUnion() BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsUnion {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiff],
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiff],
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiff].
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff) AsUnion() BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff],
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff]
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiff],
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiff]
 // or
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff].
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsUnion interface {
-	implementsBitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff()
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiff].
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsUnion interface {
+	implementsBitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsUnion)(nil)).Elem(),
+		reflect.TypeOf((*BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff{}),
+			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff{}),
+			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff{}),
+			Type:       reflect.TypeOf(BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiff{}),
 		},
 	)
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff struct {
-	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAsset `json:"asset,required"`
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiff struct {
+	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffIn `json:"in,nullable"`
+	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOut  `json:"out,nullable"`
-	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffJSON `json:"-"`
+	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOut  `json:"out,nullable"`
+	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiff]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -460,35 +460,35 @@ type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiff) implementsBitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff() {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiff) implementsBitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff() {
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAsset struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAsset struct {
 	// URL of the asset's logo
 	LogoURL string `json:"logo_url,required,nullable"`
 	// Decimals of the asset
-	Decimals BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetDecimals `json:"decimals"`
+	Decimals BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetDecimals `json:"decimals"`
 	// Name of the asset
-	Name BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetName `json:"name"`
+	Name BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetName `json:"name"`
 	// Symbol of the asset
-	Symbol BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetSymbol `json:"symbol"`
+	Symbol BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetSymbol `json:"symbol"`
 	// Type of the asset (`NATIVE`)
-	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetType `json:"type"`
-	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetJSON `json:"-"`
+	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetType `json:"type"`
+	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAsset]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAsset]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetJSON struct {
 	LogoURL     apijson.Field
 	Decimals    apijson.Field
 	Name        apijson.Field
@@ -498,76 +498,258 @@ type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
 // Decimals of the asset
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetDecimals int64
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetDecimals int64
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetDecimals8 BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetDecimals = 8
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetDecimals8 BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetDecimals = 8
 )
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetDecimals) IsKnown() bool {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetDecimals) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetDecimals8:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetDecimals8:
 		return true
 	}
 	return false
 }
 
 // Name of the asset
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetName string
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetName string
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetNameBitcoin BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetName = "Bitcoin"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetNameBitcoin BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetName = "Bitcoin"
 )
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetName) IsKnown() bool {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetName) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetNameBitcoin:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetNameBitcoin:
 		return true
 	}
 	return false
 }
 
 // Symbol of the asset
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetSymbol string
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetSymbol string
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetSymbolBtc BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetSymbol = "BTC"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetSymbolBtc BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetSymbol = "BTC"
 )
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetSymbol) IsKnown() bool {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetSymbol) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetSymbolBtc:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetSymbolBtc:
 		return true
 	}
 	return false
 }
 
 // Type of the asset (`NATIVE`)
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetType string
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetType string
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetTypeNative BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetType = "NATIVE"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetTypeNative BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetType = "NATIVE"
 )
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetType) IsKnown() bool {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffAssetTypeNative:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetTypeNative:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffIn struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffIn struct {
+	// Raw value of the transfer
+	RawValue string `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                 `json:"summary,nullable"`
+	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffInJSON `json:"-"`
+}
+
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffInJSON
+// contains the JSON metadata for the struct
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffIn]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffInJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOut struct {
+	// Raw value of the transfer
+	RawValue string `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                  `json:"summary,nullable"`
+	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOutJSON `json:"-"`
+}
+
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOutJSON
+// contains the JSON metadata for the struct
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOut]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOutJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOutJSON) RawJSON() string {
+	return r.raw
+}
+
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiff struct {
+	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAsset `json:"asset,required"`
+	// The type of the assets in this diff
+	AssetType string `json:"asset_type,required"`
+	// Details of the incoming transfer
+	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffIn `json:"in,nullable"`
+	// Details of the outgoing transfer
+	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffOut  `json:"out,nullable"`
+	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffJSON `json:"-"`
+}
+
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffJSON
+// contains the JSON metadata for the struct
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiff]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffJSON struct {
+	Asset       apijson.Field
+	AssetType   apijson.Field
+	In          apijson.Field
+	Out         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiff) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiff) implementsBitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff() {
+}
+
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAsset struct {
+	// token's name
+	Name string `json:"name,required"`
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,nullable"`
+	// Type of the asset (`ORDINAL`)
+	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAssetType `json:"type"`
+	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAssetJSON `json:"-"`
+}
+
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAssetJSON
+// contains the JSON metadata for the struct
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAsset]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAssetJSON struct {
+	Name        apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Type of the asset (`ORDINAL`)
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAssetType string
+
+const (
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAssetTypeOrdinal BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAssetType = "ORDINAL"
+)
+
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAssetType) IsKnown() bool {
+	switch r {
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffAssetTypeOrdinal:
+		return true
+	}
+	return false
+}
+
+// Details of the incoming transfer
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffIn struct {
+	// Id of the ordinal
+	ID string `json:"id,required"`
+	// Raw value of the transfer
+	RawValue string `json:"raw_value,required"`
+	// USD price of the asset
+	UsdPrice string `json:"usd_price,required"`
+	// Value of the transfer
+	Value string `json:"value,required"`
+	// Summarized description of the transfer
+	Summary string                                                                                                  `json:"summary,nullable"`
+	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffInJSON `json:"-"`
+}
+
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffInJSON
+// contains the JSON metadata for the struct
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffIn]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffInJSON struct {
+	ID          apijson.Field
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	Summary     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffInJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the outgoing transfer
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffOut struct {
+	// Id of the ordinal
+	ID string `json:"id,required"`
 	// Raw value of the transfer
 	RawValue string `json:"raw_value,required"`
 	// USD price of the asset
@@ -576,159 +758,13 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
 	Summary string                                                                                                   `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffInJSON `json:"-"`
+	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffOutJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffInJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffOutJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffIn]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffInJSON struct {
-	RawValue    apijson.Field
-	UsdPrice    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffInJSON) RawJSON() string {
-	return r.raw
-}
-
-// Details of the outgoing transfer
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOut struct {
-	// Raw value of the transfer
-	RawValue string `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
-	// Value of the transfer
-	Value string `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string                                                                                                    `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOutJSON `json:"-"`
-}
-
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOutJSON
-// contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOut]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOutJSON struct {
-	RawValue    apijson.Field
-	UsdPrice    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinNativeAssetDiffOutJSON) RawJSON() string {
-	return r.raw
-}
-
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff struct {
-	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAsset `json:"asset,required"`
-	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
-	// Details of the incoming transfer
-	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffIn `json:"in,nullable"`
-	// Details of the outgoing transfer
-	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOut  `json:"out,nullable"`
-	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffJSON `json:"-"`
-}
-
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffJSON
-// contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffJSON struct {
-	Asset       apijson.Field
-	AssetType   apijson.Field
-	In          apijson.Field
-	Out         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiff) implementsBitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff() {
-}
-
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAsset struct {
-	// token's name
-	Name string `json:"name,required"`
-	// URL of the asset's logo
-	LogoURL string `json:"logo_url,nullable"`
-	// Type of the asset (`ORDINAL`)
-	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetType `json:"type"`
-	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetJSON `json:"-"`
-}
-
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetJSON
-// contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAsset]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetJSON struct {
-	Name        apijson.Field
-	LogoURL     apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-// Type of the asset (`ORDINAL`)
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetType string
-
-const (
-	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetTypeOrdinal BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetType = "ORDINAL"
-)
-
-func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetType) IsKnown() bool {
-	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffAssetTypeOrdinal:
-		return true
-	}
-	return false
-}
-
-// Details of the incoming transfer
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffIn struct {
-	// Id of the ordinal
-	ID string `json:"id,required"`
-	// Raw value of the transfer
-	RawValue string `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
-	// Value of the transfer
-	Value string `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string                                                                                                    `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffInJSON `json:"-"`
-}
-
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffInJSON
-// contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffIn]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffInJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffOut]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffOutJSON struct {
 	ID          apijson.Field
 	RawValue    apijson.Field
 	UsdPrice    apijson.Field
@@ -738,65 +774,29 @@ type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffInJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinOrdinalAssetDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-// Details of the outgoing transfer
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOut struct {
-	// Id of the ordinal
-	ID string `json:"id,required"`
-	// Raw value of the transfer
-	RawValue string `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
-	// Value of the transfer
-	Value string `json:"value,required"`
-	// Summarized description of the transfer
-	Summary string                                                                                                     `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOutJSON `json:"-"`
-}
-
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOutJSON
-// contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOut]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOutJSON struct {
-	ID          apijson.Field
-	RawValue    apijson.Field
-	UsdPrice    apijson.Field
-	Value       apijson.Field
-	Summary     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinOrdinalAssetDiffOutJSON) RawJSON() string {
-	return r.raw
-}
-
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff struct {
-	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAsset `json:"asset,required"`
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiff struct {
+	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffIn `json:"in,nullable"`
+	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOut  `json:"out,nullable"`
-	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffJSON `json:"-"`
+	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOut  `json:"out,nullable"`
+	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiff]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -805,18 +805,18 @@ type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiff) implementsBitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff() {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiff) implementsBitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff() {
 }
 
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAsset struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAsset struct {
 	// The Rune ID
 	ID string `json:"id,required"`
 	// Decimals of the asset
@@ -830,14 +830,14 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff
 	// URL of the asset's logo
 	LogoURL string `json:"logo_url,nullable"`
 	// Type of the asset (`RUNE`)
-	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetType `json:"type"`
-	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetJSON `json:"-"`
+	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAssetType `json:"type"`
+	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAssetJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAsset]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAsset]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAssetJSON struct {
 	ID          apijson.Field
 	Decimals    apijson.Field
 	Name        apijson.Field
@@ -849,31 +849,31 @@ type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
 // Type of the asset (`RUNE`)
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetType string
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAssetType string
 
 const (
-	BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetTypeRune BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetType = "RUNE"
+	BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAssetTypeRune BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAssetType = "RUNE"
 )
 
-func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetType) IsKnown() bool {
+func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffAssetTypeRune:
+	case BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAssetTypeRune:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffIn struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue string `json:"raw_value,required"`
 	// USD price of the asset
@@ -881,14 +881,14 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                  `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffInJSON `json:"-"`
+	Summary string                                                                                                `json:"summary,nullable"`
+	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffInJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffInJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffInJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffIn]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffInJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffIn]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffInJSON struct {
 	RawValue    apijson.Field
 	UsdPrice    apijson.Field
 	Value       apijson.Field
@@ -897,16 +897,16 @@ type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffInJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOut struct {
+type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue string `json:"raw_value,required"`
 	// USD price of the asset
@@ -914,14 +914,14 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                   `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOutJSON `json:"-"`
+	Summary string                                                                                                 `json:"summary,nullable"`
+	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOutJSON `json:"-"`
 }
 
-// bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOutJSON
+// bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOutJSON
 // contains the JSON metadata for the struct
-// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOut]
-type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOutJSON struct {
+// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOut]
+type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOutJSON struct {
 	RawValue    apijson.Field
 	UsdPrice    apijson.Field
 	Value       apijson.Field
@@ -930,11 +930,11 @@ type bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiff
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResponseAssetsDiffsBitcoinRunesAssetDiffOutJSON) RawJSON() string {
+func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
