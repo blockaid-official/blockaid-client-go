@@ -1240,47 +1240,47 @@ func (r TransactionScanResponseGasEstimationStatus) IsKnown() bool {
 }
 
 type TransactionScanResponseSimulation struct {
-	// This field can have the runtime type of [TransactionSimulationAccountSummary].
-	AccountSummary interface{} `json:"account_summary,required"`
-	// This field can have the runtime type of
-	// [map[string]TransactionSimulationAddressDetail].
-	AddressDetails interface{} `json:"address_details,required"`
-	// This field can have the runtime type of
-	// [map[string][]TransactionSimulationAssetsDiff].
-	AssetsDiffs interface{} `json:"assets_diffs,required"`
-	// This field can have the runtime type of
-	// [map[string][]TransactionSimulationContractManagement].
-	ContractManagement interface{} `json:"contract_management,required"`
-	// This field can have the runtime type of
-	// [map[string][]TransactionSimulationExposure].
-	Exposures interface{} `json:"exposures,required"`
-	// This field can have the runtime type of [TransactionSimulationParams].
-	Params interface{} `json:"params,required"`
 	// A string indicating if the simulation was successful or not.
 	Status TransactionScanResponseSimulationStatus `json:"status,required"`
-	// This field can have the runtime type of [map[string]UsdDiff].
-	TotalUsdDiff interface{} `json:"total_usd_diff,required"`
-	// This field can have the runtime type of [map[string]map[string]string].
-	TotalUsdExposure interface{} `json:"total_usd_exposure,required"`
+	// This field can have the runtime type of [TransactionSimulationAccountSummary].
+	AccountSummary interface{} `json:"account_summary"`
+	// This field can have the runtime type of
+	// [map[string]TransactionSimulationAddressDetail].
+	AddressDetails interface{} `json:"address_details"`
+	// This field can have the runtime type of
+	// [map[string][]TransactionSimulationAssetsDiff].
+	AssetsDiffs interface{} `json:"assets_diffs"`
+	// This field can have the runtime type of
+	// [map[string][]TransactionSimulationContractManagement].
+	ContractManagement interface{} `json:"contract_management"`
 	// An error message if the simulation failed.
-	Error string                                `json:"error"`
-	JSON  transactionScanResponseSimulationJSON `json:"-"`
-	union TransactionScanResponseSimulationUnion
+	Error string `json:"error"`
+	// This field can have the runtime type of
+	// [map[string][]TransactionSimulationExposure].
+	Exposures interface{} `json:"exposures"`
+	// This field can have the runtime type of [TransactionSimulationParams].
+	Params interface{} `json:"params"`
+	// This field can have the runtime type of [map[string]UsdDiff].
+	TotalUsdDiff interface{} `json:"total_usd_diff"`
+	// This field can have the runtime type of [map[string]map[string]string].
+	TotalUsdExposure interface{}                           `json:"total_usd_exposure"`
+	JSON             transactionScanResponseSimulationJSON `json:"-"`
+	union            TransactionScanResponseSimulationUnion
 }
 
 // transactionScanResponseSimulationJSON contains the JSON metadata for the struct
 // [TransactionScanResponseSimulation]
 type transactionScanResponseSimulationJSON struct {
+	Status             apijson.Field
 	AccountSummary     apijson.Field
 	AddressDetails     apijson.Field
 	AssetsDiffs        apijson.Field
 	ContractManagement apijson.Field
+	Error              apijson.Field
 	Exposures          apijson.Field
 	Params             apijson.Field
-	Status             apijson.Field
 	TotalUsdDiff       apijson.Field
 	TotalUsdExposure   apijson.Field
-	Error              apijson.Field
 	raw                string
 	ExtraFields        map[string]apijson.Field
 }
@@ -1344,6 +1344,8 @@ func (r TransactionScanResponseSimulationStatus) IsKnown() bool {
 }
 
 type TransactionScanResponseValidation struct {
+	// This field can have the runtime type of [[]TransactionScanFeature].
+	Features interface{} `json:"features,required"`
 	// An enumeration.
 	ResultType TransactionScanResponseValidationResultType `json:"result_type,required"`
 	// A string indicating if the simulation was successful or not.
@@ -1356,8 +1358,6 @@ type TransactionScanResponseValidation struct {
 	Description string `json:"description"`
 	// An error message if the validation failed.
 	Error string `json:"error"`
-	// This field can have the runtime type of [[]TransactionScanFeature].
-	Features interface{} `json:"features"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type.
 	Reason string                                `json:"reason"`
@@ -1368,12 +1368,12 @@ type TransactionScanResponseValidation struct {
 // transactionScanResponseValidationJSON contains the JSON metadata for the struct
 // [TransactionScanResponseValidation]
 type transactionScanResponseValidationJSON struct {
+	Features       apijson.Field
 	ResultType     apijson.Field
 	Status         apijson.Field
 	Classification apijson.Field
 	Description    apijson.Field
 	Error          apijson.Field
-	Features       apijson.Field
 	Reason         apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
@@ -1588,38 +1588,38 @@ func (r transactionSimulationAccountSummaryJSON) RawJSON() string {
 }
 
 type TransactionSimulationAccountSummaryAssetsDiff struct {
-	// type of the asset for the current diff
-	AssetType TransactionSimulationAccountSummaryAssetsDiffsAssetType `json:"asset_type,required"`
-	// This field can have the runtime type of
-	// [TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChanges],
-	// [TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChanges],
-	// [TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChanges],
-	// [TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffBalanceChanges].
-	BalanceChanges interface{} `json:"balance_changes,required"`
 	// This field can have the runtime type of
 	// [TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset],
 	// [TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset],
 	// [TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset],
 	// [NativeAssetDetails].
-	Asset interface{} `json:"asset"`
+	Asset interface{} `json:"asset,required"`
+	// type of the asset for the current diff
+	AssetType TransactionSimulationAccountSummaryAssetsDiffsAssetType `json:"asset_type,required"`
 	// This field can have the runtime type of [[]Erc20Diff], [[]Erc721Diff],
 	// [[]Erc1155Diff], [[]NativeDiff].
-	In interface{} `json:"in"`
+	In interface{} `json:"in,required"`
 	// This field can have the runtime type of [[]Erc20Diff], [[]Erc721Diff],
 	// [[]Erc1155Diff], [[]NativeDiff].
-	Out   interface{}                                       `json:"out"`
-	JSON  transactionSimulationAccountSummaryAssetsDiffJSON `json:"-"`
-	union TransactionSimulationAccountSummaryAssetsDiffsUnion
+	Out interface{} `json:"out,required"`
+	// This field can have the runtime type of
+	// [TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChanges],
+	// [TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChanges],
+	// [TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChanges],
+	// [TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffBalanceChanges].
+	BalanceChanges interface{}                                       `json:"balance_changes"`
+	JSON           transactionSimulationAccountSummaryAssetsDiffJSON `json:"-"`
+	union          TransactionSimulationAccountSummaryAssetsDiffsUnion
 }
 
 // transactionSimulationAccountSummaryAssetsDiffJSON contains the JSON metadata for
 // the struct [TransactionSimulationAccountSummaryAssetsDiff]
 type transactionSimulationAccountSummaryAssetsDiffJSON struct {
-	AssetType      apijson.Field
-	BalanceChanges apijson.Field
 	Asset          apijson.Field
+	AssetType      apijson.Field
 	In             apijson.Field
 	Out            apijson.Field
+	BalanceChanges apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
@@ -2249,16 +2249,16 @@ func (r TransactionSimulationAccountSummaryAssetsDiffsAssetType) IsKnown() bool 
 }
 
 type TransactionSimulationAccountSummaryExposure struct {
-	// type of the asset for the current diff
-	AssetType TransactionSimulationAccountSummaryExposuresAssetType `json:"asset_type,required"`
 	// This field can have the runtime type of
 	// [TransactionSimulationAccountSummaryExposuresErc20AddressExposureAsset],
 	// [TransactionSimulationAccountSummaryExposuresErc721AddressExposureAsset],
 	// [TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAsset].
-	Asset interface{} `json:"asset"`
+	Asset interface{} `json:"asset,required"`
+	// type of the asset for the current diff
+	AssetType TransactionSimulationAccountSummaryExposuresAssetType `json:"asset_type,required"`
 	// This field can have the runtime type of [map[string]Erc20Exposure],
 	// [map[string]Erc721Exposure], [map[string]Erc1155Exposure].
-	Spenders interface{}                                     `json:"spenders"`
+	Spenders interface{}                                     `json:"spenders,required"`
 	JSON     transactionSimulationAccountSummaryExposureJSON `json:"-"`
 	union    TransactionSimulationAccountSummaryExposuresUnion
 }
@@ -2266,8 +2266,8 @@ type TransactionSimulationAccountSummaryExposure struct {
 // transactionSimulationAccountSummaryExposureJSON contains the JSON metadata for
 // the struct [TransactionSimulationAccountSummaryExposure]
 type transactionSimulationAccountSummaryExposureJSON struct {
-	AssetType   apijson.Field
 	Asset       apijson.Field
+	AssetType   apijson.Field
 	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -2714,23 +2714,23 @@ func (r TransactionSimulationAccountSummaryExposuresAssetType) IsKnown() bool {
 }
 
 type TransactionSimulationAccountSummaryTrace struct {
+	// type of the trace
+	TraceType TransactionSimulationAccountSummaryTracesTraceType `json:"trace_type,required"`
+	// The type of the model
+	Type TransactionSimulationAccountSummaryTracesType `json:"type,required"`
 	// This field can have the runtime type of
 	// [TransactionSimulationAccountSummaryTracesErc20AssetTraceAsset],
 	// [TransactionSimulationAccountSummaryTracesErc721AssetTraceAsset],
 	// [TransactionSimulationAccountSummaryTracesErc1155AssetTraceAsset],
 	// [NativeAssetDetails].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset"`
 	// This field can have the runtime type of [Erc20Diff], [Erc721Diff],
 	// [Erc1155Diff], [NativeDiff].
-	Diff interface{} `json:"diff,required"`
+	Diff interface{} `json:"diff"`
 	// This field can have the runtime type of
 	// [TransactionSimulationAccountSummaryTracesErc20ExposureTraceExposed],
 	// [TransactionSimulationAccountSummaryTracesErc721ExposureTraceExposed].
-	Exposed interface{} `json:"exposed,required"`
-	// type of the trace
-	TraceType TransactionSimulationAccountSummaryTracesTraceType `json:"trace_type,required"`
-	// The type of the model
-	Type TransactionSimulationAccountSummaryTracesType `json:"type,required"`
+	Exposed interface{} `json:"exposed"`
 	// The address where the assets are moved from
 	FromAddress string `json:"from_address"`
 	// The owner of the assets
@@ -2746,11 +2746,11 @@ type TransactionSimulationAccountSummaryTrace struct {
 // transactionSimulationAccountSummaryTraceJSON contains the JSON metadata for the
 // struct [TransactionSimulationAccountSummaryTrace]
 type transactionSimulationAccountSummaryTraceJSON struct {
+	TraceType   apijson.Field
+	Type        apijson.Field
 	Asset       apijson.Field
 	Diff        apijson.Field
 	Exposed     apijson.Field
-	TraceType   apijson.Field
-	Type        apijson.Field
 	FromAddress apijson.Field
 	Owner       apijson.Field
 	Spender     apijson.Field
@@ -3711,20 +3711,20 @@ func (r transactionSimulationAddressDetailJSON) RawJSON() string {
 }
 
 type TransactionSimulationAssetsDiff struct {
-	// type of the asset for the current diff
-	AssetType TransactionSimulationAssetsDiffsAssetType `json:"asset_type,required"`
 	// This field can have the runtime type of
 	// [TransactionSimulationAssetsDiffsErc20AddressAssetDiffAsset],
 	// [TransactionSimulationAssetsDiffsErc721AddressAssetDiffAsset],
 	// [TransactionSimulationAssetsDiffsErc1155AddressAssetDiffAsset],
 	// [NativeAssetDetails].
-	Asset interface{} `json:"asset"`
+	Asset interface{} `json:"asset,required"`
+	// type of the asset for the current diff
+	AssetType TransactionSimulationAssetsDiffsAssetType `json:"asset_type,required"`
 	// This field can have the runtime type of [[]Erc20Diff], [[]Erc721Diff],
 	// [[]Erc1155Diff], [[]NativeDiff].
-	In interface{} `json:"in"`
+	In interface{} `json:"in,required"`
 	// This field can have the runtime type of [[]Erc20Diff], [[]Erc721Diff],
 	// [[]Erc1155Diff], [[]NativeDiff].
-	Out   interface{}                         `json:"out"`
+	Out   interface{}                         `json:"out,required"`
 	JSON  transactionSimulationAssetsDiffJSON `json:"-"`
 	union TransactionSimulationAssetsDiffsUnion
 }
@@ -3732,8 +3732,8 @@ type TransactionSimulationAssetsDiff struct {
 // transactionSimulationAssetsDiffJSON contains the JSON metadata for the struct
 // [TransactionSimulationAssetsDiff]
 type transactionSimulationAssetsDiffJSON struct {
-	AssetType   apijson.Field
 	Asset       apijson.Field
+	AssetType   apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
 	raw         string
@@ -4240,16 +4240,16 @@ func (r TransactionSimulationAssetsDiffsAssetType) IsKnown() bool {
 }
 
 type TransactionSimulationExposure struct {
-	// type of the asset for the current diff
-	AssetType TransactionSimulationExposuresAssetType `json:"asset_type,required"`
 	// This field can have the runtime type of
 	// [TransactionSimulationExposuresErc20AddressExposureAsset],
 	// [TransactionSimulationExposuresErc721AddressExposureAsset],
 	// [TransactionSimulationExposuresErc1155AddressExposureAsset].
-	Asset interface{} `json:"asset"`
+	Asset interface{} `json:"asset,required"`
+	// type of the asset for the current diff
+	AssetType TransactionSimulationExposuresAssetType `json:"asset_type,required"`
 	// This field can have the runtime type of [map[string]Erc20Exposure],
 	// [map[string]Erc721Exposure], [map[string]Erc1155Exposure].
-	Spenders interface{}                       `json:"spenders"`
+	Spenders interface{}                       `json:"spenders,required"`
 	JSON     transactionSimulationExposureJSON `json:"-"`
 	union    TransactionSimulationExposuresUnion
 }
@@ -4257,8 +4257,8 @@ type TransactionSimulationExposure struct {
 // transactionSimulationExposureJSON contains the JSON metadata for the struct
 // [TransactionSimulationExposure]
 type transactionSimulationExposureJSON struct {
-	AssetType   apijson.Field
 	Asset       apijson.Field
+	AssetType   apijson.Field
 	Spenders    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -4715,28 +4715,28 @@ func (r TransactionSimulationStatus) IsKnown() bool {
 }
 
 type TransactionSimulationContractManagement struct {
-	// The type of the state change
-	Type TransactionSimulationContractManagementType `json:"type,required"`
 	// This field can have the runtime type of
 	// [TransactionSimulationContractManagementProxyUpgradeManagementAfter],
 	// [TransactionSimulationContractManagementOwnershipChangeManagementAfter],
 	// [TransactionSimulationContractManagementModulesChangeManagementAfter].
-	After interface{} `json:"after"`
+	After interface{} `json:"after,required"`
 	// This field can have the runtime type of
 	// [TransactionSimulationContractManagementProxyUpgradeManagementBefore],
 	// [TransactionSimulationContractManagementOwnershipChangeManagementBefore],
 	// [TransactionSimulationContractManagementModulesChangeManagementBefore].
-	Before interface{}                                 `json:"before"`
-	JSON   transactionSimulationContractManagementJSON `json:"-"`
-	union  TransactionSimulationContractManagementUnion
+	Before interface{} `json:"before,required"`
+	// The type of the state change
+	Type  TransactionSimulationContractManagementType `json:"type,required"`
+	JSON  transactionSimulationContractManagementJSON `json:"-"`
+	union TransactionSimulationContractManagementUnion
 }
 
 // transactionSimulationContractManagementJSON contains the JSON metadata for the
 // struct [TransactionSimulationContractManagement]
 type transactionSimulationContractManagementJSON struct {
-	Type        apijson.Field
 	After       apijson.Field
 	Before      apijson.Field
+	Type        apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }

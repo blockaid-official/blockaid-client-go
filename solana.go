@@ -66,12 +66,12 @@ func (r accountSummarySchemaJSON) RawJSON() string {
 }
 
 type AccountSummarySchemaAccountAssetsDiff struct {
-	// Type of the asset involved in the transfer
-	AssetType string `json:"asset_type,required"`
 	// This field can have the runtime type of [NativeDetailsSchema],
 	// [SplFungibleTokenDetailsSchema], [SplNonFungibleTokenDetailsSchema],
 	// [CnftDetailsSchema].
-	Asset interface{} `json:"asset"`
+	Asset interface{} `json:"asset,required"`
+	// Type of the asset involved in the transfer
+	AssetType string `json:"asset_type,required"`
 	// Incoming transfers of the asset
 	In    AssetTransferDetailsSchema                `json:"in,nullable"`
 	Out   AssetTransferDetailsSchema                `json:"out,nullable"`
@@ -82,8 +82,8 @@ type AccountSummarySchemaAccountAssetsDiff struct {
 // accountSummarySchemaAccountAssetsDiffJSON contains the JSON metadata for the
 // struct [AccountSummarySchemaAccountAssetsDiff]
 type accountSummarySchemaAccountAssetsDiffJSON struct {
-	AssetType   apijson.Field
 	Asset       apijson.Field
+	AssetType   apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
 	raw         string
@@ -142,13 +142,13 @@ func init() {
 }
 
 type AccountSummarySchemaAccountOwnershipsDiff struct {
-	// This field can have the runtime type of [NativeDetailsSchema],
-	// [SplTokenOwnershipDiffSchemaAsset], [StakedAssetDetailsSchema].
-	Asset interface{} `json:"asset,required"`
 	// Type of the asset involved in the transfer
 	AssetType string `json:"asset_type,required"`
 	// The owner post the transaction
 	PostOwner string `json:"post_owner,required"`
+	// This field can have the runtime type of [NativeDetailsSchema],
+	// [SplTokenOwnershipDiffSchemaAsset], [StakedAssetDetailsSchema].
+	Asset interface{} `json:"asset"`
 	// Incoming transfers of the asset
 	In AssetTransferDetailsSchema `json:"in_,nullable"`
 	// Details of the moved value
@@ -162,9 +162,9 @@ type AccountSummarySchemaAccountOwnershipsDiff struct {
 // accountSummarySchemaAccountOwnershipsDiffJSON contains the JSON metadata for the
 // struct [AccountSummarySchemaAccountOwnershipsDiff]
 type accountSummarySchemaAccountOwnershipsDiffJSON struct {
-	Asset       apijson.Field
 	AssetType   apijson.Field
 	PostOwner   apijson.Field
+	Asset       apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
 	PreOwner    apijson.Field
@@ -1674,12 +1674,12 @@ func (r SuccessfulSimulationResultSchemaAccountsDetailsType) IsKnown() bool {
 }
 
 type SuccessfulSimulationResultSchemaAssetsDiff struct {
-	// Type of the asset involved in the transfer
-	AssetType string `json:"asset_type,required"`
 	// This field can have the runtime type of [NativeDetailsSchema],
 	// [SplFungibleTokenDetailsSchema], [SplNonFungibleTokenDetailsSchema],
 	// [CnftDetailsSchema].
-	Asset interface{} `json:"asset"`
+	Asset interface{} `json:"asset,required"`
+	// Type of the asset involved in the transfer
+	AssetType string `json:"asset_type,required"`
 	// Incoming transfers of the asset
 	In    AssetTransferDetailsSchema                     `json:"in,nullable"`
 	Out   AssetTransferDetailsSchema                     `json:"out,nullable"`
@@ -1690,8 +1690,8 @@ type SuccessfulSimulationResultSchemaAssetsDiff struct {
 // successfulSimulationResultSchemaAssetsDiffJSON contains the JSON metadata for
 // the struct [SuccessfulSimulationResultSchemaAssetsDiff]
 type successfulSimulationResultSchemaAssetsDiffJSON struct {
-	AssetType   apijson.Field
 	Asset       apijson.Field
+	AssetType   apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
 	raw         string
@@ -1750,13 +1750,13 @@ func init() {
 }
 
 type SuccessfulSimulationResultSchemaAssetsOwnershipDiff struct {
-	// This field can have the runtime type of [NativeDetailsSchema],
-	// [SplTokenOwnershipDiffSchemaAsset], [StakedAssetDetailsSchema].
-	Asset interface{} `json:"asset,required"`
 	// Type of the asset involved in the transfer
 	AssetType string `json:"asset_type,required"`
 	// The owner post the transaction
 	PostOwner string `json:"post_owner,required"`
+	// This field can have the runtime type of [NativeDetailsSchema],
+	// [SplTokenOwnershipDiffSchemaAsset], [StakedAssetDetailsSchema].
+	Asset interface{} `json:"asset"`
 	// Incoming transfers of the asset
 	In AssetTransferDetailsSchema `json:"in_,nullable"`
 	// Details of the moved value
@@ -1770,9 +1770,9 @@ type SuccessfulSimulationResultSchemaAssetsOwnershipDiff struct {
 // successfulSimulationResultSchemaAssetsOwnershipDiffJSON contains the JSON
 // metadata for the struct [SuccessfulSimulationResultSchemaAssetsOwnershipDiff]
 type successfulSimulationResultSchemaAssetsOwnershipDiffJSON struct {
-	Asset       apijson.Field
 	AssetType   apijson.Field
 	PostOwner   apijson.Field
+	Asset       apijson.Field
 	In          apijson.Field
 	Out         apijson.Field
 	PreOwner    apijson.Field
