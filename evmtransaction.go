@@ -83,7 +83,7 @@ func (r EvmTransactionReportParamsEvent) IsKnown() bool {
 // The report parameters.
 type EvmTransactionReportParamsReport struct {
 	Type      param.Field[EvmTransactionReportParamsReportType] `json:"type,required"`
-	Params    param.Field[interface{}]                          `json:"params,required"`
+	Params    param.Field[interface{}]                          `json:"params"`
 	RequestID param.Field[string]                               `json:"request_id"`
 }
 
@@ -133,21 +133,21 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 
 // Transaction parameters
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsData struct {
-	// The source address of the transaction in hex string format
-	From param.Field[string] `json:"from"`
-	// The destination address of the transaction in hex string format
-	To param.Field[string] `json:"to"`
 	// The encoded call data of the transaction in hex string format
 	Data param.Field[string] `json:"data"`
-	// The value of the transaction in Wei in hex string format
-	Value param.Field[string] `json:"value"`
+	// The source address of the transaction in hex string format
+	From param.Field[string] `json:"from"`
 	// The gas required for the transaction in hex string format.
 	Gas param.Field[string] `json:"gas"`
 	// The gas price for the transaction in hex string format.
 	GasPrice param.Field[string] `json:"gas_price"`
 	// The method of the JSON-RPC request
 	Method param.Field[string]      `json:"method"`
-	Params param.Field[interface{}] `json:"params,required"`
+	Params param.Field[interface{}] `json:"params"`
+	// The destination address of the transaction in hex string format
+	To param.Field[string] `json:"to"`
+	// The value of the transaction in Wei in hex string format
+	Value param.Field[string] `json:"value"`
 }
 
 func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsData) MarshalJSON() (data []byte, err error) {

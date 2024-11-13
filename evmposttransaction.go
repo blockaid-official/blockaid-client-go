@@ -82,7 +82,7 @@ func (r EvmPostTransactionReportParamsEvent) IsKnown() bool {
 // The report parameters.
 type EvmPostTransactionReportParamsReport struct {
 	Type      param.Field[EvmPostTransactionReportParamsReportType] `json:"type,required"`
-	Params    param.Field[interface{}]                              `json:"params,required"`
+	Params    param.Field[interface{}]                              `json:"params"`
 	RequestID param.Field[string]                                   `json:"request_id"`
 }
 
