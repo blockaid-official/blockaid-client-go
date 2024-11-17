@@ -1256,6 +1256,9 @@ type TransactionScanResponseSimulation struct {
 	// An error message if the simulation failed.
 	Error string `json:"error"`
 	// This field can have the runtime type of
+	// [TransactionSimulationErrorErrorDetails].
+	ErrorDetails interface{} `json:"error_details"`
+	// This field can have the runtime type of
 	// [map[string][]TransactionSimulationExposure].
 	Exposures interface{} `json:"exposures"`
 	// This field can have the runtime type of [TransactionSimulationParams].
@@ -1277,6 +1280,7 @@ type transactionScanResponseSimulationJSON struct {
 	AssetsDiffs        apijson.Field
 	ContractManagement apijson.Field
 	Error              apijson.Field
+	ErrorDetails       apijson.Field
 	Exposures          apijson.Field
 	Params             apijson.Field
 	TotalUsdDiff       apijson.Field
@@ -5169,16 +5173,19 @@ type TransactionSimulationError struct {
 	Error string `json:"error,required"`
 	// A string indicating if the simulation was successful or not.
 	Status TransactionSimulationErrorStatus `json:"status,required"`
-	JSON   transactionSimulationErrorJSON   `json:"-"`
+	// Error details if the simulation failed.
+	ErrorDetails TransactionSimulationErrorErrorDetails `json:"error_details"`
+	JSON         transactionSimulationErrorJSON         `json:"-"`
 }
 
 // transactionSimulationErrorJSON contains the JSON metadata for the struct
 // [TransactionSimulationError]
 type transactionSimulationErrorJSON struct {
-	Error       apijson.Field
-	Status      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	Error        apijson.Field
+	Status       apijson.Field
+	ErrorDetails apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
 }
 
 func (r *TransactionSimulationError) UnmarshalJSON(data []byte) (err error) {
@@ -5204,6 +5211,446 @@ func (r TransactionSimulationErrorStatus) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+// Error details if the simulation failed.
+type TransactionSimulationErrorErrorDetails struct {
+	// The type of the model
+	Code string `json:"code,required"`
+	// The address of the account
+	AccountAddress string `json:"account_address"`
+	// This field can have the runtime type of
+	// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset].
+	Asset interface{} `json:"asset"`
+	// The current balance of the account
+	CurrentBalance int64 `json:"current_balance"`
+	// The required balance of the account
+	RequiredBalance int64                                      `json:"required_balance"`
+	JSON            transactionSimulationErrorErrorDetailsJSON `json:"-"`
+	union           TransactionSimulationErrorErrorDetailsUnion
+}
+
+// transactionSimulationErrorErrorDetailsJSON contains the JSON metadata for the
+// struct [TransactionSimulationErrorErrorDetails]
+type transactionSimulationErrorErrorDetailsJSON struct {
+	Code            apijson.Field
+	AccountAddress  apijson.Field
+	Asset           apijson.Field
+	CurrentBalance  apijson.Field
+	RequiredBalance apijson.Field
+	raw             string
+	ExtraFields     map[string]apijson.Field
+}
+
+func (r transactionSimulationErrorErrorDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *TransactionSimulationErrorErrorDetails) UnmarshalJSON(data []byte) (err error) {
+	*r = TransactionSimulationErrorErrorDetails{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [TransactionSimulationErrorErrorDetailsUnion] interface which
+// you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails],
+// [TransactionSimulationErrorErrorDetailsGenericErrorDetails].
+func (r TransactionSimulationErrorErrorDetails) AsUnion() TransactionSimulationErrorErrorDetailsUnion {
+	return r.union
+}
+
+// Error details if the simulation failed.
+//
+// Union satisfied by
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails] or
+// [TransactionSimulationErrorErrorDetailsGenericErrorDetails].
+type TransactionSimulationErrorErrorDetailsUnion interface {
+	implementsTransactionSimulationErrorErrorDetails()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TransactionSimulationErrorErrorDetailsUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationErrorErrorDetailsGenericErrorDetails{}),
+		},
+	)
+}
+
+type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails struct {
+	// The address of the account
+	AccountAddress string `json:"account_address,required"`
+	// The asset that the account does not have enough balance for
+	Asset TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset `json:"asset,required"`
+	// The type of the model
+	Code TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsCode `json:"code,required"`
+	// The current balance of the account
+	CurrentBalance int64 `json:"current_balance"`
+	// The required balance of the account
+	RequiredBalance int64                                                                          `json:"required_balance"`
+	JSON            transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsJSON `json:"-"`
+}
+
+// transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsJSON
+// contains the JSON metadata for the struct
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails]
+type transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsJSON struct {
+	AccountAddress  apijson.Field
+	Asset           apijson.Field
+	Code            apijson.Field
+	CurrentBalance  apijson.Field
+	RequiredBalance apijson.Field
+	raw             string
+	ExtraFields     map[string]apijson.Field
+}
+
+func (r *TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails) implementsTransactionSimulationErrorErrorDetails() {
+}
+
+// The asset that the account does not have enough balance for
+type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset struct {
+	// This field can have the runtime type of [NativeAssetDetails],
+	// [Erc20TokenDetails], [Erc1155TokenDetails].
+	Details interface{} `json:"details,required"`
+	// The type of the model
+	Type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetType `json:"type,required"`
+	// Token Id
+	TokenID int64                                                                               `json:"token_id"`
+	JSON    transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetJSON `json:"-"`
+	union   TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetUnion
+}
+
+// transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetJSON
+// contains the JSON metadata for the struct
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset]
+type transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetJSON struct {
+	Details     apijson.Field
+	Type        apijson.Field
+	TokenID     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAsset],
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20Asset],
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721Asset],
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155Asset].
+func (r TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset) AsUnion() TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetUnion {
+	return r.union
+}
+
+// The asset that the account does not have enough balance for
+//
+// Union satisfied by
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAsset],
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20Asset],
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721Asset]
+// or
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155Asset].
+type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetUnion interface {
+	implementsTransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAsset{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20Asset{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721Asset{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155Asset{}),
+		},
+	)
+}
+
+type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAsset struct {
+	// Details
+	Details NativeAssetDetails `json:"details,required"`
+	// The type of the model
+	Type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAssetType `json:"type,required"`
+	JSON transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAssetJSON `json:"-"`
+}
+
+// transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAssetJSON
+// contains the JSON metadata for the struct
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAsset]
+type transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAssetJSON struct {
+	Details     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAsset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAsset) implementsTransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset() {
+}
+
+// The type of the model
+type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAssetType string
+
+const (
+	TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAssetTypeNative TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAssetType = "NATIVE"
+)
+
+func (r TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAssetType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetNativeAssetTypeNative:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20Asset struct {
+	// Details
+	Details Erc20TokenDetails `json:"details,required"`
+	// The type of the model
+	Type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20AssetType `json:"type,required"`
+	JSON transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20AssetJSON `json:"-"`
+}
+
+// transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20AssetJSON
+// contains the JSON metadata for the struct
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20Asset]
+type transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20AssetJSON struct {
+	Details     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20Asset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20AssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20Asset) implementsTransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset() {
+}
+
+// The type of the model
+type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20AssetType string
+
+const (
+	TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20AssetTypeErc20 TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20AssetType = "ERC20"
+)
+
+func (r TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20AssetType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc20AssetTypeErc20:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721Asset struct {
+	// Details
+	Details Erc1155TokenDetails `json:"details,required"`
+	// Token Id
+	TokenID int64 `json:"token_id,required"`
+	// The type of the model
+	Type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721AssetType `json:"type,required"`
+	JSON transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721AssetJSON `json:"-"`
+}
+
+// transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721AssetJSON
+// contains the JSON metadata for the struct
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721Asset]
+type transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721AssetJSON struct {
+	Details     apijson.Field
+	TokenID     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721Asset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721AssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721Asset) implementsTransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset() {
+}
+
+// The type of the model
+type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721AssetType string
+
+const (
+	TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721AssetTypeErc721 TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721AssetType = "ERC721"
+)
+
+func (r TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721AssetType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc721AssetTypeErc721:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155Asset struct {
+	// Details
+	Details Erc1155TokenDetails `json:"details,required"`
+	// Token Id
+	TokenID int64 `json:"token_id,required"`
+	// The type of the model
+	Type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155AssetType `json:"type,required"`
+	JSON transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155AssetJSON `json:"-"`
+}
+
+// transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155AssetJSON
+// contains the JSON metadata for the struct
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155Asset]
+type transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155AssetJSON struct {
+	Details     apijson.Field
+	TokenID     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155Asset) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155AssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155Asset) implementsTransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset() {
+}
+
+// The type of the model
+type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155AssetType string
+
+const (
+	TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155AssetTypeErc1155 TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155AssetType = "ERC1155"
+)
+
+func (r TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155AssetType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetErc1155AssetTypeErc1155:
+		return true
+	}
+	return false
+}
+
+// The type of the model
+type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetType string
+
+const (
+	TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetTypeNative  TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetType = "NATIVE"
+	TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetTypeErc20   TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetType = "ERC20"
+	TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetTypeErc721  TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetType = "ERC721"
+	TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetTypeErc1155 TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetType = "ERC1155"
+)
+
+func (r TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetTypeNative, TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetTypeErc20, TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetTypeErc721, TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAssetTypeErc1155:
+		return true
+	}
+	return false
+}
+
+// The type of the model
+type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsCode string
+
+const (
+	TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsCodeGeneralInsufficientFunds TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsCode = "GENERAL_INSUFFICIENT_FUNDS"
+)
+
+func (r TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsCode) IsKnown() bool {
+	switch r {
+	case TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsCodeGeneralInsufficientFunds:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationErrorErrorDetailsGenericErrorDetails struct {
+	// The error code
+	Code string                                                        `json:"code,required"`
+	JSON transactionSimulationErrorErrorDetailsGenericErrorDetailsJSON `json:"-"`
+}
+
+// transactionSimulationErrorErrorDetailsGenericErrorDetailsJSON contains the JSON
+// metadata for the struct
+// [TransactionSimulationErrorErrorDetailsGenericErrorDetails]
+type transactionSimulationErrorErrorDetailsGenericErrorDetailsJSON struct {
+	Code        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationErrorErrorDetailsGenericErrorDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationErrorErrorDetailsGenericErrorDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationErrorErrorDetailsGenericErrorDetails) implementsTransactionSimulationErrorErrorDetails() {
 }
 
 type TransactionValidation struct {
