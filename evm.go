@@ -2737,6 +2737,12 @@ type TransactionSimulationAccountSummaryTrace struct {
 	Exposed interface{} `json:"exposed"`
 	// The address where the assets are moved from
 	FromAddress string `json:"from_address"`
+	// This field can have the runtime type of
+	// [[]TransactionSimulationAccountSummaryTracesErc20AssetTraceLabels],
+	// [[]TransactionSimulationAccountSummaryTracesErc721AssetTraceLabels],
+	// [[]TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabels],
+	// [[]TransactionSimulationAccountSummaryTracesNativeAssetTraceLabels].
+	Labels interface{} `json:"labels"`
 	// The owner of the assets
 	Owner string `json:"owner"`
 	// The spender of the assets
@@ -2756,6 +2762,7 @@ type transactionSimulationAccountSummaryTraceJSON struct {
 	Diff        apijson.Field
 	Exposed     apijson.Field
 	FromAddress apijson.Field
+	Labels      apijson.Field
 	Owner       apijson.Field
 	Spender     apijson.Field
 	ToAddress   apijson.Field
@@ -2850,7 +2857,9 @@ type TransactionSimulationAccountSummaryTracesErc20AssetTrace struct {
 	TraceType TransactionSimulationAccountSummaryTracesErc20AssetTraceTraceType `json:"trace_type,required"`
 	// The type of the model
 	Type TransactionSimulationAccountSummaryTracesErc20AssetTraceType `json:"type,required"`
-	JSON transactionSimulationAccountSummaryTracesErc20AssetTraceJSON `json:"-"`
+	// List of labels that describe the trace
+	Labels []TransactionSimulationAccountSummaryTracesErc20AssetTraceLabels `json:"labels"`
+	JSON   transactionSimulationAccountSummaryTracesErc20AssetTraceJSON     `json:"-"`
 }
 
 // transactionSimulationAccountSummaryTracesErc20AssetTraceJSON contains the JSON
@@ -2863,6 +2872,7 @@ type transactionSimulationAccountSummaryTracesErc20AssetTraceJSON struct {
 	ToAddress   apijson.Field
 	TraceType   apijson.Field
 	Type        apijson.Field
+	Labels      apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -3001,6 +3011,21 @@ func (r TransactionSimulationAccountSummaryTracesErc20AssetTraceType) IsKnown() 
 	return false
 }
 
+// An enumeration.
+type TransactionSimulationAccountSummaryTracesErc20AssetTraceLabels string
+
+const (
+	TransactionSimulationAccountSummaryTracesErc20AssetTraceLabelsGasFee TransactionSimulationAccountSummaryTracesErc20AssetTraceLabels = "GAS_FEE"
+)
+
+func (r TransactionSimulationAccountSummaryTracesErc20AssetTraceLabels) IsKnown() bool {
+	switch r {
+	case TransactionSimulationAccountSummaryTracesErc20AssetTraceLabelsGasFee:
+		return true
+	}
+	return false
+}
+
 type TransactionSimulationAccountSummaryTracesErc721AssetTrace struct {
 	// Description of the asset in the trace
 	Asset TransactionSimulationAccountSummaryTracesErc721AssetTraceAsset `json:"asset,required"`
@@ -3014,7 +3039,9 @@ type TransactionSimulationAccountSummaryTracesErc721AssetTrace struct {
 	TraceType TransactionSimulationAccountSummaryTracesErc721AssetTraceTraceType `json:"trace_type,required"`
 	// The type of the model
 	Type TransactionSimulationAccountSummaryTracesErc721AssetTraceType `json:"type,required"`
-	JSON transactionSimulationAccountSummaryTracesErc721AssetTraceJSON `json:"-"`
+	// List of labels that describe the trace
+	Labels []TransactionSimulationAccountSummaryTracesErc721AssetTraceLabels `json:"labels"`
+	JSON   transactionSimulationAccountSummaryTracesErc721AssetTraceJSON     `json:"-"`
 }
 
 // transactionSimulationAccountSummaryTracesErc721AssetTraceJSON contains the JSON
@@ -3027,6 +3054,7 @@ type transactionSimulationAccountSummaryTracesErc721AssetTraceJSON struct {
 	ToAddress   apijson.Field
 	TraceType   apijson.Field
 	Type        apijson.Field
+	Labels      apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -3162,6 +3190,21 @@ func (r TransactionSimulationAccountSummaryTracesErc721AssetTraceType) IsKnown()
 	return false
 }
 
+// An enumeration.
+type TransactionSimulationAccountSummaryTracesErc721AssetTraceLabels string
+
+const (
+	TransactionSimulationAccountSummaryTracesErc721AssetTraceLabelsGasFee TransactionSimulationAccountSummaryTracesErc721AssetTraceLabels = "GAS_FEE"
+)
+
+func (r TransactionSimulationAccountSummaryTracesErc721AssetTraceLabels) IsKnown() bool {
+	switch r {
+	case TransactionSimulationAccountSummaryTracesErc721AssetTraceLabelsGasFee:
+		return true
+	}
+	return false
+}
+
 type TransactionSimulationAccountSummaryTracesErc1155AssetTrace struct {
 	// Description of the asset in the trace
 	Asset TransactionSimulationAccountSummaryTracesErc1155AssetTraceAsset `json:"asset,required"`
@@ -3175,7 +3218,9 @@ type TransactionSimulationAccountSummaryTracesErc1155AssetTrace struct {
 	TraceType TransactionSimulationAccountSummaryTracesErc1155AssetTraceTraceType `json:"trace_type,required"`
 	// The type of the model
 	Type TransactionSimulationAccountSummaryTracesErc1155AssetTraceType `json:"type,required"`
-	JSON transactionSimulationAccountSummaryTracesErc1155AssetTraceJSON `json:"-"`
+	// List of labels that describe the trace
+	Labels []TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabels `json:"labels"`
+	JSON   transactionSimulationAccountSummaryTracesErc1155AssetTraceJSON     `json:"-"`
 }
 
 // transactionSimulationAccountSummaryTracesErc1155AssetTraceJSON contains the JSON
@@ -3188,6 +3233,7 @@ type transactionSimulationAccountSummaryTracesErc1155AssetTraceJSON struct {
 	ToAddress   apijson.Field
 	TraceType   apijson.Field
 	Type        apijson.Field
+	Labels      apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -3323,6 +3369,21 @@ func (r TransactionSimulationAccountSummaryTracesErc1155AssetTraceType) IsKnown(
 	return false
 }
 
+// An enumeration.
+type TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabels string
+
+const (
+	TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabelsGasFee TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabels = "GAS_FEE"
+)
+
+func (r TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabels) IsKnown() bool {
+	switch r {
+	case TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabelsGasFee:
+		return true
+	}
+	return false
+}
+
 type TransactionSimulationAccountSummaryTracesNativeAssetTrace struct {
 	// Description of the asset in the trace
 	Asset NativeAssetDetails `json:"asset,required"`
@@ -3336,7 +3397,9 @@ type TransactionSimulationAccountSummaryTracesNativeAssetTrace struct {
 	TraceType TransactionSimulationAccountSummaryTracesNativeAssetTraceTraceType `json:"trace_type,required"`
 	// The type of the model
 	Type TransactionSimulationAccountSummaryTracesNativeAssetTraceType `json:"type,required"`
-	JSON transactionSimulationAccountSummaryTracesNativeAssetTraceJSON `json:"-"`
+	// List of labels that describe the trace
+	Labels []TransactionSimulationAccountSummaryTracesNativeAssetTraceLabels `json:"labels"`
+	JSON   transactionSimulationAccountSummaryTracesNativeAssetTraceJSON     `json:"-"`
 }
 
 // transactionSimulationAccountSummaryTracesNativeAssetTraceJSON contains the JSON
@@ -3349,6 +3412,7 @@ type transactionSimulationAccountSummaryTracesNativeAssetTraceJSON struct {
 	ToAddress   apijson.Field
 	TraceType   apijson.Field
 	Type        apijson.Field
+	Labels      apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -3389,6 +3453,21 @@ const (
 func (r TransactionSimulationAccountSummaryTracesNativeAssetTraceType) IsKnown() bool {
 	switch r {
 	case TransactionSimulationAccountSummaryTracesNativeAssetTraceTypeNativeAssetTrace:
+		return true
+	}
+	return false
+}
+
+// An enumeration.
+type TransactionSimulationAccountSummaryTracesNativeAssetTraceLabels string
+
+const (
+	TransactionSimulationAccountSummaryTracesNativeAssetTraceLabelsGasFee TransactionSimulationAccountSummaryTracesNativeAssetTraceLabels = "GAS_FEE"
+)
+
+func (r TransactionSimulationAccountSummaryTracesNativeAssetTraceLabels) IsKnown() bool {
+	switch r {
+	case TransactionSimulationAccountSummaryTracesNativeAssetTraceLabelsGasFee:
 		return true
 	}
 	return false
