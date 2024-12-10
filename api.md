@@ -157,19 +157,7 @@ Methods:
 
 # Bitcoin
 
-Params Types:
-
-- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionScanRequestParam">BitcoinTransactionScanRequestParam</a>
-
-Response Types:
-
-- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionScanResponse">BitcoinTransactionScanResponse</a>
-
 ## Transaction
-
-Methods:
-
-- <code title="post /v0/bitcoin/transaction/scan">client.Bitcoin.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionScanParams">BitcoinTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#BitcoinTransactionScanResponse">BitcoinTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Starknet
 
