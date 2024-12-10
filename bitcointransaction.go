@@ -3,11 +3,6 @@
 package blockaidclientgo
 
 import (
-	"context"
-	"net/http"
-
-	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
-	"github.com/blockaid-official/blockaid-client-go/internal/requestconfig"
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
@@ -28,20 +23,4 @@ func NewBitcoinTransactionService(opts ...option.RequestOption) (r *BitcoinTrans
 	r = &BitcoinTransactionService{}
 	r.Options = opts
 	return
-}
-
-// Scan Transaction
-func (r *BitcoinTransactionService) Scan(ctx context.Context, body BitcoinTransactionScanParams, opts ...option.RequestOption) (res *BitcoinTransactionScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
-	path := "v0/bitcoin/transaction/scan"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
-}
-
-type BitcoinTransactionScanParams struct {
-	BitcoinTransactionScanRequest BitcoinTransactionScanRequestParam `json:"BitcoinTransactionScanRequest,required"`
-}
-
-func (r BitcoinTransactionScanParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r.BitcoinTransactionScanRequest)
 }

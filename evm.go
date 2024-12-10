@@ -896,12 +896,11 @@ const (
 	TokenScanSupportedChainZksync    TokenScanSupportedChain = "zksync"
 	TokenScanSupportedChainScroll    TokenScanSupportedChain = "scroll"
 	TokenScanSupportedChainDegen     TokenScanSupportedChain = "degen"
-	TokenScanSupportedChainBitcoin   TokenScanSupportedChain = "bitcoin"
 )
 
 func (r TokenScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainBlast, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainDegen, TokenScanSupportedChainBitcoin:
+	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainBlast, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainDegen:
 		return true
 	}
 	return false
@@ -1487,11 +1486,12 @@ const (
 	TransactionScanSupportedChainRonin                 TransactionScanSupportedChain = "ronin"
 	TransactionScanSupportedChainApechain              TransactionScanSupportedChain = "apechain"
 	TransactionScanSupportedChainZeroNetwork           TransactionScanSupportedChain = "zero-network"
+	TransactionScanSupportedChainBerachain             TransactionScanSupportedChain = "berachain"
 )
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainZeroNetwork:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainZeroNetwork, TransactionScanSupportedChainBerachain:
 		return true
 	}
 	return false
