@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
+	"github.com/blockaid-official/blockaid-client-go/internal/param"
 	"github.com/blockaid-official/blockaid-client-go/internal/requestconfig"
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
@@ -30,12 +31,132 @@ func NewStellarTransactionService(opts ...option.RequestOption) (r *StellarTrans
 	return
 }
 
+// Report Transaction
+func (r *StellarTransactionService) Report(ctx context.Context, body StellarTransactionReportParams, opts ...option.RequestOption) (res *int64, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "v0/stellar/transaction/report"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Scan Transaction
 func (r *StellarTransactionService) Scan(ctx context.Context, body StellarTransactionScanParams, opts ...option.RequestOption) (res *StellarTransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "v0/stellar/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
+}
+
+type StellarTransactionReportParams struct {
+	Details param.Field[string]                                    `json:"details,required"`
+	Event   param.Field[StellarTransactionReportParamsEvent]       `json:"event,required"`
+	Report  param.Field[StellarTransactionReportParamsReportUnion] `json:"report,required"`
+}
+
+func (r StellarTransactionReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type StellarTransactionReportParamsEvent string
+
+const (
+	StellarTransactionReportParamsEventShouldBeMalicious     StellarTransactionReportParamsEvent = "should_be_malicious"
+	StellarTransactionReportParamsEventShouldBeBenign        StellarTransactionReportParamsEvent = "should_be_benign"
+	StellarTransactionReportParamsEventWrongSimulationResult StellarTransactionReportParamsEvent = "wrong_simulation_result"
+)
+
+func (r StellarTransactionReportParamsEvent) IsKnown() bool {
+	switch r {
+	case StellarTransactionReportParamsEventShouldBeMalicious, StellarTransactionReportParamsEventShouldBeBenign, StellarTransactionReportParamsEventWrongSimulationResult:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionReportParamsReport struct {
+	ID     param.Field[string]                                   `json:"id"`
+	Params param.Field[StellarTransactionScanRequestParam]       `json:"params"`
+	Type   param.Field[StellarTransactionReportParamsReportType] `json:"type"`
+}
+
+func (r StellarTransactionReportParamsReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionReportParamsReport) implementsStellarTransactionReportParamsReportUnion() {}
+
+// Satisfied by [StellarTransactionReportParamsReportStellarAppealRequestID],
+// [StellarTransactionReportParamsReportStellarAppealTransactionDataReport],
+// [StellarTransactionReportParamsReport].
+type StellarTransactionReportParamsReportUnion interface {
+	implementsStellarTransactionReportParamsReportUnion()
+}
+
+type StellarTransactionReportParamsReportStellarAppealRequestID struct {
+	ID   param.Field[string]                                                         `json:"id,required"`
+	Type param.Field[StellarTransactionReportParamsReportStellarAppealRequestIDType] `json:"type"`
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealRequestID) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealRequestID) implementsStellarTransactionReportParamsReportUnion() {
+}
+
+type StellarTransactionReportParamsReportStellarAppealRequestIDType string
+
+const (
+	StellarTransactionReportParamsReportStellarAppealRequestIDTypeRequestID StellarTransactionReportParamsReportStellarAppealRequestIDType = "request_id"
+)
+
+func (r StellarTransactionReportParamsReportStellarAppealRequestIDType) IsKnown() bool {
+	switch r {
+	case StellarTransactionReportParamsReportStellarAppealRequestIDTypeRequestID:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReport struct {
+	Params param.Field[StellarTransactionScanRequestParam]                                         `json:"params,required"`
+	Type   param.Field[StellarTransactionReportParamsReportStellarAppealTransactionDataReportType] `json:"type"`
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReport) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReport) implementsStellarTransactionReportParamsReportUnion() {
+}
+
+type StellarTransactionReportParamsReportStellarAppealTransactionDataReportType string
+
+const (
+	StellarTransactionReportParamsReportStellarAppealTransactionDataReportTypeParams StellarTransactionReportParamsReportStellarAppealTransactionDataReportType = "params"
+)
+
+func (r StellarTransactionReportParamsReportStellarAppealTransactionDataReportType) IsKnown() bool {
+	switch r {
+	case StellarTransactionReportParamsReportStellarAppealTransactionDataReportTypeParams:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionReportParamsReportType string
+
+const (
+	StellarTransactionReportParamsReportTypeRequestID StellarTransactionReportParamsReportType = "request_id"
+	StellarTransactionReportParamsReportTypeParams    StellarTransactionReportParamsReportType = "params"
+)
+
+func (r StellarTransactionReportParamsReportType) IsKnown() bool {
+	switch r {
+	case StellarTransactionReportParamsReportTypeRequestID, StellarTransactionReportParamsReportTypeParams:
+		return true
+	}
+	return false
 }
 
 type StellarTransactionScanParams struct {
