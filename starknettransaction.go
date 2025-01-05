@@ -60,13 +60,14 @@ func (r StarknetTransactionReportParams) MarshalJSON() (data []byte, err error) 
 type StarknetTransactionReportParamsEvent string
 
 const (
-	StarknetTransactionReportParamsEventShouldBeMalicious StarknetTransactionReportParamsEvent = "should_be_malicious"
-	StarknetTransactionReportParamsEventShouldBeBenign    StarknetTransactionReportParamsEvent = "should_be_benign"
+	StarknetTransactionReportParamsEventShouldBeMalicious     StarknetTransactionReportParamsEvent = "should_be_malicious"
+	StarknetTransactionReportParamsEventShouldBeBenign        StarknetTransactionReportParamsEvent = "should_be_benign"
+	StarknetTransactionReportParamsEventWrongSimulationResult StarknetTransactionReportParamsEvent = "wrong_simulation_result"
 )
 
 func (r StarknetTransactionReportParamsEvent) IsKnown() bool {
 	switch r {
-	case StarknetTransactionReportParamsEventShouldBeMalicious, StarknetTransactionReportParamsEventShouldBeBenign:
+	case StarknetTransactionReportParamsEventShouldBeMalicious, StarknetTransactionReportParamsEventShouldBeBenign, StarknetTransactionReportParamsEventWrongSimulationResult:
 		return true
 	}
 	return false
