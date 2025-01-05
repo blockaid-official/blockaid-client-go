@@ -69,7 +69,7 @@ func TestStarknetTransactionScanWithOptionalParams(t *testing.T) {
 				SenderAddress:             blockaidclientgo.F("0x1840b3c89a446c74a3962647a2a7fb449d83905c4511027dfa9e099c6886691"),
 				Version:                   blockaidclientgo.F(blockaidclientgo.StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaVersion3),
 				AccountDeploymentData:     blockaidclientgo.F([]string{}),
-				NonceDataAvailabilityMode: blockaidclientgo.F(blockaidclientgo.StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode0),
+				NonceDataAvailabilityMode: blockaidclientgo.F(int64(0)),
 				PaymasterData:             blockaidclientgo.F([]string{}),
 			}),
 			BlockNumber: blockaidclientgo.F("0xa12e3"),

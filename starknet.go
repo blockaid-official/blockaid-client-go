@@ -298,14 +298,13 @@ func (r StarknetTransactionScanRequestParam) MarshalJSON() (data []byte, err err
 type StarknetTransactionScanRequestChain string
 
 const (
-	StarknetTransactionScanRequestChainMainnet            StarknetTransactionScanRequestChain = "mainnet"
-	StarknetTransactionScanRequestChainSepolia            StarknetTransactionScanRequestChain = "sepolia"
-	StarknetTransactionScanRequestChainSepoliaIntegration StarknetTransactionScanRequestChain = "sepolia_integration"
+	StarknetTransactionScanRequestChainMainnet StarknetTransactionScanRequestChain = "mainnet"
+	StarknetTransactionScanRequestChainSepolia StarknetTransactionScanRequestChain = "sepolia"
 )
 
 func (r StarknetTransactionScanRequestChain) IsKnown() bool {
 	switch r {
-	case StarknetTransactionScanRequestChainMainnet, StarknetTransactionScanRequestChainSepolia, StarknetTransactionScanRequestChainSepoliaIntegration:
+	case StarknetTransactionScanRequestChainMainnet, StarknetTransactionScanRequestChainSepolia:
 		return true
 	}
 	return false
@@ -425,8 +424,8 @@ type StarknetTransactionScanRequestTransactionParam struct {
 	// The maximum fee that the sender is willing to pay.
 	MaxFee param.Field[string] `json:"max_fee"`
 	// The nonce data availability mode.
-	NonceDataAvailabilityMode param.Field[StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode] `json:"nonce_data_availability_mode"`
-	PaymasterData             param.Field[interface{}]                                                        `json:"paymaster_data"`
+	NonceDataAvailabilityMode param.Field[int64]       `json:"nonce_data_availability_mode"`
+	PaymasterData             param.Field[interface{}] `json:"paymaster_data"`
 	// The address of the sender.
 	SenderAddress param.Field[string] `json:"sender_address"`
 }
@@ -497,7 +496,7 @@ type StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaP
 	// For future use. Currently this value is always empty.
 	AccountDeploymentData param.Field[[]string] `json:"account_deployment_data"`
 	// The nonce data availability mode.
-	NonceDataAvailabilityMode param.Field[StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode] `json:"nonce_data_availability_mode"`
+	NonceDataAvailabilityMode param.Field[int64] `json:"nonce_data_availability_mode"`
 	// For future use. Currently this value is always empty.
 	PaymasterData param.Field[[]string] `json:"paymaster_data"`
 }
@@ -519,21 +518,6 @@ const (
 func (r StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaVersion) IsKnown() bool {
 	switch r {
 	case StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaVersion3:
-		return true
-	}
-	return false
-}
-
-// The nonce data availability mode.
-type StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode int64
-
-const (
-	StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode0 StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode = 0
-)
-
-func (r StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode) IsKnown() bool {
-	switch r {
-	case StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaNonceDataAvailabilityMode0:
 		return true
 	}
 	return false
@@ -624,21 +608,6 @@ const (
 func (r StarknetTransactionScanRequestTransactionVersion) IsKnown() bool {
 	switch r {
 	case StarknetTransactionScanRequestTransactionVersion1, StarknetTransactionScanRequestTransactionVersion3:
-		return true
-	}
-	return false
-}
-
-// The nonce data availability mode.
-type StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode int64
-
-const (
-	StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode0 StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode = 0
-)
-
-func (r StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode) IsKnown() bool {
-	switch r {
-	case StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode0:
 		return true
 	}
 	return false
