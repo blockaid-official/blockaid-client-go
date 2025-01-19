@@ -46,8 +46,9 @@ func TestEvmTransactionBulkScanWithOptionalParams(t *testing.T) {
 		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
 			Domain: blockaidclientgo.F("https://example.com"),
 		}),
-		Block:   blockaidclientgo.F[blockaidclientgo.EvmTransactionBulkScanParamsBlockUnion](shared.UnionString("20224477")),
-		Options: blockaidclientgo.F([]blockaidclientgo.EvmTransactionBulkScanParamsOption{blockaidclientgo.EvmTransactionBulkScanParamsOptionValidation}),
+		Aggregated: blockaidclientgo.F(true),
+		Block:      blockaidclientgo.F[blockaidclientgo.EvmTransactionBulkScanParamsBlockUnion](shared.UnionString("20224477")),
+		Options:    blockaidclientgo.F([]blockaidclientgo.EvmTransactionBulkScanParamsOption{blockaidclientgo.EvmTransactionBulkScanParamsOptionValidation}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
