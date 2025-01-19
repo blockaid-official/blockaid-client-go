@@ -49,6 +49,8 @@ type EvmTransactionBulkScanParams struct {
 	Data param.Field[[]EvmTransactionBulkScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[MetadataParam] `json:"metadata,required"`
+	// Should aggregate the results to one result
+	Aggregated param.Field[bool] `json:"aggregated"`
 	// The relative block for the block validation. Can be "latest" or a block number.
 	Block param.Field[EvmTransactionBulkScanParamsBlockUnion] `json:"block"`
 	// List of one or both of options for the desired output. "simulation" - include
