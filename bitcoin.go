@@ -1762,7 +1762,7 @@ type BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature stru
 	Address string `json:"address,required"`
 	// Textual description
 	Description string `json:"description,required"`
-	FeatureID string `json:"feature_id,required"`
+	FeatureID   string `json:"feature_id,required"`
 	// Feature Classification
 	Type BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesType `json:"type,required"`
 	JSON bitcoinTransactionScanResponseValidationBitcoinValidationResultFeatureJSON  `json:"-"`
