@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.34.2 (2025-01-23)
+
+Full Changelog: [v0.34.1...v0.34.2](https://github.com/blockaid-official/blockaid-client-go/compare/v0.34.1...v0.34.2)
+
+### Features
+
+* **api:** api update ([#307](https://github.com/blockaid-official/blockaid-client-go/issues/307)) ([87625cb](https://github.com/blockaid-official/blockaid-client-go/commit/87625cb13b4109ed8316cf24db9b0d359a799130))
+* **api:** api update ([#310](https://github.com/blockaid-official/blockaid-client-go/issues/310)) ([593f927](https://github.com/blockaid-official/blockaid-client-go/commit/593f927acd3e175f42586a27a4e3cbd79e1e9e0b))
+* **api:** api update ([#314](https://github.com/blockaid-official/blockaid-client-go/issues/314)) ([b97e15b](https://github.com/blockaid-official/blockaid-client-go/commit/b97e15b33697d02eeb73b1f1dcb6a97e70704eaa))
+* **api:** api update ([#315](https://github.com/blockaid-official/blockaid-client-go/issues/315)) ([a1face1](https://github.com/blockaid-official/blockaid-client-go/commit/a1face1b935c7dedea8d21ae8f76b8e0c2f71167))
+* **api:** api update ([#316](https://github.com/blockaid-official/blockaid-client-go/issues/316)) ([48e4ea6](https://github.com/blockaid-official/blockaid-client-go/commit/48e4ea689a4f5169b497b05d501a09c209e7880f))
+* support deprecated markers ([#313](https://github.com/blockaid-official/blockaid-client-go/issues/313)) ([d3860e1](https://github.com/blockaid-official/blockaid-client-go/commit/d3860e18c596ab2bb061d6d9d25dd25e4713de9f))
+
+
+### Bug Fixes
+
+* fix apijson.Port for embedded structs ([#311](https://github.com/blockaid-official/blockaid-client-go/issues/311)) ([1f05e25](https://github.com/blockaid-official/blockaid-client-go/commit/1f05e25e62ac71cd0ff00469938439730862d76f))
+* fix apijson.Port for embedded structs ([#312](https://github.com/blockaid-official/blockaid-client-go/issues/312)) ([e5ddd83](https://github.com/blockaid-official/blockaid-client-go/commit/e5ddd83c1d28bd85f9da8fff0b288e206bcc1854))
+
+
+### Chores
+
+* **internal:** codegen related update ([#309](https://github.com/blockaid-official/blockaid-client-go/issues/309)) ([b189272](https://github.com/blockaid-official/blockaid-client-go/commit/b189272e144735ce0a108f8c6a67523676124f99))
+
 ## 0.34.1 (2025-01-05)
 
 Full Changelog: [v0.34.0...v0.34.1](https://github.com/blockaid-official/blockaid-client-go/compare/v0.34.0...v0.34.1)
