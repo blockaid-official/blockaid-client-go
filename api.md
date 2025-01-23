@@ -198,10 +198,6 @@ Methods:
 
 # Sui
 
-Params Types:
-
-- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiTransactionScanRequestParam">SuiTransactionScanRequestParam</a>
-
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiAssetTransferDetailsSchema">SuiAssetTransferDetailsSchema</a>
