@@ -21,6 +21,7 @@ type Client struct {
 	Stellar   *StellarService
 	Bitcoin   *BitcoinService
 	Starknet  *StarknetService
+	Sui       *SuiService
 	Site      *SiteService
 	Scan      *ScanService
 	Token     *TokenService
@@ -48,6 +49,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.Stellar = NewStellarService(opts...)
 	r.Bitcoin = NewBitcoinService(opts...)
 	r.Starknet = NewStarknetService(opts...)
+	r.Sui = NewSuiService(opts...)
 	r.Site = NewSiteService(opts...)
 	r.Scan = NewScanService(opts...)
 	r.Token = NewTokenService(opts...)

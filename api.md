@@ -196,6 +196,22 @@ Methods:
 - <code title="post /v0/starknet/transaction/report">client.Starknet.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetTransactionService.Report">Report</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetTransactionReportParams">StarknetTransactionReportParams</a>) (<a href="https://pkg.go.dev/builtin#int64">int64</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="post /v0/starknet/transaction/scan">client.Starknet.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetTransactionScanParams">StarknetTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StarknetTransactionScanResponse">StarknetTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
+# Sui
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiAssetTransferDetailsSchema">SuiAssetTransferDetailsSchema</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiNativeAssetDetailsSchema">SuiNativeAssetDetailsSchema</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiNFTDetailsSchema">SuiNFTDetailsSchema</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiNFTDiffSchema">SuiNFTDiffSchema</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiTransactionScanResponse">SuiTransactionScanResponse</a>
+
+## Transaction
+
+Methods:
+
+- <code title="post /v0/sui/transaction/scan">client.Sui.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiTransactionScanParams">SuiTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiTransactionScanResponse">SuiTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
 # Site
 
 Response Types:
