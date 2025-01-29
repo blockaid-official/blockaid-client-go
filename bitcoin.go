@@ -597,7 +597,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSumma
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice string                                                                                                                      `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                     `json:"usd_price,nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffInJSON `json:"-"`
 }
 
@@ -630,7 +630,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSumma
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice string                                                                                                                       `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                      `json:"usd_price,nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffOutJSON `json:"-"`
 }
 
@@ -745,7 +745,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSumma
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice string                                                                                                                           `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                          `json:"usd_price,nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffInJSON `json:"-"`
 }
 
@@ -775,7 +775,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSumma
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice string                                                                                                                            `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                           `json:"usd_price,nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffOutJSON `json:"-"`
 }
 
@@ -897,7 +897,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSumma
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice string                                                                                                                     `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                    `json:"usd_price,nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffInJSON `json:"-"`
 }
 
@@ -930,7 +930,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSumma
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice string                                                                                                                      `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                     `json:"usd_price,nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffOutJSON `json:"-"`
 }
 
@@ -1219,7 +1219,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsB
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice string                                                                                                 `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                `json:"usd_price,nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffInJSON `json:"-"`
 }
 
@@ -1252,7 +1252,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsB
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice string                                                                                                  `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                 `json:"usd_price,nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOutJSON `json:"-"`
 }
 
@@ -1367,7 +1367,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsB
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice string                                                                                                      `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                     `json:"usd_price,nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffInJSON `json:"-"`
 }
 
@@ -1397,7 +1397,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsB
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice string                                                                                                       `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                      `json:"usd_price,nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffOutJSON `json:"-"`
 }
 
@@ -1519,7 +1519,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsB
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice string                                                                                                `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                               `json:"usd_price,nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffInJSON `json:"-"`
 }
 
@@ -1552,7 +1552,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsB
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice string                                                                                                 `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                `json:"usd_price,nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOutJSON `json:"-"`
 }
 
