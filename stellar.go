@@ -82,22 +82,22 @@ func (r StellarAssetContractDetailsType) IsKnown() bool {
 type StellarAssetTransferDetails struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value float64 `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                          `json:"summary,nullable"`
-	JSON    stellarAssetTransferDetailsJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                         `json:"usd_price,nullable"`
+	JSON     stellarAssetTransferDetailsJSON `json:"-"`
 }
 
 // stellarAssetTransferDetailsJSON contains the JSON metadata for the struct
 // [StellarAssetTransferDetails]
 type stellarAssetTransferDetailsJSON struct {
 	RawValue    apijson.Field
-	UsdPrice    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
+	UsdPrice    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -216,7 +216,7 @@ func (r StellarNativeAssetDetailsType) IsKnown() bool {
 
 type StellarSingleAssetExposure struct {
 	// Approval value of the ERC20 token
-	Approval string                               `json:"approval,required"`
+	Approval float64                              `json:"approval,required"`
 	Exposure []StellarSingleAssetExposureExposure `json:"exposure,required"`
 	// Expiration date of the approval
 	Expiration time.Time `json:"expiration,nullable" format:"date-time"`
@@ -247,22 +247,22 @@ func (r stellarSingleAssetExposureJSON) RawJSON() string {
 type StellarSingleAssetExposureExposure struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                 `json:"summary,nullable"`
-	JSON    stellarSingleAssetExposureExposureJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                                `json:"usd_price,nullable"`
+	JSON     stellarSingleAssetExposureExposureJSON `json:"-"`
 }
 
 // stellarSingleAssetExposureExposureJSON contains the JSON metadata for the struct
 // [StellarSingleAssetExposureExposure]
 type stellarSingleAssetExposureExposureJSON struct {
 	RawValue    apijson.Field
-	UsdPrice    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
+	UsdPrice    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }

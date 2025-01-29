@@ -592,13 +592,13 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                                      `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffInJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                                                                                                                     `json:"usd_price,nullable"`
+	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffInJSON `json:"-"`
 }
 
 // bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffInJSON
@@ -606,9 +606,9 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSumma
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffIn]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffInJSON struct {
 	RawValue    apijson.Field
-	UsdPrice    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
+	UsdPrice    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -625,13 +625,13 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                                       `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffOutJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                                                                                                                      `json:"usd_price,nullable"`
+	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffOutJSON `json:"-"`
 }
 
 // bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffOutJSON
@@ -639,9 +639,9 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSumma
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffOut]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffOutJSON struct {
 	RawValue    apijson.Field
-	UsdPrice    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
+	UsdPrice    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -742,11 +742,11 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffIn struct {
 	// Inscription ID of the transfer
 	InscriptionID string `json:"inscription_id,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                                           `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffInJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                                                                                                                          `json:"usd_price,nullable"`
+	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffInJSON `json:"-"`
 }
 
 // bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffInJSON
@@ -754,8 +754,8 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSumma
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffIn]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffInJSON struct {
 	InscriptionID apijson.Field
-	UsdPrice      apijson.Field
 	Summary       apijson.Field
+	UsdPrice      apijson.Field
 	raw           string
 	ExtraFields   map[string]apijson.Field
 }
@@ -772,11 +772,11 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffOut struct {
 	// Inscription ID of the transfer
 	InscriptionID string `json:"inscription_id,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                                            `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffOutJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                                                                                                                           `json:"usd_price,nullable"`
+	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffOutJSON `json:"-"`
 }
 
 // bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffOutJSON
@@ -784,8 +784,8 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSumma
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffOut]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffOutJSON struct {
 	InscriptionID apijson.Field
-	UsdPrice      apijson.Field
 	Summary       apijson.Field
+	UsdPrice      apijson.Field
 	raw           string
 	ExtraFields   map[string]apijson.Field
 }
@@ -892,13 +892,13 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                                     `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffInJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                                                                                                                    `json:"usd_price,nullable"`
+	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffInJSON `json:"-"`
 }
 
 // bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffInJSON
@@ -906,9 +906,9 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSumma
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffIn]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffInJSON struct {
 	RawValue    apijson.Field
-	UsdPrice    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
+	UsdPrice    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -925,13 +925,13 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                                      `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffOutJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                                                                                                                     `json:"usd_price,nullable"`
+	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffOutJSON `json:"-"`
 }
 
 // bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffOutJSON
@@ -939,9 +939,9 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSumma
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffOut]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffOutJSON struct {
 	RawValue    apijson.Field
-	UsdPrice    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
+	UsdPrice    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -1214,13 +1214,13 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                 `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffInJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                                                                                                `json:"usd_price,nullable"`
+	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffInJSON `json:"-"`
 }
 
 // bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffInJSON
@@ -1228,9 +1228,9 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsB
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffIn]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffInJSON struct {
 	RawValue    apijson.Field
-	UsdPrice    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
+	UsdPrice    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -1247,13 +1247,13 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                  `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOutJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                                                                                                 `json:"usd_price,nullable"`
+	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOutJSON `json:"-"`
 }
 
 // bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOutJSON
@@ -1261,9 +1261,9 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsB
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOut]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOutJSON struct {
 	RawValue    apijson.Field
-	UsdPrice    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
+	UsdPrice    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -1364,11 +1364,11 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffIn struct {
 	// Inscription ID of the transfer
 	InscriptionID string `json:"inscription_id,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                      `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffInJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                                                                                                     `json:"usd_price,nullable"`
+	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffInJSON `json:"-"`
 }
 
 // bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffInJSON
@@ -1376,8 +1376,8 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsB
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffIn]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffInJSON struct {
 	InscriptionID apijson.Field
-	UsdPrice      apijson.Field
 	Summary       apijson.Field
+	UsdPrice      apijson.Field
 	raw           string
 	ExtraFields   map[string]apijson.Field
 }
@@ -1394,11 +1394,11 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffOut struct {
 	// Inscription ID of the transfer
 	InscriptionID string `json:"inscription_id,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                       `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffOutJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                                                                                                      `json:"usd_price,nullable"`
+	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffOutJSON `json:"-"`
 }
 
 // bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffOutJSON
@@ -1406,8 +1406,8 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsB
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffOut]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffOutJSON struct {
 	InscriptionID apijson.Field
-	UsdPrice      apijson.Field
 	Summary       apijson.Field
+	UsdPrice      apijson.Field
 	raw           string
 	ExtraFields   map[string]apijson.Field
 }
@@ -1514,13 +1514,13 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffInJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                                                                                               `json:"usd_price,nullable"`
+	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffInJSON `json:"-"`
 }
 
 // bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffInJSON
@@ -1528,9 +1528,9 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsB
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffIn]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffInJSON struct {
 	RawValue    apijson.Field
-	UsdPrice    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
+	UsdPrice    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -1547,13 +1547,13 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                                                                                                 `json:"summary,nullable"`
-	JSON    bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOutJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                                                                                                `json:"usd_price,nullable"`
+	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOutJSON `json:"-"`
 }
 
 // bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOutJSON
@@ -1561,9 +1561,9 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsB
 // [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOut]
 type bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOutJSON struct {
 	RawValue    apijson.Field
-	UsdPrice    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
+	UsdPrice    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
