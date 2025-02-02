@@ -920,7 +920,7 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpender struct {
 	// Approval value of the ERC20 token
-	Approval float64             `json:"approval,required"`
+	Approval string              `json:"approval,required"`
 	Exposure []StarknetErc20Diff `json:"exposure,required"`
 	// Expiration date of the approval
 	Expiration time.Time `json:"expiration,nullable" format:"date-time"`
@@ -1603,7 +1603,7 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpender struct {
 	// Approval value of the ERC20 token
-	Approval float64             `json:"approval,required"`
+	Approval string              `json:"approval,required"`
 	Exposure []StarknetErc20Diff `json:"exposure,required"`
 	// Expiration date of the approval
 	Expiration time.Time `json:"expiration,nullable" format:"date-time"`
