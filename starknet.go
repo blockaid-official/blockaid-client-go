@@ -85,22 +85,22 @@ func (r StarknetErc1155DetailsType) IsKnown() bool {
 type StarknetErc1155Diff struct {
 	// Token ID of the transfer
 	TokenID string `json:"token_id,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Value of the transfer
 	Value int64 `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                  `json:"summary,nullable"`
-	JSON    starknetErc1155DiffJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                 `json:"usd_price,nullable"`
+	JSON     starknetErc1155DiffJSON `json:"-"`
 }
 
 // starknetErc1155DiffJSON contains the JSON metadata for the struct
 // [StarknetErc1155Diff]
 type starknetErc1155DiffJSON struct {
 	TokenID     apijson.Field
-	UsdPrice    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
+	UsdPrice    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -168,22 +168,22 @@ func (r StarknetErc20DetailsType) IsKnown() bool {
 type StarknetErc20Diff struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Value of the transfer
 	Value string `json:"value,required"`
 	// Summarized description of the transfer
-	Summary string                `json:"summary,nullable"`
-	JSON    starknetErc20DiffJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64               `json:"usd_price,nullable"`
+	JSON     starknetErc20DiffJSON `json:"-"`
 }
 
 // starknetErc20DiffJSON contains the JSON metadata for the struct
 // [StarknetErc20Diff]
 type starknetErc20DiffJSON struct {
 	RawValue    apijson.Field
-	UsdPrice    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
+	UsdPrice    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -248,19 +248,19 @@ func (r StarknetErc721DetailsType) IsKnown() bool {
 type StarknetErc721Diff struct {
 	// Token ID of the transfer
 	TokenID string `json:"token_id,required"`
-	// USD price of the asset
-	UsdPrice string `json:"usd_price,required"`
 	// Summarized description of the transfer
-	Summary string                 `json:"summary,nullable"`
-	JSON    starknetErc721DiffJSON `json:"-"`
+	Summary string `json:"summary,nullable"`
+	// USD price of the asset
+	UsdPrice float64                `json:"usd_price,nullable"`
+	JSON     starknetErc721DiffJSON `json:"-"`
 }
 
 // starknetErc721DiffJSON contains the JSON metadata for the struct
 // [StarknetErc721Diff]
 type starknetErc721DiffJSON struct {
 	TokenID     apijson.Field
-	UsdPrice    apijson.Field
 	Summary     apijson.Field
+	UsdPrice    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
