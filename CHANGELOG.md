@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.35.0 (2025-02-02)
+
+Full Changelog: [v0.34.2...v0.35.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.34.2...v0.35.0)
+
+### Features
+
+* **api:** api update ([#320](https://github.com/blockaid-official/blockaid-client-go/issues/320)) ([22bda40](https://github.com/blockaid-official/blockaid-client-go/commit/22bda402a588ecdf7c4a11b7be01a1147b5c27bc))
+* **api:** api update ([#321](https://github.com/blockaid-official/blockaid-client-go/issues/321)) ([b7d505e](https://github.com/blockaid-official/blockaid-client-go/commit/b7d505e1b6ac5cf32ea52080f0c93021f3791a44))
+* **api:** api update ([#324](https://github.com/blockaid-official/blockaid-client-go/issues/324)) ([02a666f](https://github.com/blockaid-official/blockaid-client-go/commit/02a666fbf841d9aea0784ae8432706a607ddb5db))
+
+
+### Bug Fixes
+
+* fix unicode encoding for json ([#322](https://github.com/blockaid-official/blockaid-client-go/issues/322)) ([39c0fff](https://github.com/blockaid-official/blockaid-client-go/commit/39c0fff125fb42511c65983a21a00441aede8672))
+
+
+### Chores
+
+* refactor client tests ([#318](https://github.com/blockaid-official/blockaid-client-go/issues/318)) ([129addb](https://github.com/blockaid-official/blockaid-client-go/commit/129addbb305645a6cd27a33140cc92b3d73c68d5))
+
+
+### Documentation
+
+* document raw responses ([#323](https://github.com/blockaid-official/blockaid-client-go/issues/323)) ([16d3b43](https://github.com/blockaid-official/blockaid-client-go/commit/16d3b43dd88ab4373cd940c5f480e284a13e443a))
+
 ## 0.34.2 (2025-01-23)
 
 Full Changelog: [v0.34.1...v0.34.2](https://github.com/blockaid-official/blockaid-client-go/compare/v0.34.1...v0.34.2)
