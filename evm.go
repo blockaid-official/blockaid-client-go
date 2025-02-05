@@ -5193,6 +5193,8 @@ type TransactionSimulationParams struct {
 	GasPrice string `json:"gas_price"`
 	// The address the transaction is directed to.
 	To string `json:"to"`
+	// The user operation call data to be sent.
+	UserOperationCalldata TransactionSimulationParamsUserOperationCalldata `json:"user_operation_calldata"`
 	// The value to be sent.
 	Value string                          `json:"value"`
 	JSON  transactionSimulationParamsJSON `json:"-"`
@@ -5201,17 +5203,18 @@ type TransactionSimulationParams struct {
 // transactionSimulationParamsJSON contains the JSON metadata for the struct
 // [TransactionSimulationParams]
 type transactionSimulationParamsJSON struct {
-	BlockTag    apijson.Field
-	Calldata    apijson.Field
-	Chain       apijson.Field
-	Data        apijson.Field
-	From        apijson.Field
-	Gas         apijson.Field
-	GasPrice    apijson.Field
-	To          apijson.Field
-	Value       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	BlockTag              apijson.Field
+	Calldata              apijson.Field
+	Chain                 apijson.Field
+	Data                  apijson.Field
+	From                  apijson.Field
+	Gas                   apijson.Field
+	GasPrice              apijson.Field
+	To                    apijson.Field
+	UserOperationCalldata apijson.Field
+	Value                 apijson.Field
+	raw                   string
+	ExtraFields           map[string]apijson.Field
 }
 
 func (r *TransactionSimulationParams) UnmarshalJSON(data []byte) (err error) {
@@ -5248,6 +5251,35 @@ func (r *TransactionSimulationParamsCalldata) UnmarshalJSON(data []byte) (err er
 }
 
 func (r transactionSimulationParamsCalldataJSON) RawJSON() string {
+	return r.raw
+}
+
+// The user operation call data to be sent.
+type TransactionSimulationParamsUserOperationCalldata struct {
+	// The function selector of the function called in the transaction
+	FunctionSelector string `json:"function_selector,required"`
+	// The function declaration of the function called in the transaction
+	FunctionDeclaration string `json:"function_declaration"`
+	// The function signature of the function called in the transaction
+	FunctionSignature string                                               `json:"function_signature"`
+	JSON              transactionSimulationParamsUserOperationCalldataJSON `json:"-"`
+}
+
+// transactionSimulationParamsUserOperationCalldataJSON contains the JSON metadata
+// for the struct [TransactionSimulationParamsUserOperationCalldata]
+type transactionSimulationParamsUserOperationCalldataJSON struct {
+	FunctionSelector    apijson.Field
+	FunctionDeclaration apijson.Field
+	FunctionSignature   apijson.Field
+	raw                 string
+	ExtraFields         map[string]apijson.Field
+}
+
+func (r *TransactionSimulationParamsUserOperationCalldata) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationParamsUserOperationCalldataJSON) RawJSON() string {
 	return r.raw
 }
 
