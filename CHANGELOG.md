@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.36.0 (2025-02-09)
+
+Full Changelog: [v0.35.0...v0.36.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.35.0...v0.36.0)
+
+### Features
+
+* **api:** api update ([#328](https://github.com/blockaid-official/blockaid-client-go/issues/328)) ([72444cd](https://github.com/blockaid-official/blockaid-client-go/commit/72444cd5ccdd8ba7aa3bbeb3e6573b95ced16afc))
+* **api:** api update ([#330](https://github.com/blockaid-official/blockaid-client-go/issues/330)) ([c0efc84](https://github.com/blockaid-official/blockaid-client-go/commit/c0efc84ea6b83d84e2d8d8e29734865cb4b85b71))
+* **api:** api update ([#332](https://github.com/blockaid-official/blockaid-client-go/issues/332)) ([3cbb2f6](https://github.com/blockaid-official/blockaid-client-go/commit/3cbb2f6f1c50638646a1b7d39f1d6eaff0d1fb43))
+* **client:** send `X-Stainless-Timeout` header ([#326](https://github.com/blockaid-official/blockaid-client-go/issues/326)) ([84fef6c](https://github.com/blockaid-official/blockaid-client-go/commit/84fef6c6ac40172b0c141292444584613bc17387))
+
+
+### Bug Fixes
+
+* fix early cancel when RequestTimeout is provided for streaming requests ([#331](https://github.com/blockaid-official/blockaid-client-go/issues/331)) ([914c5be](https://github.com/blockaid-official/blockaid-client-go/commit/914c5becffeb51b0c2fc24a8b326580dbb5d8c28))
+
+
+### Chores
+
+* add UnionUnmarshaler for responses that are interfaces ([#329](https://github.com/blockaid-official/blockaid-client-go/issues/329)) ([4be5bc3](https://github.com/blockaid-official/blockaid-client-go/commit/4be5bc3fd9c0b1b7a1fd983fd0d0e79df630f0f4))
+
 ## 0.35.0 (2025-02-02)
 
 Full Changelog: [v0.34.2...v0.35.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.34.2...v0.35.0)
