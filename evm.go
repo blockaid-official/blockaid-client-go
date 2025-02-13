@@ -880,27 +880,33 @@ func (r NonercTokenDetailsType) IsKnown() bool {
 type TokenScanSupportedChain string
 
 const (
-	TokenScanSupportedChainArbitrum  TokenScanSupportedChain = "arbitrum"
-	TokenScanSupportedChainAvalanche TokenScanSupportedChain = "avalanche"
-	TokenScanSupportedChainBase      TokenScanSupportedChain = "base"
-	TokenScanSupportedChainBsc       TokenScanSupportedChain = "bsc"
-	TokenScanSupportedChainEthereum  TokenScanSupportedChain = "ethereum"
-	TokenScanSupportedChainOptimism  TokenScanSupportedChain = "optimism"
-	TokenScanSupportedChainPolygon   TokenScanSupportedChain = "polygon"
-	TokenScanSupportedChainZora      TokenScanSupportedChain = "zora"
-	TokenScanSupportedChainSolana    TokenScanSupportedChain = "solana"
-	TokenScanSupportedChainStarknet  TokenScanSupportedChain = "starknet"
-	TokenScanSupportedChainStellar   TokenScanSupportedChain = "stellar"
-	TokenScanSupportedChainLinea     TokenScanSupportedChain = "linea"
-	TokenScanSupportedChainBlast     TokenScanSupportedChain = "blast"
-	TokenScanSupportedChainZksync    TokenScanSupportedChain = "zksync"
-	TokenScanSupportedChainScroll    TokenScanSupportedChain = "scroll"
-	TokenScanSupportedChainDegen     TokenScanSupportedChain = "degen"
+	TokenScanSupportedChainArbitrum    TokenScanSupportedChain = "arbitrum"
+	TokenScanSupportedChainAvalanche   TokenScanSupportedChain = "avalanche"
+	TokenScanSupportedChainBase        TokenScanSupportedChain = "base"
+	TokenScanSupportedChainBsc         TokenScanSupportedChain = "bsc"
+	TokenScanSupportedChainEthereum    TokenScanSupportedChain = "ethereum"
+	TokenScanSupportedChainOptimism    TokenScanSupportedChain = "optimism"
+	TokenScanSupportedChainPolygon     TokenScanSupportedChain = "polygon"
+	TokenScanSupportedChainZora        TokenScanSupportedChain = "zora"
+	TokenScanSupportedChainSolana      TokenScanSupportedChain = "solana"
+	TokenScanSupportedChainStarknet    TokenScanSupportedChain = "starknet"
+	TokenScanSupportedChainStellar     TokenScanSupportedChain = "stellar"
+	TokenScanSupportedChainLinea       TokenScanSupportedChain = "linea"
+	TokenScanSupportedChainBlast       TokenScanSupportedChain = "blast"
+	TokenScanSupportedChainZksync      TokenScanSupportedChain = "zksync"
+	TokenScanSupportedChainScroll      TokenScanSupportedChain = "scroll"
+	TokenScanSupportedChainDegen       TokenScanSupportedChain = "degen"
+	TokenScanSupportedChainAbstract    TokenScanSupportedChain = "abstract"
+	TokenScanSupportedChainSoneium     TokenScanSupportedChain = "soneium"
+	TokenScanSupportedChainInk         TokenScanSupportedChain = "ink"
+	TokenScanSupportedChainZeroNetwork TokenScanSupportedChain = "zero-network"
+	TokenScanSupportedChainBerachain   TokenScanSupportedChain = "berachain"
+	TokenScanSupportedChainUnichain    TokenScanSupportedChain = "unichain"
 )
 
 func (r TokenScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainBlast, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainDegen:
+	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainBlast, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainDegen, TokenScanSupportedChainAbstract, TokenScanSupportedChainSoneium, TokenScanSupportedChainInk, TokenScanSupportedChainZeroNetwork, TokenScanSupportedChainBerachain, TokenScanSupportedChainUnichain:
 		return true
 	}
 	return false
