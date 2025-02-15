@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.37.0 (2025-02-15)
+
+Full Changelog: [v0.36.0...v0.37.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.36.0...v0.37.0)
+
+### Features
+
+* **api:** api update ([#336](https://github.com/blockaid-official/blockaid-client-go/issues/336)) ([d431d30](https://github.com/blockaid-official/blockaid-client-go/commit/d431d307da45032d770d80b93d70838af9042b83))
+
+
+### Bug Fixes
+
+* **client:** don't truncate manually specified filenames ([#337](https://github.com/blockaid-official/blockaid-client-go/issues/337)) ([4390452](https://github.com/blockaid-official/blockaid-client-go/commit/4390452f0ff9c3187b26b5851b23b80125c7d2d2))
+* do not call path.Base on ContentType ([#334](https://github.com/blockaid-official/blockaid-client-go/issues/334)) ([3dc12a2](https://github.com/blockaid-official/blockaid-client-go/commit/3dc12a2d69f6faeb8d91ed39632319f7d1cf7f79))
+
 ## 0.36.0 (2025-02-09)
 
 Full Changelog: [v0.35.0...v0.36.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.35.0...v0.36.0)
