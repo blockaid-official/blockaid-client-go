@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.37.0 (2025-02-25)
+
+Full Changelog: [v0.36.0...v0.37.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.36.0...v0.37.0)
+
+### Features
+
+* **api:** api update ([#336](https://github.com/blockaid-official/blockaid-client-go/issues/336)) ([d431d30](https://github.com/blockaid-official/blockaid-client-go/commit/d431d307da45032d770d80b93d70838af9042b83))
+* **api:** api update ([#338](https://github.com/blockaid-official/blockaid-client-go/issues/338)) ([213e370](https://github.com/blockaid-official/blockaid-client-go/commit/213e370e7486c996eff32de56e8485ddf421337f))
+* **api:** api update ([#339](https://github.com/blockaid-official/blockaid-client-go/issues/339)) ([60ec1a5](https://github.com/blockaid-official/blockaid-client-go/commit/60ec1a591e2500b46003acbf5045882d63e732b1))
+* **api:** api update ([#341](https://github.com/blockaid-official/blockaid-client-go/issues/341)) ([931cde4](https://github.com/blockaid-official/blockaid-client-go/commit/931cde47ea697c193a1617e01ba8d230b9ecd8b5))
+
+
+### Bug Fixes
+
+* **client:** don't truncate manually specified filenames ([#337](https://github.com/blockaid-official/blockaid-client-go/issues/337)) ([4390452](https://github.com/blockaid-official/blockaid-client-go/commit/4390452f0ff9c3187b26b5851b23b80125c7d2d2))
+* do not call path.Base on ContentType ([#334](https://github.com/blockaid-official/blockaid-client-go/issues/334)) ([3dc12a2](https://github.com/blockaid-official/blockaid-client-go/commit/3dc12a2d69f6faeb8d91ed39632319f7d1cf7f79))
+
+
+### Chores
+
+* **internal:** fix devcontainers setup ([#340](https://github.com/blockaid-official/blockaid-client-go/issues/340)) ([bc087c9](https://github.com/blockaid-official/blockaid-client-go/commit/bc087c95edb1a29a8a0cdd61333047d69c03a984))
+
 ## 0.36.0 (2025-02-09)
 
 Full Changelog: [v0.35.0...v0.36.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.35.0...v0.36.0)
