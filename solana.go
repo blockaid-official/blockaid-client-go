@@ -774,6 +774,10 @@ type InstructionErrorDetails struct {
 	Message string `json:"message,required"`
 	// Index of the transaction in the bulk
 	TransactionIndex int64 `json:"transaction_index,required"`
+	// Machine readable error code returned by the program
+	Code string `json:"code,nullable"`
+	// Error number returned by the program
+	Number int64 `json:"number,nullable"`
 	// The program account that caused the error
 	ProgramAccount string                      `json:"program_account,nullable"`
 	Type           string                      `json:"type"`
@@ -786,6 +790,8 @@ type instructionErrorDetailsJSON struct {
 	InstructionIndex apijson.Field
 	Message          apijson.Field
 	TransactionIndex apijson.Field
+	Code             apijson.Field
+	Number           apijson.Field
 	ProgramAccount   apijson.Field
 	Type             apijson.Field
 	raw              string
