@@ -304,6 +304,8 @@ type Erc20Exposure struct {
 	// current address and asset
 	Approval string                  `json:"approval,required"`
 	Exposure []Erc20ExposureExposure `json:"exposure,required"`
+	// the usd price of the approval amount
+	ApprovalUsdPrice string `json:"approval_usd_price"`
 	// the expiration time of the permit2 protocol
 	Expiration time.Time `json:"expiration" format:"date-time"`
 	// user friendly description of the approval
@@ -313,12 +315,13 @@ type Erc20Exposure struct {
 
 // erc20ExposureJSON contains the JSON metadata for the struct [Erc20Exposure]
 type erc20ExposureJSON struct {
-	Approval    apijson.Field
-	Exposure    apijson.Field
-	Expiration  apijson.Field
-	Summary     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	Approval         apijson.Field
+	Exposure         apijson.Field
+	ApprovalUsdPrice apijson.Field
+	Expiration       apijson.Field
+	Summary          apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
 }
 
 func (r *Erc20Exposure) UnmarshalJSON(data []byte) (err error) {
