@@ -65,7 +65,7 @@ func (r EvmUserOperationScanParams) MarshalJSON() (data []byte, err error) {
 // The user operation request that was received by the wallet
 type EvmUserOperationScanParamsData struct {
 	// The operation parameters of the user operation request
-	Operation param.Field[EvmUserOperationScanParamsDataOperation] `json:"operation,required"`
+	Operation param.Field[EvmUserOperationScanParamsDataOperationUnion] `json:"operation,required"`
 	// The address of the entrypoint receiving the request in hex string format
 	Entrypoint param.Field[string] `json:"entrypoint"`
 }
@@ -76,6 +76,51 @@ func (r EvmUserOperationScanParamsData) MarshalJSON() (data []byte, err error) {
 
 // The operation parameters of the user operation request
 type EvmUserOperationScanParamsDataOperation struct {
+	// The account gas limits value in hex string format.
+	AccountGasLimits param.Field[string] `json:"account_gas_limits"`
+	// The call data value in hex string format.
+	CallData param.Field[string] `json:"call_data"`
+	// The call gas limit value in hex string format.
+	CallGasLimit param.Field[string] `json:"call_gas_limit"`
+	// The gas fees value in hex string format.
+	GasFees param.Field[string] `json:"gas_fees"`
+	// The init code value in hex string format.
+	InitCode param.Field[string] `json:"init_code"`
+	// The max fee per gas value in hex string format.
+	MaxFeePerGas param.Field[string] `json:"max_fee_per_gas"`
+	// The max priority fee per gas value in hex string format.
+	MaxPriorityFeePerGas param.Field[string] `json:"max_priority_fee_per_gas"`
+	// The nonce value in hex string format.
+	Nonce param.Field[string] `json:"nonce"`
+	// The paymaster and data value in hex string format.
+	PaymasterAndData param.Field[string] `json:"paymaster_and_data"`
+	// The pre verification gas value in hex string format.
+	PreVerificationGas param.Field[string] `json:"pre_verification_gas"`
+	// The sender address of the operation in hex string format
+	Sender param.Field[string] `json:"sender"`
+	// The signature value in hex string format.
+	Signature param.Field[string] `json:"signature"`
+	// The verification gas limit value in hex string format.
+	VerificationGasLimit param.Field[string] `json:"verification_gas_limit"`
+}
+
+func (r EvmUserOperationScanParamsDataOperation) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmUserOperationScanParamsDataOperation) implementsEvmUserOperationScanParamsDataOperationUnion() {
+}
+
+// The operation parameters of the user operation request
+//
+// Satisfied by [EvmUserOperationScanParamsDataOperationUserOperationV6],
+// [EvmUserOperationScanParamsDataOperationUserOperationV7],
+// [EvmUserOperationScanParamsDataOperation].
+type EvmUserOperationScanParamsDataOperationUnion interface {
+	implementsEvmUserOperationScanParamsDataOperationUnion()
+}
+
+type EvmUserOperationScanParamsDataOperationUserOperationV6 struct {
 	// The call data value in hex string format.
 	CallData param.Field[string] `json:"call_data"`
 	// The call gas limit value in hex string format.
@@ -100,8 +145,39 @@ type EvmUserOperationScanParamsDataOperation struct {
 	VerificationGasLimit param.Field[string] `json:"verification_gas_limit"`
 }
 
-func (r EvmUserOperationScanParamsDataOperation) MarshalJSON() (data []byte, err error) {
+func (r EvmUserOperationScanParamsDataOperationUserOperationV6) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+func (r EvmUserOperationScanParamsDataOperationUserOperationV6) implementsEvmUserOperationScanParamsDataOperationUnion() {
+}
+
+type EvmUserOperationScanParamsDataOperationUserOperationV7 struct {
+	// The account gas limits value in hex string format.
+	AccountGasLimits param.Field[string] `json:"account_gas_limits"`
+	// The call data value in hex string format.
+	CallData param.Field[string] `json:"call_data"`
+	// The gas fees value in hex string format.
+	GasFees param.Field[string] `json:"gas_fees"`
+	// The init code value in hex string format.
+	InitCode param.Field[string] `json:"init_code"`
+	// The nonce value in hex string format.
+	Nonce param.Field[string] `json:"nonce"`
+	// The paymaster and data value in hex string format.
+	PaymasterAndData param.Field[string] `json:"paymaster_and_data"`
+	// The pre verification gas value in hex string format.
+	PreVerificationGas param.Field[string] `json:"pre_verification_gas"`
+	// The sender address of the operation in hex string format
+	Sender param.Field[string] `json:"sender"`
+	// The signature value in hex string format.
+	Signature param.Field[string] `json:"signature"`
+}
+
+func (r EvmUserOperationScanParamsDataOperationUserOperationV7) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmUserOperationScanParamsDataOperationUserOperationV7) implementsEvmUserOperationScanParamsDataOperationUnion() {
 }
 
 // The relative block for the block validation. Can be "latest" or a block number.
