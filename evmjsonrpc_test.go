@@ -38,6 +38,20 @@ func TestEvmJsonRpcScanWithOptionalParams(t *testing.T) {
 		AccountAddress: blockaidclientgo.F("0x49c73c9d361c04769a452E85D343b41aC38e0EE4"),
 		Block:          blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsBlockUnion](shared.UnionString("18370320")),
 		Options:        blockaidclientgo.F([]blockaidclientgo.EvmJsonRpcScanParamsOption{blockaidclientgo.EvmJsonRpcScanParamsOptionValidation, blockaidclientgo.EvmJsonRpcScanParamsOptionSimulation}),
+		StateOverride: blockaidclientgo.F(map[string]blockaidclientgo.EvmJsonRpcScanParamsStateOverride{
+			"foo": {
+				Balance:                 blockaidclientgo.F("balance"),
+				Code:                    blockaidclientgo.F("code"),
+				MovePrecompileToAddress: blockaidclientgo.F("movePrecompileToAddress"),
+				Nonce:                   blockaidclientgo.F("nonce"),
+				State: blockaidclientgo.F(map[string]string{
+					"foo": "string",
+				}),
+				StateDiff: blockaidclientgo.F(map[string]string{
+					"foo": "string",
+				}),
+			},
+		}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
