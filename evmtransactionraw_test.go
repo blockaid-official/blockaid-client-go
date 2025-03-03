@@ -35,6 +35,20 @@ func TestEvmTransactionRawScanWithOptionalParams(t *testing.T) {
 		}),
 		Block:   blockaidclientgo.F[blockaidclientgo.EvmTransactionRawScanParamsBlockUnion](shared.UnionString("17718858")),
 		Options: blockaidclientgo.F([]blockaidclientgo.EvmTransactionRawScanParamsOption{blockaidclientgo.EvmTransactionRawScanParamsOptionValidation, blockaidclientgo.EvmTransactionRawScanParamsOptionSimulation}),
+		StateOverride: blockaidclientgo.F(map[string]blockaidclientgo.EvmTransactionRawScanParamsStateOverride{
+			"foo": {
+				Balance:                 blockaidclientgo.F("balance"),
+				Code:                    blockaidclientgo.F("code"),
+				MovePrecompileToAddress: blockaidclientgo.F("movePrecompileToAddress"),
+				Nonce:                   blockaidclientgo.F("nonce"),
+				State: blockaidclientgo.F(map[string]string{
+					"foo": "string",
+				}),
+				StateDiff: blockaidclientgo.F(map[string]string{
+					"foo": "string",
+				}),
+			},
+		}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
