@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.38.0 (2025-03-05)
+
+Full Changelog: [v0.37.0...v0.38.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.37.0...v0.38.0)
+
+### Features
+
+* **api:** api update ([#343](https://github.com/blockaid-official/blockaid-client-go/issues/343)) ([17791e6](https://github.com/blockaid-official/blockaid-client-go/commit/17791e6096326f0b72ff7c8921c80c08433b6562))
+* **api:** api update ([#347](https://github.com/blockaid-official/blockaid-client-go/issues/347)) ([d139a16](https://github.com/blockaid-official/blockaid-client-go/commit/d139a163a302693b41977d8e30d04f77e1ed15d8))
+* **api:** api update ([#348](https://github.com/blockaid-official/blockaid-client-go/issues/348)) ([373e90d](https://github.com/blockaid-official/blockaid-client-go/commit/373e90da267a2b0ce33c1efd823ef706f4ef482a))
+* **api:** api update ([#350](https://github.com/blockaid-official/blockaid-client-go/issues/350)) ([bbe0e21](https://github.com/blockaid-official/blockaid-client-go/commit/bbe0e21c3e29bfe7e53acd71e926d610172d8c44))
+
+
+### Chores
+
+* simplify string literals ([#346](https://github.com/blockaid-official/blockaid-client-go/issues/346)) ([fbb1129](https://github.com/blockaid-official/blockaid-client-go/commit/fbb11296663ed964d0ed356b07b6a41d3bfd07cf))
+
+
+### Documentation
+
+* update URLs from stainlessapi.com to stainless.com ([#345](https://github.com/blockaid-official/blockaid-client-go/issues/345)) ([25315ea](https://github.com/blockaid-official/blockaid-client-go/commit/25315ea2001ea2305b569fa19f04f3b7eb852e76))
+
 ## 0.37.0 (2025-02-25)
 
 Full Changelog: [v0.36.0...v0.37.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.36.0...v0.37.0)
