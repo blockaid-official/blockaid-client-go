@@ -29,7 +29,7 @@ func TestEvmUserOperationScanWithOptionalParams(t *testing.T) {
 	_, err := client.Evm.UserOperation.Scan(context.TODO(), blockaidclientgo.EvmUserOperationScanParams{
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
 		Data: blockaidclientgo.F(blockaidclientgo.EvmUserOperationScanParamsData{
-			Operation: blockaidclientgo.F(blockaidclientgo.EvmUserOperationScanParamsDataOperation{
+			Operation: blockaidclientgo.F[blockaidclientgo.EvmUserOperationScanParamsDataOperationUnion](blockaidclientgo.EvmUserOperationScanParamsDataOperationUserOperationV6{
 				CallData:             blockaidclientgo.F("0x51945447000000000000000000000000aeed57a826a998f9388ce2fd6cdb0b6aa75e3d190000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044095ea7b300000000000000000000000050a9266605ba303b659ff105919205570f2af971000000000000000000000000000000000000000000000000000000000000006400000000000000000000000000000000000000000000000000000000"),
 				CallGasLimit:         blockaidclientgo.F("0x3c38"),
 				InitCode:             blockaidclientgo.F("0x"),
@@ -50,6 +50,20 @@ func TestEvmUserOperationScanWithOptionalParams(t *testing.T) {
 		AccountAddress: blockaidclientgo.F("0x77bA5AC3ca4864be26CA3112baDf07286CcC3324"),
 		Block:          blockaidclientgo.F[blockaidclientgo.EvmUserOperationScanParamsBlockUnion](shared.UnionString("0x5c6fd5")),
 		Options:        blockaidclientgo.F([]blockaidclientgo.EvmUserOperationScanParamsOption{blockaidclientgo.EvmUserOperationScanParamsOptionValidation, blockaidclientgo.EvmUserOperationScanParamsOptionSimulation}),
+		StateOverride: blockaidclientgo.F(map[string]blockaidclientgo.EvmUserOperationScanParamsStateOverride{
+			"foo": {
+				Balance:                 blockaidclientgo.F("balance"),
+				Code:                    blockaidclientgo.F("code"),
+				MovePrecompileToAddress: blockaidclientgo.F("movePrecompileToAddress"),
+				Nonce:                   blockaidclientgo.F("nonce"),
+				State: blockaidclientgo.F(map[string]string{
+					"foo": "string",
+				}),
+				StateDiff: blockaidclientgo.F(map[string]string{
+					"foo": "string",
+				}),
+			},
+		}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error

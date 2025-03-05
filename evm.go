@@ -46,6 +46,2003 @@ func NewEvmService(opts ...option.RequestOption) (r *EvmService) {
 	return
 }
 
+type AccountSummary struct {
+	// All assets diffs related to the account address
+	AssetsDiffs []AccountSummaryAssetsDiff `json:"assets_diffs,required"`
+	// All assets exposures related to the account address
+	Exposures []AccountSummaryExposure `json:"exposures,required"`
+	// Total usd diff related to the account address
+	TotalUsdDiff UsdDiff `json:"total_usd_diff,required"`
+	// Total usd exposure related to the account address
+	TotalUsdExposure map[string]string `json:"total_usd_exposure,required"`
+	// All assets traces related to the account address
+	Traces []AccountSummaryTrace `json:"traces,required"`
+	JSON   accountSummaryJSON    `json:"-"`
+}
+
+// accountSummaryJSON contains the JSON metadata for the struct [AccountSummary]
+type accountSummaryJSON struct {
+	AssetsDiffs      apijson.Field
+	Exposures        apijson.Field
+	TotalUsdDiff     apijson.Field
+	TotalUsdExposure apijson.Field
+	Traces           apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
+}
+
+func (r *AccountSummary) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryJSON) RawJSON() string {
+	return r.raw
+}
+
+type AccountSummaryAssetsDiff struct {
+	// This field can have the runtime type of
+	// [AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset],
+	// [AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset],
+	// [AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset],
+	// [NativeAssetDetails].
+	Asset interface{} `json:"asset,required"`
+	// type of the asset for the current diff
+	AssetType AccountSummaryAssetsDiffsAssetType `json:"asset_type,required"`
+	// This field can have the runtime type of [[]Erc20Diff], [[]Erc721Diff],
+	// [[]Erc1155Diff], [[]NativeDiff].
+	In interface{} `json:"in,required"`
+	// This field can have the runtime type of [[]Erc20Diff], [[]Erc721Diff],
+	// [[]Erc1155Diff], [[]NativeDiff].
+	Out interface{} `json:"out,required"`
+	// This field can have the runtime type of
+	// [AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChanges],
+	// [AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChanges],
+	// [AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChanges],
+	// [NativeAddressAssetBalanceChangeDiffBalanceChanges].
+	BalanceChanges interface{}                  `json:"balance_changes"`
+	JSON           accountSummaryAssetsDiffJSON `json:"-"`
+	union          AccountSummaryAssetsDiffsUnion
+}
+
+// accountSummaryAssetsDiffJSON contains the JSON metadata for the struct
+// [AccountSummaryAssetsDiff]
+type accountSummaryAssetsDiffJSON struct {
+	Asset          apijson.Field
+	AssetType      apijson.Field
+	In             apijson.Field
+	Out            apijson.Field
+	BalanceChanges apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r accountSummaryAssetsDiffJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryAssetsDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryAssetsDiff{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [AccountSummaryAssetsDiffsUnion] interface which you can cast
+// to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff],
+// [AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff],
+// [AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff],
+// [NativeAddressAssetBalanceChangeDiff].
+func (r AccountSummaryAssetsDiff) AsUnion() AccountSummaryAssetsDiffsUnion {
+	return r.union
+}
+
+// Union satisfied by
+// [AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff],
+// [AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff],
+// [AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff] or
+// [NativeAddressAssetBalanceChangeDiff].
+type AccountSummaryAssetsDiffsUnion interface {
+	implementsAccountSummaryAssetsDiff()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryAssetsDiffsUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NativeAddressAssetBalanceChangeDiff{}),
+		},
+	)
+}
+
+type AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff struct {
+	// description of the asset for the current diff
+	Asset AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset `json:"asset,required"`
+	// type of the asset for the current diff
+	AssetType AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetType `json:"asset_type,required"`
+	// amount of the asset that was transferred to the address in this transaction
+	In []Erc20Diff `json:"in,required"`
+	// amount of the asset that was transferred from the address in this transaction
+	Out []Erc20Diff `json:"out,required"`
+	// shows the balance before making the transaction and after
+	BalanceChanges AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChanges `json:"balance_changes"`
+	JSON           accountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffJSON           `json:"-"`
+}
+
+// accountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffJSON contains the
+// JSON metadata for the struct
+// [AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff]
+type accountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffJSON struct {
+	Asset          apijson.Field
+	AssetType      apijson.Field
+	In             apijson.Field
+	Out            apijson.Field
+	BalanceChanges apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff) implementsAccountSummaryAssetsDiff() {
+}
+
+// description of the asset for the current diff
+type AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset struct {
+	// address of the token
+	Address string `json:"address,required"`
+	// asset type.
+	Type AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetType `json:"type,required"`
+	// asset's decimals
+	Decimals int64 `json:"decimals"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                               `json:"symbol"`
+	JSON   accountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetJSON `json:"-"`
+	union  AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetUnion
+}
+
+// accountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetJSON contains
+// the JSON metadata for the struct
+// [AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset]
+type accountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a
+// [AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc20TokenDetails],
+// [NonercTokenDetails].
+func (r AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset) AsUnion() AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetUnion {
+	return r.union
+}
+
+// description of the asset for the current diff
+//
+// Union satisfied by [Erc20TokenDetails] or [NonercTokenDetails].
+type AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetUnion interface {
+	implementsAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc20TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+	)
+}
+
+// asset type.
+type AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetType string
+
+const (
+	AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetTypeErc20  AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetType = "ERC20"
+	AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetTypeNonerc AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetType = "NONERC"
+)
+
+func (r AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetTypeErc20, AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetTypeNonerc:
+		return true
+	}
+	return false
+}
+
+// shows the balance before making the transaction and after
+type AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChanges struct {
+	// balance of the account after making the transaction
+	After Erc20Diff `json:"after,required"`
+	// balance of the account before making the transaction
+	Before Erc20Diff                                                                     `json:"before,required"`
+	JSON   accountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChangesJSON `json:"-"`
+}
+
+// accountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChangesJSON
+// contains the JSON metadata for the struct
+// [AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChanges]
+type accountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChangesJSON struct {
+	After       apijson.Field
+	Before      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChanges) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChangesJSON) RawJSON() string {
+	return r.raw
+}
+
+type AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff struct {
+	// description of the asset for the current diff
+	Asset AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset `json:"asset,required"`
+	// type of the asset for the current diff
+	AssetType AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetType `json:"asset_type,required"`
+	// amount of the asset that was transferred to the address in this transaction
+	In []Erc721Diff `json:"in,required"`
+	// amount of the asset that was transferred from the address in this transaction
+	Out []Erc721Diff `json:"out,required"`
+	// shows the balance before making the transaction and after
+	BalanceChanges AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChanges `json:"balance_changes"`
+	JSON           accountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffJSON           `json:"-"`
+}
+
+// accountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffJSON contains the
+// JSON metadata for the struct
+// [AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff]
+type accountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffJSON struct {
+	Asset          apijson.Field
+	AssetType      apijson.Field
+	In             apijson.Field
+	Out            apijson.Field
+	BalanceChanges apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff) implementsAccountSummaryAssetsDiff() {
+}
+
+// description of the asset for the current diff
+type AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset struct {
+	// address of the token
+	Address string `json:"address,required"`
+	// asset type.
+	Type AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetType `json:"type,required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                `json:"symbol"`
+	JSON   accountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetJSON `json:"-"`
+	union  AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetUnion
+}
+
+// accountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetJSON contains
+// the JSON metadata for the struct
+// [AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset]
+type accountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a
+// [AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc721TokenDetails],
+// [NonercTokenDetails].
+func (r AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset) AsUnion() AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetUnion {
+	return r.union
+}
+
+// description of the asset for the current diff
+//
+// Union satisfied by [Erc721TokenDetails] or [NonercTokenDetails].
+type AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetUnion interface {
+	implementsAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc721TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+	)
+}
+
+// asset type.
+type AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetType string
+
+const (
+	AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetTypeErc721 AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetType = "ERC721"
+	AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetTypeNonerc AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetType = "NONERC"
+)
+
+func (r AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetTypeErc721, AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetTypeNonerc:
+		return true
+	}
+	return false
+}
+
+// shows the balance before making the transaction and after
+type AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChanges struct {
+	// balance of the account after making the transaction
+	After Erc721Diff `json:"after,required"`
+	// balance of the account before making the transaction
+	Before Erc721Diff                                                                     `json:"before,required"`
+	JSON   accountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChangesJSON `json:"-"`
+}
+
+// accountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChangesJSON
+// contains the JSON metadata for the struct
+// [AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChanges]
+type accountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChangesJSON struct {
+	After       apijson.Field
+	Before      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChanges) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChangesJSON) RawJSON() string {
+	return r.raw
+}
+
+type AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff struct {
+	// description of the asset for the current diff
+	Asset AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset `json:"asset,required"`
+	// type of the asset for the current diff
+	AssetType AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetType `json:"asset_type,required"`
+	// amount of the asset that was transferred to the address in this transaction
+	In []Erc1155Diff `json:"in,required"`
+	// amount of the asset that was transferred from the address in this transaction
+	Out []Erc1155Diff `json:"out,required"`
+	// shows the balance before making the transaction and after
+	BalanceChanges AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChanges `json:"balance_changes"`
+	JSON           accountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffJSON           `json:"-"`
+}
+
+// accountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffJSON contains the
+// JSON metadata for the struct
+// [AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff]
+type accountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffJSON struct {
+	Asset          apijson.Field
+	AssetType      apijson.Field
+	In             apijson.Field
+	Out            apijson.Field
+	BalanceChanges apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff) implementsAccountSummaryAssetsDiff() {
+}
+
+// description of the asset for the current diff
+type AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset struct {
+	// address of the token
+	Address string `json:"address,required"`
+	// asset type.
+	Type AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetType `json:"type,required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                 `json:"symbol"`
+	JSON   accountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetJSON `json:"-"`
+	union  AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetUnion
+}
+
+// accountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetJSON contains
+// the JSON metadata for the struct
+// [AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset]
+type accountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a
+// [AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155TokenDetails],
+// [NonercTokenDetails].
+func (r AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset) AsUnion() AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetUnion {
+	return r.union
+}
+
+// description of the asset for the current diff
+//
+// Union satisfied by [Erc1155TokenDetails] or [NonercTokenDetails].
+type AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetUnion interface {
+	implementsAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc1155TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+	)
+}
+
+// asset type.
+type AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetType string
+
+const (
+	AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetTypeErc1155 AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetType = "ERC1155"
+	AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetTypeNonerc  AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetType = "NONERC"
+)
+
+func (r AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetTypeErc1155, AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetTypeNonerc:
+		return true
+	}
+	return false
+}
+
+// shows the balance before making the transaction and after
+type AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChanges struct {
+	// balance of the account after making the transaction
+	After Erc1155Diff `json:"after,required"`
+	// balance of the account before making the transaction
+	Before Erc1155Diff                                                                     `json:"before,required"`
+	JSON   accountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChangesJSON `json:"-"`
+}
+
+// accountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChangesJSON
+// contains the JSON metadata for the struct
+// [AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChanges]
+type accountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChangesJSON struct {
+	After       apijson.Field
+	Before      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChanges) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChangesJSON) RawJSON() string {
+	return r.raw
+}
+
+// type of the asset for the current diff
+type AccountSummaryAssetsDiffsAssetType string
+
+const (
+	AccountSummaryAssetsDiffsAssetTypeErc20   AccountSummaryAssetsDiffsAssetType = "ERC20"
+	AccountSummaryAssetsDiffsAssetTypeErc721  AccountSummaryAssetsDiffsAssetType = "ERC721"
+	AccountSummaryAssetsDiffsAssetTypeErc1155 AccountSummaryAssetsDiffsAssetType = "ERC1155"
+	AccountSummaryAssetsDiffsAssetTypeNative  AccountSummaryAssetsDiffsAssetType = "NATIVE"
+)
+
+func (r AccountSummaryAssetsDiffsAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryAssetsDiffsAssetTypeErc20, AccountSummaryAssetsDiffsAssetTypeErc721, AccountSummaryAssetsDiffsAssetTypeErc1155, AccountSummaryAssetsDiffsAssetTypeNative:
+		return true
+	}
+	return false
+}
+
+type AccountSummaryExposure struct {
+	// This field can have the runtime type of
+	// [AccountSummaryExposuresErc20AddressExposureAsset],
+	// [AccountSummaryExposuresErc721AddressExposureAsset],
+	// [AccountSummaryExposuresErc1155AddressExposureAsset].
+	Asset interface{} `json:"asset,required"`
+	// type of the asset for the current diff
+	AssetType AccountSummaryExposuresAssetType `json:"asset_type,required"`
+	// This field can have the runtime type of [map[string]Erc20Exposure],
+	// [map[string]Erc721Exposure], [map[string]Erc1155Exposure].
+	Spenders interface{}                `json:"spenders,required"`
+	JSON     accountSummaryExposureJSON `json:"-"`
+	union    AccountSummaryExposuresUnion
+}
+
+// accountSummaryExposureJSON contains the JSON metadata for the struct
+// [AccountSummaryExposure]
+type accountSummaryExposureJSON struct {
+	Asset       apijson.Field
+	AssetType   apijson.Field
+	Spenders    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryExposureJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryExposure) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryExposure{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [AccountSummaryExposuresUnion] interface which you can cast to
+// the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [AccountSummaryExposuresErc20AddressExposure],
+// [AccountSummaryExposuresErc721AddressExposure],
+// [AccountSummaryExposuresErc1155AddressExposure].
+func (r AccountSummaryExposure) AsUnion() AccountSummaryExposuresUnion {
+	return r.union
+}
+
+// Union satisfied by [AccountSummaryExposuresErc20AddressExposure],
+// [AccountSummaryExposuresErc721AddressExposure] or
+// [AccountSummaryExposuresErc1155AddressExposure].
+type AccountSummaryExposuresUnion interface {
+	implementsAccountSummaryExposure()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryExposuresUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AccountSummaryExposuresErc20AddressExposure{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AccountSummaryExposuresErc721AddressExposure{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AccountSummaryExposuresErc1155AddressExposure{}),
+		},
+	)
+}
+
+type AccountSummaryExposuresErc20AddressExposure struct {
+	// description of the asset for the current diff
+	Asset AccountSummaryExposuresErc20AddressExposureAsset `json:"asset,required"`
+	// type of the asset for the current diff
+	AssetType AccountSummaryExposuresErc20AddressExposureAssetType `json:"asset_type,required"`
+	// dictionary of spender addresses where the exposure has changed during this
+	// transaction for the current address and asset
+	Spenders map[string]Erc20Exposure                        `json:"spenders,required"`
+	JSON     accountSummaryExposuresErc20AddressExposureJSON `json:"-"`
+}
+
+// accountSummaryExposuresErc20AddressExposureJSON contains the JSON metadata for
+// the struct [AccountSummaryExposuresErc20AddressExposure]
+type accountSummaryExposuresErc20AddressExposureJSON struct {
+	Asset       apijson.Field
+	AssetType   apijson.Field
+	Spenders    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryExposuresErc20AddressExposure) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryExposuresErc20AddressExposureJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r AccountSummaryExposuresErc20AddressExposure) implementsAccountSummaryExposure() {}
+
+// description of the asset for the current diff
+type AccountSummaryExposuresErc20AddressExposureAsset struct {
+	// address of the token
+	Address string `json:"address,required"`
+	// asset type.
+	Type AccountSummaryExposuresErc20AddressExposureAssetType `json:"type,required"`
+	// asset's decimals
+	Decimals int64 `json:"decimals"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                               `json:"symbol"`
+	JSON   accountSummaryExposuresErc20AddressExposureAssetJSON `json:"-"`
+	union  AccountSummaryExposuresErc20AddressExposureAssetUnion
+}
+
+// accountSummaryExposuresErc20AddressExposureAssetJSON contains the JSON metadata
+// for the struct [AccountSummaryExposuresErc20AddressExposureAsset]
+type accountSummaryExposuresErc20AddressExposureAssetJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryExposuresErc20AddressExposureAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryExposuresErc20AddressExposureAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryExposuresErc20AddressExposureAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [AccountSummaryExposuresErc20AddressExposureAssetUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc20TokenDetails],
+// [NonercTokenDetails].
+func (r AccountSummaryExposuresErc20AddressExposureAsset) AsUnion() AccountSummaryExposuresErc20AddressExposureAssetUnion {
+	return r.union
+}
+
+// description of the asset for the current diff
+//
+// Union satisfied by [Erc20TokenDetails] or [NonercTokenDetails].
+type AccountSummaryExposuresErc20AddressExposureAssetUnion interface {
+	implementsAccountSummaryExposuresErc20AddressExposureAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryExposuresErc20AddressExposureAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc20TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+	)
+}
+
+// asset type.
+type AccountSummaryExposuresErc20AddressExposureAssetType string
+
+const (
+	AccountSummaryExposuresErc20AddressExposureAssetTypeErc20  AccountSummaryExposuresErc20AddressExposureAssetType = "ERC20"
+	AccountSummaryExposuresErc20AddressExposureAssetTypeNonerc AccountSummaryExposuresErc20AddressExposureAssetType = "NONERC"
+)
+
+func (r AccountSummaryExposuresErc20AddressExposureAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryExposuresErc20AddressExposureAssetTypeErc20, AccountSummaryExposuresErc20AddressExposureAssetTypeNonerc:
+		return true
+	}
+	return false
+}
+
+type AccountSummaryExposuresErc721AddressExposure struct {
+	// description of the asset for the current diff
+	Asset AccountSummaryExposuresErc721AddressExposureAsset `json:"asset,required"`
+	// type of the asset for the current diff
+	AssetType AccountSummaryExposuresErc721AddressExposureAssetType `json:"asset_type,required"`
+	// dictionary of spender addresses where the exposure has changed during this
+	// transaction for the current address and asset
+	Spenders map[string]Erc721Exposure                        `json:"spenders,required"`
+	JSON     accountSummaryExposuresErc721AddressExposureJSON `json:"-"`
+}
+
+// accountSummaryExposuresErc721AddressExposureJSON contains the JSON metadata for
+// the struct [AccountSummaryExposuresErc721AddressExposure]
+type accountSummaryExposuresErc721AddressExposureJSON struct {
+	Asset       apijson.Field
+	AssetType   apijson.Field
+	Spenders    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryExposuresErc721AddressExposure) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryExposuresErc721AddressExposureJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r AccountSummaryExposuresErc721AddressExposure) implementsAccountSummaryExposure() {}
+
+// description of the asset for the current diff
+type AccountSummaryExposuresErc721AddressExposureAsset struct {
+	// address of the token
+	Address string `json:"address,required"`
+	// asset type.
+	Type AccountSummaryExposuresErc721AddressExposureAssetType `json:"type,required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                `json:"symbol"`
+	JSON   accountSummaryExposuresErc721AddressExposureAssetJSON `json:"-"`
+	union  AccountSummaryExposuresErc721AddressExposureAssetUnion
+}
+
+// accountSummaryExposuresErc721AddressExposureAssetJSON contains the JSON metadata
+// for the struct [AccountSummaryExposuresErc721AddressExposureAsset]
+type accountSummaryExposuresErc721AddressExposureAssetJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryExposuresErc721AddressExposureAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryExposuresErc721AddressExposureAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryExposuresErc721AddressExposureAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [AccountSummaryExposuresErc721AddressExposureAssetUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc721TokenDetails],
+// [NonercTokenDetails].
+func (r AccountSummaryExposuresErc721AddressExposureAsset) AsUnion() AccountSummaryExposuresErc721AddressExposureAssetUnion {
+	return r.union
+}
+
+// description of the asset for the current diff
+//
+// Union satisfied by [Erc721TokenDetails] or [NonercTokenDetails].
+type AccountSummaryExposuresErc721AddressExposureAssetUnion interface {
+	implementsAccountSummaryExposuresErc721AddressExposureAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryExposuresErc721AddressExposureAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc721TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+	)
+}
+
+// asset type.
+type AccountSummaryExposuresErc721AddressExposureAssetType string
+
+const (
+	AccountSummaryExposuresErc721AddressExposureAssetTypeErc721 AccountSummaryExposuresErc721AddressExposureAssetType = "ERC721"
+	AccountSummaryExposuresErc721AddressExposureAssetTypeNonerc AccountSummaryExposuresErc721AddressExposureAssetType = "NONERC"
+)
+
+func (r AccountSummaryExposuresErc721AddressExposureAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryExposuresErc721AddressExposureAssetTypeErc721, AccountSummaryExposuresErc721AddressExposureAssetTypeNonerc:
+		return true
+	}
+	return false
+}
+
+type AccountSummaryExposuresErc1155AddressExposure struct {
+	// description of the asset for the current diff
+	Asset AccountSummaryExposuresErc1155AddressExposureAsset `json:"asset,required"`
+	// type of the asset for the current diff
+	AssetType AccountSummaryExposuresErc1155AddressExposureAssetType `json:"asset_type,required"`
+	// dictionary of spender addresses where the exposure has changed during this
+	// transaction for the current address and asset
+	Spenders map[string]Erc1155Exposure                        `json:"spenders,required"`
+	JSON     accountSummaryExposuresErc1155AddressExposureJSON `json:"-"`
+}
+
+// accountSummaryExposuresErc1155AddressExposureJSON contains the JSON metadata for
+// the struct [AccountSummaryExposuresErc1155AddressExposure]
+type accountSummaryExposuresErc1155AddressExposureJSON struct {
+	Asset       apijson.Field
+	AssetType   apijson.Field
+	Spenders    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryExposuresErc1155AddressExposure) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryExposuresErc1155AddressExposureJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r AccountSummaryExposuresErc1155AddressExposure) implementsAccountSummaryExposure() {}
+
+// description of the asset for the current diff
+type AccountSummaryExposuresErc1155AddressExposureAsset struct {
+	// address of the token
+	Address string `json:"address,required"`
+	// asset type.
+	Type AccountSummaryExposuresErc1155AddressExposureAssetType `json:"type,required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                 `json:"symbol"`
+	JSON   accountSummaryExposuresErc1155AddressExposureAssetJSON `json:"-"`
+	union  AccountSummaryExposuresErc1155AddressExposureAssetUnion
+}
+
+// accountSummaryExposuresErc1155AddressExposureAssetJSON contains the JSON
+// metadata for the struct [AccountSummaryExposuresErc1155AddressExposureAsset]
+type accountSummaryExposuresErc1155AddressExposureAssetJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryExposuresErc1155AddressExposureAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryExposuresErc1155AddressExposureAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryExposuresErc1155AddressExposureAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [AccountSummaryExposuresErc1155AddressExposureAssetUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155TokenDetails],
+// [NonercTokenDetails].
+func (r AccountSummaryExposuresErc1155AddressExposureAsset) AsUnion() AccountSummaryExposuresErc1155AddressExposureAssetUnion {
+	return r.union
+}
+
+// description of the asset for the current diff
+//
+// Union satisfied by [Erc1155TokenDetails] or [NonercTokenDetails].
+type AccountSummaryExposuresErc1155AddressExposureAssetUnion interface {
+	implementsAccountSummaryExposuresErc1155AddressExposureAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryExposuresErc1155AddressExposureAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc1155TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+	)
+}
+
+// asset type.
+type AccountSummaryExposuresErc1155AddressExposureAssetType string
+
+const (
+	AccountSummaryExposuresErc1155AddressExposureAssetTypeErc1155 AccountSummaryExposuresErc1155AddressExposureAssetType = "ERC1155"
+	AccountSummaryExposuresErc1155AddressExposureAssetTypeNonerc  AccountSummaryExposuresErc1155AddressExposureAssetType = "NONERC"
+)
+
+func (r AccountSummaryExposuresErc1155AddressExposureAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryExposuresErc1155AddressExposureAssetTypeErc1155, AccountSummaryExposuresErc1155AddressExposureAssetTypeNonerc:
+		return true
+	}
+	return false
+}
+
+// type of the asset for the current diff
+type AccountSummaryExposuresAssetType string
+
+const (
+	AccountSummaryExposuresAssetTypeErc20   AccountSummaryExposuresAssetType = "ERC20"
+	AccountSummaryExposuresAssetTypeErc721  AccountSummaryExposuresAssetType = "ERC721"
+	AccountSummaryExposuresAssetTypeErc1155 AccountSummaryExposuresAssetType = "ERC1155"
+)
+
+func (r AccountSummaryExposuresAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryExposuresAssetTypeErc20, AccountSummaryExposuresAssetTypeErc721, AccountSummaryExposuresAssetTypeErc1155:
+		return true
+	}
+	return false
+}
+
+type AccountSummaryTrace struct {
+	// type of the trace
+	TraceType AccountSummaryTracesTraceType `json:"trace_type,required"`
+	// The type of the model
+	Type AccountSummaryTracesType `json:"type,required"`
+	// This field can have the runtime type of
+	// [AccountSummaryTracesErc20AssetTraceAsset],
+	// [AccountSummaryTracesErc721AssetTraceAsset],
+	// [AccountSummaryTracesErc1155AssetTraceAsset], [NativeAssetDetails].
+	Asset interface{} `json:"asset"`
+	// This field can have the runtime type of [Erc20Diff], [Erc721Diff],
+	// [Erc1155Diff], [NativeDiff].
+	Diff interface{} `json:"diff"`
+	// This field can have the runtime type of
+	// [AccountSummaryTracesErc20ExposureTraceExposed],
+	// [AccountSummaryTracesErc721ExposureTraceExposed].
+	Exposed interface{} `json:"exposed"`
+	// The address where the assets are moved from
+	FromAddress string `json:"from_address"`
+	// This field can have the runtime type of
+	// [[]AccountSummaryTracesErc20AssetTraceLabels],
+	// [[]AccountSummaryTracesErc721AssetTraceLabels],
+	// [[]AccountSummaryTracesErc1155AssetTraceLabels], [[]NativeAssetTraceLabels].
+	Labels interface{} `json:"labels"`
+	// The owner of the assets
+	Owner string `json:"owner"`
+	// The spender of the assets
+	Spender string `json:"spender"`
+	// The address where the assets are moved to
+	ToAddress string                  `json:"to_address"`
+	JSON      accountSummaryTraceJSON `json:"-"`
+	union     AccountSummaryTracesUnion
+}
+
+// accountSummaryTraceJSON contains the JSON metadata for the struct
+// [AccountSummaryTrace]
+type accountSummaryTraceJSON struct {
+	TraceType   apijson.Field
+	Type        apijson.Field
+	Asset       apijson.Field
+	Diff        apijson.Field
+	Exposed     apijson.Field
+	FromAddress apijson.Field
+	Labels      apijson.Field
+	Owner       apijson.Field
+	Spender     apijson.Field
+	ToAddress   apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryTraceJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryTrace) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryTrace{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [AccountSummaryTracesUnion] interface which you can cast to
+// the specific types for more type safety.
+//
+// Possible runtime types of the union are [AccountSummaryTracesErc20AssetTrace],
+// [AccountSummaryTracesErc721AssetTrace], [AccountSummaryTracesErc1155AssetTrace],
+// [NativeAssetTrace], [AccountSummaryTracesErc20ExposureTrace],
+// [AccountSummaryTracesErc721ExposureTrace],
+// [AccountSummaryTracesErc1155ExposureTrace].
+func (r AccountSummaryTrace) AsUnion() AccountSummaryTracesUnion {
+	return r.union
+}
+
+// Union satisfied by [AccountSummaryTracesErc20AssetTrace],
+// [AccountSummaryTracesErc721AssetTrace], [AccountSummaryTracesErc1155AssetTrace],
+// [NativeAssetTrace], [AccountSummaryTracesErc20ExposureTrace],
+// [AccountSummaryTracesErc721ExposureTrace] or
+// [AccountSummaryTracesErc1155ExposureTrace].
+type AccountSummaryTracesUnion interface {
+	implementsAccountSummaryTrace()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryTracesUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AccountSummaryTracesErc20AssetTrace{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AccountSummaryTracesErc721AssetTrace{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AccountSummaryTracesErc1155AssetTrace{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NativeAssetTrace{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AccountSummaryTracesErc20ExposureTrace{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AccountSummaryTracesErc721ExposureTrace{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AccountSummaryTracesErc1155ExposureTrace{}),
+		},
+	)
+}
+
+type AccountSummaryTracesErc20AssetTrace struct {
+	// Description of the asset in the trace
+	Asset AccountSummaryTracesErc20AssetTraceAsset `json:"asset,required"`
+	// The difference in value for the asset in the trace
+	Diff Erc20Diff `json:"diff,required"`
+	// The address where the assets are moved from
+	FromAddress string `json:"from_address,required"`
+	// The address where the assets are moved to
+	ToAddress string `json:"to_address,required"`
+	// type of the trace
+	TraceType AccountSummaryTracesErc20AssetTraceTraceType `json:"trace_type,required"`
+	// The type of the model
+	Type AccountSummaryTracesErc20AssetTraceType `json:"type,required"`
+	// List of labels that describe the trace
+	Labels []AccountSummaryTracesErc20AssetTraceLabels `json:"labels"`
+	JSON   accountSummaryTracesErc20AssetTraceJSON     `json:"-"`
+}
+
+// accountSummaryTracesErc20AssetTraceJSON contains the JSON metadata for the
+// struct [AccountSummaryTracesErc20AssetTrace]
+type accountSummaryTracesErc20AssetTraceJSON struct {
+	Asset       apijson.Field
+	Diff        apijson.Field
+	FromAddress apijson.Field
+	ToAddress   apijson.Field
+	TraceType   apijson.Field
+	Type        apijson.Field
+	Labels      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryTracesErc20AssetTrace) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryTracesErc20AssetTraceJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r AccountSummaryTracesErc20AssetTrace) implementsAccountSummaryTrace() {}
+
+// Description of the asset in the trace
+type AccountSummaryTracesErc20AssetTraceAsset struct {
+	// address of the token
+	Address string `json:"address,required"`
+	// asset type.
+	Type AccountSummaryTracesErc20AssetTraceAssetType `json:"type,required"`
+	// asset's decimals
+	Decimals int64 `json:"decimals"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                       `json:"symbol"`
+	JSON   accountSummaryTracesErc20AssetTraceAssetJSON `json:"-"`
+	union  AccountSummaryTracesErc20AssetTraceAssetUnion
+}
+
+// accountSummaryTracesErc20AssetTraceAssetJSON contains the JSON metadata for the
+// struct [AccountSummaryTracesErc20AssetTraceAsset]
+type accountSummaryTracesErc20AssetTraceAssetJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryTracesErc20AssetTraceAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryTracesErc20AssetTraceAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryTracesErc20AssetTraceAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [AccountSummaryTracesErc20AssetTraceAssetUnion] interface
+// which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc20TokenDetails],
+// [NonercTokenDetails].
+func (r AccountSummaryTracesErc20AssetTraceAsset) AsUnion() AccountSummaryTracesErc20AssetTraceAssetUnion {
+	return r.union
+}
+
+// Description of the asset in the trace
+//
+// Union satisfied by [Erc20TokenDetails] or [NonercTokenDetails].
+type AccountSummaryTracesErc20AssetTraceAssetUnion interface {
+	implementsAccountSummaryTracesErc20AssetTraceAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryTracesErc20AssetTraceAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc20TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+	)
+}
+
+// asset type.
+type AccountSummaryTracesErc20AssetTraceAssetType string
+
+const (
+	AccountSummaryTracesErc20AssetTraceAssetTypeErc20  AccountSummaryTracesErc20AssetTraceAssetType = "ERC20"
+	AccountSummaryTracesErc20AssetTraceAssetTypeNonerc AccountSummaryTracesErc20AssetTraceAssetType = "NONERC"
+)
+
+func (r AccountSummaryTracesErc20AssetTraceAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc20AssetTraceAssetTypeErc20, AccountSummaryTracesErc20AssetTraceAssetTypeNonerc:
+		return true
+	}
+	return false
+}
+
+// type of the trace
+type AccountSummaryTracesErc20AssetTraceTraceType string
+
+const (
+	AccountSummaryTracesErc20AssetTraceTraceTypeAssetTrace AccountSummaryTracesErc20AssetTraceTraceType = "AssetTrace"
+)
+
+func (r AccountSummaryTracesErc20AssetTraceTraceType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc20AssetTraceTraceTypeAssetTrace:
+		return true
+	}
+	return false
+}
+
+// The type of the model
+type AccountSummaryTracesErc20AssetTraceType string
+
+const (
+	AccountSummaryTracesErc20AssetTraceTypeErc20AssetTrace AccountSummaryTracesErc20AssetTraceType = "ERC20AssetTrace"
+)
+
+func (r AccountSummaryTracesErc20AssetTraceType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc20AssetTraceTypeErc20AssetTrace:
+		return true
+	}
+	return false
+}
+
+// An enumeration.
+type AccountSummaryTracesErc20AssetTraceLabels string
+
+const (
+	AccountSummaryTracesErc20AssetTraceLabelsGasFee AccountSummaryTracesErc20AssetTraceLabels = "GAS_FEE"
+)
+
+func (r AccountSummaryTracesErc20AssetTraceLabels) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc20AssetTraceLabelsGasFee:
+		return true
+	}
+	return false
+}
+
+type AccountSummaryTracesErc721AssetTrace struct {
+	// Description of the asset in the trace
+	Asset AccountSummaryTracesErc721AssetTraceAsset `json:"asset,required"`
+	// The difference in value for the asset in the trace
+	Diff Erc721Diff `json:"diff,required"`
+	// The address where the assets are moved from
+	FromAddress string `json:"from_address,required"`
+	// The address where the assets are moved to
+	ToAddress string `json:"to_address,required"`
+	// type of the trace
+	TraceType AccountSummaryTracesErc721AssetTraceTraceType `json:"trace_type,required"`
+	// The type of the model
+	Type AccountSummaryTracesErc721AssetTraceType `json:"type,required"`
+	// List of labels that describe the trace
+	Labels []AccountSummaryTracesErc721AssetTraceLabels `json:"labels"`
+	JSON   accountSummaryTracesErc721AssetTraceJSON     `json:"-"`
+}
+
+// accountSummaryTracesErc721AssetTraceJSON contains the JSON metadata for the
+// struct [AccountSummaryTracesErc721AssetTrace]
+type accountSummaryTracesErc721AssetTraceJSON struct {
+	Asset       apijson.Field
+	Diff        apijson.Field
+	FromAddress apijson.Field
+	ToAddress   apijson.Field
+	TraceType   apijson.Field
+	Type        apijson.Field
+	Labels      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryTracesErc721AssetTrace) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryTracesErc721AssetTraceJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r AccountSummaryTracesErc721AssetTrace) implementsAccountSummaryTrace() {}
+
+// Description of the asset in the trace
+type AccountSummaryTracesErc721AssetTraceAsset struct {
+	// address of the token
+	Address string `json:"address,required"`
+	// asset type.
+	Type AccountSummaryTracesErc721AssetTraceAssetType `json:"type,required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                        `json:"symbol"`
+	JSON   accountSummaryTracesErc721AssetTraceAssetJSON `json:"-"`
+	union  AccountSummaryTracesErc721AssetTraceAssetUnion
+}
+
+// accountSummaryTracesErc721AssetTraceAssetJSON contains the JSON metadata for the
+// struct [AccountSummaryTracesErc721AssetTraceAsset]
+type accountSummaryTracesErc721AssetTraceAssetJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryTracesErc721AssetTraceAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryTracesErc721AssetTraceAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryTracesErc721AssetTraceAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [AccountSummaryTracesErc721AssetTraceAssetUnion] interface
+// which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc721TokenDetails],
+// [NonercTokenDetails].
+func (r AccountSummaryTracesErc721AssetTraceAsset) AsUnion() AccountSummaryTracesErc721AssetTraceAssetUnion {
+	return r.union
+}
+
+// Description of the asset in the trace
+//
+// Union satisfied by [Erc721TokenDetails] or [NonercTokenDetails].
+type AccountSummaryTracesErc721AssetTraceAssetUnion interface {
+	implementsAccountSummaryTracesErc721AssetTraceAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryTracesErc721AssetTraceAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc721TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+	)
+}
+
+// asset type.
+type AccountSummaryTracesErc721AssetTraceAssetType string
+
+const (
+	AccountSummaryTracesErc721AssetTraceAssetTypeErc721 AccountSummaryTracesErc721AssetTraceAssetType = "ERC721"
+	AccountSummaryTracesErc721AssetTraceAssetTypeNonerc AccountSummaryTracesErc721AssetTraceAssetType = "NONERC"
+)
+
+func (r AccountSummaryTracesErc721AssetTraceAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc721AssetTraceAssetTypeErc721, AccountSummaryTracesErc721AssetTraceAssetTypeNonerc:
+		return true
+	}
+	return false
+}
+
+// type of the trace
+type AccountSummaryTracesErc721AssetTraceTraceType string
+
+const (
+	AccountSummaryTracesErc721AssetTraceTraceTypeAssetTrace AccountSummaryTracesErc721AssetTraceTraceType = "AssetTrace"
+)
+
+func (r AccountSummaryTracesErc721AssetTraceTraceType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc721AssetTraceTraceTypeAssetTrace:
+		return true
+	}
+	return false
+}
+
+// The type of the model
+type AccountSummaryTracesErc721AssetTraceType string
+
+const (
+	AccountSummaryTracesErc721AssetTraceTypeErc721AssetTrace AccountSummaryTracesErc721AssetTraceType = "ERC721AssetTrace"
+)
+
+func (r AccountSummaryTracesErc721AssetTraceType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc721AssetTraceTypeErc721AssetTrace:
+		return true
+	}
+	return false
+}
+
+// An enumeration.
+type AccountSummaryTracesErc721AssetTraceLabels string
+
+const (
+	AccountSummaryTracesErc721AssetTraceLabelsGasFee AccountSummaryTracesErc721AssetTraceLabels = "GAS_FEE"
+)
+
+func (r AccountSummaryTracesErc721AssetTraceLabels) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc721AssetTraceLabelsGasFee:
+		return true
+	}
+	return false
+}
+
+type AccountSummaryTracesErc1155AssetTrace struct {
+	// Description of the asset in the trace
+	Asset AccountSummaryTracesErc1155AssetTraceAsset `json:"asset,required"`
+	// The difference in value for the asset in the trace
+	Diff Erc1155Diff `json:"diff,required"`
+	// The address where the assets are moved from
+	FromAddress string `json:"from_address,required"`
+	// The address where the assets are moved to
+	ToAddress string `json:"to_address,required"`
+	// type of the trace
+	TraceType AccountSummaryTracesErc1155AssetTraceTraceType `json:"trace_type,required"`
+	// The type of the model
+	Type AccountSummaryTracesErc1155AssetTraceType `json:"type,required"`
+	// List of labels that describe the trace
+	Labels []AccountSummaryTracesErc1155AssetTraceLabels `json:"labels"`
+	JSON   accountSummaryTracesErc1155AssetTraceJSON     `json:"-"`
+}
+
+// accountSummaryTracesErc1155AssetTraceJSON contains the JSON metadata for the
+// struct [AccountSummaryTracesErc1155AssetTrace]
+type accountSummaryTracesErc1155AssetTraceJSON struct {
+	Asset       apijson.Field
+	Diff        apijson.Field
+	FromAddress apijson.Field
+	ToAddress   apijson.Field
+	TraceType   apijson.Field
+	Type        apijson.Field
+	Labels      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryTracesErc1155AssetTrace) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryTracesErc1155AssetTraceJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r AccountSummaryTracesErc1155AssetTrace) implementsAccountSummaryTrace() {}
+
+// Description of the asset in the trace
+type AccountSummaryTracesErc1155AssetTraceAsset struct {
+	// address of the token
+	Address string `json:"address,required"`
+	// asset type.
+	Type AccountSummaryTracesErc1155AssetTraceAssetType `json:"type,required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                         `json:"symbol"`
+	JSON   accountSummaryTracesErc1155AssetTraceAssetJSON `json:"-"`
+	union  AccountSummaryTracesErc1155AssetTraceAssetUnion
+}
+
+// accountSummaryTracesErc1155AssetTraceAssetJSON contains the JSON metadata for
+// the struct [AccountSummaryTracesErc1155AssetTraceAsset]
+type accountSummaryTracesErc1155AssetTraceAssetJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryTracesErc1155AssetTraceAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryTracesErc1155AssetTraceAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryTracesErc1155AssetTraceAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [AccountSummaryTracesErc1155AssetTraceAssetUnion] interface
+// which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155TokenDetails],
+// [NonercTokenDetails].
+func (r AccountSummaryTracesErc1155AssetTraceAsset) AsUnion() AccountSummaryTracesErc1155AssetTraceAssetUnion {
+	return r.union
+}
+
+// Description of the asset in the trace
+//
+// Union satisfied by [Erc1155TokenDetails] or [NonercTokenDetails].
+type AccountSummaryTracesErc1155AssetTraceAssetUnion interface {
+	implementsAccountSummaryTracesErc1155AssetTraceAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryTracesErc1155AssetTraceAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc1155TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+	)
+}
+
+// asset type.
+type AccountSummaryTracesErc1155AssetTraceAssetType string
+
+const (
+	AccountSummaryTracesErc1155AssetTraceAssetTypeErc1155 AccountSummaryTracesErc1155AssetTraceAssetType = "ERC1155"
+	AccountSummaryTracesErc1155AssetTraceAssetTypeNonerc  AccountSummaryTracesErc1155AssetTraceAssetType = "NONERC"
+)
+
+func (r AccountSummaryTracesErc1155AssetTraceAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc1155AssetTraceAssetTypeErc1155, AccountSummaryTracesErc1155AssetTraceAssetTypeNonerc:
+		return true
+	}
+	return false
+}
+
+// type of the trace
+type AccountSummaryTracesErc1155AssetTraceTraceType string
+
+const (
+	AccountSummaryTracesErc1155AssetTraceTraceTypeAssetTrace AccountSummaryTracesErc1155AssetTraceTraceType = "AssetTrace"
+)
+
+func (r AccountSummaryTracesErc1155AssetTraceTraceType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc1155AssetTraceTraceTypeAssetTrace:
+		return true
+	}
+	return false
+}
+
+// The type of the model
+type AccountSummaryTracesErc1155AssetTraceType string
+
+const (
+	AccountSummaryTracesErc1155AssetTraceTypeErc1155AssetTrace AccountSummaryTracesErc1155AssetTraceType = "ERC1155AssetTrace"
+)
+
+func (r AccountSummaryTracesErc1155AssetTraceType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc1155AssetTraceTypeErc1155AssetTrace:
+		return true
+	}
+	return false
+}
+
+// An enumeration.
+type AccountSummaryTracesErc1155AssetTraceLabels string
+
+const (
+	AccountSummaryTracesErc1155AssetTraceLabelsGasFee AccountSummaryTracesErc1155AssetTraceLabels = "GAS_FEE"
+)
+
+func (r AccountSummaryTracesErc1155AssetTraceLabels) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc1155AssetTraceLabelsGasFee:
+		return true
+	}
+	return false
+}
+
+type AccountSummaryTracesErc20ExposureTrace struct {
+	Exposed AccountSummaryTracesErc20ExposureTraceExposed `json:"exposed,required"`
+	// The owner of the assets
+	Owner string `json:"owner,required"`
+	// The spender of the assets
+	Spender string `json:"spender,required"`
+	// type of the trace
+	TraceType AccountSummaryTracesErc20ExposureTraceTraceType `json:"trace_type,required"`
+	// The type of the model
+	Type AccountSummaryTracesErc20ExposureTraceType `json:"type,required"`
+	JSON accountSummaryTracesErc20ExposureTraceJSON `json:"-"`
+}
+
+// accountSummaryTracesErc20ExposureTraceJSON contains the JSON metadata for the
+// struct [AccountSummaryTracesErc20ExposureTrace]
+type accountSummaryTracesErc20ExposureTraceJSON struct {
+	Exposed     apijson.Field
+	Owner       apijson.Field
+	Spender     apijson.Field
+	TraceType   apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryTracesErc20ExposureTrace) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryTracesErc20ExposureTraceJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r AccountSummaryTracesErc20ExposureTrace) implementsAccountSummaryTrace() {}
+
+type AccountSummaryTracesErc20ExposureTraceExposed struct {
+	RawValue string                                            `json:"raw_value,required"`
+	UsdPrice float64                                           `json:"usd_price"`
+	Value    float64                                           `json:"value"`
+	JSON     accountSummaryTracesErc20ExposureTraceExposedJSON `json:"-"`
+}
+
+// accountSummaryTracesErc20ExposureTraceExposedJSON contains the JSON metadata for
+// the struct [AccountSummaryTracesErc20ExposureTraceExposed]
+type accountSummaryTracesErc20ExposureTraceExposedJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryTracesErc20ExposureTraceExposed) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryTracesErc20ExposureTraceExposedJSON) RawJSON() string {
+	return r.raw
+}
+
+// type of the trace
+type AccountSummaryTracesErc20ExposureTraceTraceType string
+
+const (
+	AccountSummaryTracesErc20ExposureTraceTraceTypeExposureTrace AccountSummaryTracesErc20ExposureTraceTraceType = "ExposureTrace"
+)
+
+func (r AccountSummaryTracesErc20ExposureTraceTraceType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc20ExposureTraceTraceTypeExposureTrace:
+		return true
+	}
+	return false
+}
+
+// The type of the model
+type AccountSummaryTracesErc20ExposureTraceType string
+
+const (
+	AccountSummaryTracesErc20ExposureTraceTypeErc20ExposureTrace AccountSummaryTracesErc20ExposureTraceType = "ERC20ExposureTrace"
+)
+
+func (r AccountSummaryTracesErc20ExposureTraceType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc20ExposureTraceTypeErc20ExposureTrace:
+		return true
+	}
+	return false
+}
+
+type AccountSummaryTracesErc721ExposureTrace struct {
+	Exposed AccountSummaryTracesErc721ExposureTraceExposed `json:"exposed,required"`
+	// The owner of the assets
+	Owner string `json:"owner,required"`
+	// The spender of the assets
+	Spender string `json:"spender,required"`
+	// type of the trace
+	TraceType AccountSummaryTracesErc721ExposureTraceTraceType `json:"trace_type,required"`
+	// The type of the model
+	Type AccountSummaryTracesErc721ExposureTraceType `json:"type,required"`
+	JSON accountSummaryTracesErc721ExposureTraceJSON `json:"-"`
+}
+
+// accountSummaryTracesErc721ExposureTraceJSON contains the JSON metadata for the
+// struct [AccountSummaryTracesErc721ExposureTrace]
+type accountSummaryTracesErc721ExposureTraceJSON struct {
+	Exposed     apijson.Field
+	Owner       apijson.Field
+	Spender     apijson.Field
+	TraceType   apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryTracesErc721ExposureTrace) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryTracesErc721ExposureTraceJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r AccountSummaryTracesErc721ExposureTrace) implementsAccountSummaryTrace() {}
+
+type AccountSummaryTracesErc721ExposureTraceExposed struct {
+	Amount   int64                                              `json:"amount,required"`
+	TokenID  string                                             `json:"token_id,required"`
+	IsMint   bool                                               `json:"is_mint"`
+	LogoURL  string                                             `json:"logo_url"`
+	UsdPrice float64                                            `json:"usd_price"`
+	JSON     accountSummaryTracesErc721ExposureTraceExposedJSON `json:"-"`
+}
+
+// accountSummaryTracesErc721ExposureTraceExposedJSON contains the JSON metadata
+// for the struct [AccountSummaryTracesErc721ExposureTraceExposed]
+type accountSummaryTracesErc721ExposureTraceExposedJSON struct {
+	Amount      apijson.Field
+	TokenID     apijson.Field
+	IsMint      apijson.Field
+	LogoURL     apijson.Field
+	UsdPrice    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryTracesErc721ExposureTraceExposed) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryTracesErc721ExposureTraceExposedJSON) RawJSON() string {
+	return r.raw
+}
+
+// type of the trace
+type AccountSummaryTracesErc721ExposureTraceTraceType string
+
+const (
+	AccountSummaryTracesErc721ExposureTraceTraceTypeExposureTrace AccountSummaryTracesErc721ExposureTraceTraceType = "ExposureTrace"
+)
+
+func (r AccountSummaryTracesErc721ExposureTraceTraceType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc721ExposureTraceTraceTypeExposureTrace:
+		return true
+	}
+	return false
+}
+
+// The type of the model
+type AccountSummaryTracesErc721ExposureTraceType string
+
+const (
+	AccountSummaryTracesErc721ExposureTraceTypeErc721ExposureTrace AccountSummaryTracesErc721ExposureTraceType = "ERC721ExposureTrace"
+)
+
+func (r AccountSummaryTracesErc721ExposureTraceType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc721ExposureTraceTypeErc721ExposureTrace:
+		return true
+	}
+	return false
+}
+
+type AccountSummaryTracesErc1155ExposureTrace struct {
+	// The owner of the assets
+	Owner string `json:"owner,required"`
+	// The spender of the assets
+	Spender string `json:"spender,required"`
+	// type of the trace
+	TraceType AccountSummaryTracesErc1155ExposureTraceTraceType `json:"trace_type,required"`
+	// The type of the model
+	Type AccountSummaryTracesErc1155ExposureTraceType `json:"type,required"`
+	JSON accountSummaryTracesErc1155ExposureTraceJSON `json:"-"`
+}
+
+// accountSummaryTracesErc1155ExposureTraceJSON contains the JSON metadata for the
+// struct [AccountSummaryTracesErc1155ExposureTrace]
+type accountSummaryTracesErc1155ExposureTraceJSON struct {
+	Owner       apijson.Field
+	Spender     apijson.Field
+	TraceType   apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryTracesErc1155ExposureTrace) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryTracesErc1155ExposureTraceJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r AccountSummaryTracesErc1155ExposureTrace) implementsAccountSummaryTrace() {}
+
+// type of the trace
+type AccountSummaryTracesErc1155ExposureTraceTraceType string
+
+const (
+	AccountSummaryTracesErc1155ExposureTraceTraceTypeExposureTrace AccountSummaryTracesErc1155ExposureTraceTraceType = "ExposureTrace"
+)
+
+func (r AccountSummaryTracesErc1155ExposureTraceTraceType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc1155ExposureTraceTraceTypeExposureTrace:
+		return true
+	}
+	return false
+}
+
+// The type of the model
+type AccountSummaryTracesErc1155ExposureTraceType string
+
+const (
+	AccountSummaryTracesErc1155ExposureTraceTypeErc1155ExposureTrace AccountSummaryTracesErc1155ExposureTraceType = "ERC1155ExposureTrace"
+)
+
+func (r AccountSummaryTracesErc1155ExposureTraceType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc1155ExposureTraceTypeErc1155ExposureTrace:
+		return true
+	}
+	return false
+}
+
+// type of the trace
+type AccountSummaryTracesTraceType string
+
+const (
+	AccountSummaryTracesTraceTypeAssetTrace    AccountSummaryTracesTraceType = "AssetTrace"
+	AccountSummaryTracesTraceTypeExposureTrace AccountSummaryTracesTraceType = "ExposureTrace"
+)
+
+func (r AccountSummaryTracesTraceType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesTraceTypeAssetTrace, AccountSummaryTracesTraceTypeExposureTrace:
+		return true
+	}
+	return false
+}
+
+// The type of the model
+type AccountSummaryTracesType string
+
+const (
+	AccountSummaryTracesTypeErc20AssetTrace      AccountSummaryTracesType = "ERC20AssetTrace"
+	AccountSummaryTracesTypeErc721AssetTrace     AccountSummaryTracesType = "ERC721AssetTrace"
+	AccountSummaryTracesTypeErc1155AssetTrace    AccountSummaryTracesType = "ERC1155AssetTrace"
+	AccountSummaryTracesTypeNativeAssetTrace     AccountSummaryTracesType = "NativeAssetTrace"
+	AccountSummaryTracesTypeErc20ExposureTrace   AccountSummaryTracesType = "ERC20ExposureTrace"
+	AccountSummaryTracesTypeErc721ExposureTrace  AccountSummaryTracesType = "ERC721ExposureTrace"
+	AccountSummaryTracesTypeErc1155ExposureTrace AccountSummaryTracesType = "ERC1155ExposureTrace"
+)
+
+func (r AccountSummaryTracesType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesTypeErc20AssetTrace, AccountSummaryTracesTypeErc721AssetTrace, AccountSummaryTracesTypeErc1155AssetTrace, AccountSummaryTracesTypeNativeAssetTrace, AccountSummaryTracesTypeErc20ExposureTrace, AccountSummaryTracesTypeErc721ExposureTrace, AccountSummaryTracesTypeErc1155ExposureTrace:
+		return true
+	}
+	return false
+}
+
 type Erc1155Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
@@ -234,14 +2231,12 @@ func (r erc1155TokenDetailsJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r Erc1155TokenDetails) implementsTransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset() {
+func (r Erc1155TokenDetails) implementsAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset() {
 }
 
-func (r Erc1155TokenDetails) implementsTransactionSimulationAccountSummaryExposuresErc1155AddressExposureAsset() {
-}
+func (r Erc1155TokenDetails) implementsAccountSummaryExposuresErc1155AddressExposureAsset() {}
 
-func (r Erc1155TokenDetails) implementsTransactionSimulationAccountSummaryTracesErc1155AssetTraceAsset() {
-}
+func (r Erc1155TokenDetails) implementsAccountSummaryTracesErc1155AssetTraceAsset() {}
 
 func (r Erc1155TokenDetails) implementsTransactionSimulationAssetsDiffsErc1155AddressAssetDiffAsset() {
 }
@@ -453,14 +2448,12 @@ func (r erc20TokenDetailsJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r Erc20TokenDetails) implementsTransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset() {
+func (r Erc20TokenDetails) implementsAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset() {
 }
 
-func (r Erc20TokenDetails) implementsTransactionSimulationAccountSummaryExposuresErc20AddressExposureAsset() {
-}
+func (r Erc20TokenDetails) implementsAccountSummaryExposuresErc20AddressExposureAsset() {}
 
-func (r Erc20TokenDetails) implementsTransactionSimulationAccountSummaryTracesErc20AssetTraceAsset() {
-}
+func (r Erc20TokenDetails) implementsAccountSummaryTracesErc20AssetTraceAsset() {}
 
 func (r Erc20TokenDetails) implementsTransactionSimulationAssetsDiffsErc20AddressAssetDiffAsset() {}
 
@@ -666,14 +2659,12 @@ func (r erc721TokenDetailsJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r Erc721TokenDetails) implementsTransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset() {
+func (r Erc721TokenDetails) implementsAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset() {
 }
 
-func (r Erc721TokenDetails) implementsTransactionSimulationAccountSummaryExposuresErc721AddressExposureAsset() {
-}
+func (r Erc721TokenDetails) implementsAccountSummaryExposuresErc721AddressExposureAsset() {}
 
-func (r Erc721TokenDetails) implementsTransactionSimulationAccountSummaryTracesErc721AssetTraceAsset() {
-}
+func (r Erc721TokenDetails) implementsAccountSummaryTracesErc721AssetTraceAsset() {}
 
 func (r Erc721TokenDetails) implementsTransactionSimulationAssetsDiffsErc721AddressAssetDiffAsset() {}
 
@@ -701,6 +2692,83 @@ type MetadataParam struct {
 
 func (r MetadataParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type NativeAddressAssetBalanceChangeDiff struct {
+	// description of the asset for the current diff
+	Asset NativeAssetDetails `json:"asset,required"`
+	// type of the asset for the current diff
+	AssetType NativeAddressAssetBalanceChangeDiffAssetType `json:"asset_type,required"`
+	// amount of the asset that was transferred to the address in this transaction
+	In []NativeDiff `json:"in,required"`
+	// amount of the asset that was transferred from the address in this transaction
+	Out []NativeDiff `json:"out,required"`
+	// shows the balance before making the transaction and after
+	BalanceChanges NativeAddressAssetBalanceChangeDiffBalanceChanges `json:"balance_changes"`
+	JSON           nativeAddressAssetBalanceChangeDiffJSON           `json:"-"`
+}
+
+// nativeAddressAssetBalanceChangeDiffJSON contains the JSON metadata for the
+// struct [NativeAddressAssetBalanceChangeDiff]
+type nativeAddressAssetBalanceChangeDiffJSON struct {
+	Asset          apijson.Field
+	AssetType      apijson.Field
+	In             apijson.Field
+	Out            apijson.Field
+	BalanceChanges apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *NativeAddressAssetBalanceChangeDiff) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r nativeAddressAssetBalanceChangeDiffJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r NativeAddressAssetBalanceChangeDiff) implementsAccountSummaryAssetsDiff() {}
+
+// type of the asset for the current diff
+type NativeAddressAssetBalanceChangeDiffAssetType string
+
+const (
+	NativeAddressAssetBalanceChangeDiffAssetTypeNative NativeAddressAssetBalanceChangeDiffAssetType = "NATIVE"
+)
+
+func (r NativeAddressAssetBalanceChangeDiffAssetType) IsKnown() bool {
+	switch r {
+	case NativeAddressAssetBalanceChangeDiffAssetTypeNative:
+		return true
+	}
+	return false
+}
+
+// shows the balance before making the transaction and after
+type NativeAddressAssetBalanceChangeDiffBalanceChanges struct {
+	// balance of the account after making the transaction
+	After NativeDiff `json:"after,required"`
+	// balance of the account before making the transaction
+	Before NativeDiff                                            `json:"before,required"`
+	JSON   nativeAddressAssetBalanceChangeDiffBalanceChangesJSON `json:"-"`
+}
+
+// nativeAddressAssetBalanceChangeDiffBalanceChangesJSON contains the JSON metadata
+// for the struct [NativeAddressAssetBalanceChangeDiffBalanceChanges]
+type nativeAddressAssetBalanceChangeDiffBalanceChangesJSON struct {
+	After       apijson.Field
+	Before      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *NativeAddressAssetBalanceChangeDiffBalanceChanges) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r nativeAddressAssetBalanceChangeDiffBalanceChangesJSON) RawJSON() string {
+	return r.raw
 }
 
 type NativeAssetDetails struct {
@@ -749,6 +2817,93 @@ const (
 func (r NativeAssetDetailsType) IsKnown() bool {
 	switch r {
 	case NativeAssetDetailsTypeNative:
+		return true
+	}
+	return false
+}
+
+type NativeAssetTrace struct {
+	// Description of the asset in the trace
+	Asset NativeAssetDetails `json:"asset,required"`
+	// The difference in value for the asset in the trace
+	Diff NativeDiff `json:"diff,required"`
+	// The address where the assets are moved from
+	FromAddress string `json:"from_address,required"`
+	// The address where the assets are moved to
+	ToAddress string `json:"to_address,required"`
+	// type of the trace
+	TraceType NativeAssetTraceTraceType `json:"trace_type,required"`
+	// The type of the model
+	Type NativeAssetTraceType `json:"type,required"`
+	// List of labels that describe the trace
+	Labels []NativeAssetTraceLabels `json:"labels"`
+	JSON   nativeAssetTraceJSON     `json:"-"`
+}
+
+// nativeAssetTraceJSON contains the JSON metadata for the struct
+// [NativeAssetTrace]
+type nativeAssetTraceJSON struct {
+	Asset       apijson.Field
+	Diff        apijson.Field
+	FromAddress apijson.Field
+	ToAddress   apijson.Field
+	TraceType   apijson.Field
+	Type        apijson.Field
+	Labels      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *NativeAssetTrace) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r nativeAssetTraceJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r NativeAssetTrace) implementsAccountSummaryTrace() {}
+
+// type of the trace
+type NativeAssetTraceTraceType string
+
+const (
+	NativeAssetTraceTraceTypeAssetTrace NativeAssetTraceTraceType = "AssetTrace"
+)
+
+func (r NativeAssetTraceTraceType) IsKnown() bool {
+	switch r {
+	case NativeAssetTraceTraceTypeAssetTrace:
+		return true
+	}
+	return false
+}
+
+// The type of the model
+type NativeAssetTraceType string
+
+const (
+	NativeAssetTraceTypeNativeAssetTrace NativeAssetTraceType = "NativeAssetTrace"
+)
+
+func (r NativeAssetTraceType) IsKnown() bool {
+	switch r {
+	case NativeAssetTraceTypeNativeAssetTrace:
+		return true
+	}
+	return false
+}
+
+// An enumeration.
+type NativeAssetTraceLabels string
+
+const (
+	NativeAssetTraceLabelsGasFee NativeAssetTraceLabels = "GAS_FEE"
+)
+
+func (r NativeAssetTraceLabels) IsKnown() bool {
+	switch r {
+	case NativeAssetTraceLabelsGasFee:
 		return true
 	}
 	return false
@@ -824,32 +2979,26 @@ func (r nonercTokenDetailsJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r NonercTokenDetails) implementsTransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset() {
+func (r NonercTokenDetails) implementsAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset() {
 }
 
-func (r NonercTokenDetails) implementsTransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset() {
+func (r NonercTokenDetails) implementsAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset() {
 }
 
-func (r NonercTokenDetails) implementsTransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset() {
+func (r NonercTokenDetails) implementsAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset() {
 }
 
-func (r NonercTokenDetails) implementsTransactionSimulationAccountSummaryExposuresErc20AddressExposureAsset() {
-}
+func (r NonercTokenDetails) implementsAccountSummaryExposuresErc20AddressExposureAsset() {}
 
-func (r NonercTokenDetails) implementsTransactionSimulationAccountSummaryExposuresErc721AddressExposureAsset() {
-}
+func (r NonercTokenDetails) implementsAccountSummaryExposuresErc721AddressExposureAsset() {}
 
-func (r NonercTokenDetails) implementsTransactionSimulationAccountSummaryExposuresErc1155AddressExposureAsset() {
-}
+func (r NonercTokenDetails) implementsAccountSummaryExposuresErc1155AddressExposureAsset() {}
 
-func (r NonercTokenDetails) implementsTransactionSimulationAccountSummaryTracesErc20AssetTraceAsset() {
-}
+func (r NonercTokenDetails) implementsAccountSummaryTracesErc20AssetTraceAsset() {}
 
-func (r NonercTokenDetails) implementsTransactionSimulationAccountSummaryTracesErc721AssetTraceAsset() {
-}
+func (r NonercTokenDetails) implementsAccountSummaryTracesErc721AssetTraceAsset() {}
 
-func (r NonercTokenDetails) implementsTransactionSimulationAccountSummaryTracesErc1155AssetTraceAsset() {
-}
+func (r NonercTokenDetails) implementsAccountSummaryTracesErc1155AssetTraceAsset() {}
 
 func (r NonercTokenDetails) implementsTransactionSimulationAssetsDiffsErc20AddressAssetDiffAsset() {}
 
@@ -1250,8 +3399,10 @@ func (r TransactionScanResponseGasEstimationStatus) IsKnown() bool {
 type TransactionScanResponseSimulation struct {
 	// A string indicating if the simulation was successful or not.
 	Status TransactionScanResponseSimulationStatus `json:"status,required"`
-	// This field can have the runtime type of [TransactionSimulationAccountSummary].
-	AccountSummary interface{} `json:"account_summary"`
+	// Account summary for the account address. account address is determined implicit
+	// by the `from` field in the transaction request, or explicit by the
+	// account_address field in the request.
+	AccountSummary AccountSummary `json:"account_summary"`
 	// This field can have the runtime type of
 	// [map[string]TransactionSimulationAddressDetail].
 	AddressDetails interface{} `json:"address_details"`
@@ -1500,13 +3651,14 @@ const (
 	TransactionScanSupportedChainInk                   TransactionScanSupportedChain = "ink"
 	TransactionScanSupportedChainInkSepolia            TransactionScanSupportedChain = "ink-sepolia"
 	TransactionScanSupportedChainAbstract              TransactionScanSupportedChain = "abstract"
+	TransactionScanSupportedChainAbstractTestnet       TransactionScanSupportedChain = "abstract-testnet"
 	TransactionScanSupportedChainSoneium               TransactionScanSupportedChain = "soneium"
 	TransactionScanSupportedChainUnichain              TransactionScanSupportedChain = "unichain"
 )
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainZeroNetwork, TransactionScanSupportedChainBerachain, TransactionScanSupportedChainBerachainBartio, TransactionScanSupportedChainInk, TransactionScanSupportedChainInkSepolia, TransactionScanSupportedChainAbstract, TransactionScanSupportedChainSoneium, TransactionScanSupportedChainUnichain:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainZeroNetwork, TransactionScanSupportedChainBerachain, TransactionScanSupportedChainBerachainBartio, TransactionScanSupportedChainInk, TransactionScanSupportedChainInkSepolia, TransactionScanSupportedChainAbstract, TransactionScanSupportedChainAbstractTestnet, TransactionScanSupportedChainSoneium, TransactionScanSupportedChainUnichain:
 		return true
 	}
 	return false
@@ -1516,7 +3668,7 @@ type TransactionSimulation struct {
 	// Account summary for the account address. account address is determined implicit
 	// by the `from` field in the transaction request, or explicit by the
 	// account_address field in the request.
-	AccountSummary TransactionSimulationAccountSummary `json:"account_summary,required"`
+	AccountSummary AccountSummary `json:"account_summary,required"`
 	// a dictionary including additional information about each relevant address in the
 	// transaction.
 	AddressDetails map[string]TransactionSimulationAddressDetail `json:"address_details,required"`
@@ -1568,2217 +3720,6 @@ func (r transactionSimulationJSON) RawJSON() string {
 }
 
 func (r TransactionSimulation) implementsTransactionScanResponseSimulation() {}
-
-// Account summary for the account address. account address is determined implicit
-// by the `from` field in the transaction request, or explicit by the
-// account_address field in the request.
-type TransactionSimulationAccountSummary struct {
-	// All assets diffs related to the account address
-	AssetsDiffs []TransactionSimulationAccountSummaryAssetsDiff `json:"assets_diffs,required"`
-	// All assets exposures related to the account address
-	Exposures []TransactionSimulationAccountSummaryExposure `json:"exposures,required"`
-	// Total usd diff related to the account address
-	TotalUsdDiff UsdDiff `json:"total_usd_diff,required"`
-	// Total usd exposure related to the account address
-	TotalUsdExposure map[string]string `json:"total_usd_exposure,required"`
-	// All assets traces related to the account address
-	Traces []TransactionSimulationAccountSummaryTrace `json:"traces,required"`
-	JSON   transactionSimulationAccountSummaryJSON    `json:"-"`
-}
-
-// transactionSimulationAccountSummaryJSON contains the JSON metadata for the
-// struct [TransactionSimulationAccountSummary]
-type transactionSimulationAccountSummaryJSON struct {
-	AssetsDiffs      apijson.Field
-	Exposures        apijson.Field
-	TotalUsdDiff     apijson.Field
-	TotalUsdExposure apijson.Field
-	Traces           apijson.Field
-	raw              string
-	ExtraFields      map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummary) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryJSON) RawJSON() string {
-	return r.raw
-}
-
-type TransactionSimulationAccountSummaryAssetsDiff struct {
-	// This field can have the runtime type of
-	// [TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset],
-	// [TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset],
-	// [TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset],
-	// [NativeAssetDetails].
-	Asset interface{} `json:"asset,required"`
-	// type of the asset for the current diff
-	AssetType TransactionSimulationAccountSummaryAssetsDiffsAssetType `json:"asset_type,required"`
-	// This field can have the runtime type of [[]Erc20Diff], [[]Erc721Diff],
-	// [[]Erc1155Diff], [[]NativeDiff].
-	In interface{} `json:"in,required"`
-	// This field can have the runtime type of [[]Erc20Diff], [[]Erc721Diff],
-	// [[]Erc1155Diff], [[]NativeDiff].
-	Out interface{} `json:"out,required"`
-	// This field can have the runtime type of
-	// [TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChanges],
-	// [TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChanges],
-	// [TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChanges],
-	// [TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffBalanceChanges].
-	BalanceChanges interface{}                                       `json:"balance_changes"`
-	JSON           transactionSimulationAccountSummaryAssetsDiffJSON `json:"-"`
-	union          TransactionSimulationAccountSummaryAssetsDiffsUnion
-}
-
-// transactionSimulationAccountSummaryAssetsDiffJSON contains the JSON metadata for
-// the struct [TransactionSimulationAccountSummaryAssetsDiff]
-type transactionSimulationAccountSummaryAssetsDiffJSON struct {
-	Asset          apijson.Field
-	AssetType      apijson.Field
-	In             apijson.Field
-	Out            apijson.Field
-	BalanceChanges apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r transactionSimulationAccountSummaryAssetsDiffJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionSimulationAccountSummaryAssetsDiff) UnmarshalJSON(data []byte) (err error) {
-	*r = TransactionSimulationAccountSummaryAssetsDiff{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a [TransactionSimulationAccountSummaryAssetsDiffsUnion]
-// interface which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are
-// [TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff],
-// [TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff],
-// [TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff],
-// [TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiff].
-func (r TransactionSimulationAccountSummaryAssetsDiff) AsUnion() TransactionSimulationAccountSummaryAssetsDiffsUnion {
-	return r.union
-}
-
-// Union satisfied by
-// [TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff],
-// [TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff],
-// [TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff]
-// or
-// [TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiff].
-type TransactionSimulationAccountSummaryAssetsDiffsUnion interface {
-	implementsTransactionSimulationAccountSummaryAssetsDiff()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionSimulationAccountSummaryAssetsDiffsUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiff{}),
-		},
-	)
-}
-
-type TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff struct {
-	// description of the asset for the current diff
-	Asset TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset `json:"asset,required"`
-	// type of the asset for the current diff
-	AssetType TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetType `json:"asset_type,required"`
-	// amount of the asset that was transferred to the address in this transaction
-	In []Erc20Diff `json:"in,required"`
-	// amount of the asset that was transferred from the address in this transaction
-	Out []Erc20Diff `json:"out,required"`
-	// shows the balance before making the transaction and after
-	BalanceChanges TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChanges `json:"balance_changes"`
-	JSON           transactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffJSON           `json:"-"`
-}
-
-// transactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff]
-type transactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffJSON struct {
-	Asset          apijson.Field
-	AssetType      apijson.Field
-	In             apijson.Field
-	Out            apijson.Field
-	BalanceChanges apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiff) implementsTransactionSimulationAccountSummaryAssetsDiff() {
-}
-
-// description of the asset for the current diff
-type TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset struct {
-	// address of the token
-	Address string `json:"address,required"`
-	// asset type.
-	Type TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetType `json:"type,required"`
-	// asset's decimals
-	Decimals int64 `json:"decimals"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string                                                                                    `json:"symbol"`
-	JSON   transactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetJSON `json:"-"`
-	union  TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetUnion
-}
-
-// transactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset]
-type transactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetJSON struct {
-	Address     apijson.Field
-	Type        apijson.Field
-	Decimals    apijson.Field
-	LogoURL     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r transactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset) UnmarshalJSON(data []byte) (err error) {
-	*r = TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a
-// [TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetUnion]
-// interface which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are [Erc20TokenDetails],
-// [NonercTokenDetails].
-func (r TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset) AsUnion() TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetUnion {
-	return r.union
-}
-
-// description of the asset for the current diff
-//
-// Union satisfied by [Erc20TokenDetails] or [NonercTokenDetails].
-type TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetUnion interface {
-	implementsTransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAsset()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc20TokenDetails{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(NonercTokenDetails{}),
-		},
-	)
-}
-
-// asset type.
-type TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetType string
-
-const (
-	TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetTypeErc20  TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetType = "ERC20"
-	TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetTypeNonerc TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetType = "NONERC"
-)
-
-func (r TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetTypeErc20, TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffAssetTypeNonerc:
-		return true
-	}
-	return false
-}
-
-// shows the balance before making the transaction and after
-type TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChanges struct {
-	// balance of the account after making the transaction
-	After Erc20Diff `json:"after,required"`
-	// balance of the account before making the transaction
-	Before Erc20Diff                                                                                          `json:"before,required"`
-	JSON   transactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChangesJSON `json:"-"`
-}
-
-// transactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChangesJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChanges]
-type transactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChangesJSON struct {
-	After       apijson.Field
-	Before      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChanges) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryAssetsDiffsErc20AddressAssetBalanceChangeDiffBalanceChangesJSON) RawJSON() string {
-	return r.raw
-}
-
-type TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff struct {
-	// description of the asset for the current diff
-	Asset TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset `json:"asset,required"`
-	// type of the asset for the current diff
-	AssetType TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetType `json:"asset_type,required"`
-	// amount of the asset that was transferred to the address in this transaction
-	In []Erc721Diff `json:"in,required"`
-	// amount of the asset that was transferred from the address in this transaction
-	Out []Erc721Diff `json:"out,required"`
-	// shows the balance before making the transaction and after
-	BalanceChanges TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChanges `json:"balance_changes"`
-	JSON           transactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffJSON           `json:"-"`
-}
-
-// transactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff]
-type transactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffJSON struct {
-	Asset          apijson.Field
-	AssetType      apijson.Field
-	In             apijson.Field
-	Out            apijson.Field
-	BalanceChanges apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiff) implementsTransactionSimulationAccountSummaryAssetsDiff() {
-}
-
-// description of the asset for the current diff
-type TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset struct {
-	// address of the token
-	Address string `json:"address,required"`
-	// asset type.
-	Type TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetType `json:"type,required"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string                                                                                     `json:"symbol"`
-	JSON   transactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetJSON `json:"-"`
-	union  TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetUnion
-}
-
-// transactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset]
-type transactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetJSON struct {
-	Address     apijson.Field
-	Type        apijson.Field
-	LogoURL     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r transactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset) UnmarshalJSON(data []byte) (err error) {
-	*r = TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a
-// [TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetUnion]
-// interface which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are [Erc721TokenDetails],
-// [NonercTokenDetails].
-func (r TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset) AsUnion() TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetUnion {
-	return r.union
-}
-
-// description of the asset for the current diff
-//
-// Union satisfied by [Erc721TokenDetails] or [NonercTokenDetails].
-type TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetUnion interface {
-	implementsTransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAsset()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc721TokenDetails{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(NonercTokenDetails{}),
-		},
-	)
-}
-
-// asset type.
-type TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetType string
-
-const (
-	TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetTypeErc721 TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetType = "ERC721"
-	TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetTypeNonerc TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetType = "NONERC"
-)
-
-func (r TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetTypeErc721, TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffAssetTypeNonerc:
-		return true
-	}
-	return false
-}
-
-// shows the balance before making the transaction and after
-type TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChanges struct {
-	// balance of the account after making the transaction
-	After Erc721Diff `json:"after,required"`
-	// balance of the account before making the transaction
-	Before Erc721Diff                                                                                          `json:"before,required"`
-	JSON   transactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChangesJSON `json:"-"`
-}
-
-// transactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChangesJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChanges]
-type transactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChangesJSON struct {
-	After       apijson.Field
-	Before      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChanges) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryAssetsDiffsErc721AddressAssetBalanceChangeDiffBalanceChangesJSON) RawJSON() string {
-	return r.raw
-}
-
-type TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff struct {
-	// description of the asset for the current diff
-	Asset TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset `json:"asset,required"`
-	// type of the asset for the current diff
-	AssetType TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetType `json:"asset_type,required"`
-	// amount of the asset that was transferred to the address in this transaction
-	In []Erc1155Diff `json:"in,required"`
-	// amount of the asset that was transferred from the address in this transaction
-	Out []Erc1155Diff `json:"out,required"`
-	// shows the balance before making the transaction and after
-	BalanceChanges TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChanges `json:"balance_changes"`
-	JSON           transactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffJSON           `json:"-"`
-}
-
-// transactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff]
-type transactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffJSON struct {
-	Asset          apijson.Field
-	AssetType      apijson.Field
-	In             apijson.Field
-	Out            apijson.Field
-	BalanceChanges apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiff) implementsTransactionSimulationAccountSummaryAssetsDiff() {
-}
-
-// description of the asset for the current diff
-type TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset struct {
-	// address of the token
-	Address string `json:"address,required"`
-	// asset type.
-	Type TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetType `json:"type,required"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string                                                                                      `json:"symbol"`
-	JSON   transactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetJSON `json:"-"`
-	union  TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetUnion
-}
-
-// transactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset]
-type transactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetJSON struct {
-	Address     apijson.Field
-	Type        apijson.Field
-	LogoURL     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r transactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset) UnmarshalJSON(data []byte) (err error) {
-	*r = TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a
-// [TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetUnion]
-// interface which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are [Erc1155TokenDetails],
-// [NonercTokenDetails].
-func (r TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset) AsUnion() TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetUnion {
-	return r.union
-}
-
-// description of the asset for the current diff
-//
-// Union satisfied by [Erc1155TokenDetails] or [NonercTokenDetails].
-type TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetUnion interface {
-	implementsTransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAsset()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc1155TokenDetails{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(NonercTokenDetails{}),
-		},
-	)
-}
-
-// asset type.
-type TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetType string
-
-const (
-	TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetTypeErc1155 TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetType = "ERC1155"
-	TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetTypeNonerc  TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetType = "NONERC"
-)
-
-func (r TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetTypeErc1155, TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffAssetTypeNonerc:
-		return true
-	}
-	return false
-}
-
-// shows the balance before making the transaction and after
-type TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChanges struct {
-	// balance of the account after making the transaction
-	After Erc1155Diff `json:"after,required"`
-	// balance of the account before making the transaction
-	Before Erc1155Diff                                                                                          `json:"before,required"`
-	JSON   transactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChangesJSON `json:"-"`
-}
-
-// transactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChangesJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChanges]
-type transactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChangesJSON struct {
-	After       apijson.Field
-	Before      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChanges) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryAssetsDiffsErc1155AddressAssetBalanceChangeDiffBalanceChangesJSON) RawJSON() string {
-	return r.raw
-}
-
-type TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiff struct {
-	// description of the asset for the current diff
-	Asset NativeAssetDetails `json:"asset,required"`
-	// type of the asset for the current diff
-	AssetType TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffAssetType `json:"asset_type,required"`
-	// amount of the asset that was transferred to the address in this transaction
-	In []NativeDiff `json:"in,required"`
-	// amount of the asset that was transferred from the address in this transaction
-	Out []NativeDiff `json:"out,required"`
-	// shows the balance before making the transaction and after
-	BalanceChanges TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffBalanceChanges `json:"balance_changes"`
-	JSON           transactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffJSON           `json:"-"`
-}
-
-// transactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiff]
-type transactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffJSON struct {
-	Asset          apijson.Field
-	AssetType      apijson.Field
-	In             apijson.Field
-	Out            apijson.Field
-	BalanceChanges apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiff) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiff) implementsTransactionSimulationAccountSummaryAssetsDiff() {
-}
-
-// type of the asset for the current diff
-type TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffAssetType string
-
-const (
-	TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffAssetTypeNative TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffAssetType = "NATIVE"
-)
-
-func (r TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffAssetType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffAssetTypeNative:
-		return true
-	}
-	return false
-}
-
-// shows the balance before making the transaction and after
-type TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffBalanceChanges struct {
-	// balance of the account after making the transaction
-	After NativeDiff `json:"after,required"`
-	// balance of the account before making the transaction
-	Before NativeDiff                                                                                          `json:"before,required"`
-	JSON   transactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffBalanceChangesJSON `json:"-"`
-}
-
-// transactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffBalanceChangesJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffBalanceChanges]
-type transactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffBalanceChangesJSON struct {
-	After       apijson.Field
-	Before      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffBalanceChanges) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryAssetsDiffsNativeAddressAssetBalanceChangeDiffBalanceChangesJSON) RawJSON() string {
-	return r.raw
-}
-
-// type of the asset for the current diff
-type TransactionSimulationAccountSummaryAssetsDiffsAssetType string
-
-const (
-	TransactionSimulationAccountSummaryAssetsDiffsAssetTypeErc20   TransactionSimulationAccountSummaryAssetsDiffsAssetType = "ERC20"
-	TransactionSimulationAccountSummaryAssetsDiffsAssetTypeErc721  TransactionSimulationAccountSummaryAssetsDiffsAssetType = "ERC721"
-	TransactionSimulationAccountSummaryAssetsDiffsAssetTypeErc1155 TransactionSimulationAccountSummaryAssetsDiffsAssetType = "ERC1155"
-	TransactionSimulationAccountSummaryAssetsDiffsAssetTypeNative  TransactionSimulationAccountSummaryAssetsDiffsAssetType = "NATIVE"
-)
-
-func (r TransactionSimulationAccountSummaryAssetsDiffsAssetType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryAssetsDiffsAssetTypeErc20, TransactionSimulationAccountSummaryAssetsDiffsAssetTypeErc721, TransactionSimulationAccountSummaryAssetsDiffsAssetTypeErc1155, TransactionSimulationAccountSummaryAssetsDiffsAssetTypeNative:
-		return true
-	}
-	return false
-}
-
-type TransactionSimulationAccountSummaryExposure struct {
-	// This field can have the runtime type of
-	// [TransactionSimulationAccountSummaryExposuresErc20AddressExposureAsset],
-	// [TransactionSimulationAccountSummaryExposuresErc721AddressExposureAsset],
-	// [TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAsset].
-	Asset interface{} `json:"asset,required"`
-	// type of the asset for the current diff
-	AssetType TransactionSimulationAccountSummaryExposuresAssetType `json:"asset_type,required"`
-	// This field can have the runtime type of [map[string]Erc20Exposure],
-	// [map[string]Erc721Exposure], [map[string]Erc1155Exposure].
-	Spenders interface{}                                     `json:"spenders,required"`
-	JSON     transactionSimulationAccountSummaryExposureJSON `json:"-"`
-	union    TransactionSimulationAccountSummaryExposuresUnion
-}
-
-// transactionSimulationAccountSummaryExposureJSON contains the JSON metadata for
-// the struct [TransactionSimulationAccountSummaryExposure]
-type transactionSimulationAccountSummaryExposureJSON struct {
-	Asset       apijson.Field
-	AssetType   apijson.Field
-	Spenders    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r transactionSimulationAccountSummaryExposureJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionSimulationAccountSummaryExposure) UnmarshalJSON(data []byte) (err error) {
-	*r = TransactionSimulationAccountSummaryExposure{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a [TransactionSimulationAccountSummaryExposuresUnion] interface
-// which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are
-// [TransactionSimulationAccountSummaryExposuresErc20AddressExposure],
-// [TransactionSimulationAccountSummaryExposuresErc721AddressExposure],
-// [TransactionSimulationAccountSummaryExposuresErc1155AddressExposure].
-func (r TransactionSimulationAccountSummaryExposure) AsUnion() TransactionSimulationAccountSummaryExposuresUnion {
-	return r.union
-}
-
-// Union satisfied by
-// [TransactionSimulationAccountSummaryExposuresErc20AddressExposure],
-// [TransactionSimulationAccountSummaryExposuresErc721AddressExposure] or
-// [TransactionSimulationAccountSummaryExposuresErc1155AddressExposure].
-type TransactionSimulationAccountSummaryExposuresUnion interface {
-	implementsTransactionSimulationAccountSummaryExposure()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionSimulationAccountSummaryExposuresUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryExposuresErc20AddressExposure{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryExposuresErc721AddressExposure{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryExposuresErc1155AddressExposure{}),
-		},
-	)
-}
-
-type TransactionSimulationAccountSummaryExposuresErc20AddressExposure struct {
-	// description of the asset for the current diff
-	Asset TransactionSimulationAccountSummaryExposuresErc20AddressExposureAsset `json:"asset,required"`
-	// type of the asset for the current diff
-	AssetType TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetType `json:"asset_type,required"`
-	// dictionary of spender addresses where the exposure has changed during this
-	// transaction for the current address and asset
-	Spenders map[string]Erc20Exposure                                             `json:"spenders,required"`
-	JSON     transactionSimulationAccountSummaryExposuresErc20AddressExposureJSON `json:"-"`
-}
-
-// transactionSimulationAccountSummaryExposuresErc20AddressExposureJSON contains
-// the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryExposuresErc20AddressExposure]
-type transactionSimulationAccountSummaryExposuresErc20AddressExposureJSON struct {
-	Asset       apijson.Field
-	AssetType   apijson.Field
-	Spenders    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryExposuresErc20AddressExposure) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryExposuresErc20AddressExposureJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryExposuresErc20AddressExposure) implementsTransactionSimulationAccountSummaryExposure() {
-}
-
-// description of the asset for the current diff
-type TransactionSimulationAccountSummaryExposuresErc20AddressExposureAsset struct {
-	// address of the token
-	Address string `json:"address,required"`
-	// asset type.
-	Type TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetType `json:"type,required"`
-	// asset's decimals
-	Decimals int64 `json:"decimals"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string                                                                    `json:"symbol"`
-	JSON   transactionSimulationAccountSummaryExposuresErc20AddressExposureAssetJSON `json:"-"`
-	union  TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetUnion
-}
-
-// transactionSimulationAccountSummaryExposuresErc20AddressExposureAssetJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryExposuresErc20AddressExposureAsset]
-type transactionSimulationAccountSummaryExposuresErc20AddressExposureAssetJSON struct {
-	Address     apijson.Field
-	Type        apijson.Field
-	Decimals    apijson.Field
-	LogoURL     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r transactionSimulationAccountSummaryExposuresErc20AddressExposureAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionSimulationAccountSummaryExposuresErc20AddressExposureAsset) UnmarshalJSON(data []byte) (err error) {
-	*r = TransactionSimulationAccountSummaryExposuresErc20AddressExposureAsset{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a
-// [TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetUnion]
-// interface which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are [Erc20TokenDetails],
-// [NonercTokenDetails].
-func (r TransactionSimulationAccountSummaryExposuresErc20AddressExposureAsset) AsUnion() TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetUnion {
-	return r.union
-}
-
-// description of the asset for the current diff
-//
-// Union satisfied by [Erc20TokenDetails] or [NonercTokenDetails].
-type TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetUnion interface {
-	implementsTransactionSimulationAccountSummaryExposuresErc20AddressExposureAsset()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc20TokenDetails{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(NonercTokenDetails{}),
-		},
-	)
-}
-
-// asset type.
-type TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetType string
-
-const (
-	TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetTypeErc20  TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetType = "ERC20"
-	TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetTypeNonerc TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetType = "NONERC"
-)
-
-func (r TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetTypeErc20, TransactionSimulationAccountSummaryExposuresErc20AddressExposureAssetTypeNonerc:
-		return true
-	}
-	return false
-}
-
-type TransactionSimulationAccountSummaryExposuresErc721AddressExposure struct {
-	// description of the asset for the current diff
-	Asset TransactionSimulationAccountSummaryExposuresErc721AddressExposureAsset `json:"asset,required"`
-	// type of the asset for the current diff
-	AssetType TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetType `json:"asset_type,required"`
-	// dictionary of spender addresses where the exposure has changed during this
-	// transaction for the current address and asset
-	Spenders map[string]Erc721Exposure                                             `json:"spenders,required"`
-	JSON     transactionSimulationAccountSummaryExposuresErc721AddressExposureJSON `json:"-"`
-}
-
-// transactionSimulationAccountSummaryExposuresErc721AddressExposureJSON contains
-// the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryExposuresErc721AddressExposure]
-type transactionSimulationAccountSummaryExposuresErc721AddressExposureJSON struct {
-	Asset       apijson.Field
-	AssetType   apijson.Field
-	Spenders    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryExposuresErc721AddressExposure) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryExposuresErc721AddressExposureJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryExposuresErc721AddressExposure) implementsTransactionSimulationAccountSummaryExposure() {
-}
-
-// description of the asset for the current diff
-type TransactionSimulationAccountSummaryExposuresErc721AddressExposureAsset struct {
-	// address of the token
-	Address string `json:"address,required"`
-	// asset type.
-	Type TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetType `json:"type,required"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string                                                                     `json:"symbol"`
-	JSON   transactionSimulationAccountSummaryExposuresErc721AddressExposureAssetJSON `json:"-"`
-	union  TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetUnion
-}
-
-// transactionSimulationAccountSummaryExposuresErc721AddressExposureAssetJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryExposuresErc721AddressExposureAsset]
-type transactionSimulationAccountSummaryExposuresErc721AddressExposureAssetJSON struct {
-	Address     apijson.Field
-	Type        apijson.Field
-	LogoURL     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r transactionSimulationAccountSummaryExposuresErc721AddressExposureAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionSimulationAccountSummaryExposuresErc721AddressExposureAsset) UnmarshalJSON(data []byte) (err error) {
-	*r = TransactionSimulationAccountSummaryExposuresErc721AddressExposureAsset{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a
-// [TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetUnion]
-// interface which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are [Erc721TokenDetails],
-// [NonercTokenDetails].
-func (r TransactionSimulationAccountSummaryExposuresErc721AddressExposureAsset) AsUnion() TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetUnion {
-	return r.union
-}
-
-// description of the asset for the current diff
-//
-// Union satisfied by [Erc721TokenDetails] or [NonercTokenDetails].
-type TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetUnion interface {
-	implementsTransactionSimulationAccountSummaryExposuresErc721AddressExposureAsset()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc721TokenDetails{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(NonercTokenDetails{}),
-		},
-	)
-}
-
-// asset type.
-type TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetType string
-
-const (
-	TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetTypeErc721 TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetType = "ERC721"
-	TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetTypeNonerc TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetType = "NONERC"
-)
-
-func (r TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetTypeErc721, TransactionSimulationAccountSummaryExposuresErc721AddressExposureAssetTypeNonerc:
-		return true
-	}
-	return false
-}
-
-type TransactionSimulationAccountSummaryExposuresErc1155AddressExposure struct {
-	// description of the asset for the current diff
-	Asset TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAsset `json:"asset,required"`
-	// type of the asset for the current diff
-	AssetType TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetType `json:"asset_type,required"`
-	// dictionary of spender addresses where the exposure has changed during this
-	// transaction for the current address and asset
-	Spenders map[string]Erc1155Exposure                                             `json:"spenders,required"`
-	JSON     transactionSimulationAccountSummaryExposuresErc1155AddressExposureJSON `json:"-"`
-}
-
-// transactionSimulationAccountSummaryExposuresErc1155AddressExposureJSON contains
-// the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryExposuresErc1155AddressExposure]
-type transactionSimulationAccountSummaryExposuresErc1155AddressExposureJSON struct {
-	Asset       apijson.Field
-	AssetType   apijson.Field
-	Spenders    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryExposuresErc1155AddressExposure) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryExposuresErc1155AddressExposureJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryExposuresErc1155AddressExposure) implementsTransactionSimulationAccountSummaryExposure() {
-}
-
-// description of the asset for the current diff
-type TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAsset struct {
-	// address of the token
-	Address string `json:"address,required"`
-	// asset type.
-	Type TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetType `json:"type,required"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string                                                                      `json:"symbol"`
-	JSON   transactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetJSON `json:"-"`
-	union  TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetUnion
-}
-
-// transactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetJSON
-// contains the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAsset]
-type transactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetJSON struct {
-	Address     apijson.Field
-	Type        apijson.Field
-	LogoURL     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r transactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAsset) UnmarshalJSON(data []byte) (err error) {
-	*r = TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAsset{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a
-// [TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetUnion]
-// interface which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are [Erc1155TokenDetails],
-// [NonercTokenDetails].
-func (r TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAsset) AsUnion() TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetUnion {
-	return r.union
-}
-
-// description of the asset for the current diff
-//
-// Union satisfied by [Erc1155TokenDetails] or [NonercTokenDetails].
-type TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetUnion interface {
-	implementsTransactionSimulationAccountSummaryExposuresErc1155AddressExposureAsset()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc1155TokenDetails{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(NonercTokenDetails{}),
-		},
-	)
-}
-
-// asset type.
-type TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetType string
-
-const (
-	TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetTypeErc1155 TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetType = "ERC1155"
-	TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetTypeNonerc  TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetType = "NONERC"
-)
-
-func (r TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetTypeErc1155, TransactionSimulationAccountSummaryExposuresErc1155AddressExposureAssetTypeNonerc:
-		return true
-	}
-	return false
-}
-
-// type of the asset for the current diff
-type TransactionSimulationAccountSummaryExposuresAssetType string
-
-const (
-	TransactionSimulationAccountSummaryExposuresAssetTypeErc20   TransactionSimulationAccountSummaryExposuresAssetType = "ERC20"
-	TransactionSimulationAccountSummaryExposuresAssetTypeErc721  TransactionSimulationAccountSummaryExposuresAssetType = "ERC721"
-	TransactionSimulationAccountSummaryExposuresAssetTypeErc1155 TransactionSimulationAccountSummaryExposuresAssetType = "ERC1155"
-)
-
-func (r TransactionSimulationAccountSummaryExposuresAssetType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryExposuresAssetTypeErc20, TransactionSimulationAccountSummaryExposuresAssetTypeErc721, TransactionSimulationAccountSummaryExposuresAssetTypeErc1155:
-		return true
-	}
-	return false
-}
-
-type TransactionSimulationAccountSummaryTrace struct {
-	// type of the trace
-	TraceType TransactionSimulationAccountSummaryTracesTraceType `json:"trace_type,required"`
-	// The type of the model
-	Type TransactionSimulationAccountSummaryTracesType `json:"type,required"`
-	// This field can have the runtime type of
-	// [TransactionSimulationAccountSummaryTracesErc20AssetTraceAsset],
-	// [TransactionSimulationAccountSummaryTracesErc721AssetTraceAsset],
-	// [TransactionSimulationAccountSummaryTracesErc1155AssetTraceAsset],
-	// [NativeAssetDetails].
-	Asset interface{} `json:"asset"`
-	// This field can have the runtime type of [Erc20Diff], [Erc721Diff],
-	// [Erc1155Diff], [NativeDiff].
-	Diff interface{} `json:"diff"`
-	// This field can have the runtime type of
-	// [TransactionSimulationAccountSummaryTracesErc20ExposureTraceExposed],
-	// [TransactionSimulationAccountSummaryTracesErc721ExposureTraceExposed].
-	Exposed interface{} `json:"exposed"`
-	// The address where the assets are moved from
-	FromAddress string `json:"from_address"`
-	// This field can have the runtime type of
-	// [[]TransactionSimulationAccountSummaryTracesErc20AssetTraceLabels],
-	// [[]TransactionSimulationAccountSummaryTracesErc721AssetTraceLabels],
-	// [[]TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabels],
-	// [[]TransactionSimulationAccountSummaryTracesNativeAssetTraceLabels].
-	Labels interface{} `json:"labels"`
-	// The owner of the assets
-	Owner string `json:"owner"`
-	// The spender of the assets
-	Spender string `json:"spender"`
-	// The address where the assets are moved to
-	ToAddress string                                       `json:"to_address"`
-	JSON      transactionSimulationAccountSummaryTraceJSON `json:"-"`
-	union     TransactionSimulationAccountSummaryTracesUnion
-}
-
-// transactionSimulationAccountSummaryTraceJSON contains the JSON metadata for the
-// struct [TransactionSimulationAccountSummaryTrace]
-type transactionSimulationAccountSummaryTraceJSON struct {
-	TraceType   apijson.Field
-	Type        apijson.Field
-	Asset       apijson.Field
-	Diff        apijson.Field
-	Exposed     apijson.Field
-	FromAddress apijson.Field
-	Labels      apijson.Field
-	Owner       apijson.Field
-	Spender     apijson.Field
-	ToAddress   apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r transactionSimulationAccountSummaryTraceJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionSimulationAccountSummaryTrace) UnmarshalJSON(data []byte) (err error) {
-	*r = TransactionSimulationAccountSummaryTrace{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a [TransactionSimulationAccountSummaryTracesUnion] interface
-// which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are
-// [TransactionSimulationAccountSummaryTracesErc20AssetTrace],
-// [TransactionSimulationAccountSummaryTracesErc721AssetTrace],
-// [TransactionSimulationAccountSummaryTracesErc1155AssetTrace],
-// [TransactionSimulationAccountSummaryTracesNativeAssetTrace],
-// [TransactionSimulationAccountSummaryTracesErc20ExposureTrace],
-// [TransactionSimulationAccountSummaryTracesErc721ExposureTrace],
-// [TransactionSimulationAccountSummaryTracesErc1155ExposureTrace].
-func (r TransactionSimulationAccountSummaryTrace) AsUnion() TransactionSimulationAccountSummaryTracesUnion {
-	return r.union
-}
-
-// Union satisfied by [TransactionSimulationAccountSummaryTracesErc20AssetTrace],
-// [TransactionSimulationAccountSummaryTracesErc721AssetTrace],
-// [TransactionSimulationAccountSummaryTracesErc1155AssetTrace],
-// [TransactionSimulationAccountSummaryTracesNativeAssetTrace],
-// [TransactionSimulationAccountSummaryTracesErc20ExposureTrace],
-// [TransactionSimulationAccountSummaryTracesErc721ExposureTrace] or
-// [TransactionSimulationAccountSummaryTracesErc1155ExposureTrace].
-type TransactionSimulationAccountSummaryTracesUnion interface {
-	implementsTransactionSimulationAccountSummaryTrace()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionSimulationAccountSummaryTracesUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryTracesErc20AssetTrace{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryTracesErc721AssetTrace{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryTracesErc1155AssetTrace{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryTracesNativeAssetTrace{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryTracesErc20ExposureTrace{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryTracesErc721ExposureTrace{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TransactionSimulationAccountSummaryTracesErc1155ExposureTrace{}),
-		},
-	)
-}
-
-type TransactionSimulationAccountSummaryTracesErc20AssetTrace struct {
-	// Description of the asset in the trace
-	Asset TransactionSimulationAccountSummaryTracesErc20AssetTraceAsset `json:"asset,required"`
-	// The difference in value for the asset in the trace
-	Diff Erc20Diff `json:"diff,required"`
-	// The address where the assets are moved from
-	FromAddress string `json:"from_address,required"`
-	// The address where the assets are moved to
-	ToAddress string `json:"to_address,required"`
-	// type of the trace
-	TraceType TransactionSimulationAccountSummaryTracesErc20AssetTraceTraceType `json:"trace_type,required"`
-	// The type of the model
-	Type TransactionSimulationAccountSummaryTracesErc20AssetTraceType `json:"type,required"`
-	// List of labels that describe the trace
-	Labels []TransactionSimulationAccountSummaryTracesErc20AssetTraceLabels `json:"labels"`
-	JSON   transactionSimulationAccountSummaryTracesErc20AssetTraceJSON     `json:"-"`
-}
-
-// transactionSimulationAccountSummaryTracesErc20AssetTraceJSON contains the JSON
-// metadata for the struct
-// [TransactionSimulationAccountSummaryTracesErc20AssetTrace]
-type transactionSimulationAccountSummaryTracesErc20AssetTraceJSON struct {
-	Asset       apijson.Field
-	Diff        apijson.Field
-	FromAddress apijson.Field
-	ToAddress   apijson.Field
-	TraceType   apijson.Field
-	Type        apijson.Field
-	Labels      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryTracesErc20AssetTrace) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryTracesErc20AssetTraceJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryTracesErc20AssetTrace) implementsTransactionSimulationAccountSummaryTrace() {
-}
-
-// Description of the asset in the trace
-type TransactionSimulationAccountSummaryTracesErc20AssetTraceAsset struct {
-	// address of the token
-	Address string `json:"address,required"`
-	// asset type.
-	Type TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetType `json:"type,required"`
-	// asset's decimals
-	Decimals int64 `json:"decimals"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string                                                            `json:"symbol"`
-	JSON   transactionSimulationAccountSummaryTracesErc20AssetTraceAssetJSON `json:"-"`
-	union  TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetUnion
-}
-
-// transactionSimulationAccountSummaryTracesErc20AssetTraceAssetJSON contains the
-// JSON metadata for the struct
-// [TransactionSimulationAccountSummaryTracesErc20AssetTraceAsset]
-type transactionSimulationAccountSummaryTracesErc20AssetTraceAssetJSON struct {
-	Address     apijson.Field
-	Type        apijson.Field
-	Decimals    apijson.Field
-	LogoURL     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r transactionSimulationAccountSummaryTracesErc20AssetTraceAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionSimulationAccountSummaryTracesErc20AssetTraceAsset) UnmarshalJSON(data []byte) (err error) {
-	*r = TransactionSimulationAccountSummaryTracesErc20AssetTraceAsset{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a
-// [TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetUnion] interface
-// which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are [Erc20TokenDetails],
-// [NonercTokenDetails].
-func (r TransactionSimulationAccountSummaryTracesErc20AssetTraceAsset) AsUnion() TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetUnion {
-	return r.union
-}
-
-// Description of the asset in the trace
-//
-// Union satisfied by [Erc20TokenDetails] or [NonercTokenDetails].
-type TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetUnion interface {
-	implementsTransactionSimulationAccountSummaryTracesErc20AssetTraceAsset()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc20TokenDetails{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(NonercTokenDetails{}),
-		},
-	)
-}
-
-// asset type.
-type TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetTypeErc20  TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetType = "ERC20"
-	TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetTypeNonerc TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetType = "NONERC"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetTypeErc20, TransactionSimulationAccountSummaryTracesErc20AssetTraceAssetTypeNonerc:
-		return true
-	}
-	return false
-}
-
-// type of the trace
-type TransactionSimulationAccountSummaryTracesErc20AssetTraceTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc20AssetTraceTraceTypeAssetTrace TransactionSimulationAccountSummaryTracesErc20AssetTraceTraceType = "AssetTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc20AssetTraceTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc20AssetTraceTraceTypeAssetTrace:
-		return true
-	}
-	return false
-}
-
-// The type of the model
-type TransactionSimulationAccountSummaryTracesErc20AssetTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc20AssetTraceTypeErc20AssetTrace TransactionSimulationAccountSummaryTracesErc20AssetTraceType = "ERC20AssetTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc20AssetTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc20AssetTraceTypeErc20AssetTrace:
-		return true
-	}
-	return false
-}
-
-// An enumeration.
-type TransactionSimulationAccountSummaryTracesErc20AssetTraceLabels string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc20AssetTraceLabelsGasFee TransactionSimulationAccountSummaryTracesErc20AssetTraceLabels = "GAS_FEE"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc20AssetTraceLabels) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc20AssetTraceLabelsGasFee:
-		return true
-	}
-	return false
-}
-
-type TransactionSimulationAccountSummaryTracesErc721AssetTrace struct {
-	// Description of the asset in the trace
-	Asset TransactionSimulationAccountSummaryTracesErc721AssetTraceAsset `json:"asset,required"`
-	// The difference in value for the asset in the trace
-	Diff Erc721Diff `json:"diff,required"`
-	// The address where the assets are moved from
-	FromAddress string `json:"from_address,required"`
-	// The address where the assets are moved to
-	ToAddress string `json:"to_address,required"`
-	// type of the trace
-	TraceType TransactionSimulationAccountSummaryTracesErc721AssetTraceTraceType `json:"trace_type,required"`
-	// The type of the model
-	Type TransactionSimulationAccountSummaryTracesErc721AssetTraceType `json:"type,required"`
-	// List of labels that describe the trace
-	Labels []TransactionSimulationAccountSummaryTracesErc721AssetTraceLabels `json:"labels"`
-	JSON   transactionSimulationAccountSummaryTracesErc721AssetTraceJSON     `json:"-"`
-}
-
-// transactionSimulationAccountSummaryTracesErc721AssetTraceJSON contains the JSON
-// metadata for the struct
-// [TransactionSimulationAccountSummaryTracesErc721AssetTrace]
-type transactionSimulationAccountSummaryTracesErc721AssetTraceJSON struct {
-	Asset       apijson.Field
-	Diff        apijson.Field
-	FromAddress apijson.Field
-	ToAddress   apijson.Field
-	TraceType   apijson.Field
-	Type        apijson.Field
-	Labels      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryTracesErc721AssetTrace) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryTracesErc721AssetTraceJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryTracesErc721AssetTrace) implementsTransactionSimulationAccountSummaryTrace() {
-}
-
-// Description of the asset in the trace
-type TransactionSimulationAccountSummaryTracesErc721AssetTraceAsset struct {
-	// address of the token
-	Address string `json:"address,required"`
-	// asset type.
-	Type TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetType `json:"type,required"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string                                                             `json:"symbol"`
-	JSON   transactionSimulationAccountSummaryTracesErc721AssetTraceAssetJSON `json:"-"`
-	union  TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetUnion
-}
-
-// transactionSimulationAccountSummaryTracesErc721AssetTraceAssetJSON contains the
-// JSON metadata for the struct
-// [TransactionSimulationAccountSummaryTracesErc721AssetTraceAsset]
-type transactionSimulationAccountSummaryTracesErc721AssetTraceAssetJSON struct {
-	Address     apijson.Field
-	Type        apijson.Field
-	LogoURL     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r transactionSimulationAccountSummaryTracesErc721AssetTraceAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionSimulationAccountSummaryTracesErc721AssetTraceAsset) UnmarshalJSON(data []byte) (err error) {
-	*r = TransactionSimulationAccountSummaryTracesErc721AssetTraceAsset{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a
-// [TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetUnion] interface
-// which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are [Erc721TokenDetails],
-// [NonercTokenDetails].
-func (r TransactionSimulationAccountSummaryTracesErc721AssetTraceAsset) AsUnion() TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetUnion {
-	return r.union
-}
-
-// Description of the asset in the trace
-//
-// Union satisfied by [Erc721TokenDetails] or [NonercTokenDetails].
-type TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetUnion interface {
-	implementsTransactionSimulationAccountSummaryTracesErc721AssetTraceAsset()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc721TokenDetails{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(NonercTokenDetails{}),
-		},
-	)
-}
-
-// asset type.
-type TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetTypeErc721 TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetType = "ERC721"
-	TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetTypeNonerc TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetType = "NONERC"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetTypeErc721, TransactionSimulationAccountSummaryTracesErc721AssetTraceAssetTypeNonerc:
-		return true
-	}
-	return false
-}
-
-// type of the trace
-type TransactionSimulationAccountSummaryTracesErc721AssetTraceTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc721AssetTraceTraceTypeAssetTrace TransactionSimulationAccountSummaryTracesErc721AssetTraceTraceType = "AssetTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc721AssetTraceTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc721AssetTraceTraceTypeAssetTrace:
-		return true
-	}
-	return false
-}
-
-// The type of the model
-type TransactionSimulationAccountSummaryTracesErc721AssetTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc721AssetTraceTypeErc721AssetTrace TransactionSimulationAccountSummaryTracesErc721AssetTraceType = "ERC721AssetTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc721AssetTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc721AssetTraceTypeErc721AssetTrace:
-		return true
-	}
-	return false
-}
-
-// An enumeration.
-type TransactionSimulationAccountSummaryTracesErc721AssetTraceLabels string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc721AssetTraceLabelsGasFee TransactionSimulationAccountSummaryTracesErc721AssetTraceLabels = "GAS_FEE"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc721AssetTraceLabels) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc721AssetTraceLabelsGasFee:
-		return true
-	}
-	return false
-}
-
-type TransactionSimulationAccountSummaryTracesErc1155AssetTrace struct {
-	// Description of the asset in the trace
-	Asset TransactionSimulationAccountSummaryTracesErc1155AssetTraceAsset `json:"asset,required"`
-	// The difference in value for the asset in the trace
-	Diff Erc1155Diff `json:"diff,required"`
-	// The address where the assets are moved from
-	FromAddress string `json:"from_address,required"`
-	// The address where the assets are moved to
-	ToAddress string `json:"to_address,required"`
-	// type of the trace
-	TraceType TransactionSimulationAccountSummaryTracesErc1155AssetTraceTraceType `json:"trace_type,required"`
-	// The type of the model
-	Type TransactionSimulationAccountSummaryTracesErc1155AssetTraceType `json:"type,required"`
-	// List of labels that describe the trace
-	Labels []TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabels `json:"labels"`
-	JSON   transactionSimulationAccountSummaryTracesErc1155AssetTraceJSON     `json:"-"`
-}
-
-// transactionSimulationAccountSummaryTracesErc1155AssetTraceJSON contains the JSON
-// metadata for the struct
-// [TransactionSimulationAccountSummaryTracesErc1155AssetTrace]
-type transactionSimulationAccountSummaryTracesErc1155AssetTraceJSON struct {
-	Asset       apijson.Field
-	Diff        apijson.Field
-	FromAddress apijson.Field
-	ToAddress   apijson.Field
-	TraceType   apijson.Field
-	Type        apijson.Field
-	Labels      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryTracesErc1155AssetTrace) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryTracesErc1155AssetTraceJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryTracesErc1155AssetTrace) implementsTransactionSimulationAccountSummaryTrace() {
-}
-
-// Description of the asset in the trace
-type TransactionSimulationAccountSummaryTracesErc1155AssetTraceAsset struct {
-	// address of the token
-	Address string `json:"address,required"`
-	// asset type.
-	Type TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetType `json:"type,required"`
-	// url of the token logo
-	LogoURL string `json:"logo_url"`
-	// string represents the name of the asset
-	Name string `json:"name"`
-	// asset's symbol name
-	Symbol string                                                              `json:"symbol"`
-	JSON   transactionSimulationAccountSummaryTracesErc1155AssetTraceAssetJSON `json:"-"`
-	union  TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetUnion
-}
-
-// transactionSimulationAccountSummaryTracesErc1155AssetTraceAssetJSON contains the
-// JSON metadata for the struct
-// [TransactionSimulationAccountSummaryTracesErc1155AssetTraceAsset]
-type transactionSimulationAccountSummaryTracesErc1155AssetTraceAssetJSON struct {
-	Address     apijson.Field
-	Type        apijson.Field
-	LogoURL     apijson.Field
-	Name        apijson.Field
-	Symbol      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r transactionSimulationAccountSummaryTracesErc1155AssetTraceAssetJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r *TransactionSimulationAccountSummaryTracesErc1155AssetTraceAsset) UnmarshalJSON(data []byte) (err error) {
-	*r = TransactionSimulationAccountSummaryTracesErc1155AssetTraceAsset{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a
-// [TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetUnion] interface
-// which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are [Erc1155TokenDetails],
-// [NonercTokenDetails].
-func (r TransactionSimulationAccountSummaryTracesErc1155AssetTraceAsset) AsUnion() TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetUnion {
-	return r.union
-}
-
-// Description of the asset in the trace
-//
-// Union satisfied by [Erc1155TokenDetails] or [NonercTokenDetails].
-type TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetUnion interface {
-	implementsTransactionSimulationAccountSummaryTracesErc1155AssetTraceAsset()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(Erc1155TokenDetails{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(NonercTokenDetails{}),
-		},
-	)
-}
-
-// asset type.
-type TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetTypeErc1155 TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetType = "ERC1155"
-	TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetTypeNonerc  TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetType = "NONERC"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetTypeErc1155, TransactionSimulationAccountSummaryTracesErc1155AssetTraceAssetTypeNonerc:
-		return true
-	}
-	return false
-}
-
-// type of the trace
-type TransactionSimulationAccountSummaryTracesErc1155AssetTraceTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc1155AssetTraceTraceTypeAssetTrace TransactionSimulationAccountSummaryTracesErc1155AssetTraceTraceType = "AssetTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc1155AssetTraceTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc1155AssetTraceTraceTypeAssetTrace:
-		return true
-	}
-	return false
-}
-
-// The type of the model
-type TransactionSimulationAccountSummaryTracesErc1155AssetTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc1155AssetTraceTypeErc1155AssetTrace TransactionSimulationAccountSummaryTracesErc1155AssetTraceType = "ERC1155AssetTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc1155AssetTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc1155AssetTraceTypeErc1155AssetTrace:
-		return true
-	}
-	return false
-}
-
-// An enumeration.
-type TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabels string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabelsGasFee TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabels = "GAS_FEE"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabels) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc1155AssetTraceLabelsGasFee:
-		return true
-	}
-	return false
-}
-
-type TransactionSimulationAccountSummaryTracesNativeAssetTrace struct {
-	// Description of the asset in the trace
-	Asset NativeAssetDetails `json:"asset,required"`
-	// The difference in value for the asset in the trace
-	Diff NativeDiff `json:"diff,required"`
-	// The address where the assets are moved from
-	FromAddress string `json:"from_address,required"`
-	// The address where the assets are moved to
-	ToAddress string `json:"to_address,required"`
-	// type of the trace
-	TraceType TransactionSimulationAccountSummaryTracesNativeAssetTraceTraceType `json:"trace_type,required"`
-	// The type of the model
-	Type TransactionSimulationAccountSummaryTracesNativeAssetTraceType `json:"type,required"`
-	// List of labels that describe the trace
-	Labels []TransactionSimulationAccountSummaryTracesNativeAssetTraceLabels `json:"labels"`
-	JSON   transactionSimulationAccountSummaryTracesNativeAssetTraceJSON     `json:"-"`
-}
-
-// transactionSimulationAccountSummaryTracesNativeAssetTraceJSON contains the JSON
-// metadata for the struct
-// [TransactionSimulationAccountSummaryTracesNativeAssetTrace]
-type transactionSimulationAccountSummaryTracesNativeAssetTraceJSON struct {
-	Asset       apijson.Field
-	Diff        apijson.Field
-	FromAddress apijson.Field
-	ToAddress   apijson.Field
-	TraceType   apijson.Field
-	Type        apijson.Field
-	Labels      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryTracesNativeAssetTrace) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryTracesNativeAssetTraceJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryTracesNativeAssetTrace) implementsTransactionSimulationAccountSummaryTrace() {
-}
-
-// type of the trace
-type TransactionSimulationAccountSummaryTracesNativeAssetTraceTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesNativeAssetTraceTraceTypeAssetTrace TransactionSimulationAccountSummaryTracesNativeAssetTraceTraceType = "AssetTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesNativeAssetTraceTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesNativeAssetTraceTraceTypeAssetTrace:
-		return true
-	}
-	return false
-}
-
-// The type of the model
-type TransactionSimulationAccountSummaryTracesNativeAssetTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesNativeAssetTraceTypeNativeAssetTrace TransactionSimulationAccountSummaryTracesNativeAssetTraceType = "NativeAssetTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesNativeAssetTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesNativeAssetTraceTypeNativeAssetTrace:
-		return true
-	}
-	return false
-}
-
-// An enumeration.
-type TransactionSimulationAccountSummaryTracesNativeAssetTraceLabels string
-
-const (
-	TransactionSimulationAccountSummaryTracesNativeAssetTraceLabelsGasFee TransactionSimulationAccountSummaryTracesNativeAssetTraceLabels = "GAS_FEE"
-)
-
-func (r TransactionSimulationAccountSummaryTracesNativeAssetTraceLabels) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesNativeAssetTraceLabelsGasFee:
-		return true
-	}
-	return false
-}
-
-type TransactionSimulationAccountSummaryTracesErc20ExposureTrace struct {
-	Exposed TransactionSimulationAccountSummaryTracesErc20ExposureTraceExposed `json:"exposed,required"`
-	// The owner of the assets
-	Owner string `json:"owner,required"`
-	// The spender of the assets
-	Spender string `json:"spender,required"`
-	// type of the trace
-	TraceType TransactionSimulationAccountSummaryTracesErc20ExposureTraceTraceType `json:"trace_type,required"`
-	// The type of the model
-	Type TransactionSimulationAccountSummaryTracesErc20ExposureTraceType `json:"type,required"`
-	JSON transactionSimulationAccountSummaryTracesErc20ExposureTraceJSON `json:"-"`
-}
-
-// transactionSimulationAccountSummaryTracesErc20ExposureTraceJSON contains the
-// JSON metadata for the struct
-// [TransactionSimulationAccountSummaryTracesErc20ExposureTrace]
-type transactionSimulationAccountSummaryTracesErc20ExposureTraceJSON struct {
-	Exposed     apijson.Field
-	Owner       apijson.Field
-	Spender     apijson.Field
-	TraceType   apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryTracesErc20ExposureTrace) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryTracesErc20ExposureTraceJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryTracesErc20ExposureTrace) implementsTransactionSimulationAccountSummaryTrace() {
-}
-
-type TransactionSimulationAccountSummaryTracesErc20ExposureTraceExposed struct {
-	RawValue string                                                                 `json:"raw_value,required"`
-	UsdPrice float64                                                                `json:"usd_price"`
-	Value    float64                                                                `json:"value"`
-	JSON     transactionSimulationAccountSummaryTracesErc20ExposureTraceExposedJSON `json:"-"`
-}
-
-// transactionSimulationAccountSummaryTracesErc20ExposureTraceExposedJSON contains
-// the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryTracesErc20ExposureTraceExposed]
-type transactionSimulationAccountSummaryTracesErc20ExposureTraceExposedJSON struct {
-	RawValue    apijson.Field
-	UsdPrice    apijson.Field
-	Value       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryTracesErc20ExposureTraceExposed) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryTracesErc20ExposureTraceExposedJSON) RawJSON() string {
-	return r.raw
-}
-
-// type of the trace
-type TransactionSimulationAccountSummaryTracesErc20ExposureTraceTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc20ExposureTraceTraceTypeExposureTrace TransactionSimulationAccountSummaryTracesErc20ExposureTraceTraceType = "ExposureTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc20ExposureTraceTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc20ExposureTraceTraceTypeExposureTrace:
-		return true
-	}
-	return false
-}
-
-// The type of the model
-type TransactionSimulationAccountSummaryTracesErc20ExposureTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc20ExposureTraceTypeErc20ExposureTrace TransactionSimulationAccountSummaryTracesErc20ExposureTraceType = "ERC20ExposureTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc20ExposureTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc20ExposureTraceTypeErc20ExposureTrace:
-		return true
-	}
-	return false
-}
-
-type TransactionSimulationAccountSummaryTracesErc721ExposureTrace struct {
-	Exposed TransactionSimulationAccountSummaryTracesErc721ExposureTraceExposed `json:"exposed,required"`
-	// The owner of the assets
-	Owner string `json:"owner,required"`
-	// The spender of the assets
-	Spender string `json:"spender,required"`
-	// type of the trace
-	TraceType TransactionSimulationAccountSummaryTracesErc721ExposureTraceTraceType `json:"trace_type,required"`
-	// The type of the model
-	Type TransactionSimulationAccountSummaryTracesErc721ExposureTraceType `json:"type,required"`
-	JSON transactionSimulationAccountSummaryTracesErc721ExposureTraceJSON `json:"-"`
-}
-
-// transactionSimulationAccountSummaryTracesErc721ExposureTraceJSON contains the
-// JSON metadata for the struct
-// [TransactionSimulationAccountSummaryTracesErc721ExposureTrace]
-type transactionSimulationAccountSummaryTracesErc721ExposureTraceJSON struct {
-	Exposed     apijson.Field
-	Owner       apijson.Field
-	Spender     apijson.Field
-	TraceType   apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryTracesErc721ExposureTrace) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryTracesErc721ExposureTraceJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryTracesErc721ExposureTrace) implementsTransactionSimulationAccountSummaryTrace() {
-}
-
-type TransactionSimulationAccountSummaryTracesErc721ExposureTraceExposed struct {
-	Amount   int64                                                                   `json:"amount,required"`
-	TokenID  string                                                                  `json:"token_id,required"`
-	IsMint   bool                                                                    `json:"is_mint"`
-	LogoURL  string                                                                  `json:"logo_url"`
-	UsdPrice float64                                                                 `json:"usd_price"`
-	JSON     transactionSimulationAccountSummaryTracesErc721ExposureTraceExposedJSON `json:"-"`
-}
-
-// transactionSimulationAccountSummaryTracesErc721ExposureTraceExposedJSON contains
-// the JSON metadata for the struct
-// [TransactionSimulationAccountSummaryTracesErc721ExposureTraceExposed]
-type transactionSimulationAccountSummaryTracesErc721ExposureTraceExposedJSON struct {
-	Amount      apijson.Field
-	TokenID     apijson.Field
-	IsMint      apijson.Field
-	LogoURL     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryTracesErc721ExposureTraceExposed) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryTracesErc721ExposureTraceExposedJSON) RawJSON() string {
-	return r.raw
-}
-
-// type of the trace
-type TransactionSimulationAccountSummaryTracesErc721ExposureTraceTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc721ExposureTraceTraceTypeExposureTrace TransactionSimulationAccountSummaryTracesErc721ExposureTraceTraceType = "ExposureTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc721ExposureTraceTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc721ExposureTraceTraceTypeExposureTrace:
-		return true
-	}
-	return false
-}
-
-// The type of the model
-type TransactionSimulationAccountSummaryTracesErc721ExposureTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc721ExposureTraceTypeErc721ExposureTrace TransactionSimulationAccountSummaryTracesErc721ExposureTraceType = "ERC721ExposureTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc721ExposureTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc721ExposureTraceTypeErc721ExposureTrace:
-		return true
-	}
-	return false
-}
-
-type TransactionSimulationAccountSummaryTracesErc1155ExposureTrace struct {
-	// The owner of the assets
-	Owner string `json:"owner,required"`
-	// The spender of the assets
-	Spender string `json:"spender,required"`
-	// type of the trace
-	TraceType TransactionSimulationAccountSummaryTracesErc1155ExposureTraceTraceType `json:"trace_type,required"`
-	// The type of the model
-	Type TransactionSimulationAccountSummaryTracesErc1155ExposureTraceType `json:"type,required"`
-	JSON transactionSimulationAccountSummaryTracesErc1155ExposureTraceJSON `json:"-"`
-}
-
-// transactionSimulationAccountSummaryTracesErc1155ExposureTraceJSON contains the
-// JSON metadata for the struct
-// [TransactionSimulationAccountSummaryTracesErc1155ExposureTrace]
-type transactionSimulationAccountSummaryTracesErc1155ExposureTraceJSON struct {
-	Owner       apijson.Field
-	Spender     apijson.Field
-	TraceType   apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *TransactionSimulationAccountSummaryTracesErc1155ExposureTrace) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionSimulationAccountSummaryTracesErc1155ExposureTraceJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r TransactionSimulationAccountSummaryTracesErc1155ExposureTrace) implementsTransactionSimulationAccountSummaryTrace() {
-}
-
-// type of the trace
-type TransactionSimulationAccountSummaryTracesErc1155ExposureTraceTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc1155ExposureTraceTraceTypeExposureTrace TransactionSimulationAccountSummaryTracesErc1155ExposureTraceTraceType = "ExposureTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc1155ExposureTraceTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc1155ExposureTraceTraceTypeExposureTrace:
-		return true
-	}
-	return false
-}
-
-// The type of the model
-type TransactionSimulationAccountSummaryTracesErc1155ExposureTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesErc1155ExposureTraceTypeErc1155ExposureTrace TransactionSimulationAccountSummaryTracesErc1155ExposureTraceType = "ERC1155ExposureTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesErc1155ExposureTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesErc1155ExposureTraceTypeErc1155ExposureTrace:
-		return true
-	}
-	return false
-}
-
-// type of the trace
-type TransactionSimulationAccountSummaryTracesTraceType string
-
-const (
-	TransactionSimulationAccountSummaryTracesTraceTypeAssetTrace    TransactionSimulationAccountSummaryTracesTraceType = "AssetTrace"
-	TransactionSimulationAccountSummaryTracesTraceTypeExposureTrace TransactionSimulationAccountSummaryTracesTraceType = "ExposureTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesTraceType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesTraceTypeAssetTrace, TransactionSimulationAccountSummaryTracesTraceTypeExposureTrace:
-		return true
-	}
-	return false
-}
-
-// The type of the model
-type TransactionSimulationAccountSummaryTracesType string
-
-const (
-	TransactionSimulationAccountSummaryTracesTypeErc20AssetTrace      TransactionSimulationAccountSummaryTracesType = "ERC20AssetTrace"
-	TransactionSimulationAccountSummaryTracesTypeErc721AssetTrace     TransactionSimulationAccountSummaryTracesType = "ERC721AssetTrace"
-	TransactionSimulationAccountSummaryTracesTypeErc1155AssetTrace    TransactionSimulationAccountSummaryTracesType = "ERC1155AssetTrace"
-	TransactionSimulationAccountSummaryTracesTypeNativeAssetTrace     TransactionSimulationAccountSummaryTracesType = "NativeAssetTrace"
-	TransactionSimulationAccountSummaryTracesTypeErc20ExposureTrace   TransactionSimulationAccountSummaryTracesType = "ERC20ExposureTrace"
-	TransactionSimulationAccountSummaryTracesTypeErc721ExposureTrace  TransactionSimulationAccountSummaryTracesType = "ERC721ExposureTrace"
-	TransactionSimulationAccountSummaryTracesTypeErc1155ExposureTrace TransactionSimulationAccountSummaryTracesType = "ERC1155ExposureTrace"
-)
-
-func (r TransactionSimulationAccountSummaryTracesType) IsKnown() bool {
-	switch r {
-	case TransactionSimulationAccountSummaryTracesTypeErc20AssetTrace, TransactionSimulationAccountSummaryTracesTypeErc721AssetTrace, TransactionSimulationAccountSummaryTracesTypeErc1155AssetTrace, TransactionSimulationAccountSummaryTracesTypeNativeAssetTrace, TransactionSimulationAccountSummaryTracesTypeErc20ExposureTrace, TransactionSimulationAccountSummaryTracesTypeErc721ExposureTrace, TransactionSimulationAccountSummaryTracesTypeErc1155ExposureTrace:
-		return true
-	}
-	return false
-}
 
 type TransactionSimulationAddressDetail struct {
 	// contains the contract's name if the address is a verified contract

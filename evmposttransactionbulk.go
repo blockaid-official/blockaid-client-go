@@ -53,6 +53,8 @@ type EvmPostTransactionBulkScanParams struct {
 	// simulation output in your response. "validation" - include security validation
 	// of the transaction in your response. Default is ["validation"]
 	Options param.Field[[]EvmPostTransactionBulkScanParamsOption] `json:"options"`
+	// Override the state of the chain. This is useful for testing purposes.
+	StateOverride param.Field[map[string]EvmPostTransactionBulkScanParamsStateOverride] `json:"state_override"`
 }
 
 func (r EvmPostTransactionBulkScanParams) MarshalJSON() (data []byte, err error) {
@@ -82,4 +84,25 @@ func (r EvmPostTransactionBulkScanParamsOption) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+type EvmPostTransactionBulkScanParamsStateOverride struct {
+	// Fake balance to set for the account before executing the call.
+	Balance param.Field[string] `json:"balance"`
+	// Fake EVM bytecode to inject into the account before executing the call.
+	Code param.Field[string] `json:"code"`
+	// Moves precompile to given address
+	MovePrecompileToAddress param.Field[string] `json:"movePrecompileToAddress"`
+	// Fake nonce to set for the account before executing the call.
+	Nonce param.Field[string] `json:"nonce"`
+	// Fake key-value mapping to override all slots in the account storage before
+	// executing the call.
+	State param.Field[map[string]string] `json:"state"`
+	// Fake key-value mapping to override individual slots in the account storage
+	// before executing the call.
+	StateDiff param.Field[map[string]string] `json:"stateDiff"`
+}
+
+func (r EvmPostTransactionBulkScanParamsStateOverride) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }

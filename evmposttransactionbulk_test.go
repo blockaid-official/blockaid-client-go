@@ -34,6 +34,20 @@ func TestEvmPostTransactionBulkScanWithOptionalParams(t *testing.T) {
 		}),
 		Block:   blockaidclientgo.F[blockaidclientgo.EvmPostTransactionBulkScanParamsBlockUnion](shared.UnionInt(int64(0))),
 		Options: blockaidclientgo.F([]blockaidclientgo.EvmPostTransactionBulkScanParamsOption{blockaidclientgo.EvmPostTransactionBulkScanParamsOptionValidation, blockaidclientgo.EvmPostTransactionBulkScanParamsOptionSimulation}),
+		StateOverride: blockaidclientgo.F(map[string]blockaidclientgo.EvmPostTransactionBulkScanParamsStateOverride{
+			"foo": {
+				Balance:                 blockaidclientgo.F("balance"),
+				Code:                    blockaidclientgo.F("code"),
+				MovePrecompileToAddress: blockaidclientgo.F("movePrecompileToAddress"),
+				Nonce:                   blockaidclientgo.F("nonce"),
+				State: blockaidclientgo.F(map[string]string{
+					"foo": "string",
+				}),
+				StateDiff: blockaidclientgo.F(map[string]string{
+					"foo": "string",
+				}),
+			},
+		}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
