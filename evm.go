@@ -1112,15 +1112,18 @@ func (r AccountSummaryExposuresAssetType) IsKnown() bool {
 }
 
 type AccountSummaryTrace struct {
+	// This field can have the runtime type of
+	// [AccountSummaryTracesErc20AssetTraceAsset],
+	// [AccountSummaryTracesErc721AssetTraceAsset],
+	// [AccountSummaryTracesErc1155AssetTraceAsset], [NativeAssetDetails],
+	// [AccountSummaryTracesErc20ExposureTraceAsset],
+	// [AccountSummaryTracesErc721ExposureTraceAsset],
+	// [AccountSummaryTracesErc1155ExposureTraceAsset].
+	Asset interface{} `json:"asset,required"`
 	// type of the trace
 	TraceType AccountSummaryTracesTraceType `json:"trace_type,required"`
 	// The type of the model
 	Type AccountSummaryTracesType `json:"type,required"`
-	// This field can have the runtime type of
-	// [AccountSummaryTracesErc20AssetTraceAsset],
-	// [AccountSummaryTracesErc721AssetTraceAsset],
-	// [AccountSummaryTracesErc1155AssetTraceAsset], [NativeAssetDetails].
-	Asset interface{} `json:"asset"`
 	// This field can have the runtime type of [Erc20Diff], [Erc721Diff],
 	// [Erc1155Diff], [NativeDiff].
 	Diff interface{} `json:"diff"`
@@ -1148,9 +1151,9 @@ type AccountSummaryTrace struct {
 // accountSummaryTraceJSON contains the JSON metadata for the struct
 // [AccountSummaryTrace]
 type accountSummaryTraceJSON struct {
+	Asset       apijson.Field
 	TraceType   apijson.Field
 	Type        apijson.Field
-	Asset       apijson.Field
 	Diff        apijson.Field
 	Exposed     apijson.Field
 	FromAddress apijson.Field
@@ -1760,6 +1763,8 @@ func (r AccountSummaryTracesErc1155AssetTraceLabels) IsKnown() bool {
 }
 
 type AccountSummaryTracesErc20ExposureTrace struct {
+	// Description of the asset in the trace
+	Asset   AccountSummaryTracesErc20ExposureTraceAsset   `json:"asset,required"`
 	Exposed AccountSummaryTracesErc20ExposureTraceExposed `json:"exposed,required"`
 	// The owner of the assets
 	Owner string `json:"owner,required"`
@@ -1775,6 +1780,7 @@ type AccountSummaryTracesErc20ExposureTrace struct {
 // accountSummaryTracesErc20ExposureTraceJSON contains the JSON metadata for the
 // struct [AccountSummaryTracesErc20ExposureTrace]
 type accountSummaryTracesErc20ExposureTraceJSON struct {
+	Asset       apijson.Field
 	Exposed     apijson.Field
 	Owner       apijson.Field
 	Spender     apijson.Field
@@ -1793,6 +1799,97 @@ func (r accountSummaryTracesErc20ExposureTraceJSON) RawJSON() string {
 }
 
 func (r AccountSummaryTracesErc20ExposureTrace) implementsAccountSummaryTrace() {}
+
+// Description of the asset in the trace
+type AccountSummaryTracesErc20ExposureTraceAsset struct {
+	// address of the token
+	Address string `json:"address,required"`
+	// asset type.
+	Type AccountSummaryTracesErc20ExposureTraceAssetType `json:"type,required"`
+	// asset's decimals
+	Decimals int64 `json:"decimals"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                          `json:"symbol"`
+	JSON   accountSummaryTracesErc20ExposureTraceAssetJSON `json:"-"`
+	union  AccountSummaryTracesErc20ExposureTraceAssetUnion
+}
+
+// accountSummaryTracesErc20ExposureTraceAssetJSON contains the JSON metadata for
+// the struct [AccountSummaryTracesErc20ExposureTraceAsset]
+type accountSummaryTracesErc20ExposureTraceAssetJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryTracesErc20ExposureTraceAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryTracesErc20ExposureTraceAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryTracesErc20ExposureTraceAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [AccountSummaryTracesErc20ExposureTraceAssetUnion] interface
+// which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc20TokenDetails],
+// [NonercTokenDetails].
+func (r AccountSummaryTracesErc20ExposureTraceAsset) AsUnion() AccountSummaryTracesErc20ExposureTraceAssetUnion {
+	return r.union
+}
+
+// Description of the asset in the trace
+//
+// Union satisfied by [Erc20TokenDetails] or [NonercTokenDetails].
+type AccountSummaryTracesErc20ExposureTraceAssetUnion interface {
+	implementsAccountSummaryTracesErc20ExposureTraceAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryTracesErc20ExposureTraceAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc20TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+	)
+}
+
+// asset type.
+type AccountSummaryTracesErc20ExposureTraceAssetType string
+
+const (
+	AccountSummaryTracesErc20ExposureTraceAssetTypeErc20  AccountSummaryTracesErc20ExposureTraceAssetType = "ERC20"
+	AccountSummaryTracesErc20ExposureTraceAssetTypeNonerc AccountSummaryTracesErc20ExposureTraceAssetType = "NONERC"
+)
+
+func (r AccountSummaryTracesErc20ExposureTraceAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc20ExposureTraceAssetTypeErc20, AccountSummaryTracesErc20ExposureTraceAssetTypeNonerc:
+		return true
+	}
+	return false
+}
 
 type AccountSummaryTracesErc20ExposureTraceExposed struct {
 	RawValue string                                            `json:"raw_value,required"`
@@ -1850,6 +1947,8 @@ func (r AccountSummaryTracesErc20ExposureTraceType) IsKnown() bool {
 }
 
 type AccountSummaryTracesErc721ExposureTrace struct {
+	// Description of the asset in the trace
+	Asset   AccountSummaryTracesErc721ExposureTraceAsset   `json:"asset,required"`
 	Exposed AccountSummaryTracesErc721ExposureTraceExposed `json:"exposed,required"`
 	// The owner of the assets
 	Owner string `json:"owner,required"`
@@ -1865,6 +1964,7 @@ type AccountSummaryTracesErc721ExposureTrace struct {
 // accountSummaryTracesErc721ExposureTraceJSON contains the JSON metadata for the
 // struct [AccountSummaryTracesErc721ExposureTrace]
 type accountSummaryTracesErc721ExposureTraceJSON struct {
+	Asset       apijson.Field
 	Exposed     apijson.Field
 	Owner       apijson.Field
 	Spender     apijson.Field
@@ -1883,6 +1983,94 @@ func (r accountSummaryTracesErc721ExposureTraceJSON) RawJSON() string {
 }
 
 func (r AccountSummaryTracesErc721ExposureTrace) implementsAccountSummaryTrace() {}
+
+// Description of the asset in the trace
+type AccountSummaryTracesErc721ExposureTraceAsset struct {
+	// address of the token
+	Address string `json:"address,required"`
+	// asset type.
+	Type AccountSummaryTracesErc721ExposureTraceAssetType `json:"type,required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                           `json:"symbol"`
+	JSON   accountSummaryTracesErc721ExposureTraceAssetJSON `json:"-"`
+	union  AccountSummaryTracesErc721ExposureTraceAssetUnion
+}
+
+// accountSummaryTracesErc721ExposureTraceAssetJSON contains the JSON metadata for
+// the struct [AccountSummaryTracesErc721ExposureTraceAsset]
+type accountSummaryTracesErc721ExposureTraceAssetJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryTracesErc721ExposureTraceAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryTracesErc721ExposureTraceAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryTracesErc721ExposureTraceAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [AccountSummaryTracesErc721ExposureTraceAssetUnion] interface
+// which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc721TokenDetails],
+// [NonercTokenDetails].
+func (r AccountSummaryTracesErc721ExposureTraceAsset) AsUnion() AccountSummaryTracesErc721ExposureTraceAssetUnion {
+	return r.union
+}
+
+// Description of the asset in the trace
+//
+// Union satisfied by [Erc721TokenDetails] or [NonercTokenDetails].
+type AccountSummaryTracesErc721ExposureTraceAssetUnion interface {
+	implementsAccountSummaryTracesErc721ExposureTraceAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryTracesErc721ExposureTraceAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc721TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+	)
+}
+
+// asset type.
+type AccountSummaryTracesErc721ExposureTraceAssetType string
+
+const (
+	AccountSummaryTracesErc721ExposureTraceAssetTypeErc721 AccountSummaryTracesErc721ExposureTraceAssetType = "ERC721"
+	AccountSummaryTracesErc721ExposureTraceAssetTypeNonerc AccountSummaryTracesErc721ExposureTraceAssetType = "NONERC"
+)
+
+func (r AccountSummaryTracesErc721ExposureTraceAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc721ExposureTraceAssetTypeErc721, AccountSummaryTracesErc721ExposureTraceAssetTypeNonerc:
+		return true
+	}
+	return false
+}
 
 type AccountSummaryTracesErc721ExposureTraceExposed struct {
 	Amount   int64                                              `json:"amount,required"`
@@ -1944,6 +2132,8 @@ func (r AccountSummaryTracesErc721ExposureTraceType) IsKnown() bool {
 }
 
 type AccountSummaryTracesErc1155ExposureTrace struct {
+	// Description of the asset in the trace
+	Asset AccountSummaryTracesErc1155ExposureTraceAsset `json:"asset,required"`
 	// The owner of the assets
 	Owner string `json:"owner,required"`
 	// The spender of the assets
@@ -1958,6 +2148,7 @@ type AccountSummaryTracesErc1155ExposureTrace struct {
 // accountSummaryTracesErc1155ExposureTraceJSON contains the JSON metadata for the
 // struct [AccountSummaryTracesErc1155ExposureTrace]
 type accountSummaryTracesErc1155ExposureTraceJSON struct {
+	Asset       apijson.Field
 	Owner       apijson.Field
 	Spender     apijson.Field
 	TraceType   apijson.Field
@@ -1975,6 +2166,94 @@ func (r accountSummaryTracesErc1155ExposureTraceJSON) RawJSON() string {
 }
 
 func (r AccountSummaryTracesErc1155ExposureTrace) implementsAccountSummaryTrace() {}
+
+// Description of the asset in the trace
+type AccountSummaryTracesErc1155ExposureTraceAsset struct {
+	// address of the token
+	Address string `json:"address,required"`
+	// asset type.
+	Type AccountSummaryTracesErc1155ExposureTraceAssetType `json:"type,required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                            `json:"symbol"`
+	JSON   accountSummaryTracesErc1155ExposureTraceAssetJSON `json:"-"`
+	union  AccountSummaryTracesErc1155ExposureTraceAssetUnion
+}
+
+// accountSummaryTracesErc1155ExposureTraceAssetJSON contains the JSON metadata for
+// the struct [AccountSummaryTracesErc1155ExposureTraceAsset]
+type accountSummaryTracesErc1155ExposureTraceAssetJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r accountSummaryTracesErc1155ExposureTraceAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *AccountSummaryTracesErc1155ExposureTraceAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = AccountSummaryTracesErc1155ExposureTraceAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [AccountSummaryTracesErc1155ExposureTraceAssetUnion] interface
+// which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc1155TokenDetails],
+// [NonercTokenDetails].
+func (r AccountSummaryTracesErc1155ExposureTraceAsset) AsUnion() AccountSummaryTracesErc1155ExposureTraceAssetUnion {
+	return r.union
+}
+
+// Description of the asset in the trace
+//
+// Union satisfied by [Erc1155TokenDetails] or [NonercTokenDetails].
+type AccountSummaryTracesErc1155ExposureTraceAssetUnion interface {
+	implementsAccountSummaryTracesErc1155ExposureTraceAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AccountSummaryTracesErc1155ExposureTraceAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc1155TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NonercTokenDetails{}),
+		},
+	)
+}
+
+// asset type.
+type AccountSummaryTracesErc1155ExposureTraceAssetType string
+
+const (
+	AccountSummaryTracesErc1155ExposureTraceAssetTypeErc1155 AccountSummaryTracesErc1155ExposureTraceAssetType = "ERC1155"
+	AccountSummaryTracesErc1155ExposureTraceAssetTypeNonerc  AccountSummaryTracesErc1155ExposureTraceAssetType = "NONERC"
+)
+
+func (r AccountSummaryTracesErc1155ExposureTraceAssetType) IsKnown() bool {
+	switch r {
+	case AccountSummaryTracesErc1155ExposureTraceAssetTypeErc1155, AccountSummaryTracesErc1155ExposureTraceAssetTypeNonerc:
+		return true
+	}
+	return false
+}
 
 // type of the trace
 type AccountSummaryTracesErc1155ExposureTraceTraceType string
@@ -2238,6 +2517,8 @@ func (r Erc1155TokenDetails) implementsAccountSummaryExposuresErc1155AddressExpo
 
 func (r Erc1155TokenDetails) implementsAccountSummaryTracesErc1155AssetTraceAsset() {}
 
+func (r Erc1155TokenDetails) implementsAccountSummaryTracesErc1155ExposureTraceAsset() {}
+
 func (r Erc1155TokenDetails) implementsTransactionSimulationAssetsDiffsErc1155AddressAssetDiffAsset() {
 }
 
@@ -2455,6 +2736,8 @@ func (r Erc20TokenDetails) implementsAccountSummaryExposuresErc20AddressExposure
 
 func (r Erc20TokenDetails) implementsAccountSummaryTracesErc20AssetTraceAsset() {}
 
+func (r Erc20TokenDetails) implementsAccountSummaryTracesErc20ExposureTraceAsset() {}
+
 func (r Erc20TokenDetails) implementsTransactionSimulationAssetsDiffsErc20AddressAssetDiffAsset() {}
 
 func (r Erc20TokenDetails) implementsTransactionSimulationExposuresErc20AddressExposureAsset() {}
@@ -2665,6 +2948,8 @@ func (r Erc721TokenDetails) implementsAccountSummaryAssetsDiffsErc721AddressAsse
 func (r Erc721TokenDetails) implementsAccountSummaryExposuresErc721AddressExposureAsset() {}
 
 func (r Erc721TokenDetails) implementsAccountSummaryTracesErc721AssetTraceAsset() {}
+
+func (r Erc721TokenDetails) implementsAccountSummaryTracesErc721ExposureTraceAsset() {}
 
 func (r Erc721TokenDetails) implementsTransactionSimulationAssetsDiffsErc721AddressAssetDiffAsset() {}
 
@@ -2999,6 +3284,12 @@ func (r NonercTokenDetails) implementsAccountSummaryTracesErc20AssetTraceAsset()
 func (r NonercTokenDetails) implementsAccountSummaryTracesErc721AssetTraceAsset() {}
 
 func (r NonercTokenDetails) implementsAccountSummaryTracesErc1155AssetTraceAsset() {}
+
+func (r NonercTokenDetails) implementsAccountSummaryTracesErc20ExposureTraceAsset() {}
+
+func (r NonercTokenDetails) implementsAccountSummaryTracesErc721ExposureTraceAsset() {}
+
+func (r NonercTokenDetails) implementsAccountSummaryTracesErc1155ExposureTraceAsset() {}
 
 func (r NonercTokenDetails) implementsTransactionSimulationAssetsDiffsErc20AddressAssetDiffAsset() {}
 
