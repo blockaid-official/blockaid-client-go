@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.40.0 (2025-03-09)
+
+Full Changelog: [v0.39.0...v0.40.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.39.0...v0.40.0)
+
+### Features
+
+* **api:** api update ([#357](https://github.com/blockaid-official/blockaid-client-go/issues/357)) ([e982d54](https://github.com/blockaid-official/blockaid-client-go/commit/e982d54d2bc37a71f3747390da26e2a84cd5aef0))
+* **api:** api update ([#358](https://github.com/blockaid-official/blockaid-client-go/issues/358)) ([d726fa8](https://github.com/blockaid-official/blockaid-client-go/commit/d726fa88e1a74de852b9a9c7550fd3d2083eca3a))
+* **client:** allow custom baseurls without trailing slash ([#355](https://github.com/blockaid-official/blockaid-client-go/issues/355)) ([6d9195d](https://github.com/blockaid-official/blockaid-client-go/commit/6d9195d1344231bd4e6a1afe5ed6ab41535832dc))
+
 ## 0.39.0 (2025-03-05)
 
 Full Changelog: [v0.38.0...v0.39.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.38.0...v0.39.0)
