@@ -3526,8 +3526,8 @@ func (r TransactionScanResponseEventsParamsValueArray) ImplementsTransactionScan
 type TransactionScanResponseGasEstimation struct {
 	Status   TransactionScanResponseGasEstimationStatus `json:"status,required"`
 	Error    string                                     `json:"error"`
-	Estimate int64                                      `json:"estimate"`
-	Used     int64                                      `json:"used"`
+	Estimate string                                     `json:"estimate"`
+	Used     string                                     `json:"used"`
 	JSON     transactionScanResponseGasEstimationJSON   `json:"-"`
 	union    TransactionScanResponseGasEstimationUnion
 }
@@ -3589,9 +3589,9 @@ func init() {
 }
 
 type TransactionScanResponseGasEstimationTransactionScanGasEstimation struct {
-	Estimate int64                                                                  `json:"estimate,required"`
+	Estimate string                                                                 `json:"estimate,required"`
 	Status   TransactionScanResponseGasEstimationTransactionScanGasEstimationStatus `json:"status,required"`
-	Used     int64                                                                  `json:"used,required"`
+	Used     string                                                                 `json:"used,required"`
 	JSON     transactionScanResponseGasEstimationTransactionScanGasEstimationJSON   `json:"-"`
 }
 
@@ -3945,11 +3945,12 @@ const (
 	TransactionScanSupportedChainAbstractTestnet       TransactionScanSupportedChain = "abstract-testnet"
 	TransactionScanSupportedChainSoneium               TransactionScanSupportedChain = "soneium"
 	TransactionScanSupportedChainUnichain              TransactionScanSupportedChain = "unichain"
+	TransactionScanSupportedChainSei                   TransactionScanSupportedChain = "sei"
 )
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainZeroNetwork, TransactionScanSupportedChainBerachain, TransactionScanSupportedChainBerachainBartio, TransactionScanSupportedChainInk, TransactionScanSupportedChainInkSepolia, TransactionScanSupportedChainAbstract, TransactionScanSupportedChainAbstractTestnet, TransactionScanSupportedChainSoneium, TransactionScanSupportedChainUnichain:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainZeroNetwork, TransactionScanSupportedChainBerachain, TransactionScanSupportedChainBerachainBartio, TransactionScanSupportedChainInk, TransactionScanSupportedChainInkSepolia, TransactionScanSupportedChainAbstract, TransactionScanSupportedChainAbstractTestnet, TransactionScanSupportedChainSoneium, TransactionScanSupportedChainUnichain, TransactionScanSupportedChainSei:
 		return true
 	}
 	return false
