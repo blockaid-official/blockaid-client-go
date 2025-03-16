@@ -2742,6 +2742,9 @@ func (r Erc20TokenDetails) implementsTransactionSimulationAssetsDiffsErc20Addres
 
 func (r Erc20TokenDetails) implementsTransactionSimulationExposuresErc20AddressExposureAsset() {}
 
+func (r Erc20TokenDetails) implementsTransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetails() {
+}
+
 // asset type.
 type Erc20TokenDetailsType string
 
@@ -3090,6 +3093,9 @@ func (r *NativeAssetDetails) UnmarshalJSON(data []byte) (err error) {
 
 func (r nativeAssetDetailsJSON) RawJSON() string {
 	return r.raw
+}
+
+func (r NativeAssetDetails) implementsTransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetails() {
 }
 
 // asset type.
@@ -3713,6 +3719,9 @@ type TransactionScanResponseSimulation struct {
 	Exposures interface{} `json:"exposures"`
 	// This field can have the runtime type of [TransactionSimulationParams].
 	Params interface{} `json:"params"`
+	// This field can have the runtime type of
+	// [map[string][]TransactionSimulationSessionKey].
+	SessionKey interface{} `json:"session_key"`
 	// This field can have the runtime type of [map[string]UsdDiff].
 	TotalUsdDiff interface{} `json:"total_usd_diff"`
 	// This field can have the runtime type of [map[string]map[string]string].
@@ -3733,6 +3742,7 @@ type transactionScanResponseSimulationJSON struct {
 	ErrorDetails       apijson.Field
 	Exposures          apijson.Field
 	Params             apijson.Field
+	SessionKey         apijson.Field
 	TotalUsdDiff       apijson.Field
 	TotalUsdExposure   apijson.Field
 	raw                string
@@ -3971,6 +3981,8 @@ type TransactionSimulation struct {
 	// for every involved address (as a result of any approval / setApproval / permit
 	// function)
 	Exposures map[string][]TransactionSimulationExposure `json:"exposures,required"`
+	// Session keys created in this transaction per address
+	SessionKey map[string][]TransactionSimulationSessionKey `json:"session_key,required"`
 	// A string indicating if the simulation was successful or not.
 	Status TransactionSimulationStatus `json:"status,required"`
 	// dictionary represents the usd value each address gained / lost during this
@@ -3994,6 +4006,7 @@ type transactionSimulationJSON struct {
 	AddressDetails     apijson.Field
 	AssetsDiffs        apijson.Field
 	Exposures          apijson.Field
+	SessionKey         apijson.Field
 	Status             apijson.Field
 	TotalUsdDiff       apijson.Field
 	TotalUsdExposure   apijson.Field
@@ -5025,6 +5038,450 @@ const (
 func (r TransactionSimulationExposuresAssetType) IsKnown() bool {
 	switch r {
 	case TransactionSimulationExposuresAssetTypeErc20, TransactionSimulationExposuresAssetTypeErc721, TransactionSimulationExposuresAssetTypeErc1155:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationSessionKey struct {
+	Key      string                                  `json:"key,required"`
+	Policies []TransactionSimulationSessionKeyPolicy `json:"policies,required"`
+	Signer   string                                  `json:"signer,required"`
+	JSON     transactionSimulationSessionKeyJSON     `json:"-"`
+}
+
+// transactionSimulationSessionKeyJSON contains the JSON metadata for the struct
+// [TransactionSimulationSessionKey]
+type transactionSimulationSessionKeyJSON struct {
+	Key         apijson.Field
+	Policies    apijson.Field
+	Signer      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationSessionKey) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationSessionKeyJSON) RawJSON() string {
+	return r.raw
+}
+
+type TransactionSimulationSessionKeyPolicy struct {
+	// This field can have the runtime type of
+	// [[]TransactionSimulationSessionKeyPoliciesCallPolicyArg].
+	Args interface{} `json:"args"`
+	// This field can have the runtime type of
+	// [TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetails].
+	AssetDetails interface{}                                 `json:"asset_details"`
+	EndTime      time.Time                                   `json:"end_time" format:"date-time"`
+	Method       string                                      `json:"method"`
+	Recipient    string                                      `json:"recipient"`
+	StartTime    time.Time                                   `json:"start_time" format:"date-time"`
+	ToAddress    string                                      `json:"to_address"`
+	Type         TransactionSimulationSessionKeyPoliciesType `json:"type"`
+	ValueLimit   string                                      `json:"value_limit"`
+	JSON         transactionSimulationSessionKeyPolicyJSON   `json:"-"`
+	union        TransactionSimulationSessionKeyPoliciesUnion
+}
+
+// transactionSimulationSessionKeyPolicyJSON contains the JSON metadata for the
+// struct [TransactionSimulationSessionKeyPolicy]
+type transactionSimulationSessionKeyPolicyJSON struct {
+	Args         apijson.Field
+	AssetDetails apijson.Field
+	EndTime      apijson.Field
+	Method       apijson.Field
+	Recipient    apijson.Field
+	StartTime    apijson.Field
+	ToAddress    apijson.Field
+	Type         apijson.Field
+	ValueLimit   apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
+}
+
+func (r transactionSimulationSessionKeyPolicyJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *TransactionSimulationSessionKeyPolicy) UnmarshalJSON(data []byte) (err error) {
+	*r = TransactionSimulationSessionKeyPolicy{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [TransactionSimulationSessionKeyPoliciesUnion] interface which
+// you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [TransactionSimulationSessionKeyPoliciesTransferPolicy],
+// [TransactionSimulationSessionKeyPoliciesCallPolicy],
+// [TransactionSimulationSessionKeyPoliciesGasPolicy],
+// [TransactionSimulationSessionKeyPoliciesExpirationPolicy].
+func (r TransactionSimulationSessionKeyPolicy) AsUnion() TransactionSimulationSessionKeyPoliciesUnion {
+	return r.union
+}
+
+// Union satisfied by [TransactionSimulationSessionKeyPoliciesTransferPolicy],
+// [TransactionSimulationSessionKeyPoliciesCallPolicy],
+// [TransactionSimulationSessionKeyPoliciesGasPolicy] or
+// [TransactionSimulationSessionKeyPoliciesExpirationPolicy].
+type TransactionSimulationSessionKeyPoliciesUnion interface {
+	implementsTransactionSimulationSessionKeyPolicy()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TransactionSimulationSessionKeyPoliciesUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationSessionKeyPoliciesTransferPolicy{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationSessionKeyPoliciesCallPolicy{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationSessionKeyPoliciesGasPolicy{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationSessionKeyPoliciesExpirationPolicy{}),
+		},
+	)
+}
+
+type TransactionSimulationSessionKeyPoliciesTransferPolicy struct {
+	AssetDetails TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetails `json:"asset_details,required"`
+	Recipient    string                                                            `json:"recipient"`
+	Type         TransactionSimulationSessionKeyPoliciesTransferPolicyType         `json:"type"`
+	ValueLimit   string                                                            `json:"value_limit"`
+	JSON         transactionSimulationSessionKeyPoliciesTransferPolicyJSON         `json:"-"`
+}
+
+// transactionSimulationSessionKeyPoliciesTransferPolicyJSON contains the JSON
+// metadata for the struct [TransactionSimulationSessionKeyPoliciesTransferPolicy]
+type transactionSimulationSessionKeyPoliciesTransferPolicyJSON struct {
+	AssetDetails apijson.Field
+	Recipient    apijson.Field
+	Type         apijson.Field
+	ValueLimit   apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
+}
+
+func (r *TransactionSimulationSessionKeyPoliciesTransferPolicy) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationSessionKeyPoliciesTransferPolicyJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationSessionKeyPoliciesTransferPolicy) implementsTransactionSimulationSessionKeyPolicy() {
+}
+
+type TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetails struct {
+	Decimals int64 `json:"decimals,required"`
+	// asset type.
+	Type TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsType `json:"type,required"`
+	// address of the token
+	Address   string `json:"address"`
+	ChainID   int64  `json:"chain_id"`
+	ChainName string `json:"chain_name"`
+	LogoURL   string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                `json:"symbol"`
+	JSON   transactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsJSON `json:"-"`
+	union  TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsUnion
+}
+
+// transactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsJSON contains
+// the JSON metadata for the struct
+// [TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetails]
+type transactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsJSON struct {
+	Decimals    apijson.Field
+	Type        apijson.Field
+	Address     apijson.Field
+	ChainID     apijson.Field
+	ChainName   apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r transactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetails) UnmarshalJSON(data []byte) (err error) {
+	*r = TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetails{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a
+// [TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [NativeAssetDetails],
+// [Erc20TokenDetails].
+func (r TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetails) AsUnion() TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsUnion {
+	return r.union
+}
+
+// Union satisfied by [NativeAssetDetails] or [Erc20TokenDetails].
+type TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsUnion interface {
+	implementsTransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetails()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NativeAssetDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc20TokenDetails{}),
+		},
+	)
+}
+
+// asset type.
+type TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsType string
+
+const (
+	TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsTypeNative TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsType = "NATIVE"
+	TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsTypeErc20  TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsType = "ERC20"
+)
+
+func (r TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsTypeNative, TransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetailsTypeErc20:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationSessionKeyPoliciesTransferPolicyType string
+
+const (
+	TransactionSimulationSessionKeyPoliciesTransferPolicyTypeTransferPolicy TransactionSimulationSessionKeyPoliciesTransferPolicyType = "TRANSFER_POLICY"
+)
+
+func (r TransactionSimulationSessionKeyPoliciesTransferPolicyType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationSessionKeyPoliciesTransferPolicyTypeTransferPolicy:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationSessionKeyPoliciesCallPolicy struct {
+	ToAddress  string                                                 `json:"to_address,required"`
+	Args       []TransactionSimulationSessionKeyPoliciesCallPolicyArg `json:"args"`
+	Method     string                                                 `json:"method"`
+	Type       TransactionSimulationSessionKeyPoliciesCallPolicyType  `json:"type"`
+	ValueLimit string                                                 `json:"value_limit"`
+	JSON       transactionSimulationSessionKeyPoliciesCallPolicyJSON  `json:"-"`
+}
+
+// transactionSimulationSessionKeyPoliciesCallPolicyJSON contains the JSON metadata
+// for the struct [TransactionSimulationSessionKeyPoliciesCallPolicy]
+type transactionSimulationSessionKeyPoliciesCallPolicyJSON struct {
+	ToAddress   apijson.Field
+	Args        apijson.Field
+	Method      apijson.Field
+	Type        apijson.Field
+	ValueLimit  apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationSessionKeyPoliciesCallPolicy) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationSessionKeyPoliciesCallPolicyJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationSessionKeyPoliciesCallPolicy) implementsTransactionSimulationSessionKeyPolicy() {
+}
+
+type TransactionSimulationSessionKeyPoliciesCallPolicyArg struct {
+	// An enumeration.
+	Condition TransactionSimulationSessionKeyPoliciesCallPolicyArgsCondition `json:"condition,required"`
+	Index     int64                                                          `json:"index,required"`
+	Value     string                                                         `json:"value,required"`
+	JSON      transactionSimulationSessionKeyPoliciesCallPolicyArgJSON       `json:"-"`
+}
+
+// transactionSimulationSessionKeyPoliciesCallPolicyArgJSON contains the JSON
+// metadata for the struct [TransactionSimulationSessionKeyPoliciesCallPolicyArg]
+type transactionSimulationSessionKeyPoliciesCallPolicyArgJSON struct {
+	Condition   apijson.Field
+	Index       apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationSessionKeyPoliciesCallPolicyArg) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationSessionKeyPoliciesCallPolicyArgJSON) RawJSON() string {
+	return r.raw
+}
+
+// An enumeration.
+type TransactionSimulationSessionKeyPoliciesCallPolicyArgsCondition string
+
+const (
+	TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionUnconstrained  TransactionSimulationSessionKeyPoliciesCallPolicyArgsCondition = "UNCONSTRAINED"
+	TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionEqual          TransactionSimulationSessionKeyPoliciesCallPolicyArgsCondition = "EQUAL"
+	TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionGreater        TransactionSimulationSessionKeyPoliciesCallPolicyArgsCondition = "GREATER"
+	TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionLess           TransactionSimulationSessionKeyPoliciesCallPolicyArgsCondition = "LESS"
+	TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionGreaterOrEqual TransactionSimulationSessionKeyPoliciesCallPolicyArgsCondition = "GREATER_OR_EQUAL"
+	TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionLessOrEqual    TransactionSimulationSessionKeyPoliciesCallPolicyArgsCondition = "LESS_OR_EQUAL"
+	TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionNotEqual       TransactionSimulationSessionKeyPoliciesCallPolicyArgsCondition = "NOT_EQUAL"
+)
+
+func (r TransactionSimulationSessionKeyPoliciesCallPolicyArgsCondition) IsKnown() bool {
+	switch r {
+	case TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionUnconstrained, TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionEqual, TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionGreater, TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionLess, TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionGreaterOrEqual, TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionLessOrEqual, TransactionSimulationSessionKeyPoliciesCallPolicyArgsConditionNotEqual:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationSessionKeyPoliciesCallPolicyType string
+
+const (
+	TransactionSimulationSessionKeyPoliciesCallPolicyTypeCallPolicy TransactionSimulationSessionKeyPoliciesCallPolicyType = "CALL_POLICY"
+)
+
+func (r TransactionSimulationSessionKeyPoliciesCallPolicyType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationSessionKeyPoliciesCallPolicyTypeCallPolicy:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationSessionKeyPoliciesGasPolicy struct {
+	ValueLimit string                                               `json:"value_limit,required"`
+	Type       TransactionSimulationSessionKeyPoliciesGasPolicyType `json:"type"`
+	JSON       transactionSimulationSessionKeyPoliciesGasPolicyJSON `json:"-"`
+}
+
+// transactionSimulationSessionKeyPoliciesGasPolicyJSON contains the JSON metadata
+// for the struct [TransactionSimulationSessionKeyPoliciesGasPolicy]
+type transactionSimulationSessionKeyPoliciesGasPolicyJSON struct {
+	ValueLimit  apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationSessionKeyPoliciesGasPolicy) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationSessionKeyPoliciesGasPolicyJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationSessionKeyPoliciesGasPolicy) implementsTransactionSimulationSessionKeyPolicy() {
+}
+
+type TransactionSimulationSessionKeyPoliciesGasPolicyType string
+
+const (
+	TransactionSimulationSessionKeyPoliciesGasPolicyTypeGasPolicy TransactionSimulationSessionKeyPoliciesGasPolicyType = "GAS_POLICY"
+)
+
+func (r TransactionSimulationSessionKeyPoliciesGasPolicyType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationSessionKeyPoliciesGasPolicyTypeGasPolicy:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationSessionKeyPoliciesExpirationPolicy struct {
+	EndTime   time.Time                                                   `json:"end_time" format:"date-time"`
+	StartTime time.Time                                                   `json:"start_time" format:"date-time"`
+	Type      TransactionSimulationSessionKeyPoliciesExpirationPolicyType `json:"type"`
+	JSON      transactionSimulationSessionKeyPoliciesExpirationPolicyJSON `json:"-"`
+}
+
+// transactionSimulationSessionKeyPoliciesExpirationPolicyJSON contains the JSON
+// metadata for the struct
+// [TransactionSimulationSessionKeyPoliciesExpirationPolicy]
+type transactionSimulationSessionKeyPoliciesExpirationPolicyJSON struct {
+	EndTime     apijson.Field
+	StartTime   apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationSessionKeyPoliciesExpirationPolicy) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationSessionKeyPoliciesExpirationPolicyJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationSessionKeyPoliciesExpirationPolicy) implementsTransactionSimulationSessionKeyPolicy() {
+}
+
+type TransactionSimulationSessionKeyPoliciesExpirationPolicyType string
+
+const (
+	TransactionSimulationSessionKeyPoliciesExpirationPolicyTypeExpirationPolicy TransactionSimulationSessionKeyPoliciesExpirationPolicyType = "EXPIRATION_POLICY"
+)
+
+func (r TransactionSimulationSessionKeyPoliciesExpirationPolicyType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationSessionKeyPoliciesExpirationPolicyTypeExpirationPolicy:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationSessionKeyPoliciesType string
+
+const (
+	TransactionSimulationSessionKeyPoliciesTypeTransferPolicy   TransactionSimulationSessionKeyPoliciesType = "TRANSFER_POLICY"
+	TransactionSimulationSessionKeyPoliciesTypeCallPolicy       TransactionSimulationSessionKeyPoliciesType = "CALL_POLICY"
+	TransactionSimulationSessionKeyPoliciesTypeGasPolicy        TransactionSimulationSessionKeyPoliciesType = "GAS_POLICY"
+	TransactionSimulationSessionKeyPoliciesTypeExpirationPolicy TransactionSimulationSessionKeyPoliciesType = "EXPIRATION_POLICY"
+)
+
+func (r TransactionSimulationSessionKeyPoliciesType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationSessionKeyPoliciesTypeTransferPolicy, TransactionSimulationSessionKeyPoliciesTypeCallPolicy, TransactionSimulationSessionKeyPoliciesTypeGasPolicy, TransactionSimulationSessionKeyPoliciesTypeExpirationPolicy:
 		return true
 	}
 	return false
