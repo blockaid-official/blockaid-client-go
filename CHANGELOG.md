@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.43.0 (2025-03-18)
+
+Full Changelog: [v0.40.0...v0.43.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.40.0...v0.43.0)
+
+### Features
+
+* add SKIP_BREW env var to ./scripts/bootstrap ([#360](https://github.com/blockaid-official/blockaid-client-go/issues/360)) ([006cef9](https://github.com/blockaid-official/blockaid-client-go/commit/006cef9eef7627939d34fcf9eedd42cfb454493e))
+* **api:** api update ([#366](https://github.com/blockaid-official/blockaid-client-go/issues/366)) ([f402f57](https://github.com/blockaid-official/blockaid-client-go/commit/f402f57e8c30df7d4da25fffd3d8465b5b9681eb))
+* **api:** api update ([#367](https://github.com/blockaid-official/blockaid-client-go/issues/367)) ([e7c9a1c](https://github.com/blockaid-official/blockaid-client-go/commit/e7c9a1cc6efcad75858d9a255228be60b0791d84))
+* **client:** accept RFC6838 JSON content types ([#362](https://github.com/blockaid-official/blockaid-client-go/issues/362)) ([c43bc24](https://github.com/blockaid-official/blockaid-client-go/commit/c43bc24e907775220ed21bac1d2425f36125ac6d))
+* **client:** improve default client options support ([#364](https://github.com/blockaid-official/blockaid-client-go/issues/364)) ([39ec80f](https://github.com/blockaid-official/blockaid-client-go/commit/39ec80f34be46023a4450c640dec9565b3e39272))
+
+
+### Chores
+
+* **internal:** remove extra empty newlines ([#365](https://github.com/blockaid-official/blockaid-client-go/issues/365)) ([0552138](https://github.com/blockaid-official/blockaid-client-go/commit/05521385f0304279a71d1e65168f2dd30562e88a))
+
+
+### Refactors
+
+* tidy up dependencies ([#363](https://github.com/blockaid-official/blockaid-client-go/issues/363)) ([3db7ad9](https://github.com/blockaid-official/blockaid-client-go/commit/3db7ad9f51680e4d0a3d317d2390d11fe5092800))
+
 ## 0.40.0 (2025-03-09)
 
 Full Changelog: [v0.39.0...v0.40.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.39.0...v0.40.0)

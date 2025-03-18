@@ -176,8 +176,10 @@ type TokenBulkScanResponseResultsFinancialStats struct {
 	HoldersCount              int64                                                 `json:"holders_count"`
 	LockedLiquidityPercentage float64                                               `json:"locked_liquidity_percentage"`
 	TopHolders                []TokenBulkScanResponseResultsFinancialStatsTopHolder `json:"top_holders"`
-	UsdPricePerUnit           float64                                               `json:"usd_price_per_unit"`
-	JSON                      tokenBulkScanResponseResultsFinancialStatsJSON        `json:"-"`
+	// Total reserve in USD
+	TotalReserveInUsd float64                                        `json:"total_reserve_in_usd"`
+	UsdPricePerUnit   float64                                        `json:"usd_price_per_unit"`
+	JSON              tokenBulkScanResponseResultsFinancialStatsJSON `json:"-"`
 }
 
 // tokenBulkScanResponseResultsFinancialStatsJSON contains the JSON metadata for
@@ -187,6 +189,7 @@ type tokenBulkScanResponseResultsFinancialStatsJSON struct {
 	HoldersCount              apijson.Field
 	LockedLiquidityPercentage apijson.Field
 	TopHolders                apijson.Field
+	TotalReserveInUsd         apijson.Field
 	UsdPricePerUnit           apijson.Field
 	raw                       string
 	ExtraFields               map[string]apijson.Field
