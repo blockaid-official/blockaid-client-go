@@ -79,7 +79,7 @@ func (r EvmJsonRpcScanParamsData) MarshalJSON() (data []byte, err error) {
 // Object of additional information to validate against.
 type EvmJsonRpcScanParamsMetadata struct {
 	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain"`
+	Domain param.Field[string] `json:"domain,required"`
 }
 
 func (r EvmJsonRpcScanParamsMetadata) MarshalJSON() (data []byte, err error) {

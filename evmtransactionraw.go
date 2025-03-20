@@ -68,7 +68,7 @@ func (r EvmTransactionRawScanParams) MarshalJSON() (data []byte, err error) {
 // Object of additional information to validate against.
 type EvmTransactionRawScanParamsMetadata struct {
 	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain"`
+	Domain param.Field[string] `json:"domain,required"`
 }
 
 func (r EvmTransactionRawScanParamsMetadata) MarshalJSON() (data []byte, err error) {
