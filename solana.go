@@ -243,7 +243,7 @@ func (r AddressScanRequestSchemaMetadataParam) MarshalJSON() (data []byte, err e
 type AddressScanResponseSchema struct {
 	// Features about the result
 	Features []AddressScanResponseSchemaFeature `json:"features,required"`
-	// An enumeration.
+	// Verdict of Result
 	ResultType AddressScanResponseSchemaResultType `json:"result_type,required"`
 	JSON       addressScanResponseSchemaJSON       `json:"-"`
 }
@@ -311,18 +311,19 @@ func (r AddressScanResponseSchemaFeaturesType) IsKnown() bool {
 	return false
 }
 
-// An enumeration.
+// Verdict of Result
 type AddressScanResponseSchemaResultType string
 
 const (
-	AddressScanResponseSchemaResultTypeMalicious AddressScanResponseSchemaResultType = "Malicious"
-	AddressScanResponseSchemaResultTypeWarning   AddressScanResponseSchemaResultType = "Warning"
 	AddressScanResponseSchemaResultTypeBenign    AddressScanResponseSchemaResultType = "Benign"
+	AddressScanResponseSchemaResultTypeWarning   AddressScanResponseSchemaResultType = "Warning"
+	AddressScanResponseSchemaResultTypeMalicious AddressScanResponseSchemaResultType = "Malicious"
+	AddressScanResponseSchemaResultTypeSpam      AddressScanResponseSchemaResultType = "Spam"
 )
 
 func (r AddressScanResponseSchemaResultType) IsKnown() bool {
 	switch r {
-	case AddressScanResponseSchemaResultTypeMalicious, AddressScanResponseSchemaResultTypeWarning, AddressScanResponseSchemaResultTypeBenign:
+	case AddressScanResponseSchemaResultTypeBenign, AddressScanResponseSchemaResultTypeWarning, AddressScanResponseSchemaResultTypeMalicious, AddressScanResponseSchemaResultTypeSpam:
 		return true
 	}
 	return false
