@@ -54,7 +54,7 @@ type EvmTransactionReportResponse = interface{}
 type EvmTransactionReportParams struct {
 	// Details about the report.
 	Details param.Field[string] `json:"details,required"`
-	// An enumeration.
+	// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
 	Event param.Field[EvmTransactionReportParamsEvent] `json:"event,required"`
 	// The report parameters.
 	Report param.Field[EvmTransactionReportParamsReportUnion] `json:"report,required"`
@@ -64,7 +64,7 @@ func (r EvmTransactionReportParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// An enumeration.
+// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
 type EvmTransactionReportParamsEvent string
 
 const (
@@ -206,7 +206,7 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 // Object of additional information to validate against.
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadata struct {
 	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain"`
 }
 
 func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadata) MarshalJSON() (data []byte, err error) {
@@ -315,7 +315,7 @@ func (r EvmTransactionScanParamsData) MarshalJSON() (data []byte, err error) {
 // Object of additional information to validate against.
 type EvmTransactionScanParamsMetadata struct {
 	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain"`
 }
 
 func (r EvmTransactionScanParamsMetadata) MarshalJSON() (data []byte, err error) {
