@@ -185,7 +185,7 @@ func (r EvmUserOperationScanParamsDataOperationUserOperationV7) implementsEvmUse
 // Object of additional information to validate against.
 type EvmUserOperationScanParamsMetadata struct {
 	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain"`
+	Domain param.Field[string] `json:"domain,required"`
 }
 
 func (r EvmUserOperationScanParamsMetadata) MarshalJSON() (data []byte, err error) {
