@@ -3315,6 +3315,47 @@ func (r NonercTokenDetailsType) IsKnown() bool {
 	return false
 }
 
+// The chain name
+type TokenScanSupportedChain string
+
+const (
+	TokenScanSupportedChainArbitrum        TokenScanSupportedChain = "arbitrum"
+	TokenScanSupportedChainAvalanche       TokenScanSupportedChain = "avalanche"
+	TokenScanSupportedChainBase            TokenScanSupportedChain = "base"
+	TokenScanSupportedChainBsc             TokenScanSupportedChain = "bsc"
+	TokenScanSupportedChainEthereum        TokenScanSupportedChain = "ethereum"
+	TokenScanSupportedChainOptimism        TokenScanSupportedChain = "optimism"
+	TokenScanSupportedChainPolygon         TokenScanSupportedChain = "polygon"
+	TokenScanSupportedChainZora            TokenScanSupportedChain = "zora"
+	TokenScanSupportedChainSolana          TokenScanSupportedChain = "solana"
+	TokenScanSupportedChainStarknet        TokenScanSupportedChain = "starknet"
+	TokenScanSupportedChainStarknetSepolia TokenScanSupportedChain = "starknet-sepolia"
+	TokenScanSupportedChainStellar         TokenScanSupportedChain = "stellar"
+	TokenScanSupportedChainLinea           TokenScanSupportedChain = "linea"
+	TokenScanSupportedChainDegen           TokenScanSupportedChain = "degen"
+	TokenScanSupportedChainZksync          TokenScanSupportedChain = "zksync"
+	TokenScanSupportedChainScroll          TokenScanSupportedChain = "scroll"
+	TokenScanSupportedChainBlast           TokenScanSupportedChain = "blast"
+	TokenScanSupportedChainSoneiumMinato   TokenScanSupportedChain = "soneium-minato"
+	TokenScanSupportedChainBaseSepolia     TokenScanSupportedChain = "base-sepolia"
+	TokenScanSupportedChainBitcoin         TokenScanSupportedChain = "bitcoin"
+	TokenScanSupportedChainAbstract        TokenScanSupportedChain = "abstract"
+	TokenScanSupportedChainSoneium         TokenScanSupportedChain = "soneium"
+	TokenScanSupportedChainInk             TokenScanSupportedChain = "ink"
+	TokenScanSupportedChainZeroNetwork     TokenScanSupportedChain = "zero-network"
+	TokenScanSupportedChainBerachain       TokenScanSupportedChain = "berachain"
+	TokenScanSupportedChainUnichain        TokenScanSupportedChain = "unichain"
+	TokenScanSupportedChainRonin           TokenScanSupportedChain = "ronin"
+)
+
+func (r TokenScanSupportedChain) IsKnown() bool {
+	switch r {
+	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStarknetSepolia, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainDegen, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainBlast, TokenScanSupportedChainSoneiumMinato, TokenScanSupportedChainBaseSepolia, TokenScanSupportedChainBitcoin, TokenScanSupportedChainAbstract, TokenScanSupportedChainSoneium, TokenScanSupportedChainInk, TokenScanSupportedChainZeroNetwork, TokenScanSupportedChainBerachain, TokenScanSupportedChainUnichain, TokenScanSupportedChainRonin:
+		return true
+	}
+	return false
+}
+
 type TransactionScanFeature struct {
 	// Textual description
 	Description string `json:"description,required"`
