@@ -47,7 +47,7 @@ type EvmJsonRpcScanParams struct {
 	// JSON-RPC request that was received by the wallet.
 	Data param.Field[EvmJsonRpcScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[EvmJsonRpcScanParamsMetadata] `json:"metadata,required"`
+	Metadata param.Field[MetadataParam] `json:"metadata,required"`
 	// The address of the account (wallet) received the request in hex string format
 	AccountAddress param.Field[string] `json:"account_address"`
 	// The relative block for the block validation. Can be "latest" or a block number.
@@ -73,16 +73,6 @@ type EvmJsonRpcScanParamsData struct {
 }
 
 func (r EvmJsonRpcScanParamsData) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Object of additional information to validate against.
-type EvmJsonRpcScanParamsMetadata struct {
-	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain,required"`
-}
-
-func (r EvmJsonRpcScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
