@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.45.0 (2025-03-20)
+
+Full Changelog: [v0.44.0...v0.45.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.44.0...v0.45.0)
+
+### Features
+
+* **api:** api update ([#373](https://github.com/blockaid-official/blockaid-client-go/issues/373)) ([1d2c465](https://github.com/blockaid-official/blockaid-client-go/commit/1d2c465e26ba3a3ae0d8c4e3ce84105435ea3f9a))
+* **api:** api update ([#375](https://github.com/blockaid-official/blockaid-client-go/issues/375)) ([cbed700](https://github.com/blockaid-official/blockaid-client-go/commit/cbed70040c039149b8d1e9299eade90159759ad3))
+
 ## 0.44.0 (2025-03-20)
 
 Full Changelog: [v0.43.0...v0.44.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.43.0...v0.44.0)

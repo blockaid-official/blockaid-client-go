@@ -185,7 +185,7 @@ type EvmPostTransactionScanParams struct {
 	Chain param.Field[TransactionScanSupportedChain]    `json:"chain,required"`
 	Data  param.Field[EvmPostTransactionScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[EvmPostTransactionScanParamsMetadata] `json:"metadata,required"`
+	Metadata param.Field[MetadataParam] `json:"metadata,required"`
 	// The relative block for the block validation. Can be "latest" or a block number.
 	Block param.Field[EvmPostTransactionScanParamsBlockUnion] `json:"block"`
 	// list of one or both of options for the desired output. "simulation" - include
@@ -206,16 +206,6 @@ type EvmPostTransactionScanParamsData struct {
 }
 
 func (r EvmPostTransactionScanParamsData) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Object of additional information to validate against.
-type EvmPostTransactionScanParamsMetadata struct {
-	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain"`
-}
-
-func (r EvmPostTransactionScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
