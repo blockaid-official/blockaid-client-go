@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
-	"github.com/blockaid-official/blockaid-client-go/internal/param"
 	"github.com/blockaid-official/blockaid-client-go/option"
 	"github.com/blockaid-official/blockaid-client-go/shared"
 	"github.com/tidwall/gjson"
@@ -2973,15 +2972,6 @@ func (r Erc721TokenDetailsType) IsKnown() bool {
 	return false
 }
 
-type MetadataParam struct {
-	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain,required"`
-}
-
-func (r MetadataParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
 type NativeAddressAssetBalanceChangeDiff struct {
 	// description of the asset for the current diff
 	Asset NativeAssetDetails `json:"asset,required"`
@@ -3320,42 +3310,6 @@ const (
 func (r NonercTokenDetailsType) IsKnown() bool {
 	switch r {
 	case NonercTokenDetailsTypeNonerc:
-		return true
-	}
-	return false
-}
-
-// The chain name
-type TokenScanSupportedChain string
-
-const (
-	TokenScanSupportedChainArbitrum    TokenScanSupportedChain = "arbitrum"
-	TokenScanSupportedChainAvalanche   TokenScanSupportedChain = "avalanche"
-	TokenScanSupportedChainBase        TokenScanSupportedChain = "base"
-	TokenScanSupportedChainBsc         TokenScanSupportedChain = "bsc"
-	TokenScanSupportedChainEthereum    TokenScanSupportedChain = "ethereum"
-	TokenScanSupportedChainOptimism    TokenScanSupportedChain = "optimism"
-	TokenScanSupportedChainPolygon     TokenScanSupportedChain = "polygon"
-	TokenScanSupportedChainZora        TokenScanSupportedChain = "zora"
-	TokenScanSupportedChainSolana      TokenScanSupportedChain = "solana"
-	TokenScanSupportedChainStarknet    TokenScanSupportedChain = "starknet"
-	TokenScanSupportedChainStellar     TokenScanSupportedChain = "stellar"
-	TokenScanSupportedChainLinea       TokenScanSupportedChain = "linea"
-	TokenScanSupportedChainBlast       TokenScanSupportedChain = "blast"
-	TokenScanSupportedChainZksync      TokenScanSupportedChain = "zksync"
-	TokenScanSupportedChainScroll      TokenScanSupportedChain = "scroll"
-	TokenScanSupportedChainDegen       TokenScanSupportedChain = "degen"
-	TokenScanSupportedChainAbstract    TokenScanSupportedChain = "abstract"
-	TokenScanSupportedChainSoneium     TokenScanSupportedChain = "soneium"
-	TokenScanSupportedChainInk         TokenScanSupportedChain = "ink"
-	TokenScanSupportedChainZeroNetwork TokenScanSupportedChain = "zero-network"
-	TokenScanSupportedChainBerachain   TokenScanSupportedChain = "berachain"
-	TokenScanSupportedChainUnichain    TokenScanSupportedChain = "unichain"
-)
-
-func (r TokenScanSupportedChain) IsKnown() bool {
-	switch r {
-	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainBlast, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainDegen, TokenScanSupportedChainAbstract, TokenScanSupportedChainSoneium, TokenScanSupportedChainInk, TokenScanSupportedChainZeroNetwork, TokenScanSupportedChainBerachain, TokenScanSupportedChainUnichain:
 		return true
 	}
 	return false

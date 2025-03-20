@@ -58,8 +58,8 @@ type TokenScanResponse struct {
 	Address string `json:"address,required"`
 	// Dictionary of detected attacks found during the scan
 	AttackTypes map[string]TokenScanResponseAttackType `json:"attack_types,required"`
-	// The chain name
-	Chain TokenScanSupportedChain `json:"chain,required"`
+	// Blockchain network
+	Chain TokenScanResponseChain `json:"chain,required"`
 	// Fees associated with the token
 	Fees TokenScanResponseFees `json:"fees,required"`
 	// financial stats of the token
@@ -68,7 +68,7 @@ type TokenScanResponse struct {
 	MaliciousScore string `json:"malicious_score,required"`
 	// Metadata of the token
 	Metadata TokenScanResponseMetadata `json:"metadata,required"`
-	// An enumeration.
+	// General indication
 	ResultType TokenScanResponseResultType `json:"result_type,required"`
 	// Trading limits of the token
 	TradingLimits TokenScanResponseTradingLimits `json:"trading_limits,required"`
@@ -130,14 +130,50 @@ func (r tokenScanResponseAttackTypeJSON) RawJSON() string {
 	return r.raw
 }
 
+// Blockchain network
+type TokenScanResponseChain string
+
+const (
+	TokenScanResponseChainArbitrum    TokenScanResponseChain = "arbitrum"
+	TokenScanResponseChainAvalanche   TokenScanResponseChain = "avalanche"
+	TokenScanResponseChainBase        TokenScanResponseChain = "base"
+	TokenScanResponseChainBsc         TokenScanResponseChain = "bsc"
+	TokenScanResponseChainEthereum    TokenScanResponseChain = "ethereum"
+	TokenScanResponseChainOptimism    TokenScanResponseChain = "optimism"
+	TokenScanResponseChainPolygon     TokenScanResponseChain = "polygon"
+	TokenScanResponseChainZora        TokenScanResponseChain = "zora"
+	TokenScanResponseChainSolana      TokenScanResponseChain = "solana"
+	TokenScanResponseChainStarknet    TokenScanResponseChain = "starknet"
+	TokenScanResponseChainStellar     TokenScanResponseChain = "stellar"
+	TokenScanResponseChainLinea       TokenScanResponseChain = "linea"
+	TokenScanResponseChainBlast       TokenScanResponseChain = "blast"
+	TokenScanResponseChainZksync      TokenScanResponseChain = "zksync"
+	TokenScanResponseChainScroll      TokenScanResponseChain = "scroll"
+	TokenScanResponseChainDegen       TokenScanResponseChain = "degen"
+	TokenScanResponseChainAbstract    TokenScanResponseChain = "abstract"
+	TokenScanResponseChainSoneium     TokenScanResponseChain = "soneium"
+	TokenScanResponseChainInk         TokenScanResponseChain = "ink"
+	TokenScanResponseChainZeroNetwork TokenScanResponseChain = "zero-network"
+	TokenScanResponseChainBerachain   TokenScanResponseChain = "berachain"
+	TokenScanResponseChainUnichain    TokenScanResponseChain = "unichain"
+)
+
+func (r TokenScanResponseChain) IsKnown() bool {
+	switch r {
+	case TokenScanResponseChainArbitrum, TokenScanResponseChainAvalanche, TokenScanResponseChainBase, TokenScanResponseChainBsc, TokenScanResponseChainEthereum, TokenScanResponseChainOptimism, TokenScanResponseChainPolygon, TokenScanResponseChainZora, TokenScanResponseChainSolana, TokenScanResponseChainStarknet, TokenScanResponseChainStellar, TokenScanResponseChainLinea, TokenScanResponseChainBlast, TokenScanResponseChainZksync, TokenScanResponseChainScroll, TokenScanResponseChainDegen, TokenScanResponseChainAbstract, TokenScanResponseChainSoneium, TokenScanResponseChainInk, TokenScanResponseChainZeroNetwork, TokenScanResponseChainBerachain, TokenScanResponseChainUnichain:
+		return true
+	}
+	return false
+}
+
 // Fees associated with the token
 type TokenScanResponseFees struct {
 	// Buy fee of the token
-	Buy float64 `json:"buy"`
+	Buy float64 `json:"buy,nullable"`
 	// Sell fee of the token
-	Sell float64 `json:"sell"`
+	Sell float64 `json:"sell,nullable"`
 	// Transfer fee of the token
-	Transfer float64                   `json:"transfer"`
+	Transfer float64                   `json:"transfer,nullable"`
 	JSON     tokenScanResponseFeesJSON `json:"-"`
 }
 
@@ -161,13 +197,13 @@ func (r tokenScanResponseFeesJSON) RawJSON() string {
 
 // financial stats of the token
 type TokenScanResponseFinancialStats struct {
-	BurnedLiquidityPercentage float64                                    `json:"burned_liquidity_percentage"`
-	HoldersCount              int64                                      `json:"holders_count"`
-	LockedLiquidityPercentage float64                                    `json:"locked_liquidity_percentage"`
+	BurnedLiquidityPercentage float64                                    `json:"burned_liquidity_percentage,nullable"`
+	HoldersCount              int64                                      `json:"holders_count,nullable"`
+	LockedLiquidityPercentage float64                                    `json:"locked_liquidity_percentage,nullable"`
 	TopHolders                []TokenScanResponseFinancialStatsTopHolder `json:"top_holders"`
 	// Total reserve in USD
-	TotalReserveInUsd float64                             `json:"total_reserve_in_usd"`
-	UsdPricePerUnit   float64                             `json:"usd_price_per_unit"`
+	TotalReserveInUsd float64                             `json:"total_reserve_in_usd,nullable"`
+	UsdPricePerUnit   float64                             `json:"usd_price_per_unit,nullable"`
 	JSON              tokenScanResponseFinancialStatsJSON `json:"-"`
 }
 
@@ -193,8 +229,8 @@ func (r tokenScanResponseFinancialStatsJSON) RawJSON() string {
 }
 
 type TokenScanResponseFinancialStatsTopHolder struct {
-	Address           string                                       `json:"address"`
-	HoldingPercentage float64                                      `json:"holding_percentage"`
+	Address           string                                       `json:"address,nullable"`
+	HoldingPercentage float64                                      `json:"holding_percentage,nullable"`
 	JSON              tokenScanResponseFinancialStatsTopHolderJSON `json:"-"`
 }
 
@@ -218,45 +254,45 @@ func (r tokenScanResponseFinancialStatsTopHolderJSON) RawJSON() string {
 // Metadata of the token
 type TokenScanResponseMetadata struct {
 	// The unique ID for the Rune
-	ID string `json:"id"`
+	ID string `json:"id,nullable"`
 	// This field can have the runtime type of
-	// [TokenScanResponseMetadataSolanaMetadataContractBalance],
-	// [TokenScanResponseMetadataEvmMetadataTokenContractBalance].
+	// [TokenScanResponseMetadataTokenSolanaMetadataContractBalance],
+	// [TokenScanResponseMetadataTokenEvmMetadataTokenContractBalance].
 	ContractBalance interface{} `json:"contract_balance"`
 	// Contract deploy date
-	CreationTimestamp time.Time `json:"creation_timestamp" format:"date-time"`
+	CreationTimestamp time.Time `json:"creation_timestamp,nullable" format:"date-time"`
 	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer"`
+	Deployer string `json:"deployer,nullable"`
 	// Description of the token
-	Description string `json:"description"`
+	Description string `json:"description,nullable"`
 	// This field can have the runtime type of
-	// [TokenScanResponseMetadataSolanaMetadataExternalLinks],
-	// [TokenScanResponseMetadataEvmMetadataTokenExternalLinks].
+	// [TokenScanResponseMetadataTokenSolanaMetadataExternalLinks],
+	// [TokenScanResponseMetadataTokenEvmMetadataTokenExternalLinks].
 	ExternalLinks interface{} `json:"external_links"`
 	// The formatted name of the rune, with spacers
-	FormattedName string `json:"formatted_name"`
+	FormattedName string `json:"formatted_name,nullable"`
 	// Solana token freeze authority account
-	FreezeAuthority string `json:"freeze_authority"`
+	FreezeAuthority string `json:"freeze_authority,nullable"`
 	// URL of the token image
-	ImageURL string `json:"image_url"`
+	ImageURL string `json:"image_url,nullable"`
 	// Solana token mint authority account
-	MintAuthority string `json:"mint_authority"`
+	MintAuthority string `json:"mint_authority,nullable"`
 	// Name of the token
-	Name string `json:"name"`
+	Name string `json:"name,nullable"`
 	// The rune's unique sequential number.
-	Number int64 `json:"number"`
+	Number int64 `json:"number,nullable"`
 	// Contract owner address
-	Owner string `json:"owner"`
+	Owner string `json:"owner,nullable"`
 	// This field can have the runtime type of
-	// [TokenScanResponseMetadataSolanaMetadataOwnerBalance],
-	// [TokenScanResponseMetadataEvmMetadataTokenOwnerBalance].
+	// [TokenScanResponseMetadataTokenSolanaMetadataOwnerBalance],
+	// [TokenScanResponseMetadataTokenEvmMetadataTokenOwnerBalance].
 	OwnerBalance interface{} `json:"owner_balance"`
 	// Symbol of the token
-	Symbol string `json:"symbol"`
+	Symbol string `json:"symbol,nullable"`
 	// Type of the token
-	Type string `json:"type"`
+	Type string `json:"type,nullable"`
 	// Solana token update authority account
-	UpdateAuthority string                        `json:"update_authority"`
+	UpdateAuthority string                        `json:"update_authority,nullable"`
 	JSON            tokenScanResponseMetadataJSON `json:"-"`
 	union           TokenScanResponseMetadataUnion
 }
@@ -302,18 +338,18 @@ func (r *TokenScanResponseMetadata) UnmarshalJSON(data []byte) (err error) {
 // to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [TokenScanResponseMetadataSolanaMetadata],
-// [TokenScanResponseMetadataBitcoinMetadataToken],
-// [TokenScanResponseMetadataEvmMetadataToken].
+// [TokenScanResponseMetadataTokenSolanaMetadata],
+// [TokenScanResponseMetadataTokenBitcoinMetadataToken],
+// [TokenScanResponseMetadataTokenEvmMetadataToken].
 func (r TokenScanResponseMetadata) AsUnion() TokenScanResponseMetadataUnion {
 	return r.union
 }
 
 // Metadata of the token
 //
-// Union satisfied by [TokenScanResponseMetadataSolanaMetadata],
-// [TokenScanResponseMetadataBitcoinMetadataToken] or
-// [TokenScanResponseMetadataEvmMetadataToken].
+// Union satisfied by [TokenScanResponseMetadataTokenSolanaMetadata],
+// [TokenScanResponseMetadataTokenBitcoinMetadataToken] or
+// [TokenScanResponseMetadataTokenEvmMetadataToken].
 type TokenScanResponseMetadataUnion interface {
 	implementsTokenScanResponseMetadata()
 }
@@ -324,54 +360,54 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TokenScanResponseMetadataSolanaMetadata{}),
+			Type:       reflect.TypeOf(TokenScanResponseMetadataTokenSolanaMetadata{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TokenScanResponseMetadataBitcoinMetadataToken{}),
+			Type:       reflect.TypeOf(TokenScanResponseMetadataTokenBitcoinMetadataToken{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(TokenScanResponseMetadataEvmMetadataToken{}),
+			Type:       reflect.TypeOf(TokenScanResponseMetadataTokenEvmMetadataToken{}),
 		},
 	)
 }
 
-type TokenScanResponseMetadataSolanaMetadata struct {
+type TokenScanResponseMetadataTokenSolanaMetadata struct {
 	// Contract balance
-	ContractBalance TokenScanResponseMetadataSolanaMetadataContractBalance `json:"contract_balance"`
+	ContractBalance TokenScanResponseMetadataTokenSolanaMetadataContractBalance `json:"contract_balance,nullable"`
 	// Contract deploy date
-	CreationTimestamp time.Time `json:"creation_timestamp" format:"date-time"`
+	CreationTimestamp time.Time `json:"creation_timestamp,nullable" format:"date-time"`
 	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer"`
+	Deployer string `json:"deployer,nullable"`
 	// Description of the token
-	Description string `json:"description"`
+	Description string `json:"description,nullable"`
 	// social links of the token
-	ExternalLinks TokenScanResponseMetadataSolanaMetadataExternalLinks `json:"external_links"`
+	ExternalLinks TokenScanResponseMetadataTokenSolanaMetadataExternalLinks `json:"external_links"`
 	// Solana token freeze authority account
-	FreezeAuthority string `json:"freeze_authority"`
+	FreezeAuthority string `json:"freeze_authority,nullable"`
 	// URL of the token image
-	ImageURL string `json:"image_url"`
+	ImageURL string `json:"image_url,nullable"`
 	// Solana token mint authority account
-	MintAuthority string `json:"mint_authority"`
+	MintAuthority string `json:"mint_authority,nullable"`
 	// Name of the token
-	Name string `json:"name"`
+	Name string `json:"name,nullable"`
 	// Contract owner address
-	Owner string `json:"owner"`
+	Owner string `json:"owner,nullable"`
 	// Contract owner balance
-	OwnerBalance TokenScanResponseMetadataSolanaMetadataOwnerBalance `json:"owner_balance"`
+	OwnerBalance TokenScanResponseMetadataTokenSolanaMetadataOwnerBalance `json:"owner_balance,nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol"`
+	Symbol string `json:"symbol,nullable"`
 	// Type of the token
-	Type string `json:"type"`
+	Type string `json:"type,nullable"`
 	// Solana token update authority account
-	UpdateAuthority string                                      `json:"update_authority"`
-	JSON            tokenScanResponseMetadataSolanaMetadataJSON `json:"-"`
+	UpdateAuthority string                                           `json:"update_authority,nullable"`
+	JSON            tokenScanResponseMetadataTokenSolanaMetadataJSON `json:"-"`
 }
 
-// tokenScanResponseMetadataSolanaMetadataJSON contains the JSON metadata for the
-// struct [TokenScanResponseMetadataSolanaMetadata]
-type tokenScanResponseMetadataSolanaMetadataJSON struct {
+// tokenScanResponseMetadataTokenSolanaMetadataJSON contains the JSON metadata for
+// the struct [TokenScanResponseMetadataTokenSolanaMetadata]
+type tokenScanResponseMetadataTokenSolanaMetadataJSON struct {
 	ContractBalance   apijson.Field
 	CreationTimestamp apijson.Field
 	Deployer          apijson.Field
@@ -390,51 +426,53 @@ type tokenScanResponseMetadataSolanaMetadataJSON struct {
 	ExtraFields       map[string]apijson.Field
 }
 
-func (r *TokenScanResponseMetadataSolanaMetadata) UnmarshalJSON(data []byte) (err error) {
+func (r *TokenScanResponseMetadataTokenSolanaMetadata) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r tokenScanResponseMetadataSolanaMetadataJSON) RawJSON() string {
+func (r tokenScanResponseMetadataTokenSolanaMetadataJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r TokenScanResponseMetadataSolanaMetadata) implementsTokenScanResponseMetadata() {}
+func (r TokenScanResponseMetadataTokenSolanaMetadata) implementsTokenScanResponseMetadata() {}
 
 // Contract balance
-type TokenScanResponseMetadataSolanaMetadataContractBalance struct {
-	Amount    float64                                                    `json:"amount"`
-	AmountWei string                                                     `json:"amount_wei"`
-	JSON      tokenScanResponseMetadataSolanaMetadataContractBalanceJSON `json:"-"`
+type TokenScanResponseMetadataTokenSolanaMetadataContractBalance struct {
+	Amount    float64                                                         `json:"amount,nullable"`
+	AmountWei string                                                          `json:"amount_wei,nullable"`
+	JSON      tokenScanResponseMetadataTokenSolanaMetadataContractBalanceJSON `json:"-"`
 }
 
-// tokenScanResponseMetadataSolanaMetadataContractBalanceJSON contains the JSON
-// metadata for the struct [TokenScanResponseMetadataSolanaMetadataContractBalance]
-type tokenScanResponseMetadataSolanaMetadataContractBalanceJSON struct {
+// tokenScanResponseMetadataTokenSolanaMetadataContractBalanceJSON contains the
+// JSON metadata for the struct
+// [TokenScanResponseMetadataTokenSolanaMetadataContractBalance]
+type tokenScanResponseMetadataTokenSolanaMetadataContractBalanceJSON struct {
 	Amount      apijson.Field
 	AmountWei   apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *TokenScanResponseMetadataSolanaMetadataContractBalance) UnmarshalJSON(data []byte) (err error) {
+func (r *TokenScanResponseMetadataTokenSolanaMetadataContractBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r tokenScanResponseMetadataSolanaMetadataContractBalanceJSON) RawJSON() string {
+func (r tokenScanResponseMetadataTokenSolanaMetadataContractBalanceJSON) RawJSON() string {
 	return r.raw
 }
 
 // social links of the token
-type TokenScanResponseMetadataSolanaMetadataExternalLinks struct {
-	Homepage          string                                                   `json:"homepage"`
-	TelegramChannelID string                                                   `json:"telegram_channel_id"`
-	TwitterPage       string                                                   `json:"twitter_page"`
-	JSON              tokenScanResponseMetadataSolanaMetadataExternalLinksJSON `json:"-"`
+type TokenScanResponseMetadataTokenSolanaMetadataExternalLinks struct {
+	Homepage          string                                                        `json:"homepage,nullable"`
+	TelegramChannelID string                                                        `json:"telegram_channel_id,nullable"`
+	TwitterPage       string                                                        `json:"twitter_page,nullable"`
+	JSON              tokenScanResponseMetadataTokenSolanaMetadataExternalLinksJSON `json:"-"`
 }
 
-// tokenScanResponseMetadataSolanaMetadataExternalLinksJSON contains the JSON
-// metadata for the struct [TokenScanResponseMetadataSolanaMetadataExternalLinks]
-type tokenScanResponseMetadataSolanaMetadataExternalLinksJSON struct {
+// tokenScanResponseMetadataTokenSolanaMetadataExternalLinksJSON contains the JSON
+// metadata for the struct
+// [TokenScanResponseMetadataTokenSolanaMetadataExternalLinks]
+type tokenScanResponseMetadataTokenSolanaMetadataExternalLinksJSON struct {
 	Homepage          apijson.Field
 	TelegramChannelID apijson.Field
 	TwitterPage       apijson.Field
@@ -442,57 +480,58 @@ type tokenScanResponseMetadataSolanaMetadataExternalLinksJSON struct {
 	ExtraFields       map[string]apijson.Field
 }
 
-func (r *TokenScanResponseMetadataSolanaMetadataExternalLinks) UnmarshalJSON(data []byte) (err error) {
+func (r *TokenScanResponseMetadataTokenSolanaMetadataExternalLinks) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r tokenScanResponseMetadataSolanaMetadataExternalLinksJSON) RawJSON() string {
+func (r tokenScanResponseMetadataTokenSolanaMetadataExternalLinksJSON) RawJSON() string {
 	return r.raw
 }
 
 // Contract owner balance
-type TokenScanResponseMetadataSolanaMetadataOwnerBalance struct {
-	Amount    float64                                                 `json:"amount"`
-	AmountWei string                                                  `json:"amount_wei"`
-	JSON      tokenScanResponseMetadataSolanaMetadataOwnerBalanceJSON `json:"-"`
+type TokenScanResponseMetadataTokenSolanaMetadataOwnerBalance struct {
+	Amount    float64                                                      `json:"amount,nullable"`
+	AmountWei string                                                       `json:"amount_wei,nullable"`
+	JSON      tokenScanResponseMetadataTokenSolanaMetadataOwnerBalanceJSON `json:"-"`
 }
 
-// tokenScanResponseMetadataSolanaMetadataOwnerBalanceJSON contains the JSON
-// metadata for the struct [TokenScanResponseMetadataSolanaMetadataOwnerBalance]
-type tokenScanResponseMetadataSolanaMetadataOwnerBalanceJSON struct {
+// tokenScanResponseMetadataTokenSolanaMetadataOwnerBalanceJSON contains the JSON
+// metadata for the struct
+// [TokenScanResponseMetadataTokenSolanaMetadataOwnerBalance]
+type tokenScanResponseMetadataTokenSolanaMetadataOwnerBalanceJSON struct {
 	Amount      apijson.Field
 	AmountWei   apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *TokenScanResponseMetadataSolanaMetadataOwnerBalance) UnmarshalJSON(data []byte) (err error) {
+func (r *TokenScanResponseMetadataTokenSolanaMetadataOwnerBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r tokenScanResponseMetadataSolanaMetadataOwnerBalanceJSON) RawJSON() string {
+func (r tokenScanResponseMetadataTokenSolanaMetadataOwnerBalanceJSON) RawJSON() string {
 	return r.raw
 }
 
-type TokenScanResponseMetadataBitcoinMetadataToken struct {
+type TokenScanResponseMetadataTokenBitcoinMetadataToken struct {
 	// The unique ID for the Rune
-	ID string `json:"id"`
+	ID string `json:"id,nullable"`
 	// The formatted name of the rune, with spacers
-	FormattedName string `json:"formatted_name"`
+	FormattedName string `json:"formatted_name,nullable"`
 	// Name of the token
-	Name string `json:"name"`
+	Name string `json:"name,nullable"`
 	// The rune's unique sequential number.
-	Number int64 `json:"number"`
+	Number int64 `json:"number,nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol"`
+	Symbol string `json:"symbol,nullable"`
 	// Type of the token
-	Type string                                            `json:"type"`
-	JSON tokenScanResponseMetadataBitcoinMetadataTokenJSON `json:"-"`
+	Type string                                                 `json:"type,nullable"`
+	JSON tokenScanResponseMetadataTokenBitcoinMetadataTokenJSON `json:"-"`
 }
 
-// tokenScanResponseMetadataBitcoinMetadataTokenJSON contains the JSON metadata for
-// the struct [TokenScanResponseMetadataBitcoinMetadataToken]
-type tokenScanResponseMetadataBitcoinMetadataTokenJSON struct {
+// tokenScanResponseMetadataTokenBitcoinMetadataTokenJSON contains the JSON
+// metadata for the struct [TokenScanResponseMetadataTokenBitcoinMetadataToken]
+type tokenScanResponseMetadataTokenBitcoinMetadataTokenJSON struct {
 	ID            apijson.Field
 	FormattedName apijson.Field
 	Name          apijson.Field
@@ -503,45 +542,45 @@ type tokenScanResponseMetadataBitcoinMetadataTokenJSON struct {
 	ExtraFields   map[string]apijson.Field
 }
 
-func (r *TokenScanResponseMetadataBitcoinMetadataToken) UnmarshalJSON(data []byte) (err error) {
+func (r *TokenScanResponseMetadataTokenBitcoinMetadataToken) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r tokenScanResponseMetadataBitcoinMetadataTokenJSON) RawJSON() string {
+func (r tokenScanResponseMetadataTokenBitcoinMetadataTokenJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r TokenScanResponseMetadataBitcoinMetadataToken) implementsTokenScanResponseMetadata() {}
+func (r TokenScanResponseMetadataTokenBitcoinMetadataToken) implementsTokenScanResponseMetadata() {}
 
-type TokenScanResponseMetadataEvmMetadataToken struct {
+type TokenScanResponseMetadataTokenEvmMetadataToken struct {
 	// Contract balance
-	ContractBalance TokenScanResponseMetadataEvmMetadataTokenContractBalance `json:"contract_balance"`
+	ContractBalance TokenScanResponseMetadataTokenEvmMetadataTokenContractBalance `json:"contract_balance,nullable"`
 	// Contract deploy date
-	CreationTimestamp time.Time `json:"creation_timestamp" format:"date-time"`
+	CreationTimestamp time.Time `json:"creation_timestamp,nullable" format:"date-time"`
 	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer"`
+	Deployer string `json:"deployer,nullable"`
 	// Description of the token
-	Description string `json:"description"`
+	Description string `json:"description,nullable"`
 	// social links of the token
-	ExternalLinks TokenScanResponseMetadataEvmMetadataTokenExternalLinks `json:"external_links"`
+	ExternalLinks TokenScanResponseMetadataTokenEvmMetadataTokenExternalLinks `json:"external_links"`
 	// URL of the token image
-	ImageURL string `json:"image_url"`
+	ImageURL string `json:"image_url,nullable"`
 	// Name of the token
-	Name string `json:"name"`
+	Name string `json:"name,nullable"`
 	// Contract owner address
-	Owner string `json:"owner"`
+	Owner string `json:"owner,nullable"`
 	// Contract owner balance
-	OwnerBalance TokenScanResponseMetadataEvmMetadataTokenOwnerBalance `json:"owner_balance"`
+	OwnerBalance TokenScanResponseMetadataTokenEvmMetadataTokenOwnerBalance `json:"owner_balance,nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol"`
+	Symbol string `json:"symbol,nullable"`
 	// Type of the token
-	Type string                                        `json:"type"`
-	JSON tokenScanResponseMetadataEvmMetadataTokenJSON `json:"-"`
+	Type string                                             `json:"type,nullable"`
+	JSON tokenScanResponseMetadataTokenEvmMetadataTokenJSON `json:"-"`
 }
 
-// tokenScanResponseMetadataEvmMetadataTokenJSON contains the JSON metadata for the
-// struct [TokenScanResponseMetadataEvmMetadataToken]
-type tokenScanResponseMetadataEvmMetadataTokenJSON struct {
+// tokenScanResponseMetadataTokenEvmMetadataTokenJSON contains the JSON metadata
+// for the struct [TokenScanResponseMetadataTokenEvmMetadataToken]
+type tokenScanResponseMetadataTokenEvmMetadataTokenJSON struct {
 	ContractBalance   apijson.Field
 	CreationTimestamp apijson.Field
 	Deployer          apijson.Field
@@ -557,52 +596,53 @@ type tokenScanResponseMetadataEvmMetadataTokenJSON struct {
 	ExtraFields       map[string]apijson.Field
 }
 
-func (r *TokenScanResponseMetadataEvmMetadataToken) UnmarshalJSON(data []byte) (err error) {
+func (r *TokenScanResponseMetadataTokenEvmMetadataToken) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r tokenScanResponseMetadataEvmMetadataTokenJSON) RawJSON() string {
+func (r tokenScanResponseMetadataTokenEvmMetadataTokenJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r TokenScanResponseMetadataEvmMetadataToken) implementsTokenScanResponseMetadata() {}
+func (r TokenScanResponseMetadataTokenEvmMetadataToken) implementsTokenScanResponseMetadata() {}
 
 // Contract balance
-type TokenScanResponseMetadataEvmMetadataTokenContractBalance struct {
-	Amount    float64                                                      `json:"amount"`
-	AmountWei string                                                       `json:"amount_wei"`
-	JSON      tokenScanResponseMetadataEvmMetadataTokenContractBalanceJSON `json:"-"`
+type TokenScanResponseMetadataTokenEvmMetadataTokenContractBalance struct {
+	Amount    float64                                                           `json:"amount,nullable"`
+	AmountWei string                                                            `json:"amount_wei,nullable"`
+	JSON      tokenScanResponseMetadataTokenEvmMetadataTokenContractBalanceJSON `json:"-"`
 }
 
-// tokenScanResponseMetadataEvmMetadataTokenContractBalanceJSON contains the JSON
-// metadata for the struct
-// [TokenScanResponseMetadataEvmMetadataTokenContractBalance]
-type tokenScanResponseMetadataEvmMetadataTokenContractBalanceJSON struct {
+// tokenScanResponseMetadataTokenEvmMetadataTokenContractBalanceJSON contains the
+// JSON metadata for the struct
+// [TokenScanResponseMetadataTokenEvmMetadataTokenContractBalance]
+type tokenScanResponseMetadataTokenEvmMetadataTokenContractBalanceJSON struct {
 	Amount      apijson.Field
 	AmountWei   apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *TokenScanResponseMetadataEvmMetadataTokenContractBalance) UnmarshalJSON(data []byte) (err error) {
+func (r *TokenScanResponseMetadataTokenEvmMetadataTokenContractBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r tokenScanResponseMetadataEvmMetadataTokenContractBalanceJSON) RawJSON() string {
+func (r tokenScanResponseMetadataTokenEvmMetadataTokenContractBalanceJSON) RawJSON() string {
 	return r.raw
 }
 
 // social links of the token
-type TokenScanResponseMetadataEvmMetadataTokenExternalLinks struct {
-	Homepage          string                                                     `json:"homepage"`
-	TelegramChannelID string                                                     `json:"telegram_channel_id"`
-	TwitterPage       string                                                     `json:"twitter_page"`
-	JSON              tokenScanResponseMetadataEvmMetadataTokenExternalLinksJSON `json:"-"`
+type TokenScanResponseMetadataTokenEvmMetadataTokenExternalLinks struct {
+	Homepage          string                                                          `json:"homepage,nullable"`
+	TelegramChannelID string                                                          `json:"telegram_channel_id,nullable"`
+	TwitterPage       string                                                          `json:"twitter_page,nullable"`
+	JSON              tokenScanResponseMetadataTokenEvmMetadataTokenExternalLinksJSON `json:"-"`
 }
 
-// tokenScanResponseMetadataEvmMetadataTokenExternalLinksJSON contains the JSON
-// metadata for the struct [TokenScanResponseMetadataEvmMetadataTokenExternalLinks]
-type tokenScanResponseMetadataEvmMetadataTokenExternalLinksJSON struct {
+// tokenScanResponseMetadataTokenEvmMetadataTokenExternalLinksJSON contains the
+// JSON metadata for the struct
+// [TokenScanResponseMetadataTokenEvmMetadataTokenExternalLinks]
+type tokenScanResponseMetadataTokenEvmMetadataTokenExternalLinksJSON struct {
 	Homepage          apijson.Field
 	TelegramChannelID apijson.Field
 	TwitterPage       apijson.Field
@@ -610,39 +650,40 @@ type tokenScanResponseMetadataEvmMetadataTokenExternalLinksJSON struct {
 	ExtraFields       map[string]apijson.Field
 }
 
-func (r *TokenScanResponseMetadataEvmMetadataTokenExternalLinks) UnmarshalJSON(data []byte) (err error) {
+func (r *TokenScanResponseMetadataTokenEvmMetadataTokenExternalLinks) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r tokenScanResponseMetadataEvmMetadataTokenExternalLinksJSON) RawJSON() string {
+func (r tokenScanResponseMetadataTokenEvmMetadataTokenExternalLinksJSON) RawJSON() string {
 	return r.raw
 }
 
 // Contract owner balance
-type TokenScanResponseMetadataEvmMetadataTokenOwnerBalance struct {
-	Amount    float64                                                   `json:"amount"`
-	AmountWei string                                                    `json:"amount_wei"`
-	JSON      tokenScanResponseMetadataEvmMetadataTokenOwnerBalanceJSON `json:"-"`
+type TokenScanResponseMetadataTokenEvmMetadataTokenOwnerBalance struct {
+	Amount    float64                                                        `json:"amount,nullable"`
+	AmountWei string                                                         `json:"amount_wei,nullable"`
+	JSON      tokenScanResponseMetadataTokenEvmMetadataTokenOwnerBalanceJSON `json:"-"`
 }
 
-// tokenScanResponseMetadataEvmMetadataTokenOwnerBalanceJSON contains the JSON
-// metadata for the struct [TokenScanResponseMetadataEvmMetadataTokenOwnerBalance]
-type tokenScanResponseMetadataEvmMetadataTokenOwnerBalanceJSON struct {
+// tokenScanResponseMetadataTokenEvmMetadataTokenOwnerBalanceJSON contains the JSON
+// metadata for the struct
+// [TokenScanResponseMetadataTokenEvmMetadataTokenOwnerBalance]
+type tokenScanResponseMetadataTokenEvmMetadataTokenOwnerBalanceJSON struct {
 	Amount      apijson.Field
 	AmountWei   apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *TokenScanResponseMetadataEvmMetadataTokenOwnerBalance) UnmarshalJSON(data []byte) (err error) {
+func (r *TokenScanResponseMetadataTokenEvmMetadataTokenOwnerBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r tokenScanResponseMetadataEvmMetadataTokenOwnerBalanceJSON) RawJSON() string {
+func (r tokenScanResponseMetadataTokenEvmMetadataTokenOwnerBalanceJSON) RawJSON() string {
 	return r.raw
 }
 
-// An enumeration.
+// General indication
 type TokenScanResponseResultType string
 
 const (
@@ -662,10 +703,10 @@ func (r TokenScanResponseResultType) IsKnown() bool {
 
 // Trading limits of the token
 type TokenScanResponseTradingLimits struct {
-	MaxBuy            TokenScanResponseTradingLimitsMaxBuy            `json:"max_buy"`
-	MaxHolding        TokenScanResponseTradingLimitsMaxHolding        `json:"max_holding"`
-	MaxSell           TokenScanResponseTradingLimitsMaxSell           `json:"max_sell"`
-	SellLimitPerBlock TokenScanResponseTradingLimitsSellLimitPerBlock `json:"sell_limit_per_block"`
+	MaxBuy            TokenScanResponseTradingLimitsMaxBuy            `json:"max_buy,nullable"`
+	MaxHolding        TokenScanResponseTradingLimitsMaxHolding        `json:"max_holding,nullable"`
+	MaxSell           TokenScanResponseTradingLimitsMaxSell           `json:"max_sell,nullable"`
+	SellLimitPerBlock TokenScanResponseTradingLimitsSellLimitPerBlock `json:"sell_limit_per_block,nullable"`
 	JSON              tokenScanResponseTradingLimitsJSON              `json:"-"`
 }
 
@@ -689,8 +730,8 @@ func (r tokenScanResponseTradingLimitsJSON) RawJSON() string {
 }
 
 type TokenScanResponseTradingLimitsMaxBuy struct {
-	Amount    float64                                  `json:"amount"`
-	AmountWei string                                   `json:"amount_wei"`
+	Amount    float64                                  `json:"amount,nullable"`
+	AmountWei string                                   `json:"amount_wei,nullable"`
 	JSON      tokenScanResponseTradingLimitsMaxBuyJSON `json:"-"`
 }
 
@@ -712,8 +753,8 @@ func (r tokenScanResponseTradingLimitsMaxBuyJSON) RawJSON() string {
 }
 
 type TokenScanResponseTradingLimitsMaxHolding struct {
-	Amount    float64                                      `json:"amount"`
-	AmountWei string                                       `json:"amount_wei"`
+	Amount    float64                                      `json:"amount,nullable"`
+	AmountWei string                                       `json:"amount_wei,nullable"`
 	JSON      tokenScanResponseTradingLimitsMaxHoldingJSON `json:"-"`
 }
 
@@ -735,8 +776,8 @@ func (r tokenScanResponseTradingLimitsMaxHoldingJSON) RawJSON() string {
 }
 
 type TokenScanResponseTradingLimitsMaxSell struct {
-	Amount    float64                                   `json:"amount"`
-	AmountWei string                                    `json:"amount_wei"`
+	Amount    float64                                   `json:"amount,nullable"`
+	AmountWei string                                    `json:"amount_wei,nullable"`
 	JSON      tokenScanResponseTradingLimitsMaxSellJSON `json:"-"`
 }
 
@@ -758,8 +799,8 @@ func (r tokenScanResponseTradingLimitsMaxSellJSON) RawJSON() string {
 }
 
 type TokenScanResponseTradingLimitsSellLimitPerBlock struct {
-	Amount    float64                                             `json:"amount"`
-	AmountWei string                                              `json:"amount_wei"`
+	Amount    float64                                             `json:"amount,nullable"`
+	AmountWei string                                              `json:"amount_wei,nullable"`
 	JSON      tokenScanResponseTradingLimitsSellLimitPerBlockJSON `json:"-"`
 }
 
@@ -783,9 +824,9 @@ func (r tokenScanResponseTradingLimitsSellLimitPerBlockJSON) RawJSON() string {
 type TokenScanResponseFeature struct {
 	// Description of the feature
 	Description string `json:"description,required"`
-	// An enumeration.
+	// Feature identifier
 	FeatureID TokenScanResponseFeaturesFeatureID `json:"feature_id,required"`
-	// An enumeration.
+	// Type of the feature
 	Type TokenScanResponseFeaturesType `json:"type,required"`
 	JSON tokenScanResponseFeatureJSON  `json:"-"`
 }
@@ -808,7 +849,7 @@ func (r tokenScanResponseFeatureJSON) RawJSON() string {
 	return r.raw
 }
 
-// An enumeration.
+// Feature identifier
 type TokenScanResponseFeaturesFeatureID string
 
 const (
@@ -857,7 +898,7 @@ func (r TokenScanResponseFeaturesFeatureID) IsKnown() bool {
 	return false
 }
 
-// An enumeration.
+// Type of the feature
 type TokenScanResponseFeaturesType string
 
 const (
@@ -878,7 +919,7 @@ func (r TokenScanResponseFeaturesType) IsKnown() bool {
 type TokenReportParams struct {
 	// Details about the report.
 	Details param.Field[string] `json:"details,required"`
-	// An enumeration.
+	// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
 	Event param.Field[TokenReportParamsEvent] `json:"event,required"`
 	// The report parameters.
 	Report param.Field[TokenReportParamsReportUnion] `json:"report,required"`
@@ -888,7 +929,7 @@ func (r TokenReportParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// An enumeration.
+// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
 type TokenReportParamsEvent string
 
 const (
@@ -919,69 +960,105 @@ func (r TokenReportParamsReport) implementsTokenReportParamsReportUnion() {}
 
 // The report parameters.
 //
-// Satisfied by [TokenReportParamsReportParamReportTokenReportParams],
-// [TokenReportParamsReportRequestIDReport], [TokenReportParamsReport].
+// Satisfied by [TokenReportParamsReportTokenParamReportTokenReportParams],
+// [TokenReportParamsReportTokenRequestIDReport], [TokenReportParamsReport].
 type TokenReportParamsReportUnion interface {
 	implementsTokenReportParamsReportUnion()
 }
 
-type TokenReportParamsReportParamReportTokenReportParams struct {
-	Params param.Field[TokenReportParamsReportParamReportTokenReportParamsParams] `json:"params,required"`
-	Type   param.Field[TokenReportParamsReportParamReportTokenReportParamsType]   `json:"type,required"`
+type TokenReportParamsReportTokenParamReportTokenReportParams struct {
+	Params param.Field[TokenReportParamsReportTokenParamReportTokenReportParamsParams] `json:"params,required"`
+	Type   param.Field[TokenReportParamsReportTokenParamReportTokenReportParamsType]   `json:"type,required"`
 }
 
-func (r TokenReportParamsReportParamReportTokenReportParams) MarshalJSON() (data []byte, err error) {
+func (r TokenReportParamsReportTokenParamReportTokenReportParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r TokenReportParamsReportParamReportTokenReportParams) implementsTokenReportParamsReportUnion() {
+func (r TokenReportParamsReportTokenParamReportTokenReportParams) implementsTokenReportParamsReportUnion() {
 }
 
-type TokenReportParamsReportParamReportTokenReportParamsParams struct {
+type TokenReportParamsReportTokenParamReportTokenReportParamsParams struct {
 	// The address of the token to report on.
 	Address param.Field[string] `json:"address,required"`
 	// The chain name
-	Chain param.Field[TokenScanSupportedChain] `json:"chain,required"`
+	Chain param.Field[TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain] `json:"chain,required"`
 }
 
-func (r TokenReportParamsReportParamReportTokenReportParamsParams) MarshalJSON() (data []byte, err error) {
+func (r TokenReportParamsReportTokenParamReportTokenReportParamsParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-type TokenReportParamsReportParamReportTokenReportParamsType string
+// The chain name
+type TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain string
 
 const (
-	TokenReportParamsReportParamReportTokenReportParamsTypeParams TokenReportParamsReportParamReportTokenReportParamsType = "params"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainArbitrum    TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "arbitrum"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainAvalanche   TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "avalanche"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainBase        TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "base"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainBsc         TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "bsc"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainEthereum    TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "ethereum"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainOptimism    TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "optimism"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainPolygon     TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "polygon"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainZora        TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "zora"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainSolana      TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "solana"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainStarknet    TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "starknet"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainStellar     TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "stellar"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainLinea       TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "linea"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainBlast       TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "blast"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainZksync      TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "zksync"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainScroll      TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "scroll"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainDegen       TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "degen"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainAbstract    TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "abstract"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainSoneium     TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "soneium"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainInk         TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "ink"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainZeroNetwork TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "zero-network"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainBerachain   TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "berachain"
+	TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainUnichain    TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain = "unichain"
 )
 
-func (r TokenReportParamsReportParamReportTokenReportParamsType) IsKnown() bool {
+func (r TokenReportParamsReportTokenParamReportTokenReportParamsParamsChain) IsKnown() bool {
 	switch r {
-	case TokenReportParamsReportParamReportTokenReportParamsTypeParams:
+	case TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainArbitrum, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainAvalanche, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainBase, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainBsc, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainEthereum, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainOptimism, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainPolygon, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainZora, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainSolana, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainStarknet, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainStellar, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainLinea, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainBlast, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainZksync, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainScroll, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainDegen, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainAbstract, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainSoneium, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainInk, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainZeroNetwork, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainBerachain, TokenReportParamsReportTokenParamReportTokenReportParamsParamsChainUnichain:
 		return true
 	}
 	return false
 }
 
-type TokenReportParamsReportRequestIDReport struct {
-	RequestID param.Field[string]                                     `json:"request_id,required"`
-	Type      param.Field[TokenReportParamsReportRequestIDReportType] `json:"type,required"`
+type TokenReportParamsReportTokenParamReportTokenReportParamsType string
+
+const (
+	TokenReportParamsReportTokenParamReportTokenReportParamsTypeParams TokenReportParamsReportTokenParamReportTokenReportParamsType = "params"
+)
+
+func (r TokenReportParamsReportTokenParamReportTokenReportParamsType) IsKnown() bool {
+	switch r {
+	case TokenReportParamsReportTokenParamReportTokenReportParamsTypeParams:
+		return true
+	}
+	return false
 }
 
-func (r TokenReportParamsReportRequestIDReport) MarshalJSON() (data []byte, err error) {
+type TokenReportParamsReportTokenRequestIDReport struct {
+	RequestID param.Field[string]                                          `json:"request_id,required"`
+	Type      param.Field[TokenReportParamsReportTokenRequestIDReportType] `json:"type,required"`
+}
+
+func (r TokenReportParamsReportTokenRequestIDReport) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r TokenReportParamsReportRequestIDReport) implementsTokenReportParamsReportUnion() {}
+func (r TokenReportParamsReportTokenRequestIDReport) implementsTokenReportParamsReportUnion() {}
 
-type TokenReportParamsReportRequestIDReportType string
+type TokenReportParamsReportTokenRequestIDReportType string
 
 const (
-	TokenReportParamsReportRequestIDReportTypeRequestID TokenReportParamsReportRequestIDReportType = "request_id"
+	TokenReportParamsReportTokenRequestIDReportTypeRequestID TokenReportParamsReportTokenRequestIDReportType = "request_id"
 )
 
-func (r TokenReportParamsReportRequestIDReportType) IsKnown() bool {
+func (r TokenReportParamsReportTokenRequestIDReportType) IsKnown() bool {
 	switch r {
-	case TokenReportParamsReportRequestIDReportTypeRequestID:
+	case TokenReportParamsReportTokenRequestIDReportTypeRequestID:
 		return true
 	}
 	return false
@@ -1006,13 +1083,49 @@ type TokenScanParams struct {
 	// Token address to validate (EVM / Solana / Stellar / Starknet)
 	Address param.Field[string] `json:"address,required"`
 	// The chain name
-	Chain param.Field[TokenScanSupportedChain] `json:"chain,required"`
+	Chain param.Field[TokenScanParamsChain] `json:"chain,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[TokenScanParamsMetadata] `json:"metadata"`
 }
 
 func (r TokenScanParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// The chain name
+type TokenScanParamsChain string
+
+const (
+	TokenScanParamsChainArbitrum    TokenScanParamsChain = "arbitrum"
+	TokenScanParamsChainAvalanche   TokenScanParamsChain = "avalanche"
+	TokenScanParamsChainBase        TokenScanParamsChain = "base"
+	TokenScanParamsChainBsc         TokenScanParamsChain = "bsc"
+	TokenScanParamsChainEthereum    TokenScanParamsChain = "ethereum"
+	TokenScanParamsChainOptimism    TokenScanParamsChain = "optimism"
+	TokenScanParamsChainPolygon     TokenScanParamsChain = "polygon"
+	TokenScanParamsChainZora        TokenScanParamsChain = "zora"
+	TokenScanParamsChainSolana      TokenScanParamsChain = "solana"
+	TokenScanParamsChainStarknet    TokenScanParamsChain = "starknet"
+	TokenScanParamsChainStellar     TokenScanParamsChain = "stellar"
+	TokenScanParamsChainLinea       TokenScanParamsChain = "linea"
+	TokenScanParamsChainBlast       TokenScanParamsChain = "blast"
+	TokenScanParamsChainZksync      TokenScanParamsChain = "zksync"
+	TokenScanParamsChainScroll      TokenScanParamsChain = "scroll"
+	TokenScanParamsChainDegen       TokenScanParamsChain = "degen"
+	TokenScanParamsChainAbstract    TokenScanParamsChain = "abstract"
+	TokenScanParamsChainSoneium     TokenScanParamsChain = "soneium"
+	TokenScanParamsChainInk         TokenScanParamsChain = "ink"
+	TokenScanParamsChainZeroNetwork TokenScanParamsChain = "zero-network"
+	TokenScanParamsChainBerachain   TokenScanParamsChain = "berachain"
+	TokenScanParamsChainUnichain    TokenScanParamsChain = "unichain"
+)
+
+func (r TokenScanParamsChain) IsKnown() bool {
+	switch r {
+	case TokenScanParamsChainArbitrum, TokenScanParamsChainAvalanche, TokenScanParamsChainBase, TokenScanParamsChainBsc, TokenScanParamsChainEthereum, TokenScanParamsChainOptimism, TokenScanParamsChainPolygon, TokenScanParamsChainZora, TokenScanParamsChainSolana, TokenScanParamsChainStarknet, TokenScanParamsChainStellar, TokenScanParamsChainLinea, TokenScanParamsChainBlast, TokenScanParamsChainZksync, TokenScanParamsChainScroll, TokenScanParamsChainDegen, TokenScanParamsChainAbstract, TokenScanParamsChainSoneium, TokenScanParamsChainInk, TokenScanParamsChainZeroNetwork, TokenScanParamsChainBerachain, TokenScanParamsChainUnichain:
+		return true
+	}
+	return false
 }
 
 // Object of additional information to validate against.
