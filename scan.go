@@ -54,16 +54,16 @@ func (r ScanStatusParams) MarshalJSON() (data []byte, err error) {
 }
 
 // An enumeration.
-type ScanStatusParamsStatus float64
+type ScanStatusParamsStatus string
 
 const (
-	ScanStatusParamsStatus1 ScanStatusParamsStatus = 1
-	ScanStatusParamsStatus2 ScanStatusParamsStatus = 2
+	ScanStatusParamsStatusAccepted ScanStatusParamsStatus = "accepted"
+	ScanStatusParamsStatusRejected ScanStatusParamsStatus = "rejected"
 )
 
 func (r ScanStatusParamsStatus) IsKnown() bool {
 	switch r {
-	case ScanStatusParamsStatus1, ScanStatusParamsStatus2:
+	case ScanStatusParamsStatusAccepted, ScanStatusParamsStatusRejected:
 		return true
 	}
 	return false

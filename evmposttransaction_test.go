@@ -60,7 +60,7 @@ func TestEvmPostTransactionScanWithOptionalParams(t *testing.T) {
 		Data: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsData{
 			TxHash: blockaidclientgo.F("0xc01780dadc107754b331250b4797606949cb3d0087facc0a737122d5e973c83c"),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsMetadata{
+		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
 			Domain: blockaidclientgo.F("domain"),
 		}),
 		Block:   blockaidclientgo.F[blockaidclientgo.EvmPostTransactionScanParamsBlockUnion](shared.UnionInt(int64(0))),

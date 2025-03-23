@@ -27,7 +27,7 @@ func TestScanStatus(t *testing.T) {
 	)
 	_, err := client.Scan.Status(context.TODO(), blockaidclientgo.ScanStatusParams{
 		RequestID: blockaidclientgo.F("7f959417-76c1-4c4d-89e8-5fdedab76a8d"),
-		Status:    blockaidclientgo.F(blockaidclientgo.ScanStatusParamsStatus1),
+		Status:    blockaidclientgo.F(blockaidclientgo.ScanStatusParamsStatusAccepted),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
