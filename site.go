@@ -323,7 +323,7 @@ func (r SiteScanResponseStatus) IsKnown() bool {
 type SiteReportParams struct {
 	// Details about the report.
 	Details param.Field[string] `json:"details,required"`
-	// An enumeration.
+	// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
 	Event param.Field[SiteReportParamsEvent] `json:"event,required"`
 	// The report parameters.
 	Report param.Field[SiteReportParamsReportUnion] `json:"report,required"`
@@ -333,7 +333,7 @@ func (r SiteReportParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// An enumeration.
+// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
 type SiteReportParamsEvent string
 
 const (
