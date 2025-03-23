@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
-	"github.com/blockaid-official/blockaid-client-go/internal/param"
 	"github.com/blockaid-official/blockaid-client-go/option"
 	"github.com/blockaid-official/blockaid-client-go/shared"
 	"github.com/tidwall/gjson"
@@ -2971,15 +2970,6 @@ func (r Erc721TokenDetailsType) IsKnown() bool {
 		return true
 	}
 	return false
-}
-
-type MetadataParam struct {
-	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain,required"`
-}
-
-func (r MetadataParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
 }
 
 type NativeAddressAssetBalanceChangeDiff struct {
