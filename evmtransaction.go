@@ -124,7 +124,7 @@ type EvmTransactionReportParamsReportParamReportTransactionReportParamsParams st
 	// Transaction parameters
 	Data param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataUnion] `json:"data,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[MetadataParam] `json:"metadata,required"`
+	Metadata param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadata] `json:"metadata,required"`
 }
 
 func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams) MarshalJSON() (data []byte, err error) {
@@ -203,6 +203,16 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataJsonRpc) implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataUnion() {
 }
 
+// Object of additional information to validate against.
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadata struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsType string
 
 const (
@@ -267,7 +277,7 @@ type EvmTransactionScanParams struct {
 	// Transaction parameters
 	Data param.Field[EvmTransactionScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[MetadataParam] `json:"metadata,required"`
+	Metadata param.Field[EvmTransactionScanParamsMetadata] `json:"metadata,required"`
 	// The relative block for the block validation. Can be "latest" or a block number.
 	Block param.Field[EvmTransactionScanParamsBlockUnion] `json:"block"`
 	// list of one or both of options for the desired output. "simulation" - include
@@ -299,6 +309,16 @@ type EvmTransactionScanParamsData struct {
 }
 
 func (r EvmTransactionScanParamsData) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Object of additional information to validate against.
+type EvmTransactionScanParamsMetadata struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r EvmTransactionScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
