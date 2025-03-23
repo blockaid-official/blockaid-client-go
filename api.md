@@ -96,6 +96,14 @@ Methods:
 
 ## Address
 
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SolanaAddressScanResponse">SolanaAddressScanResponse</a>
+
+Methods:
+
+- <code title="post /v0/solana/address/scan">client.Solana.Address.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SolanaAddressService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SolanaAddressScanParams">SolanaAddressScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SolanaAddressScanResponse">SolanaAddressScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
 # Stellar
 
 Params Types:
@@ -176,8 +184,46 @@ Methods:
 
 # Site
 
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SiteScanHitResponse">SiteScanHitResponse</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SiteScanMissResponse">SiteScanMissResponse</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SiteReportResponse">SiteReportResponse</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SiteScanResponse">SiteScanResponse</a>
+
+Methods:
+
+- <code title="post /v0/site/report">client.Site.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SiteService.Report">Report</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SiteReportParams">SiteReportParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SiteReportResponse">SiteReportResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="post /v0/site/scan">client.Site.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SiteService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SiteScanParams">SiteScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SiteScanResponse">SiteScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
 # Scan
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ScanStatusResponse">ScanStatusResponse</a>
+
+Methods:
+
+- <code title="post /v0/scan/status/">client.Scan.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ScanService.Status">Status</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ScanStatusParams">ScanStatusParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ScanStatusResponse">ScanStatusResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Token
 
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenReportResponse">TokenReportResponse</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenScanResponse">TokenScanResponse</a>
+
+Methods:
+
+- <code title="post /v0/token/report">client.Token.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenService.Report">Report</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenReportParams">TokenReportParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenReportResponse">TokenReportResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="post /v0/token/scan">client.Token.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenScanParams">TokenScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenScanResponse">TokenScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
 # TokenBulk
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenBulkScanResponse">TokenBulkScanResponse</a>
+
+Methods:
+
+- <code title="post /v0/token-bulk/scan">client.TokenBulk.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenBulkService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenBulkScanParams">TokenBulkScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenBulkScanResponse">TokenBulkScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
