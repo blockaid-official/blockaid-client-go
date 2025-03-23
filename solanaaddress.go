@@ -3,11 +3,6 @@
 package blockaidclientgo
 
 import (
-	"context"
-	"net/http"
-
-	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
-	"github.com/blockaid-official/blockaid-client-go/internal/requestconfig"
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
@@ -28,22 +23,4 @@ func NewSolanaAddressService(opts ...option.RequestOption) (r *SolanaAddressServ
 	r = &SolanaAddressService{}
 	r.Options = opts
 	return
-}
-
-// Gets an address and returns a full security assessment indicating weather or not
-// this address is malicious as well as textual reasons of why the address was
-// flagged that way.
-func (r *SolanaAddressService) Scan(ctx context.Context, body SolanaAddressScanParams, opts ...option.RequestOption) (res *AddressScanResponseSchema, err error) {
-	opts = append(r.Options[:], opts...)
-	path := "v0/solana/address/scan"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
-}
-
-type SolanaAddressScanParams struct {
-	AddressScanRequestSchema AddressScanRequestSchemaParam `json:"AddressScanRequestSchema,required"`
-}
-
-func (r SolanaAddressScanParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r.AddressScanRequestSchema)
 }

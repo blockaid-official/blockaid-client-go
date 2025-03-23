@@ -54,7 +54,7 @@ type EvmTransactionReportResponse = interface{}
 type EvmTransactionReportParams struct {
 	// Details about the report.
 	Details param.Field[string] `json:"details,required"`
-	// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
+	// An enumeration.
 	Event param.Field[EvmTransactionReportParamsEvent] `json:"event,required"`
 	// The report parameters.
 	Report param.Field[EvmTransactionReportParamsReportUnion] `json:"report,required"`
@@ -64,7 +64,7 @@ func (r EvmTransactionReportParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
+// An enumeration.
 type EvmTransactionReportParamsEvent string
 
 const (
