@@ -44,7 +44,7 @@ func (r *SolanaAddressService) Scan(ctx context.Context, body SolanaAddressScanP
 type SolanaAddressScanResponse struct {
 	// Features about the result
 	Features []SolanaAddressScanResponseFeature `json:"features,required"`
-	// An enumeration.
+	// Verdict of Result
 	ResultType SolanaAddressScanResponseResultType `json:"result_type,required"`
 	JSON       solanaAddressScanResponseJSON       `json:"-"`
 }
@@ -112,18 +112,19 @@ func (r SolanaAddressScanResponseFeaturesType) IsKnown() bool {
 	return false
 }
 
-// An enumeration.
+// Verdict of Result
 type SolanaAddressScanResponseResultType string
 
 const (
-	SolanaAddressScanResponseResultTypeMalicious SolanaAddressScanResponseResultType = "Malicious"
-	SolanaAddressScanResponseResultTypeWarning   SolanaAddressScanResponseResultType = "Warning"
 	SolanaAddressScanResponseResultTypeBenign    SolanaAddressScanResponseResultType = "Benign"
+	SolanaAddressScanResponseResultTypeWarning   SolanaAddressScanResponseResultType = "Warning"
+	SolanaAddressScanResponseResultTypeMalicious SolanaAddressScanResponseResultType = "Malicious"
+	SolanaAddressScanResponseResultTypeSpam      SolanaAddressScanResponseResultType = "Spam"
 )
 
 func (r SolanaAddressScanResponseResultType) IsKnown() bool {
 	switch r {
-	case SolanaAddressScanResponseResultTypeMalicious, SolanaAddressScanResponseResultTypeWarning, SolanaAddressScanResponseResultTypeBenign:
+	case SolanaAddressScanResponseResultTypeBenign, SolanaAddressScanResponseResultTypeWarning, SolanaAddressScanResponseResultTypeMalicious, SolanaAddressScanResponseResultTypeSpam:
 		return true
 	}
 	return false
