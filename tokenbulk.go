@@ -248,6 +248,8 @@ type TokenBulkScanResponseResultsMetadata struct {
 	ContractBalance interface{} `json:"contract_balance"`
 	// Contract deploy date
 	CreationTimestamp string `json:"creation_timestamp,nullable"`
+	// Decimals of the token
+	Decimals int64 `json:"decimals,nullable"`
 	// Address of the deployer of the fungible token
 	Deployer string `json:"deployer,nullable"`
 	// This field can have the runtime type of
@@ -301,6 +303,7 @@ type tokenBulkScanResponseResultsMetadataJSON struct {
 	ID                     apijson.Field
 	ContractBalance        apijson.Field
 	CreationTimestamp      apijson.Field
+	Decimals               apijson.Field
 	Deployer               apijson.Field
 	DeployerBalance        apijson.Field
 	Description            apijson.Field
@@ -380,6 +383,8 @@ type TokenBulkScanResponseResultsMetadataSolanaMetadata struct {
 	ContractBalance TokenBulkScanResponseResultsMetadataSolanaMetadataContractBalance `json:"contract_balance,nullable"`
 	// Contract deploy date
 	CreationTimestamp string `json:"creation_timestamp,nullable"`
+	// Decimals of the token
+	Decimals int64 `json:"decimals,nullable"`
 	// Address of the deployer of the fungible token
 	Deployer string `json:"deployer,nullable"`
 	// Contract creator balance
@@ -421,6 +426,7 @@ type TokenBulkScanResponseResultsMetadataSolanaMetadata struct {
 type tokenBulkScanResponseResultsMetadataSolanaMetadataJSON struct {
 	ContractBalance        apijson.Field
 	CreationTimestamp      apijson.Field
+	Decimals               apijson.Field
 	Deployer               apijson.Field
 	DeployerBalance        apijson.Field
 	Description            apijson.Field
@@ -557,6 +563,8 @@ func (r tokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalanceJSON) RawJ
 type TokenBulkScanResponseResultsMetadataBitcoinMetadataToken struct {
 	// The unique ID for the Rune
 	ID string `json:"id,nullable"`
+	// Decimals of the token
+	Decimals int64 `json:"decimals,nullable"`
 	// The formatted name of the rune, with spacers
 	FormattedName string `json:"formatted_name,nullable"`
 	// Name of the token
@@ -575,6 +583,7 @@ type TokenBulkScanResponseResultsMetadataBitcoinMetadataToken struct {
 // [TokenBulkScanResponseResultsMetadataBitcoinMetadataToken]
 type tokenBulkScanResponseResultsMetadataBitcoinMetadataTokenJSON struct {
 	ID            apijson.Field
+	Decimals      apijson.Field
 	FormattedName apijson.Field
 	Name          apijson.Field
 	Number        apijson.Field
@@ -600,6 +609,8 @@ type TokenBulkScanResponseResultsMetadataEvmMetadataToken struct {
 	ContractBalance TokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalance `json:"contract_balance,nullable"`
 	// Contract deploy date
 	CreationTimestamp string `json:"creation_timestamp,nullable"`
+	// Decimals of the token
+	Decimals int64 `json:"decimals,nullable"`
 	// Address of the deployer of the fungible token
 	Deployer string `json:"deployer,nullable"`
 	// Contract creator balance
@@ -635,6 +646,7 @@ type TokenBulkScanResponseResultsMetadataEvmMetadataToken struct {
 type tokenBulkScanResponseResultsMetadataEvmMetadataTokenJSON struct {
 	ContractBalance        apijson.Field
 	CreationTimestamp      apijson.Field
+	Decimals               apijson.Field
 	Deployer               apijson.Field
 	DeployerBalance        apijson.Field
 	Description            apijson.Field
