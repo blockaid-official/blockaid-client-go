@@ -13,7 +13,7 @@ import (
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
-func TestSolanaMessageScanWithOptionalParams(t *testing.T) {
+func TestSolanaMessageScan(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -26,16 +26,21 @@ func TestSolanaMessageScanWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Solana.Message.Scan(context.TODO(), blockaidclientgo.SolanaMessageScanParams{
-		TxScanRequestSchema: blockaidclientgo.TxScanRequestSchemaParam{
-			AccountAddress: blockaidclientgo.F("86xCnPeV69n6t3DnyGvkKobf9FdN2H9oiVDdaMpo2MMY"),
-			Metadata: blockaidclientgo.F(blockaidclientgo.TxScanRequestSchemaMetadataParam{
-				URL: blockaidclientgo.F("https://example.com"),
-			}),
-			Transactions: blockaidclientgo.F([]string{"vxBNpvao9QJmLKXUThbbjRnxm3ufu4Wku97kHd5a67FDjSqeHwcPrBKTjAHp4ECr61eWwoxvUEVTuuWX65P9bCNDJrTJpX64vjdtpHA8cogA4C92Ubj813wUUA8Ey4Bvcrdj5c1bSTrGZVzb8QmCKyzMu9kMiSWpFtaFrNN8zb9grr81N3R3njrFgxCxNSjboFtomLyZ3iUQBaBkRF1DyzGyc1r1kd8FnptaDWteNCXJHUYFeH8wBDwZJzNZfz71CiugXhxBTJSAqSNC8JEWm7kmCqwjUqLd23L2x2s"}),
-			Chain:        blockaidclientgo.F("mainnet"),
-			Encoding:     blockaidclientgo.F("base58"),
-			Method:       blockaidclientgo.F("signAndSendTransaction"),
-			Options:      blockaidclientgo.F([]string{"simulation", "validation"}),
+		Body: map[string]interface{}{
+			"encoding": "base58",
+			"chain":    "mainnet",
+			"method":   "signAndSendTransaction",
+			"options": map[string]interface{}{
+				"0": "simulation",
+				"1": "validation",
+			},
+			"account_address": "86xCnPeV69n6t3DnyGvkKobf9FdN2H9oiVDdaMpo2MMY",
+			"transactions": map[string]interface{}{
+				"0": "vxBNpvao9QJmLKXUThbbjRnxm3ufu4Wku97kHd5a67FDjSqeHwcPrBKTjAHp4ECr61eWwoxvUEVTuuWX65P9bCNDJrTJpX64vjdtpHA8cogA4C92Ubj813wUUA8Ey4Bvcrdj5c1bSTrGZVzb8QmCKyzMu9kMiSWpFtaFrNN8zb9grr81N3R3njrFgxCxNSjboFtomLyZ3iUQBaBkRF1DyzGyc1r1kd8FnptaDWteNCXJHUYFeH8wBDwZJzNZfz71CiugXhxBTJSAqSNC8JEWm7kmCqwjUqLd23L2x2s",
+			},
+			"metadata": map[string]interface{}{
+				"url": "https://example.com",
+			},
 		},
 	})
 	if err != nil {
