@@ -26,17 +26,15 @@ func TestSolanaMessageScanWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Solana.Message.Scan(context.TODO(), blockaidclientgo.SolanaMessageScanParams{
-		TxScanRequestSchema: blockaidclientgo.TxScanRequestSchemaParam{
-			AccountAddress: blockaidclientgo.F("86xCnPeV69n6t3DnyGvkKobf9FdN2H9oiVDdaMpo2MMY"),
-			Metadata: blockaidclientgo.F(blockaidclientgo.TxScanRequestSchemaMetadataParam{
-				URL: blockaidclientgo.F("https://example.com"),
-			}),
-			Transactions: blockaidclientgo.F([]string{"vxBNpvao9QJmLKXUThbbjRnxm3ufu4Wku97kHd5a67FDjSqeHwcPrBKTjAHp4ECr61eWwoxvUEVTuuWX65P9bCNDJrTJpX64vjdtpHA8cogA4C92Ubj813wUUA8Ey4Bvcrdj5c1bSTrGZVzb8QmCKyzMu9kMiSWpFtaFrNN8zb9grr81N3R3njrFgxCxNSjboFtomLyZ3iUQBaBkRF1DyzGyc1r1kd8FnptaDWteNCXJHUYFeH8wBDwZJzNZfz71CiugXhxBTJSAqSNC8JEWm7kmCqwjUqLd23L2x2s"}),
-			Chain:        blockaidclientgo.F("mainnet"),
-			Encoding:     blockaidclientgo.F("base58"),
-			Method:       blockaidclientgo.F("signAndSendTransaction"),
-			Options:      blockaidclientgo.F([]string{"simulation", "validation"}),
-		},
+		AccountAddress: blockaidclientgo.F("86xCnPeV69n6t3DnyGvkKobf9FdN2H9oiVDdaMpo2MMY"),
+		Metadata: blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsMetadata{
+			URL: blockaidclientgo.F("https://example.com"),
+		}),
+		Transactions: blockaidclientgo.F([]string{"vxBNpvao9QJmLKXUThbbjRnxm3ufu4Wku97kHd5a67FDjSqeHwcPrBKTjAHp4ECr61eWwoxvUEVTuuWX65P9bCNDJrTJpX64vjdtpHA8cogA4C92Ubj813wUUA8Ey4Bvcrdj5c1bSTrGZVzb8QmCKyzMu9kMiSWpFtaFrNN8zb9grr81N3R3njrFgxCxNSjboFtomLyZ3iUQBaBkRF1DyzGyc1r1kd8FnptaDWteNCXJHUYFeH8wBDwZJzNZfz71CiugXhxBTJSAqSNC8JEWm7kmCqwjUqLd23L2x2s"}),
+		Chain:        blockaidclientgo.F("mainnet"),
+		Encoding:     blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsEncodingBase58),
+		Method:       blockaidclientgo.F("signAndSendTransaction"),
+		Options:      blockaidclientgo.F([]blockaidclientgo.SolanaMessageScanParamsOption{blockaidclientgo.SolanaMessageScanParamsOptionValidation, blockaidclientgo.SolanaMessageScanParamsOptionSimulation}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
