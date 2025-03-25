@@ -8,6 +8,7 @@ import (
 	"reflect"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
+	"github.com/blockaid-official/blockaid-client-go/internal/param"
 	"github.com/blockaid-official/blockaid-client-go/internal/requestconfig"
 	"github.com/blockaid-official/blockaid-client-go/option"
 	"github.com/tidwall/gjson"
@@ -355,10 +356,10 @@ func (r SolanaMessageScanResponseErrorDetailsType) IsKnown() bool {
 
 // Result of the request
 type SolanaMessageScanResponseResult struct {
-	// Simulation result; Only present if simulation option is included in the request
-	Simulation SolanaMessageScanResponseResultSimulation `json:"simulation,nullable"`
-	// Validation result; Only present if validation option is included in the request
-	Validation SolanaMessageScanResponseResultValidation `json:"validation,nullable"`
+	// Transaction Simulation Result
+	Simulation SolanaMessageScanResponseResultSimulation `json:"simulation,required,nullable"`
+	// Transaction Validation Result
+	Validation SolanaMessageScanResponseResultValidation `json:"validation,required,nullable"`
 	JSON       solanaMessageScanResponseResultJSON       `json:"-"`
 }
 
@@ -379,152 +380,64 @@ func (r solanaMessageScanResponseResultJSON) RawJSON() string {
 	return r.raw
 }
 
-// Simulation result; Only present if simulation option is included in the request
+// Transaction Simulation Result
 type SolanaMessageScanResponseResultSimulation struct {
-	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummary].
-	AccountSummary interface{} `json:"account_summary"`
-	// This field can have the runtime type of
-	// [[]SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail].
-	AccountsDetails interface{} `json:"accounts_details"`
-	// This field can have the runtime type of
-	// [map[string][]SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiff].
-	AssetsDiff interface{} `json:"assets_diff"`
-	// This field can have the runtime type of
-	// [map[string][]SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiff].
-	AssetsOwnershipDiff interface{} `json:"assets_ownership_diff"`
-	// This field can have the runtime type of
-	// [map[string][]SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegation].
-	Delegations interface{} `json:"delegations"`
-	// Error message
-	Error  string                                          `json:"error"`
-	Status SolanaMessageScanResponseResultSimulationStatus `json:"status"`
-	JSON   solanaMessageScanResponseResultSimulationJSON   `json:"-"`
-	union  SolanaMessageScanResponseResultSimulationUnion
+	// Summary of the actions and asset transfers that were made by the requested
+	// account address
+	AccountSummary SolanaMessageScanResponseResultSimulationAccountSummary `json:"account_summary,required"`
+	// Ownership diffs of the account addresses
+	AssetsOwnershipDiff map[string][]SolanaMessageScanResponseResultSimulationAssetsOwnershipDiff `json:"assets_ownership_diff,required"`
+	// Details of addresses involved in the transaction
+	AccountsDetails []SolanaMessageScanResponseResultSimulationAccountsDetail `json:"accounts_details"`
+	// Mapping between the address of an account to the assets diff during the
+	// transaction
+	AssetsDiff map[string][]SolanaMessageScanResponseResultSimulationAssetsDiff `json:"assets_diff"`
+	// Mapping between the address of an account to the exposure of the assets during
+	// the transaction
+	Delegations map[string][]SolanaMessageScanResponseResultSimulationDelegation `json:"delegations"`
+	JSON        solanaMessageScanResponseResultSimulationJSON                    `json:"-"`
 }
 
 // solanaMessageScanResponseResultSimulationJSON contains the JSON metadata for the
 // struct [SolanaMessageScanResponseResultSimulation]
 type solanaMessageScanResponseResultSimulationJSON struct {
 	AccountSummary      apijson.Field
+	AssetsOwnershipDiff apijson.Field
 	AccountsDetails     apijson.Field
 	AssetsDiff          apijson.Field
-	AssetsOwnershipDiff apijson.Field
 	Delegations         apijson.Field
-	Error               apijson.Field
-	Status              apijson.Field
 	raw                 string
 	ExtraFields         map[string]apijson.Field
+}
+
+func (r *SolanaMessageScanResponseResultSimulation) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
 }
 
 func (r solanaMessageScanResponseResultSimulationJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *SolanaMessageScanResponseResultSimulation) UnmarshalJSON(data []byte) (err error) {
-	*r = SolanaMessageScanResponseResultSimulation{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a [SolanaMessageScanResponseResultSimulationUnion] interface
-// which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchema],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationErrorSchema].
-func (r SolanaMessageScanResponseResultSimulation) AsUnion() SolanaMessageScanResponseResultSimulationUnion {
-	return r.union
-}
-
-// Simulation result; Only present if simulation option is included in the request
-//
-// Union satisfied by
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchema] or
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationErrorSchema].
-type SolanaMessageScanResponseResultSimulationUnion interface {
-	implementsSolanaMessageScanResponseResultSimulation()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchema{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationErrorSchema{}),
-		},
-	)
-}
-
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchema struct {
-	// Summary of the actions and asset transfers that were made by the requested
-	// account address
-	AccountSummary SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummary `json:"account_summary,required"`
-	// Ownership diffs of the account addresses
-	AssetsOwnershipDiff map[string][]SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiff `json:"assets_ownership_diff,required"`
-	// Details of addresses involved in the transaction
-	AccountsDetails []SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail `json:"accounts_details"`
-	// Mapping between the address of an account to the assets diff during the
-	// transaction
-	AssetsDiff map[string][]SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiff `json:"assets_diff"`
-	// Mapping between the address of an account to the exposure of the assets during
-	// the transaction
-	Delegations map[string][]SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegation `json:"delegations"`
-	JSON        solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaJSON                    `json:"-"`
-}
-
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaJSON
-// contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchema]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaJSON struct {
-	AccountSummary      apijson.Field
-	AssetsOwnershipDiff apijson.Field
-	AccountsDetails     apijson.Field
-	AssetsDiff          apijson.Field
-	Delegations         apijson.Field
-	raw                 string
-	ExtraFields         map[string]apijson.Field
-}
-
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchema) implementsSolanaMessageScanResponseResultSimulation() {
-}
-
 // Summary of the actions and asset transfers that were made by the requested
 // account address
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummary struct {
+type SolanaMessageScanResponseResultSimulationAccountSummary struct {
 	// Exposures made by the requested account address
-	AccountDelegations []SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegation `json:"account_delegations,required"`
+	AccountDelegations []SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation `json:"account_delegations,required"`
 	// Ownership diffs of the requested account address
-	AccountOwnershipsDiff []SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiff `json:"account_ownerships_diff,required"`
+	AccountOwnershipsDiff []SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiff `json:"account_ownerships_diff,required"`
 	// Total USD diff for the requested account address
-	TotalUsdDiff SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryTotalUsdDiff `json:"total_usd_diff,required"`
+	TotalUsdDiff SolanaMessageScanResponseResultSimulationAccountSummaryTotalUsdDiff `json:"total_usd_diff,required"`
 	// Assets diffs of the requested account address
-	AccountAssetsDiff []SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiff `json:"account_assets_diff"`
+	AccountAssetsDiff []SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff `json:"account_assets_diff"`
 	// Total USD exposure for each of the spender addresses during the transaction
-	TotalUsdExposure map[string]float64                                                                      `json:"total_usd_exposure"`
-	JSON             solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryJSON `json:"-"`
+	TotalUsdExposure map[string]float64                                          `json:"total_usd_exposure"`
+	JSON             solanaMessageScanResponseResultSimulationAccountSummaryJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryJSON
-// contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummary]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryJSON struct {
+// solanaMessageScanResponseResultSimulationAccountSummaryJSON contains the JSON
+// metadata for the struct
+// [SolanaMessageScanResponseResultSimulationAccountSummary]
+type solanaMessageScanResponseResultSimulationAccountSummaryJSON struct {
 	AccountDelegations    apijson.Field
 	AccountOwnershipsDiff apijson.Field
 	TotalUsdDiff          apijson.Field
@@ -534,35 +447,35 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields           map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummary) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummary) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegation struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation struct {
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset].
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAsset],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset].
 	Asset     interface{} `json:"asset,required"`
 	AssetType string      `json:"asset_type,required"`
 	Delegate  string      `json:"delegate,required"`
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation].
-	Delegation interface{}                                                                                              `json:"delegation,required"`
-	JSON       solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationJSON `json:"-"`
-	union      SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsUnion
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation].
+	Delegation interface{}                                                                  `json:"delegation,required"`
+	JSON       solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationJSON `json:"-"`
+	union      SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsUnion
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	Delegate    apijson.Field
@@ -571,12 +484,12 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegation) UnmarshalJSON(data []byte) (err error) {
-	*r = SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegation{}
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation) UnmarshalJSON(data []byte) (err error) {
+	*r = SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -585,57 +498,57 @@ func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAc
 }
 
 // AsUnion returns a
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsUnion]
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsUnion]
 // interface which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegation],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation].
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegation) AsUnion() SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsUnion {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegation],
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation],
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation].
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation) AsUnion() SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegation],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation]
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegation],
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation]
 // or
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation].
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsUnion interface {
-	implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegation()
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation].
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsUnion interface {
+	implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsUnion)(nil)).Elem(),
+		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegation{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegation{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation{}),
 		},
 	)
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegation struct {
-	Asset      SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAsset      `json:"asset,required"`
-	AssetType  string                                                                                                                              `json:"asset_type,required"`
-	Delegate   string                                                                                                                              `json:"delegate,required"`
-	Delegation SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation `json:"delegation,required"`
-	JSON       solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationJSON       `json:"-"`
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegation struct {
+	Asset      SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAsset      `json:"asset,required"`
+	AssetType  string                                                                                                  `json:"asset_type,required"`
+	Delegate   string                                                                                                  `json:"delegate,required"`
+	Delegation SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation `json:"delegation,required"`
+	JSON       solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationJSON       `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegation]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	Delegate    apijson.Field
@@ -644,18 +557,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegation) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegation) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegation) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegation() {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegation) implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAsset struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's name
@@ -664,15 +577,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	Symbol   string `json:"symbol,required"`
 	Decimals int64  `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                                             `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAssetJSON `json:"-"`
+	Logo string                                                                                                 `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAssetJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAsset]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetJSON struct {
 	Address     apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
@@ -683,29 +596,29 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAssetType string
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAssetTypeCnft SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAssetType = "CNFT"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetTypeCnft SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetType = "CNFT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationAssetTypeCnft:
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetTypeCnft:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -713,14 +626,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                 `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationDelegationJSON `json:"-"`
+	UsdPrice float64                                                                                                     `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegationJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationDelegationJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegationJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationDelegationJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegationJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -729,26 +642,26 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaCnftDelegationDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation struct {
-	Asset      SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset      `json:"asset,required"`
-	AssetType  string                                                                                                                                          `json:"asset_type,required"`
-	Delegate   string                                                                                                                                          `json:"delegate,required"`
-	Delegation SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation `json:"delegation,required"`
-	JSON       solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationJSON       `json:"-"`
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation struct {
+	Asset      SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset      `json:"asset,required"`
+	AssetType  string                                                                                                              `json:"asset_type,required"`
+	Delegate   string                                                                                                              `json:"delegate,required"`
+	Delegation SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation `json:"delegation,required"`
+	JSON       solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationJSON       `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	Delegate    apijson.Field
@@ -757,18 +670,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegation() {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation) implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's decimals
@@ -778,15 +691,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// token's symbol
 	Symbol string `json:"symbol,required"`
 	// URL of the asset's logo
-	Logo string                                                                                                                                         `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetJSON `json:"-"`
+	Logo string                                                                                                             `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetJSON struct {
 	Address     apijson.Field
 	Decimals    apijson.Field
 	Name        apijson.Field
@@ -797,29 +710,29 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetType string
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetTypeToken SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetType = "TOKEN"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetTypeToken SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetType = "TOKEN"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetTypeToken:
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetTypeToken:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -827,14 +740,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                             `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegationJSON `json:"-"`
+	UsdPrice float64                                                                                                                 `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegationJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegationJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegationJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegationJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegationJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -843,26 +756,26 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation struct {
-	Asset      SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset      `json:"asset,required"`
-	AssetType  string                                                                                                                                             `json:"asset_type,required"`
-	Delegate   string                                                                                                                                             `json:"delegate,required"`
-	Delegation SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation `json:"delegation,required"`
-	JSON       solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationJSON       `json:"-"`
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation struct {
+	Asset      SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset      `json:"asset,required"`
+	AssetType  string                                                                                                                 `json:"asset_type,required"`
+	Delegate   string                                                                                                                 `json:"delegate,required"`
+	Delegation SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation `json:"delegation,required"`
+	JSON       solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationJSON       `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	Delegate    apijson.Field
@@ -871,18 +784,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegation() {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation) implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's name
@@ -891,15 +804,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	Symbol   string `json:"symbol,required"`
 	Decimals int64  `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                                                            `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON `json:"-"`
+	Logo string                                                                                                                `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON struct {
 	Address     apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
@@ -910,29 +823,29 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetType string
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetTypeNFT SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetType = "NFT"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetTypeNFT SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetType = "NFT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetTypeNFT:
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetTypeNFT:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -940,14 +853,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                                `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON `json:"-"`
+	UsdPrice float64                                                                                                                    `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -956,20 +869,20 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiff struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiff struct {
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset].
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAsset],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset].
 	Asset interface{} `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
@@ -978,25 +891,25 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// The owner prior to the transaction
 	PreOwner string `json:"pre_owner,required,nullable"`
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffIn],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffIn].
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffIn],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffIn].
 	In interface{} `json:"in"`
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOut],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOut],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOut],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOut].
-	Out   interface{}                                                                                                  `json:"out"`
-	JSON  solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffJSON `json:"-"`
-	union SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffUnion
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOut],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOut],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOut],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOut].
+	Out   interface{}                                                                      `json:"out"`
+	JSON  solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffJSON `json:"-"`
+	union SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffUnion
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiff]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	PostOwner   apijson.Field
@@ -1007,12 +920,12 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiff) UnmarshalJSON(data []byte) (err error) {
-	*r = SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiff{}
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -1021,53 +934,53 @@ func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAc
 }
 
 // AsUnion returns a
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffUnion]
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffUnion]
 // interface which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff].
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiff) AsUnion() SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffUnion {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff],
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff],
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff],
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff].
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiff) AsUnion() SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff]
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff],
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff],
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff]
 // or
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff].
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffUnion interface {
-	implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiff()
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff].
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffUnion interface {
+	implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiff()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffUnion)(nil)).Elem(),
+		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff{}),
 		},
 	)
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// The owner post the transaction
@@ -1075,16 +988,16 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// The owner prior to the transaction
 	PreOwner string `json:"pre_owner,required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	PostOwner   apijson.Field
@@ -1095,30 +1008,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiff() {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAsset struct {
 	Decimals int64 `json:"decimals,required"`
 	// Type of the asset (`"NativeToken"`)
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetType `json:"type,required"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetType `json:"type,required"`
 	// Logo of SOL
-	Logo string                                                                                                                                        `json:"logo,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetJSON `json:"-"`
+	Logo string                                                                                                            `json:"logo,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAsset]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetJSON struct {
 	Decimals    apijson.Field
 	Type        apijson.Field
 	Logo        apijson.Field
@@ -1126,32 +1039,32 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
 // Type of the asset (`"NativeToken"`)
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetTypeSol SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetType = "SOL"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetTypeEth SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetType = "ETH"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetTypeSol SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetType = "SOL"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetTypeEth SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetType = "ETH"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetTypeSol, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetTypeEth:
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetTypeSol, SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetTypeEth:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -1159,14 +1072,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                    `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffInJSON `json:"-"`
+	UsdPrice float64                                                                                                        `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffInJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -1175,16 +1088,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -1192,14 +1105,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                     `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                                                         `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOutJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOut]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -1208,16 +1121,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// The owner post the transaction
@@ -1225,16 +1138,16 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// The owner prior to the transaction
 	PreOwner string `json:"pre_owner,required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	PostOwner   apijson.Field
@@ -1245,30 +1158,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiff() {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset struct {
 	Decimals int64 `json:"decimals,required"`
 	// Type of the asset (`"StakedNative"`)
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetType `json:"type,required"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetType `json:"type,required"`
 	// Logo of SOL
-	Logo string                                                                                                                                        `json:"logo,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetJSON `json:"-"`
+	Logo string                                                                                                            `json:"logo,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetJSON struct {
 	Decimals    apijson.Field
 	Type        apijson.Field
 	Logo        apijson.Field
@@ -1276,32 +1189,32 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
 // Type of the asset (`"StakedNative"`)
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetTypeStakedSol SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetType = "STAKED_SOL"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetTypeStakedEth SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetType = "STAKED_ETH"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetTypeStakedSol SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetType = "STAKED_SOL"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetTypeStakedEth SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetType = "STAKED_ETH"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetTypeStakedSol, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetTypeStakedEth:
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetTypeStakedSol, SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetTypeStakedEth:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -1309,14 +1222,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                    `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffInJSON `json:"-"`
+	UsdPrice float64                                                                                                        `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffInJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -1325,16 +1238,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -1342,14 +1255,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                     `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                                                         `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOutJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOut]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -1358,16 +1271,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// The owner post the transaction
@@ -1375,16 +1288,16 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// The owner prior to the transaction
 	PreOwner string `json:"pre_owner,required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	PostOwner   apijson.Field
@@ -1395,18 +1308,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiff() {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's decimals
@@ -1416,15 +1329,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// token's symbol
 	Symbol string `json:"symbol,required"`
 	// URL of the asset's logo
-	Logo string                                                                                                                                          `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetJSON `json:"-"`
+	Logo string                                                                                                              `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetJSON struct {
 	Address     apijson.Field
 	Decimals    apijson.Field
 	Name        apijson.Field
@@ -1435,30 +1348,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetTypeToken SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetType = "TOKEN"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetTypeToken SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetType = "TOKEN"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetTypeToken:
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetTypeToken:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -1466,14 +1379,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                      `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffInJSON `json:"-"`
+	UsdPrice float64                                                                                                          `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffInJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffIn]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -1482,16 +1395,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -1499,14 +1412,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                       `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                                                           `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOutJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOut]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -1515,16 +1428,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// The owner post the transaction
@@ -1532,16 +1445,16 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// The owner prior to the transaction
 	PreOwner string `json:"pre_owner,required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	PostOwner   apijson.Field
@@ -1552,18 +1465,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiff() {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's name
@@ -1572,15 +1485,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	Symbol   string `json:"symbol,required"`
 	Decimals int64  `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                                                             `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetJSON `json:"-"`
+	Logo string                                                                                                                 `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetJSON struct {
 	Address     apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
@@ -1591,30 +1504,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetTypeNFT SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetType = "NFT"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetTypeNFT SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetType = "NFT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetTypeNFT:
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetTypeNFT:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -1622,14 +1535,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                         `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffInJSON `json:"-"`
+	UsdPrice float64                                                                                                             `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffInJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffIn]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -1638,16 +1551,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -1655,14 +1568,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                          `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                                                              `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOutJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOut]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -1671,29 +1584,29 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
 // Total USD diff for the requested account address
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryTotalUsdDiff struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryTotalUsdDiff struct {
 	// Total incoming USD transfers
 	In float64 `json:"in,required"`
 	// Total outgoing USD transfers
 	Out float64 `json:"out,required"`
 	// Total USD transfers
-	Total float64                                                                                             `json:"total"`
-	JSON  solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryTotalUsdDiffJSON `json:"-"`
+	Total float64                                                                 `json:"total"`
+	JSON  solanaMessageScanResponseResultSimulationAccountSummaryTotalUsdDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryTotalUsdDiffJSON
-// contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryTotalUsdDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryTotalUsdDiffJSON struct {
+// solanaMessageScanResponseResultSimulationAccountSummaryTotalUsdDiffJSON contains
+// the JSON metadata for the struct
+// [SolanaMessageScanResponseResultSimulationAccountSummaryTotalUsdDiff]
+type solanaMessageScanResponseResultSimulationAccountSummaryTotalUsdDiffJSON struct {
 	In          apijson.Field
 	Out         apijson.Field
 	Total       apijson.Field
@@ -1701,43 +1614,43 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryTotalUsdDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryTotalUsdDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryTotalUsdDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryTotalUsdDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiff struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff struct {
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset].
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAsset],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset].
 	Asset interface{} `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffIn],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffIn].
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffIn],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffIn].
 	In interface{} `json:"in"`
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOut],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOut],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOut],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOut].
-	Out   interface{}                                                                                              `json:"out"`
-	JSON  solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffJSON `json:"-"`
-	union SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffUnion
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOut],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOut],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOut],
+	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOut].
+	Out   interface{}                                                                  `json:"out"`
+	JSON  solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffJSON `json:"-"`
+	union SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffUnion
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -1746,12 +1659,12 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiff) UnmarshalJSON(data []byte) (err error) {
-	*r = SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiff{}
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -1760,66 +1673,66 @@ func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAc
 }
 
 // AsUnion returns a
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffUnion]
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffUnion]
 // interface which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff].
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiff) AsUnion() SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffUnion {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff],
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff],
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff],
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff].
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff) AsUnion() SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff]
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff],
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff],
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff]
 // or
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff].
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffUnion interface {
-	implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiff()
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff].
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffUnion interface {
+	implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffUnion)(nil)).Elem(),
+		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff{}),
 		},
 	)
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -1828,30 +1741,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiff() {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff) implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAsset struct {
 	Decimals int64 `json:"decimals,required"`
 	// Type of the asset (`"NativeToken"`)
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetType `json:"type,required"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetType `json:"type,required"`
 	// Logo of SOL
-	Logo string                                                                                                                             `json:"logo,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetJSON `json:"-"`
+	Logo string                                                                                                 `json:"logo,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAsset]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetJSON struct {
 	Decimals    apijson.Field
 	Type        apijson.Field
 	Logo        apijson.Field
@@ -1859,32 +1772,32 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
 // Type of the asset (`"NativeToken"`)
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetTypeSol SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetType = "SOL"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetTypeEth SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetType = "ETH"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetTypeSol SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetType = "SOL"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetTypeEth SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetType = "ETH"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetTypeSol, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetTypeEth:
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetTypeSol, SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetTypeEth:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -1892,14 +1805,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                         `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffInJSON `json:"-"`
+	UsdPrice float64                                                                                             `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffInJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -1908,16 +1821,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -1925,14 +1838,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                          `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                                              `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOutJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOut]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -1941,29 +1854,29 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -1972,18 +1885,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiff() {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff) implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's decimals
@@ -1993,15 +1906,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// token's symbol
 	Symbol string `json:"symbol,required"`
 	// URL of the asset's logo
-	Logo string                                                                                                                                  `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetJSON `json:"-"`
+	Logo string                                                                                                      `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetJSON struct {
 	Address     apijson.Field
 	Decimals    apijson.Field
 	Name        apijson.Field
@@ -2012,30 +1925,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetTypeToken SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetType = "TOKEN"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetTypeToken SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetType = "TOKEN"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetTypeToken:
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetTypeToken:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -2043,14 +1956,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                              `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffInJSON `json:"-"`
+	UsdPrice float64                                                                                                  `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffInJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -2059,16 +1972,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -2076,14 +1989,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                               `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                                                   `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOutJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOut]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -2092,29 +2005,29 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -2123,18 +2036,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiff() {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff) implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's name
@@ -2143,15 +2056,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	Symbol   string `json:"symbol,required"`
 	Decimals int64  `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                                                     `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON `json:"-"`
+	Logo string                                                                                                         `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON struct {
 	Address     apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
@@ -2162,30 +2075,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetTypeNFT SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetType = "NFT"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetTypeNFT SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetType = "NFT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetTypeNFT:
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetTypeNFT:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -2193,14 +2106,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                 `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffInJSON `json:"-"`
+	UsdPrice float64                                                                                                     `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffInJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffIn]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -2209,16 +2122,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -2226,14 +2139,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                  `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                                                      `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOut]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -2242,29 +2155,29 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -2273,18 +2186,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiff() {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff) implementsSolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's name
@@ -2293,15 +2206,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	Symbol   string `json:"symbol,required"`
 	Decimals int64  `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                                           `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetJSON `json:"-"`
+	Logo string                                                                                               `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetJSON struct {
 	Address     apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
@@ -2312,30 +2225,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetTypeCnft SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetType = "CNFT"
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetTypeCnft SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetType = "CNFT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetTypeCnft:
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetTypeCnft:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -2343,14 +2256,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                       `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffInJSON `json:"-"`
+	UsdPrice float64                                                                                           `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffInJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffIn]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -2359,16 +2272,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -2376,14 +2289,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                        `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                                            `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOutJSON
+// solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOut]
+type solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -2392,20 +2305,20 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiff struct {
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiff struct {
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset].
+	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAsset],
+	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset],
+	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset],
+	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset].
 	Asset interface{} `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
@@ -2414,25 +2327,25 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// The owner prior to the transaction
 	PreOwner string `json:"pre_owner,required,nullable"`
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffIn],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffIn].
+	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn],
+	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn],
+	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffIn],
+	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffIn].
 	In interface{} `json:"in"`
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOut],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOut],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOut],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOut].
-	Out   interface{}                                                                                  `json:"out"`
-	JSON  solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffJSON `json:"-"`
-	union SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffUnion
+	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOut],
+	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOut],
+	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOut],
+	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOut].
+	Out   interface{}                                                      `json:"out"`
+	JSON  solanaMessageScanResponseResultSimulationAssetsOwnershipDiffJSON `json:"-"`
+	union SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffUnion
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffJSON
-// contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffJSON struct {
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffJSON contains the
+// JSON metadata for the struct
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiff]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	PostOwner   apijson.Field
@@ -2443,12 +2356,12 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
-	*r = SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiff{}
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = SolanaMessageScanResponseResultSimulationAssetsOwnershipDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -2457,53 +2370,53 @@ func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAs
 }
 
 // AsUnion returns a
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffUnion]
-// interface which you can cast to the specific types for more type safety.
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffUnion] interface
+// which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff].
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiff) AsUnion() SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffUnion {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiff],
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiff],
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff],
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff].
+func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiff) AsUnion() SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff]
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiff],
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiff],
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff]
 // or
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff].
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffUnion interface {
-	implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiff()
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff].
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffUnion interface {
+	implementsSolanaMessageScanResponseResultSimulationAssetsOwnershipDiff()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffUnion)(nil)).Elem(),
+		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff{}),
 		},
 	)
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// The owner post the transaction
@@ -2511,16 +2424,16 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// The owner prior to the transaction
 	PreOwner string `json:"pre_owner,required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiff]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	PostOwner   apijson.Field
@@ -2531,30 +2444,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiff() {
+func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationAssetsOwnershipDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAsset struct {
 	Decimals int64 `json:"decimals,required"`
 	// Type of the asset (`"NativeToken"`)
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetType `json:"type,required"`
+	Type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetType `json:"type,required"`
 	// Logo of SOL
-	Logo string                                                                                                                        `json:"logo,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetJSON `json:"-"`
+	Logo string                                                                                            `json:"logo,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAsset]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetJSON struct {
 	Decimals    apijson.Field
 	Type        apijson.Field
 	Logo        apijson.Field
@@ -2562,32 +2475,32 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
 // Type of the asset (`"NativeToken"`)
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetTypeSol SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetType = "SOL"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetTypeEth SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetType = "ETH"
+	SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetTypeSol SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetType = "SOL"
+	SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetTypeEth SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetType = "ETH"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetTypeSol, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetTypeEth:
+	case SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetTypeSol, SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetTypeEth:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -2595,14 +2508,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                    `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffInJSON `json:"-"`
+	UsdPrice float64                                                                                        `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffInJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -2611,16 +2524,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -2628,14 +2541,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                     `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                                         `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOutJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOut]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -2644,16 +2557,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// The owner post the transaction
@@ -2661,16 +2574,16 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// The owner prior to the transaction
 	PreOwner string `json:"pre_owner,required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiff]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	PostOwner   apijson.Field
@@ -2681,30 +2594,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiff() {
+func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationAssetsOwnershipDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset struct {
 	Decimals int64 `json:"decimals,required"`
 	// Type of the asset (`"StakedNative"`)
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetType `json:"type,required"`
+	Type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetType `json:"type,required"`
 	// Logo of SOL
-	Logo string                                                                                                                        `json:"logo,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetJSON `json:"-"`
+	Logo string                                                                                            `json:"logo,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetJSON struct {
 	Decimals    apijson.Field
 	Type        apijson.Field
 	Logo        apijson.Field
@@ -2712,32 +2625,32 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
 // Type of the asset (`"StakedNative"`)
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetTypeStakedSol SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetType = "STAKED_SOL"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetTypeStakedEth SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetType = "STAKED_ETH"
+	SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetTypeStakedSol SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetType = "STAKED_SOL"
+	SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetTypeStakedEth SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetType = "STAKED_ETH"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetTypeStakedSol, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetTypeStakedEth:
+	case SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetTypeStakedSol, SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetTypeStakedEth:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -2745,14 +2658,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                    `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffInJSON `json:"-"`
+	UsdPrice float64                                                                                        `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffInJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -2761,16 +2674,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -2778,14 +2691,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                     `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                                         `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOutJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOut]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -2794,16 +2707,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// The owner post the transaction
@@ -2811,16 +2724,16 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// The owner prior to the transaction
 	PreOwner string `json:"pre_owner,required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	PostOwner   apijson.Field
@@ -2831,18 +2744,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiff() {
+func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationAssetsOwnershipDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's decimals
@@ -2852,15 +2765,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// token's symbol
 	Symbol string `json:"symbol,required"`
 	// URL of the asset's logo
-	Logo string                                                                                                                          `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetJSON `json:"-"`
+	Logo string                                                                                              `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetJSON struct {
 	Address     apijson.Field
 	Decimals    apijson.Field
 	Name        apijson.Field
@@ -2871,30 +2784,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetTypeToken SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetType = "TOKEN"
+	SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetTypeToken SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetType = "TOKEN"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetTypeToken:
+	case SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetTypeToken:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -2902,14 +2815,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                      `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffInJSON `json:"-"`
+	UsdPrice float64                                                                                          `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffInJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffIn]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -2918,16 +2831,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -2935,14 +2848,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                       `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                                           `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOutJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOut]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -2951,16 +2864,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// The owner post the transaction
@@ -2968,16 +2881,16 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// The owner prior to the transaction
 	PreOwner string `json:"pre_owner,required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	PostOwner   apijson.Field
@@ -2988,18 +2901,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiff() {
+func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff) implementsSolanaMessageScanResponseResultSimulationAssetsOwnershipDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's name
@@ -3008,15 +2921,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	Symbol   string `json:"symbol,required"`
 	Decimals int64  `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                                             `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetJSON `json:"-"`
+	Logo string                                                                                                 `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetJSON struct {
 	Address     apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
@@ -3027,30 +2940,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetTypeNFT SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetType = "NFT"
+	SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetTypeNFT SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetType = "NFT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetTypeNFT:
+	case SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetTypeNFT:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -3058,14 +2971,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                         `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffInJSON `json:"-"`
+	UsdPrice float64                                                                                             `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffInJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffIn]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -3074,16 +2987,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -3091,14 +3004,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                          `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                                              `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOutJSON
+// solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOut]
+type solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -3107,15 +3020,15 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail struct {
+type SolanaMessageScanResponseResultSimulationAccountsDetail struct {
 	// Encoded public key of the account
 	AccountAddress string `json:"account_address,required"`
 	WasWrittenTo   bool   `json:"was_written_to,required"`
@@ -3132,18 +3045,18 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	// Encoded public key of the owner
 	OwnerAddress string `json:"owner_address"`
 	// Symbol of the mint
-	Symbol string                                                                                   `json:"symbol"`
-	Type   SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType `json:"type"`
+	Symbol string                                                       `json:"symbol"`
+	Type   SolanaMessageScanResponseResultSimulationAccountsDetailsType `json:"type"`
 	// URI of the mint
-	Uri   string                                                                                  `json:"uri"`
-	JSON  solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailJSON `json:"-"`
-	union SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsUnion
+	Uri   string                                                      `json:"uri"`
+	JSON  solanaMessageScanResponseResultSimulationAccountsDetailJSON `json:"-"`
+	union SolanaMessageScanResponseResultSimulationAccountsDetailsUnion
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailJSON
-// contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailJSON struct {
+// solanaMessageScanResponseResultSimulationAccountsDetailJSON contains the JSON
+// metadata for the struct
+// [SolanaMessageScanResponseResultSimulationAccountsDetail]
+type solanaMessageScanResponseResultSimulationAccountsDetailJSON struct {
 	AccountAddress apijson.Field
 	WasWrittenTo   apijson.Field
 	Description    apijson.Field
@@ -3159,12 +3072,12 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountsDetailJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail) UnmarshalJSON(data []byte) (err error) {
-	*r = SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail{}
+func (r *SolanaMessageScanResponseResultSimulationAccountsDetail) UnmarshalJSON(data []byte) (err error) {
+	*r = SolanaMessageScanResponseResultSimulationAccountsDetail{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -3173,85 +3086,85 @@ func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAc
 }
 
 // AsUnion returns a
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsUnion]
-// interface which you can cast to the specific types for more type safety.
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsUnion] interface which
+// you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchema],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchema],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchema],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchema],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchema],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchema].
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail) AsUnion() SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsUnion {
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchema],
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchema],
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchema],
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchema],
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchema],
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema],
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchema].
+func (r SolanaMessageScanResponseResultSimulationAccountsDetail) AsUnion() SolanaMessageScanResponseResultSimulationAccountsDetailsUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchema],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchema],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchema],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchema],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchema],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema]
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchema],
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchema],
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchema],
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchema],
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchema],
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema]
 // or
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchema].
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsUnion interface {
-	implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail()
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchema].
+type SolanaMessageScanResponseResultSimulationAccountsDetailsUnion interface {
+	implementsSolanaMessageScanResponseResultSimulationAccountsDetail()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsUnion)(nil)).Elem(),
+		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationAccountsDetailsUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchema{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchema{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchema{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchema{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchema{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchema{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchema{}),
 		},
 	)
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchema struct {
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchema struct {
 	// Encoded public key of the account
 	AccountAddress string `json:"account_address,required"`
 	// The address of the owning program
 	Owner        string `json:"owner,required"`
 	WasWrittenTo bool   `json:"was_written_to,required"`
 	// Description of the account
-	Description string                                                                                                         `json:"description,nullable"`
-	Type        SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchemaType `json:"type"`
-	JSON        solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchemaJSON `json:"-"`
+	Description string                                                                             `json:"description,nullable"`
+	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchemaType `json:"type"`
+	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchemaJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchemaJSON
+// solanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchemaJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchema]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchemaJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchema]
+type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchemaJSON struct {
 	AccountAddress apijson.Field
 	Owner          apijson.Field
 	WasWrittenTo   apijson.Field
@@ -3261,45 +3174,45 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchemaJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchema) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail() {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchema) implementsSolanaMessageScanResponseResultSimulationAccountsDetail() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchemaType string
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchemaType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchemaTypePda SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchemaType = "PDA"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchemaTypePda SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchemaType = "PDA"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchemaType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchemaType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaPdaAccountSchemaTypePda:
+	case SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchemaTypePda:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchema struct {
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchema struct {
 	// Encoded public key of the account
 	AccountAddress string `json:"account_address,required"`
 	WasWrittenTo   bool   `json:"was_written_to,required"`
 	// Description of the account
-	Description string                                                                                                                   `json:"description,nullable"`
-	Type        SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchemaType `json:"type"`
-	JSON        solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchemaJSON `json:"-"`
+	Description string                                                                                       `json:"description,nullable"`
+	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchemaType `json:"type"`
+	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchemaJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchemaJSON
+// solanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchemaJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchema]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchemaJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchema]
+type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchemaJSON struct {
 	AccountAddress apijson.Field
 	WasWrittenTo   apijson.Field
 	Description    apijson.Field
@@ -3308,45 +3221,45 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchemaJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchema) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail() {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchema) implementsSolanaMessageScanResponseResultSimulationAccountsDetail() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchemaType string
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchemaType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchemaTypeSystemAccount SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchemaType = "SYSTEM_ACCOUNT"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchemaTypeSystemAccount SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchemaType = "SYSTEM_ACCOUNT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchemaType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchemaType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaSystemAccountDetailsSchemaTypeSystemAccount:
+	case SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchemaTypeSystemAccount:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchema struct {
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchema struct {
 	// Encoded public key of the account
 	AccountAddress string `json:"account_address,required"`
 	WasWrittenTo   bool   `json:"was_written_to,required"`
 	// Description of the account
-	Description string                                                                                                                    `json:"description,nullable"`
-	Type        SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchemaType `json:"type"`
-	JSON        solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchemaJSON `json:"-"`
+	Description string                                                                                        `json:"description,nullable"`
+	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaType `json:"type"`
+	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchemaJSON
+// solanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchema]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchemaJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchema]
+type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaJSON struct {
 	AccountAddress apijson.Field
 	WasWrittenTo   apijson.Field
 	Description    apijson.Field
@@ -3355,33 +3268,33 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchemaJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchema) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail() {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchema) implementsSolanaMessageScanResponseResultSimulationAccountsDetail() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchemaType string
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchemaTypeProgram       SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchemaType = "PROGRAM"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchemaTypeNativeProgram SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchemaType = "NATIVE_PROGRAM"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaTypeProgram       SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaType = "PROGRAM"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaTypeNativeProgram SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaType = "NATIVE_PROGRAM"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchemaType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchemaTypeProgram, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaProgramAccountDetailsSchemaTypeNativeProgram:
+	case SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaTypeProgram, SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaTypeNativeProgram:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchema struct {
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchema struct {
 	// Encoded public key of the account
 	AccountAddress string `json:"account_address,required"`
 	// Encoded public key of the mint
@@ -3390,15 +3303,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	OwnerAddress string `json:"owner_address,required"`
 	WasWrittenTo bool   `json:"was_written_to,required"`
 	// Description of the account
-	Description string                                                                                                                  `json:"description,nullable"`
-	Type        SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchemaType `json:"type"`
-	JSON        solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchemaJSON `json:"-"`
+	Description string                                                                                      `json:"description,nullable"`
+	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaType `json:"type"`
+	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchemaJSON
+// solanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchema]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchemaJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchema]
+type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaJSON struct {
 	AccountAddress apijson.Field
 	MintAddress    apijson.Field
 	OwnerAddress   apijson.Field
@@ -3409,33 +3322,33 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchemaJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchema) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail() {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchema) implementsSolanaMessageScanResponseResultSimulationAccountsDetail() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchemaType string
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchemaTypeTokenAccount     SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchemaType = "TOKEN_ACCOUNT"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchemaTypeToken2022Account SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchemaType = "TOKEN_2022_ACCOUNT"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaTypeTokenAccount     SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaType = "TOKEN_ACCOUNT"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaTypeToken2022Account SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaType = "TOKEN_2022_ACCOUNT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchemaType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchemaTypeTokenAccount, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaTokenAccountDetailsSchemaTypeToken2022Account:
+	case SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaTypeTokenAccount, SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaTypeToken2022Account:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchema struct {
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchema struct {
 	// Encoded public key of the account
 	AccountAddress string `json:"account_address,required"`
 	// Logo of the mint
@@ -3446,15 +3359,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	Symbol       string `json:"symbol,required"`
 	WasWrittenTo bool   `json:"was_written_to,required"`
 	// Description of the account
-	Description string                                                                                                                         `json:"description,nullable"`
-	Type        SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchemaType `json:"type"`
-	JSON        solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchemaJSON `json:"-"`
+	Description string                                                                                             `json:"description,nullable"`
+	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaType `json:"type"`
+	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchemaJSON
+// solanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchema]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchemaJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchema]
+type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaJSON struct {
 	AccountAddress apijson.Field
 	Logo           apijson.Field
 	Name           apijson.Field
@@ -3466,33 +3379,33 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchemaJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchema) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail() {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchema) implementsSolanaMessageScanResponseResultSimulationAccountsDetail() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchemaType string
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchemaTypeFungibleMintAccount     SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchemaType = "FUNGIBLE_MINT_ACCOUNT"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchemaTypeFungibleMintAccount2022 SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchemaType = "FUNGIBLE_MINT_ACCOUNT_2022"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaTypeFungibleMintAccount     SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaType = "FUNGIBLE_MINT_ACCOUNT"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaTypeFungibleMintAccount2022 SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaType = "FUNGIBLE_MINT_ACCOUNT_2022"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchemaType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchemaTypeFungibleMintAccount, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaFungibleMintAccountDetailsSchemaTypeFungibleMintAccount2022:
+	case SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaTypeFungibleMintAccount, SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaTypeFungibleMintAccount2022:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema struct {
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema struct {
 	// Encoded public key of the account
 	AccountAddress string `json:"account_address,required"`
 	// Logo of the mint
@@ -3505,15 +3418,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	Uri          string `json:"uri,required"`
 	WasWrittenTo bool   `json:"was_written_to,required"`
 	// Description of the account
-	Description string                                                                                                                            `json:"description,nullable"`
-	Type        SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaType `json:"type"`
-	JSON        solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaJSON `json:"-"`
+	Description string                                                                                                `json:"description,nullable"`
+	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaType `json:"type"`
+	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaJSON
+// solanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema]
+type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaJSON struct {
 	AccountAddress apijson.Field
 	Logo           apijson.Field
 	Name           apijson.Field
@@ -3526,33 +3439,33 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail() {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema) implementsSolanaMessageScanResponseResultSimulationAccountsDetail() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaType string
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaTypeNonFungibleMintAccount     SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaType = "NON_FUNGIBLE_MINT_ACCOUNT"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaTypeNonFungibleMintAccount2022 SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaType = "NON_FUNGIBLE_MINT_ACCOUNT_2022"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaTypeNonFungibleMintAccount     SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaType = "NON_FUNGIBLE_MINT_ACCOUNT"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaTypeNonFungibleMintAccount2022 SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaType = "NON_FUNGIBLE_MINT_ACCOUNT_2022"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaTypeNonFungibleMintAccount, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaTypeNonFungibleMintAccount2022:
+	case SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaTypeNonFungibleMintAccount, SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaTypeNonFungibleMintAccount2022:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchema struct {
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchema struct {
 	// Encoded public key of the account
 	AccountAddress string `json:"account_address,required"`
 	// Logo of the mint
@@ -3565,15 +3478,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	Uri          string `json:"uri,required"`
 	WasWrittenTo bool   `json:"was_written_to,required"`
 	// Description of the account
-	Description string                                                                                                                     `json:"description,nullable"`
-	Type        SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchemaType `json:"type"`
-	JSON        solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchemaJSON `json:"-"`
+	Description string                                                                                         `json:"description,nullable"`
+	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchemaType `json:"type"`
+	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchemaJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchemaJSON
+// solanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchemaJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchema]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchemaJSON struct {
+// [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchema]
+type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchemaJSON struct {
 	AccountAddress apijson.Field
 	Logo           apijson.Field
 	Name           apijson.Field
@@ -3586,84 +3499,83 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccoun
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchemaJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchema) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetail() {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchema) implementsSolanaMessageScanResponseResultSimulationAccountsDetail() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchemaType string
+type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchemaType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchemaTypeCnftMintAccount SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchemaType = "CNFT_MINT_ACCOUNT"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchemaTypeCnftMintAccount SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchemaType = "CNFT_MINT_ACCOUNT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchemaType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchemaType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsSolanaCnftMintAccountDetailsSchemaTypeCnftMintAccount:
+	case SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchemaTypeCnftMintAccount:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType string
+type SolanaMessageScanResponseResultSimulationAccountsDetailsType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypePda                        SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType = "PDA"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeSystemAccount              SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType = "SYSTEM_ACCOUNT"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeProgram                    SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType = "PROGRAM"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeNativeProgram              SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType = "NATIVE_PROGRAM"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeTokenAccount               SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType = "TOKEN_ACCOUNT"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeToken2022Account           SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType = "TOKEN_2022_ACCOUNT"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeFungibleMintAccount        SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType = "FUNGIBLE_MINT_ACCOUNT"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeFungibleMintAccount2022    SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType = "FUNGIBLE_MINT_ACCOUNT_2022"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeNonFungibleMintAccount     SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType = "NON_FUNGIBLE_MINT_ACCOUNT"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeNonFungibleMintAccount2022 SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType = "NON_FUNGIBLE_MINT_ACCOUNT_2022"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeCnftMintAccount            SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType = "CNFT_MINT_ACCOUNT"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsTypePda                        SolanaMessageScanResponseResultSimulationAccountsDetailsType = "PDA"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsTypeSystemAccount              SolanaMessageScanResponseResultSimulationAccountsDetailsType = "SYSTEM_ACCOUNT"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsTypeProgram                    SolanaMessageScanResponseResultSimulationAccountsDetailsType = "PROGRAM"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsTypeNativeProgram              SolanaMessageScanResponseResultSimulationAccountsDetailsType = "NATIVE_PROGRAM"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsTypeTokenAccount               SolanaMessageScanResponseResultSimulationAccountsDetailsType = "TOKEN_ACCOUNT"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsTypeToken2022Account           SolanaMessageScanResponseResultSimulationAccountsDetailsType = "TOKEN_2022_ACCOUNT"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsTypeFungibleMintAccount        SolanaMessageScanResponseResultSimulationAccountsDetailsType = "FUNGIBLE_MINT_ACCOUNT"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsTypeFungibleMintAccount2022    SolanaMessageScanResponseResultSimulationAccountsDetailsType = "FUNGIBLE_MINT_ACCOUNT_2022"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsTypeNonFungibleMintAccount     SolanaMessageScanResponseResultSimulationAccountsDetailsType = "NON_FUNGIBLE_MINT_ACCOUNT"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsTypeNonFungibleMintAccount2022 SolanaMessageScanResponseResultSimulationAccountsDetailsType = "NON_FUNGIBLE_MINT_ACCOUNT_2022"
+	SolanaMessageScanResponseResultSimulationAccountsDetailsTypeCnftMintAccount            SolanaMessageScanResponseResultSimulationAccountsDetailsType = "CNFT_MINT_ACCOUNT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAccountsDetailsType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypePda, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeSystemAccount, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeProgram, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeNativeProgram, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeTokenAccount, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeToken2022Account, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeFungibleMintAccount, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeFungibleMintAccount2022, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeNonFungibleMintAccount, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeNonFungibleMintAccount2022, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAccountsDetailsTypeCnftMintAccount:
+	case SolanaMessageScanResponseResultSimulationAccountsDetailsTypePda, SolanaMessageScanResponseResultSimulationAccountsDetailsTypeSystemAccount, SolanaMessageScanResponseResultSimulationAccountsDetailsTypeProgram, SolanaMessageScanResponseResultSimulationAccountsDetailsTypeNativeProgram, SolanaMessageScanResponseResultSimulationAccountsDetailsTypeTokenAccount, SolanaMessageScanResponseResultSimulationAccountsDetailsTypeToken2022Account, SolanaMessageScanResponseResultSimulationAccountsDetailsTypeFungibleMintAccount, SolanaMessageScanResponseResultSimulationAccountsDetailsTypeFungibleMintAccount2022, SolanaMessageScanResponseResultSimulationAccountsDetailsTypeNonFungibleMintAccount, SolanaMessageScanResponseResultSimulationAccountsDetailsTypeNonFungibleMintAccount2022, SolanaMessageScanResponseResultSimulationAccountsDetailsTypeCnftMintAccount:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiff struct {
+type SolanaMessageScanResponseResultSimulationAssetsDiff struct {
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAsset].
+	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAsset],
+	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAsset],
+	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAsset],
+	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAsset].
 	Asset interface{} `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffIn],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffIn],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffIn],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffIn].
+	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffIn],
+	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffIn],
+	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffIn],
+	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffIn].
 	In interface{} `json:"in"`
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffOut],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffOut],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffOut],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffOut].
-	Out   interface{}                                                                         `json:"out"`
-	JSON  solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffJSON `json:"-"`
-	union SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffUnion
+	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffOut],
+	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffOut],
+	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffOut],
+	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffOut].
+	Out   interface{}                                             `json:"out"`
+	JSON  solanaMessageScanResponseResultSimulationAssetsDiffJSON `json:"-"`
+	union SolanaMessageScanResponseResultSimulationAssetsDiffUnion
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffJSON
-// contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffJSON struct {
+// solanaMessageScanResponseResultSimulationAssetsDiffJSON contains the JSON
+// metadata for the struct [SolanaMessageScanResponseResultSimulationAssetsDiff]
+type solanaMessageScanResponseResultSimulationAssetsDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -3672,12 +3584,12 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiff) UnmarshalJSON(data []byte) (err error) {
-	*r = SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiff{}
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = SolanaMessageScanResponseResultSimulationAssetsDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -3685,67 +3597,65 @@ func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAs
 	return apijson.Port(r.union, &r)
 }
 
-// AsUnion returns a
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffUnion]
+// AsUnion returns a [SolanaMessageScanResponseResultSimulationAssetsDiffUnion]
 // interface which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiff].
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiff) AsUnion() SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffUnion {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiff],
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiff],
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiff],
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiff].
+func (r SolanaMessageScanResponseResultSimulationAssetsDiff) AsUnion() SolanaMessageScanResponseResultSimulationAssetsDiffUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiff],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiff]
-// or
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiff].
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffUnion interface {
-	implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiff()
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiff],
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiff],
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiff]
+// or [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiff].
+type SolanaMessageScanResponseResultSimulationAssetsDiffUnion interface {
+	implementsSolanaMessageScanResponseResultSimulationAssetsDiff()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffUnion)(nil)).Elem(),
+		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationAssetsDiffUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiff{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiff{}),
 		},
 	)
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiff]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -3754,30 +3664,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiff() {
+func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiff) implementsSolanaMessageScanResponseResultSimulationAssetsDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAsset struct {
 	Decimals int64 `json:"decimals,required"`
 	// Type of the asset (`"NativeToken"`)
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAssetType `json:"type,required"`
+	Type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetType `json:"type,required"`
 	// Logo of SOL
-	Logo string                                                                                                        `json:"logo,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAssetJSON `json:"-"`
+	Logo string                                                                            `json:"logo,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAsset]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetJSON struct {
 	Decimals    apijson.Field
 	Type        apijson.Field
 	Logo        apijson.Field
@@ -3785,32 +3695,32 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
 // Type of the asset (`"NativeToken"`)
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAssetTypeSol SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAssetType = "SOL"
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAssetTypeEth SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAssetType = "ETH"
+	SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetTypeSol SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetType = "SOL"
+	SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetTypeEth SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetType = "ETH"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAssetTypeSol, SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffAssetTypeEth:
+	case SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetTypeSol, SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetTypeEth:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -3818,14 +3728,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                    `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffInJSON `json:"-"`
+	UsdPrice float64                                                                        `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffInJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffIn]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -3834,16 +3744,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -3851,14 +3761,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                     `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                         `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffOutJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffOut]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -3867,29 +3777,29 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaNativeAssetDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiff]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -3898,18 +3808,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiff() {
+func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiff) implementsSolanaMessageScanResponseResultSimulationAssetsDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's decimals
@@ -3919,15 +3829,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// token's symbol
 	Symbol string `json:"symbol,required"`
 	// URL of the asset's logo
-	Logo string                                                                                                             `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAssetJSON `json:"-"`
+	Logo string                                                                                 `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAsset]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAssetJSON struct {
 	Address     apijson.Field
 	Decimals    apijson.Field
 	Name        apijson.Field
@@ -3938,30 +3848,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAssetTypeToken SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAssetType = "TOKEN"
+	SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAssetTypeToken SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAssetType = "TOKEN"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffAssetTypeToken:
+	case SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAssetTypeToken:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -3969,14 +3879,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                         `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffInJSON `json:"-"`
+	UsdPrice float64                                                                             `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffInJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffIn]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -3985,16 +3895,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -4002,14 +3912,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                          `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                              `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffOutJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffOut]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -4018,29 +3928,29 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplFungibleAssetDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiff]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -4049,18 +3959,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiff() {
+func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiff) implementsSolanaMessageScanResponseResultSimulationAssetsDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's name
@@ -4069,15 +3979,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	Symbol   string `json:"symbol,required"`
 	Decimals int64  `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                                `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON `json:"-"`
+	Logo string                                                                                    `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAsset]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON struct {
 	Address     apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
@@ -4088,30 +3998,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAssetTypeNFT SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAssetType = "NFT"
+	SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetTypeNFT SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetType = "NFT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffAssetTypeNFT:
+	case SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetTypeNFT:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -4119,14 +4029,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                            `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffInJSON `json:"-"`
+	UsdPrice float64                                                                                `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffInJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffIn]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -4135,16 +4045,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -4152,14 +4062,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                             `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                                 `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffOut]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -4168,29 +4078,29 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAsset `json:"asset,required"`
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiff struct {
+	Asset SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffIn `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffOut  `json:"out,nullable"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffJSON `json:"-"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffOut  `json:"out,nullable"`
+	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiff]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiff]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -4199,18 +4109,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiff) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiff() {
+func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiff) implementsSolanaMessageScanResponseResultSimulationAssetsDiff() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAsset struct {
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's name
@@ -4219,15 +4129,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	Symbol   string `json:"symbol,required"`
 	Decimals int64  `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                      `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAssetJSON `json:"-"`
+	Logo string                                                                          `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAssetJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAsset]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetJSON struct {
 	Address     apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
@@ -4238,30 +4148,30 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAssetType string
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAssetTypeCnft SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAssetType = "CNFT"
+	SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetTypeCnft SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetType = "CNFT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffAssetTypeCnft:
+	case SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetTypeCnft:
 		return true
 	}
 	return false
 }
 
 // Details of the incoming transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffIn struct {
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffIn struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -4269,14 +4179,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                  `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffInJSON `json:"-"`
+	UsdPrice float64                                                                      `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffInJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffInJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffInJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffIn]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffInJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffIn]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffInJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -4285,16 +4195,16 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffIn) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffInJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffInJSON) RawJSON() string {
 	return r.raw
 }
 
 // Details of the outgoing transfer
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffOut struct {
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffOut struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -4302,14 +4212,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                   `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffOutJSON `json:"-"`
+	UsdPrice float64                                                                       `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffOutJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffOutJSON
+// solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffOutJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffOut]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffOutJSON struct {
+// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffOut]
+type solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffOutJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -4318,35 +4228,34 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssets
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffOut) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaAssetsDiffSolanaCnftAssetDiffOutJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffOutJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegation struct {
+type SolanaMessageScanResponseResultSimulationDelegation struct {
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAsset],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAsset].
+	// [SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAsset],
+	// [SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAsset],
+	// [SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAsset].
 	Asset     interface{} `json:"asset,required"`
 	AssetType string      `json:"asset_type,required"`
 	Delegate  string      `json:"delegate,required"`
 	// This field can have the runtime type of
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationDelegation],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationDelegation],
-	// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationDelegation].
-	Delegation interface{}                                                                         `json:"delegation,required"`
-	JSON       solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationJSON `json:"-"`
-	union      SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsUnion
+	// [SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegation],
+	// [SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegation],
+	// [SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegation].
+	Delegation interface{}                                             `json:"delegation,required"`
+	JSON       solanaMessageScanResponseResultSimulationDelegationJSON `json:"-"`
+	union      SolanaMessageScanResponseResultSimulationDelegationsUnion
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationJSON
-// contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationJSON struct {
+// solanaMessageScanResponseResultSimulationDelegationJSON contains the JSON
+// metadata for the struct [SolanaMessageScanResponseResultSimulationDelegation]
+type solanaMessageScanResponseResultSimulationDelegationJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	Delegate    apijson.Field
@@ -4355,12 +4264,12 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	ExtraFields map[string]apijson.Field
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegation) UnmarshalJSON(data []byte) (err error) {
-	*r = SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegation{}
+func (r *SolanaMessageScanResponseResultSimulationDelegation) UnmarshalJSON(data []byte) (err error) {
+	*r = SolanaMessageScanResponseResultSimulationDelegation{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -4368,58 +4277,57 @@ func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDe
 	return apijson.Port(r.union, &r)
 }
 
-// AsUnion returns a
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsUnion]
+// AsUnion returns a [SolanaMessageScanResponseResultSimulationDelegationsUnion]
 // interface which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegation],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegation],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegation].
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegation) AsUnion() SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsUnion {
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegation],
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegation],
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegation].
+func (r SolanaMessageScanResponseResultSimulationDelegation) AsUnion() SolanaMessageScanResponseResultSimulationDelegationsUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegation],
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegation]
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegation],
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegation]
 // or
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegation].
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsUnion interface {
-	implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegation()
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegation].
+type SolanaMessageScanResponseResultSimulationDelegationsUnion interface {
+	implementsSolanaMessageScanResponseResultSimulationDelegation()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsUnion)(nil)).Elem(),
+		reflect.TypeOf((*SolanaMessageScanResponseResultSimulationDelegationsUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegation{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegation{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegation{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegation{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegation{}),
+			Type:       reflect.TypeOf(SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegation{}),
 		},
 	)
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegation struct {
-	Asset      SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAsset      `json:"asset,required"`
-	AssetType  string                                                                                                         `json:"asset_type,required"`
-	Delegate   string                                                                                                         `json:"delegate,required"`
-	Delegation SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationDelegation `json:"delegation,required"`
-	JSON       solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationJSON       `json:"-"`
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegation struct {
+	Asset      SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAsset      `json:"asset,required"`
+	AssetType  string                                                                             `json:"asset_type,required"`
+	Delegate   string                                                                             `json:"delegate,required"`
+	Delegation SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegation `json:"delegation,required"`
+	JSON       solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationJSON       `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationJSON
+// solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationJSON struct {
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegation]
+type solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	Delegate    apijson.Field
@@ -4428,18 +4336,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegation) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegation) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegation) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegation() {
+func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegation) implementsSolanaMessageScanResponseResultSimulationDelegation() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAsset struct {
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's name
@@ -4448,15 +4356,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	Symbol   string `json:"symbol,required"`
 	Decimals int64  `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                        `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAssetJSON `json:"-"`
+	Logo string                                                                            `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAssetJSON
+// solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAsset]
+type solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetJSON struct {
 	Address     apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
@@ -4467,29 +4375,29 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAssetType string
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAssetTypeCnft SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAssetType = "CNFT"
+	SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetTypeCnft SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetType = "CNFT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationAssetTypeCnft:
+	case SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetTypeCnft:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationDelegation struct {
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegation struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -4497,14 +4405,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                            `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationDelegationJSON `json:"-"`
+	UsdPrice float64                                                                                `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegationJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationDelegationJSON
+// solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegationJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationDelegationJSON struct {
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegation]
+type solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegationJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -4513,26 +4421,26 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationDelegation) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegation) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaCnftDelegationDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegation struct {
-	Asset      SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAsset      `json:"asset,required"`
-	AssetType  string                                                                                                                     `json:"asset_type,required"`
-	Delegate   string                                                                                                                     `json:"delegate,required"`
-	Delegation SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationDelegation `json:"delegation,required"`
-	JSON       solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationJSON       `json:"-"`
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegation struct {
+	Asset      SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAsset      `json:"asset,required"`
+	AssetType  string                                                                                         `json:"asset_type,required"`
+	Delegate   string                                                                                         `json:"delegate,required"`
+	Delegation SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegation `json:"delegation,required"`
+	JSON       solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationJSON       `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationJSON
+// solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationJSON struct {
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegation]
+type solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	Delegate    apijson.Field
@@ -4541,18 +4449,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegation) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegation) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegation) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegation() {
+func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegation) implementsSolanaMessageScanResponseResultSimulationDelegation() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAsset struct {
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's decimals
@@ -4562,15 +4470,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	// token's symbol
 	Symbol string `json:"symbol,required"`
 	// URL of the asset's logo
-	Logo string                                                                                                                    `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAssetJSON `json:"-"`
+	Logo string                                                                                        `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAssetJSON
+// solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAsset]
+type solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAssetJSON struct {
 	Address     apijson.Field
 	Decimals    apijson.Field
 	Name        apijson.Field
@@ -4581,29 +4489,29 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAssetType string
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAssetTypeToken SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAssetType = "TOKEN"
+	SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAssetTypeToken SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAssetType = "TOKEN"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationAssetTypeToken:
+	case SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAssetTypeToken:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationDelegation struct {
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegation struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -4611,14 +4519,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                        `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationDelegationJSON `json:"-"`
+	UsdPrice float64                                                                                            `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegationJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationDelegationJSON
+// solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegationJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationDelegationJSON struct {
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegation]
+type solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegationJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -4627,26 +4535,26 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationDelegation) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegation) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaFungibleSplTokenDelegationDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegation struct {
-	Asset      SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAsset      `json:"asset,required"`
-	AssetType  string                                                                                                                        `json:"asset_type,required"`
-	Delegate   string                                                                                                                        `json:"delegate,required"`
-	Delegation SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationDelegation `json:"delegation,required"`
-	JSON       solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationJSON       `json:"-"`
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegation struct {
+	Asset      SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAsset      `json:"asset,required"`
+	AssetType  string                                                                                            `json:"asset_type,required"`
+	Delegate   string                                                                                            `json:"delegate,required"`
+	Delegation SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegation `json:"delegation,required"`
+	JSON       solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationJSON       `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationJSON
+// solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationJSON struct {
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegation]
+type solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	Delegate    apijson.Field
@@ -4655,18 +4563,18 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegation) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegation) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegation) implementsSolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegation() {
+func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegation) implementsSolanaMessageScanResponseResultSimulationDelegation() {
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAsset struct {
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAsset struct {
 	// Address of the token's contract
 	Address string `json:"address,required"`
 	// token's name
@@ -4675,15 +4583,15 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	Symbol   string `json:"symbol,required"`
 	Decimals int64  `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                                       `json:"logo,nullable"`
-	Type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAssetType `json:"type"`
-	JSON solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON `json:"-"`
+	Logo string                                                                                           `json:"logo,nullable"`
+	Type SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetType `json:"type"`
+	JSON solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON
+// solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAsset]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON struct {
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAsset]
+type solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON struct {
 	Address     apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
@@ -4694,29 +4602,29 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAssetType string
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetType string
 
 const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAssetTypeNFT SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAssetType = "NFT"
+	SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetTypeNFT SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetType = "NFT"
 )
 
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAssetType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationAssetTypeNFT:
+	case SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetTypeNFT:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationDelegation struct {
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegation struct {
 	// Raw value of the transfer
 	RawValue int64 `json:"raw_value,required"`
 	// Value of the transfer
@@ -4724,14 +4632,14 @@ type SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	// Summarized description of the transfer
 	Summary string `json:"summary,nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                           `json:"usd_price,nullable"`
-	JSON     solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON `json:"-"`
+	UsdPrice float64                                                                                               `json:"usd_price,nullable"`
+	JSON     solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON `json:"-"`
 }
 
-// solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON
+// solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON
 // contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationDelegation]
-type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON struct {
+// [SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegation]
+type solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON struct {
 	RawValue    apijson.Field
 	Value       apijson.Field
 	Summary     apijson.Field
@@ -4740,209 +4648,63 @@ type solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelega
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationDelegation) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegation) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationResultSchemaDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON) RawJSON() string {
 	return r.raw
 }
 
-type SolanaMessageScanResponseResultSimulationSolanaSimulationErrorSchema struct {
-	// Error message
-	Error  string                                                                     `json:"error,required"`
-	Status SolanaMessageScanResponseResultSimulationSolanaSimulationErrorSchemaStatus `json:"status,required"`
-	JSON   solanaMessageScanResponseResultSimulationSolanaSimulationErrorSchemaJSON   `json:"-"`
-}
-
-// solanaMessageScanResponseResultSimulationSolanaSimulationErrorSchemaJSON
-// contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultSimulationSolanaSimulationErrorSchema]
-type solanaMessageScanResponseResultSimulationSolanaSimulationErrorSchemaJSON struct {
-	Error       apijson.Field
-	Status      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SolanaMessageScanResponseResultSimulationSolanaSimulationErrorSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r solanaMessageScanResponseResultSimulationSolanaSimulationErrorSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationErrorSchema) implementsSolanaMessageScanResponseResultSimulation() {
-}
-
-type SolanaMessageScanResponseResultSimulationSolanaSimulationErrorSchemaStatus string
-
-const (
-	SolanaMessageScanResponseResultSimulationSolanaSimulationErrorSchemaStatusError SolanaMessageScanResponseResultSimulationSolanaSimulationErrorSchemaStatus = "Error"
-)
-
-func (r SolanaMessageScanResponseResultSimulationSolanaSimulationErrorSchemaStatus) IsKnown() bool {
-	switch r {
-	case SolanaMessageScanResponseResultSimulationSolanaSimulationErrorSchemaStatusError:
-		return true
-	}
-	return false
-}
-
-type SolanaMessageScanResponseResultSimulationStatus string
-
-const (
-	SolanaMessageScanResponseResultSimulationStatusError SolanaMessageScanResponseResultSimulationStatus = "Error"
-)
-
-func (r SolanaMessageScanResponseResultSimulationStatus) IsKnown() bool {
-	switch r {
-	case SolanaMessageScanResponseResultSimulationStatusError:
-		return true
-	}
-	return false
-}
-
-// Validation result; Only present if validation option is included in the request
+// Transaction Validation Result
 type SolanaMessageScanResponseResultValidation struct {
-	Status SolanaMessageScanResponseResultValidationStatus `json:"status,required"`
-	// A textual classification that can be presented to the user explaining the
-	// reason.
-	Classification string `json:"classification"`
-	// A textual description about the validation result
-	Description string `json:"description"`
-	// Error message
-	Error string `json:"error"`
-	// This field can have the runtime type of
-	// [[]SolanaMessageScanResponseResultValidationSolanaValidationResultFeature].
-	Features interface{} `json:"features"`
+	// A list of features explaining what is happening in the transaction in different
+	// levels of severity
+	ExtendedFeatures []SolanaMessageScanResponseResultValidationExtendedFeature `json:"extended_features,required"`
+	// A list of features about this transaction explaining the validation
+	Features []string `json:"features,required"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
-	Reason string `json:"reason"`
+	Reason string `json:"reason,required"`
 	// Verdict of the validation
-	ResultType SolanaMessageScanResponseResultValidationResultType `json:"result_type"`
+	ResultType SolanaMessageScanResponseResultValidationResultType `json:"result_type,required"`
 	JSON       solanaMessageScanResponseResultValidationJSON       `json:"-"`
-	union      SolanaMessageScanResponseResultValidationUnion
 }
 
 // solanaMessageScanResponseResultValidationJSON contains the JSON metadata for the
 // struct [SolanaMessageScanResponseResultValidation]
 type solanaMessageScanResponseResultValidationJSON struct {
-	Status         apijson.Field
-	Classification apijson.Field
-	Description    apijson.Field
-	Error          apijson.Field
-	Features       apijson.Field
-	Reason         apijson.Field
-	ResultType     apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
+	ExtendedFeatures apijson.Field
+	Features         apijson.Field
+	Reason           apijson.Field
+	ResultType       apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
+}
+
+func (r *SolanaMessageScanResponseResultValidation) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
 }
 
 func (r solanaMessageScanResponseResultValidationJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *SolanaMessageScanResponseResultValidation) UnmarshalJSON(data []byte) (err error) {
-	*r = SolanaMessageScanResponseResultValidation{}
-	err = apijson.UnmarshalRoot(data, &r.union)
-	if err != nil {
-		return err
-	}
-	return apijson.Port(r.union, &r)
-}
-
-// AsUnion returns a [SolanaMessageScanResponseResultValidationUnion] interface
-// which you can cast to the specific types for more type safety.
-//
-// Possible runtime types of the union are
-// [SolanaMessageScanResponseResultValidationSolanaValidationResult],
-// [SolanaMessageScanResponseResultValidationSolanaValidationErrorSchema].
-func (r SolanaMessageScanResponseResultValidation) AsUnion() SolanaMessageScanResponseResultValidationUnion {
-	return r.union
-}
-
-// Validation result; Only present if validation option is included in the request
-//
-// Union satisfied by
-// [SolanaMessageScanResponseResultValidationSolanaValidationResult] or
-// [SolanaMessageScanResponseResultValidationSolanaValidationErrorSchema].
-type SolanaMessageScanResponseResultValidationUnion interface {
-	implementsSolanaMessageScanResponseResultValidation()
-}
-
-func init() {
-	apijson.RegisterUnion(
-		reflect.TypeOf((*SolanaMessageScanResponseResultValidationUnion)(nil)).Elem(),
-		"",
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultValidationSolanaValidationResult{}),
-		},
-		apijson.UnionVariant{
-			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SolanaMessageScanResponseResultValidationSolanaValidationErrorSchema{}),
-		},
-	)
-}
-
-type SolanaMessageScanResponseResultValidationSolanaValidationResult struct {
-	// A textual classification that can be presented to the user explaining the
-	// reason.
-	Classification string `json:"classification,required"`
-	// A textual description about the validation result
-	Description string                                                                   `json:"description,required"`
-	Features    []SolanaMessageScanResponseResultValidationSolanaValidationResultFeature `json:"features,required"`
-	// A textual description about the reasons the transaction was flagged with
-	// result_type
-	Reason string `json:"reason,required"`
-	// Verdict of the validation
-	ResultType SolanaMessageScanResponseResultValidationSolanaValidationResultResultType `json:"result_type,required"`
-	Status     SolanaMessageScanResponseResultValidationSolanaValidationResultStatus     `json:"status,required"`
-	JSON       solanaMessageScanResponseResultValidationSolanaValidationResultJSON       `json:"-"`
-}
-
-// solanaMessageScanResponseResultValidationSolanaValidationResultJSON contains the
-// JSON metadata for the struct
-// [SolanaMessageScanResponseResultValidationSolanaValidationResult]
-type solanaMessageScanResponseResultValidationSolanaValidationResultJSON struct {
-	Classification apijson.Field
-	Description    apijson.Field
-	Features       apijson.Field
-	Reason         apijson.Field
-	ResultType     apijson.Field
-	Status         apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *SolanaMessageScanResponseResultValidationSolanaValidationResult) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r solanaMessageScanResponseResultValidationSolanaValidationResultJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SolanaMessageScanResponseResultValidationSolanaValidationResult) implementsSolanaMessageScanResponseResultValidation() {
-}
-
-type SolanaMessageScanResponseResultValidationSolanaValidationResultFeature struct {
+type SolanaMessageScanResponseResultValidationExtendedFeature struct {
 	// Address the feature refers to
-	Address string `json:"address,required"`
+	Address string `json:"address,required,nullable"`
 	// Textual description
 	Description string `json:"description,required"`
 	FeatureID   string `json:"feature_id,required"`
 	// Feature Classification
-	Type SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesType `json:"type,required"`
-	JSON solanaMessageScanResponseResultValidationSolanaValidationResultFeatureJSON  `json:"-"`
+	Type SolanaMessageScanResponseResultValidationExtendedFeaturesType `json:"type,required"`
+	JSON solanaMessageScanResponseResultValidationExtendedFeatureJSON  `json:"-"`
 }
 
-// solanaMessageScanResponseResultValidationSolanaValidationResultFeatureJSON
-// contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultValidationSolanaValidationResultFeature]
-type solanaMessageScanResponseResultValidationSolanaValidationResultFeatureJSON struct {
+// solanaMessageScanResponseResultValidationExtendedFeatureJSON contains the JSON
+// metadata for the struct
+// [SolanaMessageScanResponseResultValidationExtendedFeature]
+type solanaMessageScanResponseResultValidationExtendedFeatureJSON struct {
 	Address     apijson.Field
 	Description apijson.Field
 	FeatureID   apijson.Field
@@ -4951,115 +4713,27 @@ type solanaMessageScanResponseResultValidationSolanaValidationResultFeatureJSON 
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseResultValidationSolanaValidationResultFeature) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseResultValidationExtendedFeature) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseResultValidationSolanaValidationResultFeatureJSON) RawJSON() string {
+func (r solanaMessageScanResponseResultValidationExtendedFeatureJSON) RawJSON() string {
 	return r.raw
 }
 
 // Feature Classification
-type SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesType string
+type SolanaMessageScanResponseResultValidationExtendedFeaturesType string
 
 const (
-	SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesTypeBenign    SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesType = "Benign"
-	SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesTypeWarning   SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesType = "Warning"
-	SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesTypeMalicious SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesType = "Malicious"
-	SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesTypeInfo      SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesType = "Info"
+	SolanaMessageScanResponseResultValidationExtendedFeaturesTypeBenign    SolanaMessageScanResponseResultValidationExtendedFeaturesType = "Benign"
+	SolanaMessageScanResponseResultValidationExtendedFeaturesTypeWarning   SolanaMessageScanResponseResultValidationExtendedFeaturesType = "Warning"
+	SolanaMessageScanResponseResultValidationExtendedFeaturesTypeMalicious SolanaMessageScanResponseResultValidationExtendedFeaturesType = "Malicious"
+	SolanaMessageScanResponseResultValidationExtendedFeaturesTypeInfo      SolanaMessageScanResponseResultValidationExtendedFeaturesType = "Info"
 )
 
-func (r SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesType) IsKnown() bool {
+func (r SolanaMessageScanResponseResultValidationExtendedFeaturesType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesTypeBenign, SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesTypeWarning, SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesTypeMalicious, SolanaMessageScanResponseResultValidationSolanaValidationResultFeaturesTypeInfo:
-		return true
-	}
-	return false
-}
-
-// Verdict of the validation
-type SolanaMessageScanResponseResultValidationSolanaValidationResultResultType string
-
-const (
-	SolanaMessageScanResponseResultValidationSolanaValidationResultResultTypeBenign    SolanaMessageScanResponseResultValidationSolanaValidationResultResultType = "Benign"
-	SolanaMessageScanResponseResultValidationSolanaValidationResultResultTypeWarning   SolanaMessageScanResponseResultValidationSolanaValidationResultResultType = "Warning"
-	SolanaMessageScanResponseResultValidationSolanaValidationResultResultTypeMalicious SolanaMessageScanResponseResultValidationSolanaValidationResultResultType = "Malicious"
-)
-
-func (r SolanaMessageScanResponseResultValidationSolanaValidationResultResultType) IsKnown() bool {
-	switch r {
-	case SolanaMessageScanResponseResultValidationSolanaValidationResultResultTypeBenign, SolanaMessageScanResponseResultValidationSolanaValidationResultResultTypeWarning, SolanaMessageScanResponseResultValidationSolanaValidationResultResultTypeMalicious:
-		return true
-	}
-	return false
-}
-
-type SolanaMessageScanResponseResultValidationSolanaValidationResultStatus string
-
-const (
-	SolanaMessageScanResponseResultValidationSolanaValidationResultStatusSuccess SolanaMessageScanResponseResultValidationSolanaValidationResultStatus = "Success"
-)
-
-func (r SolanaMessageScanResponseResultValidationSolanaValidationResultStatus) IsKnown() bool {
-	switch r {
-	case SolanaMessageScanResponseResultValidationSolanaValidationResultStatusSuccess:
-		return true
-	}
-	return false
-}
-
-type SolanaMessageScanResponseResultValidationSolanaValidationErrorSchema struct {
-	// Error message
-	Error  string                                                                     `json:"error,required"`
-	Status SolanaMessageScanResponseResultValidationSolanaValidationErrorSchemaStatus `json:"status,required"`
-	JSON   solanaMessageScanResponseResultValidationSolanaValidationErrorSchemaJSON   `json:"-"`
-}
-
-// solanaMessageScanResponseResultValidationSolanaValidationErrorSchemaJSON
-// contains the JSON metadata for the struct
-// [SolanaMessageScanResponseResultValidationSolanaValidationErrorSchema]
-type solanaMessageScanResponseResultValidationSolanaValidationErrorSchemaJSON struct {
-	Error       apijson.Field
-	Status      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *SolanaMessageScanResponseResultValidationSolanaValidationErrorSchema) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r solanaMessageScanResponseResultValidationSolanaValidationErrorSchemaJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r SolanaMessageScanResponseResultValidationSolanaValidationErrorSchema) implementsSolanaMessageScanResponseResultValidation() {
-}
-
-type SolanaMessageScanResponseResultValidationSolanaValidationErrorSchemaStatus string
-
-const (
-	SolanaMessageScanResponseResultValidationSolanaValidationErrorSchemaStatusError SolanaMessageScanResponseResultValidationSolanaValidationErrorSchemaStatus = "Error"
-)
-
-func (r SolanaMessageScanResponseResultValidationSolanaValidationErrorSchemaStatus) IsKnown() bool {
-	switch r {
-	case SolanaMessageScanResponseResultValidationSolanaValidationErrorSchemaStatusError:
-		return true
-	}
-	return false
-}
-
-type SolanaMessageScanResponseResultValidationStatus string
-
-const (
-	SolanaMessageScanResponseResultValidationStatusSuccess SolanaMessageScanResponseResultValidationStatus = "Success"
-	SolanaMessageScanResponseResultValidationStatusError   SolanaMessageScanResponseResultValidationStatus = "Error"
-)
-
-func (r SolanaMessageScanResponseResultValidationStatus) IsKnown() bool {
-	switch r {
-	case SolanaMessageScanResponseResultValidationStatusSuccess, SolanaMessageScanResponseResultValidationStatusError:
+	case SolanaMessageScanResponseResultValidationExtendedFeaturesTypeBenign, SolanaMessageScanResponseResultValidationExtendedFeaturesTypeWarning, SolanaMessageScanResponseResultValidationExtendedFeaturesTypeMalicious, SolanaMessageScanResponseResultValidationExtendedFeaturesTypeInfo:
 		return true
 	}
 	return false
@@ -5083,9 +4757,61 @@ func (r SolanaMessageScanResponseResultValidationResultType) IsKnown() bool {
 }
 
 type SolanaMessageScanParams struct {
-	Body interface{} `json:"body,required"`
+	AccountAddress param.Field[string]                          `json:"account_address,required"`
+	Metadata       param.Field[SolanaMessageScanParamsMetadata] `json:"metadata,required"`
+	// Transactions to scan
+	Transactions param.Field[[]string]                        `json:"transactions,required"`
+	Chain        param.Field[string]                          `json:"chain"`
+	Encoding     param.Field[SolanaMessageScanParamsEncoding] `json:"encoding"`
+	// The RPC method used by the dApp to propose the transaction
+	Method param.Field[string] `json:"method"`
+	// List of options to include in the response
+	//
+	// - `Options.validation`: Include Options.validation output in the response
+	//
+	// - `Options.simulation`: Include Options.simulation output in the response
+	Options param.Field[[]SolanaMessageScanParamsOption] `json:"options"`
 }
 
 func (r SolanaMessageScanParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r.Body)
+	return apijson.MarshalRoot(r)
+}
+
+type SolanaMessageScanParamsMetadata struct {
+	// URL of the dApp that originated the transaction
+	URL param.Field[string] `json:"url"`
+}
+
+func (r SolanaMessageScanParamsMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type SolanaMessageScanParamsEncoding string
+
+const (
+	SolanaMessageScanParamsEncodingBase58 SolanaMessageScanParamsEncoding = "base58"
+	SolanaMessageScanParamsEncodingBase64 SolanaMessageScanParamsEncoding = "base64"
+)
+
+func (r SolanaMessageScanParamsEncoding) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanParamsEncodingBase58, SolanaMessageScanParamsEncodingBase64:
+		return true
+	}
+	return false
+}
+
+type SolanaMessageScanParamsOption string
+
+const (
+	SolanaMessageScanParamsOptionValidation SolanaMessageScanParamsOption = "validation"
+	SolanaMessageScanParamsOptionSimulation SolanaMessageScanParamsOption = "simulation"
+)
+
+func (r SolanaMessageScanParamsOption) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanParamsOptionValidation, SolanaMessageScanParamsOptionSimulation:
+		return true
+	}
+	return false
 }
