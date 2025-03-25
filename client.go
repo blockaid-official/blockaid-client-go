@@ -15,17 +15,18 @@ import (
 // interacting with the blockaid API. You should not instantiate this client
 // directly, and instead use the [NewClient] method instead.
 type Client struct {
-	Options   []option.RequestOption
-	Evm       *EvmService
-	Solana    *SolanaService
-	Stellar   *StellarService
-	Bitcoin   *BitcoinService
-	Starknet  *StarknetService
-	Sui       *SuiService
-	Site      *SiteService
-	Scan      *ScanService
-	Token     *TokenService
-	TokenBulk *TokenBulkService
+	Options       []option.RequestOption
+	Evm           *EvmService
+	Solana        *SolanaService
+	Stellar       *StellarService
+	Bitcoin       *BitcoinService
+	Starknet      *StarknetService
+	Sui           *SuiService
+	Site          *SiteService
+	Scan          *ScanService
+	Token         *TokenService
+	TokenBulk     *TokenBulkService
+	TokenWebhooks *TokenWebhookService
 }
 
 // DefaultClientOptions read from the environment (BLOCKAID_CLIENT_API_KEY,
@@ -60,6 +61,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.Scan = NewScanService(opts...)
 	r.Token = NewTokenService(opts...)
 	r.TokenBulk = NewTokenBulkService(opts...)
+	r.TokenWebhooks = NewTokenWebhookService(opts...)
 
 	return
 }
