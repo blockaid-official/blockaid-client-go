@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.47.0 (2025-03-26)
+
+Full Changelog: [v0.46.0...v0.47.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.46.0...v0.47.0)
+
+### Features
+
+* **api:** api update ([#391](https://github.com/blockaid-official/blockaid-client-go/issues/391)) ([7b828e6](https://github.com/blockaid-official/blockaid-client-go/commit/7b828e6816357daeba11737e4674adc8c28b0e38))
+
+
+### Bug Fixes
+
+* **test:** return early after test failure ([#393](https://github.com/blockaid-official/blockaid-client-go/issues/393)) ([558a1d5](https://github.com/blockaid-official/blockaid-client-go/commit/558a1d5aa98edcdaa666eb2989d3d62d1873bd2b))
+
+
+### Chores
+
+* add request options to client tests ([#392](https://github.com/blockaid-official/blockaid-client-go/issues/392)) ([60d08cf](https://github.com/blockaid-official/blockaid-client-go/commit/60d08cf7b4fcfb173ab240c80c46e3d012e7e8de))
+* **internal:** codegen related update ([#379](https://github.com/blockaid-official/blockaid-client-go/issues/379)) ([cdae84e](https://github.com/blockaid-official/blockaid-client-go/commit/cdae84e0540224e74168c61c9ec434f672bfa765))
+* remove custom code ([2c4734f](https://github.com/blockaid-official/blockaid-client-go/commit/2c4734fb4ee086143e31d84f1a63d26ea9fab163))
+
 ## 0.45.0 (2025-03-20)
 
 Full Changelog: [v0.44.0...v0.45.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.44.0...v0.45.0)
