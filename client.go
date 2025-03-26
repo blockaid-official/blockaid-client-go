@@ -27,6 +27,7 @@ type Client struct {
 	Token         *TokenService
 	TokenBulk     *TokenBulkService
 	TokenWebhooks *TokenWebhookService
+	TokenSnapshot *TokenSnapshotService
 }
 
 // DefaultClientOptions read from the environment (BLOCKAID_CLIENT_API_KEY,
@@ -62,6 +63,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.Token = NewTokenService(opts...)
 	r.TokenBulk = NewTokenBulkService(opts...)
 	r.TokenWebhooks = NewTokenWebhookService(opts...)
+	r.TokenSnapshot = NewTokenSnapshotService(opts...)
 
 	return
 }
