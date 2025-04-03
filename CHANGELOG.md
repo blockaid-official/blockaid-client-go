@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.49.1 (2025-04-03)
+
+Full Changelog: [v0.49.0...v0.49.1](https://github.com/blockaid-official/blockaid-client-go/compare/v0.49.0...v0.49.1)
+
+### Bug Fixes
+
+* **client:** return error on bad custom url instead of panic ([#402](https://github.com/blockaid-official/blockaid-client-go/issues/402)) ([bbd6549](https://github.com/blockaid-official/blockaid-client-go/commit/bbd65497ae52fc220a0219220cd315a227091bce))
+
 ## 0.49.0 (2025-04-03)
 
 Full Changelog: [v0.48.0...v0.49.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.48.0...v0.49.0)
