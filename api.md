@@ -128,6 +128,16 @@ Methods:
 - <code title="post /v0/stellar/transaction/report">client.Stellar.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionService.Report">Report</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionReportParams">StellarTransactionReportParams</a>) (<a href="https://pkg.go.dev/builtin#int64">int64</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="post /v0/stellar/transaction/scan">client.Stellar.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanParams">StellarTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarTransactionScanResponse">StellarTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
+## Address
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarAddressScanResponse">StellarAddressScanResponse</a>
+
+Methods:
+
+- <code title="post /v0/stellar/address/scan">client.Stellar.Address.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarAddressService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarAddressScanParams">StellarAddressScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#StellarAddressScanResponse">StellarAddressScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
 # Bitcoin
 
 Params Types:
