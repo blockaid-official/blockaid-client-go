@@ -21,6 +21,7 @@ import (
 type StellarService struct {
 	Options     []option.RequestOption
 	Transaction *StellarTransactionService
+	Address     *StellarAddressService
 }
 
 // NewStellarService generates a new service that applies the given options to each
@@ -30,6 +31,7 @@ func NewStellarService(opts ...option.RequestOption) (r *StellarService) {
 	r = &StellarService{}
 	r.Options = opts
 	r.Transaction = NewStellarTransactionService(opts...)
+	r.Address = NewStellarAddressService(opts...)
 	return
 }
 
