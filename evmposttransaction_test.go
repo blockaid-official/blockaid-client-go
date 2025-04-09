@@ -28,7 +28,7 @@ func TestEvmPostTransactionReport(t *testing.T) {
 	)
 	_, err := client.Evm.PostTransaction.Report(context.TODO(), blockaidclientgo.EvmPostTransactionReportParams{
 		Details: blockaidclientgo.F("Details about the report"),
-		Event:   blockaidclientgo.F(blockaidclientgo.EvmPostTransactionReportParamsEventFalsePositive),
+		Event:   blockaidclientgo.F(blockaidclientgo.EvmPostTransactionReportParamsEventFalseNegative),
 		Report: blockaidclientgo.F[blockaidclientgo.EvmPostTransactionReportParamsReportUnion](blockaidclientgo.EvmPostTransactionReportParamsReportRequestIDReport{
 			RequestID: blockaidclientgo.F("11111111-1111-1111-1111-111111111111"),
 			Type:      blockaidclientgo.F(blockaidclientgo.EvmPostTransactionReportParamsReportRequestIDReportTypeRequestID),

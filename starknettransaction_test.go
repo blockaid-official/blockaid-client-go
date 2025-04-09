@@ -73,7 +73,7 @@ func TestStarknetTransactionScanWithOptionalParams(t *testing.T) {
 				PaymasterData:             blockaidclientgo.F([]string{}),
 			}),
 			BlockNumber: blockaidclientgo.F("0xa12e3"),
-			Options:     blockaidclientgo.F([]blockaidclientgo.StarknetTransactionScanRequestOption{blockaidclientgo.StarknetTransactionScanRequestOptionValidation, blockaidclientgo.StarknetTransactionScanRequestOptionSimulation}),
+			Options:     blockaidclientgo.F([]blockaidclientgo.StarknetTransactionScanRequestOption{blockaidclientgo.StarknetTransactionScanRequestOptionSimulation, blockaidclientgo.StarknetTransactionScanRequestOptionValidation}),
 		},
 	})
 	if err != nil {
