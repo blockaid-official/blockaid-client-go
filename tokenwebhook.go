@@ -111,8 +111,7 @@ type TokenWebhookNewResponse struct {
 	CreatedAt time.Time               `json:"created_at,required" format:"date-time"`
 	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
 	URL       string                  `json:"url,required" format:"uri"`
-	// Optional shared secret key (32 characacters), used to calculate the HMAC
-	// signature
+	// Optional shared secret key (32 characters), used to calculate the HMAC signature
 	SharedSecretKey string                      `json:"shared_secret_key,nullable"`
 	JSON            tokenWebhookNewResponseJSON `json:"-"`
 }
@@ -145,8 +144,7 @@ type TokenWebhookGetResponse struct {
 	CreatedAt time.Time               `json:"created_at,required" format:"date-time"`
 	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
 	URL       string                  `json:"url,required" format:"uri"`
-	// Optional shared secret key (32 characacters), used to calculate the HMAC
-	// signature
+	// Optional shared secret key (32 characters), used to calculate the HMAC signature
 	SharedSecretKey string                      `json:"shared_secret_key,nullable"`
 	JSON            tokenWebhookGetResponseJSON `json:"-"`
 }
@@ -179,8 +177,7 @@ type TokenWebhookGetAllResponse struct {
 	CreatedAt time.Time               `json:"created_at,required" format:"date-time"`
 	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
 	URL       string                  `json:"url,required" format:"uri"`
-	// Optional shared secret key (32 characacters), used to calculate the HMAC
-	// signature
+	// Optional shared secret key (32 characters), used to calculate the HMAC signature
 	SharedSecretKey string                         `json:"shared_secret_key,nullable"`
 	JSON            tokenWebhookGetAllResponseJSON `json:"-"`
 }
@@ -208,8 +205,7 @@ func (r tokenWebhookGetAllResponseJSON) RawJSON() string {
 
 type TokenWebhookNewParams struct {
 	URL param.Field[string] `json:"url,required" format:"uri"`
-	// Optional shared secret key (32 characacters), used to calculate the HMAC
-	// signature
+	// Optional shared secret key (32 characters), used to calculate the HMAC signature
 	SharedSecretKey param.Field[string] `json:"shared_secret_key"`
 }
 
