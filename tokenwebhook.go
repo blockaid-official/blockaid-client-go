@@ -107,23 +107,27 @@ func (r *TokenWebhookService) GetAll(ctx context.Context, opts ...option.Request
 type TokenWebhookNewResponse struct {
 	Active bool `json:"active,required"`
 	// The chain name
-	Chain     TokenScanSupportedChain     `json:"chain,required"`
-	CreatedAt time.Time                   `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time                   `json:"updated_at,required" format:"date-time"`
-	URL       string                      `json:"url,required" format:"uri"`
-	JSON      tokenWebhookNewResponseJSON `json:"-"`
+	Chain     TokenScanSupportedChain `json:"chain,required"`
+	CreatedAt time.Time               `json:"created_at,required" format:"date-time"`
+	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
+	URL       string                  `json:"url,required" format:"uri"`
+	// Optional shared secret key (32 characacters), used to calculate the HMAC
+	// signature
+	SharedSecretKey string                      `json:"shared_secret_key,nullable"`
+	JSON            tokenWebhookNewResponseJSON `json:"-"`
 }
 
 // tokenWebhookNewResponseJSON contains the JSON metadata for the struct
 // [TokenWebhookNewResponse]
 type tokenWebhookNewResponseJSON struct {
-	Active      apijson.Field
-	Chain       apijson.Field
-	CreatedAt   apijson.Field
-	UpdatedAt   apijson.Field
-	URL         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	Active          apijson.Field
+	Chain           apijson.Field
+	CreatedAt       apijson.Field
+	UpdatedAt       apijson.Field
+	URL             apijson.Field
+	SharedSecretKey apijson.Field
+	raw             string
+	ExtraFields     map[string]apijson.Field
 }
 
 func (r *TokenWebhookNewResponse) UnmarshalJSON(data []byte) (err error) {
@@ -137,23 +141,27 @@ func (r tokenWebhookNewResponseJSON) RawJSON() string {
 type TokenWebhookGetResponse struct {
 	Active bool `json:"active,required"`
 	// The chain name
-	Chain     TokenScanSupportedChain     `json:"chain,required"`
-	CreatedAt time.Time                   `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time                   `json:"updated_at,required" format:"date-time"`
-	URL       string                      `json:"url,required" format:"uri"`
-	JSON      tokenWebhookGetResponseJSON `json:"-"`
+	Chain     TokenScanSupportedChain `json:"chain,required"`
+	CreatedAt time.Time               `json:"created_at,required" format:"date-time"`
+	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
+	URL       string                  `json:"url,required" format:"uri"`
+	// Optional shared secret key (32 characacters), used to calculate the HMAC
+	// signature
+	SharedSecretKey string                      `json:"shared_secret_key,nullable"`
+	JSON            tokenWebhookGetResponseJSON `json:"-"`
 }
 
 // tokenWebhookGetResponseJSON contains the JSON metadata for the struct
 // [TokenWebhookGetResponse]
 type tokenWebhookGetResponseJSON struct {
-	Active      apijson.Field
-	Chain       apijson.Field
-	CreatedAt   apijson.Field
-	UpdatedAt   apijson.Field
-	URL         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	Active          apijson.Field
+	Chain           apijson.Field
+	CreatedAt       apijson.Field
+	UpdatedAt       apijson.Field
+	URL             apijson.Field
+	SharedSecretKey apijson.Field
+	raw             string
+	ExtraFields     map[string]apijson.Field
 }
 
 func (r *TokenWebhookGetResponse) UnmarshalJSON(data []byte) (err error) {
@@ -167,23 +175,27 @@ func (r tokenWebhookGetResponseJSON) RawJSON() string {
 type TokenWebhookGetAllResponse struct {
 	Active bool `json:"active,required"`
 	// The chain name
-	Chain     TokenScanSupportedChain        `json:"chain,required"`
-	CreatedAt time.Time                      `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time                      `json:"updated_at,required" format:"date-time"`
-	URL       string                         `json:"url,required" format:"uri"`
-	JSON      tokenWebhookGetAllResponseJSON `json:"-"`
+	Chain     TokenScanSupportedChain `json:"chain,required"`
+	CreatedAt time.Time               `json:"created_at,required" format:"date-time"`
+	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
+	URL       string                  `json:"url,required" format:"uri"`
+	// Optional shared secret key (32 characacters), used to calculate the HMAC
+	// signature
+	SharedSecretKey string                         `json:"shared_secret_key,nullable"`
+	JSON            tokenWebhookGetAllResponseJSON `json:"-"`
 }
 
 // tokenWebhookGetAllResponseJSON contains the JSON metadata for the struct
 // [TokenWebhookGetAllResponse]
 type tokenWebhookGetAllResponseJSON struct {
-	Active      apijson.Field
-	Chain       apijson.Field
-	CreatedAt   apijson.Field
-	UpdatedAt   apijson.Field
-	URL         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	Active          apijson.Field
+	Chain           apijson.Field
+	CreatedAt       apijson.Field
+	UpdatedAt       apijson.Field
+	URL             apijson.Field
+	SharedSecretKey apijson.Field
+	raw             string
+	ExtraFields     map[string]apijson.Field
 }
 
 func (r *TokenWebhookGetAllResponse) UnmarshalJSON(data []byte) (err error) {
@@ -196,6 +208,9 @@ func (r tokenWebhookGetAllResponseJSON) RawJSON() string {
 
 type TokenWebhookNewParams struct {
 	URL param.Field[string] `json:"url,required" format:"uri"`
+	// Optional shared secret key (32 characacters), used to calculate the HMAC
+	// signature
+	SharedSecretKey param.Field[string] `json:"shared_secret_key"`
 }
 
 func (r TokenWebhookNewParams) MarshalJSON() (data []byte, err error) {

@@ -13,7 +13,7 @@ import (
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
-func TestTokenWebhookNew(t *testing.T) {
+func TestTokenWebhookNewWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -29,7 +29,8 @@ func TestTokenWebhookNew(t *testing.T) {
 		context.TODO(),
 		blockaidclientgo.TokenScanSupportedChainArbitrum,
 		blockaidclientgo.TokenWebhookNewParams{
-			URL: blockaidclientgo.F("https://example.com"),
+			URL:             blockaidclientgo.F("https://example.com"),
+			SharedSecretKey: blockaidclientgo.F("shared_secret_key"),
 		},
 	)
 	if err != nil {
