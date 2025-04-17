@@ -13,7 +13,7 @@ import (
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
-func TestTokenBulkScanWithOptionalParams(t *testing.T) {
+func TestStellarAddressScan(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -25,12 +25,8 @@ func TestTokenBulkScanWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.TokenBulk.Scan(context.TODO(), blockaidclientgo.TokenBulkScanParams{
-		Chain:  blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainEthereum),
-		Tokens: blockaidclientgo.F([]string{"0x66587563e933bbf3974b89156b47bb82b921eb35", "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.TokenBulkScanParamsMetadata{
-			Domain: blockaidclientgo.F("domain"),
-		}),
+	_, err := client.Stellar.Address.Scan(context.TODO(), blockaidclientgo.StellarAddressScanParams{
+		Address: blockaidclientgo.F("address"),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error

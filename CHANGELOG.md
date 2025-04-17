@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.50.0 (2025-04-16)
+
+Full Changelog: [v0.49.0...v0.50.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.49.0...v0.50.0)
+
+### Features
+
+* **api:** api update ([a72a57f](https://github.com/blockaid-official/blockaid-client-go/commit/a72a57fdaf1edffbb54ac043900983b6ec14c748))
+* **api:** api update ([265ebdc](https://github.com/blockaid-official/blockaid-client-go/commit/265ebdcd7daa7398af260090e49f93391e4721ea))
+* **api:** api update ([#404](https://github.com/blockaid-official/blockaid-client-go/issues/404)) ([5fdcdf8](https://github.com/blockaid-official/blockaid-client-go/commit/5fdcdf8e0f2364479147d7280e28a799c99b9b47))
+* **api:** api update ([#405](https://github.com/blockaid-official/blockaid-client-go/issues/405)) ([0ccf5c2](https://github.com/blockaid-official/blockaid-client-go/commit/0ccf5c20e509985daddebe989ba863233725614c))
+* **client:** add support for reading base URL from environment variable ([04fdf27](https://github.com/blockaid-official/blockaid-client-go/commit/04fdf27fd585ce21e4b5613f5167e920141c4ddd))
+* **client:** support custom http clients ([#406](https://github.com/blockaid-official/blockaid-client-go/issues/406)) ([f452843](https://github.com/blockaid-official/blockaid-client-go/commit/f452843e483623c54adc1cfb338af73ca931fae0))
+
+
+### Bug Fixes
+
+* **client:** return error on bad custom url instead of panic ([#402](https://github.com/blockaid-official/blockaid-client-go/issues/402)) ([bbd6549](https://github.com/blockaid-official/blockaid-client-go/commit/bbd65497ae52fc220a0219220cd315a227091bce))
+
+
+### Chores
+
+* **docs:** document pre-request options ([00d3444](https://github.com/blockaid-official/blockaid-client-go/commit/00d3444b46c57e634554edb9e771e451353ad350))
+* **internal:** expand CI branch coverage ([aba704d](https://github.com/blockaid-official/blockaid-client-go/commit/aba704dd0662fdcbf076276d2c6db688f288c7a5))
+* **internal:** reduce CI branch coverage ([5b82f68](https://github.com/blockaid-official/blockaid-client-go/commit/5b82f6891850576d4ca274c96fa8bc5d36e10d03))
+* **tests:** improve enum examples ([#407](https://github.com/blockaid-official/blockaid-client-go/issues/407)) ([59f3f73](https://github.com/blockaid-official/blockaid-client-go/commit/59f3f736b289a86cfd144e356f3af88888e74c1c))
+
+
+### Documentation
+
+* update documentation links to be more uniform ([dc24d70](https://github.com/blockaid-official/blockaid-client-go/commit/dc24d7088a8752a3eaf9197e32b4ece92c0cd197))
+
 ## 0.49.0 (2025-04-03)
 
 Full Changelog: [v0.48.0...v0.49.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.48.0...v0.49.0)

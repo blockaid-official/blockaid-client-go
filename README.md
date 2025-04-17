@@ -2,8 +2,8 @@
 
 <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go"><img src="https://pkg.go.dev/badge/github.com/blockaid-official/blockaid-client-go.svg" alt="Go Reference"></a>
 
-The Blockaid Go library provides convenient access to [the Blockaid REST
-API](https://docs.blockaid.io) from applications written in Go. The full API of this library can be found in [api.md](api.md).
+The Blockaid Go library provides convenient access to the [Blockaid REST API](https://docs.blockaid.io)
+from applications written in Go.
 
 It is generated with [Stainless](https://www.stainless.com/).
 
@@ -24,7 +24,7 @@ Or to pin the version:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/blockaid-official/blockaid-client-go@v0.49.0'
+go get -u 'github.com/blockaid-official/blockaid-client-go@v0.50.0'
 ```
 
 <!-- x-release-please-end -->

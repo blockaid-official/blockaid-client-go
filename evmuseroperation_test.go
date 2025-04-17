@@ -49,7 +49,7 @@ func TestEvmUserOperationScanWithOptionalParams(t *testing.T) {
 		}),
 		AccountAddress: blockaidclientgo.F("0x77bA5AC3ca4864be26CA3112baDf07286CcC3324"),
 		Block:          blockaidclientgo.F[blockaidclientgo.EvmUserOperationScanParamsBlockUnion](shared.UnionString("0x5c6fd5")),
-		Options:        blockaidclientgo.F([]blockaidclientgo.EvmUserOperationScanParamsOption{blockaidclientgo.EvmUserOperationScanParamsOptionValidation, blockaidclientgo.EvmUserOperationScanParamsOptionSimulation}),
+		Options:        blockaidclientgo.F([]blockaidclientgo.EvmUserOperationScanParamsOption{blockaidclientgo.EvmUserOperationScanParamsOptionSimulation, blockaidclientgo.EvmUserOperationScanParamsOptionValidation}),
 		StateOverride: blockaidclientgo.F(map[string]blockaidclientgo.EvmUserOperationScanParamsStateOverride{
 			"foo": {
 				Balance:                 blockaidclientgo.F("balance"),
