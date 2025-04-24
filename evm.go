@@ -3715,6 +3715,8 @@ type TransactionScanResponseSimulation struct {
 	// This field can have the runtime type of
 	// [map[string][]TransactionSimulationContractManagement].
 	ContractManagement interface{} `json:"contract_management"`
+	// A string explaining why the transaction failed
+	Description string `json:"description"`
 	// An error message if the simulation failed.
 	Error string `json:"error"`
 	// This field can have the runtime type of
@@ -3744,6 +3746,7 @@ type transactionScanResponseSimulationJSON struct {
 	AddressDetails     apijson.Field
 	AssetsDiffs        apijson.Field
 	ContractManagement apijson.Field
+	Description        apijson.Field
 	Error              apijson.Field
 	ErrorDetails       apijson.Field
 	Exposures          apijson.Field
@@ -5992,6 +5995,8 @@ func (r transactionSimulationParamsUserOperationCalldataJSON) RawJSON() string {
 }
 
 type TransactionSimulationError struct {
+	// A string explaining why the transaction failed
+	Description string `json:"description,required"`
 	// An error message if the simulation failed.
 	Error string `json:"error,required"`
 	// A string indicating if the simulation was successful or not.
@@ -6004,6 +6009,7 @@ type TransactionSimulationError struct {
 // transactionSimulationErrorJSON contains the JSON metadata for the struct
 // [TransactionSimulationError]
 type transactionSimulationErrorJSON struct {
+	Description  apijson.Field
 	Error        apijson.Field
 	Status       apijson.Field
 	ErrorDetails apijson.Field
@@ -6042,6 +6048,8 @@ type TransactionSimulationErrorErrorDetails struct {
 	Code string `json:"code,required"`
 	// The address of the account
 	AccountAddress string `json:"account_address"`
+	// The address that is invalid
+	Address string `json:"address"`
 	// This field can have the runtime type of
 	// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset].
 	Asset interface{} `json:"asset"`
@@ -6058,6 +6066,7 @@ type TransactionSimulationErrorErrorDetails struct {
 type transactionSimulationErrorErrorDetailsJSON struct {
 	Code            apijson.Field
 	AccountAddress  apijson.Field
+	Address         apijson.Field
 	Asset           apijson.Field
 	CurrentBalance  apijson.Field
 	RequiredBalance apijson.Field
@@ -6083,6 +6092,7 @@ func (r *TransactionSimulationErrorErrorDetails) UnmarshalJSON(data []byte) (err
 //
 // Possible runtime types of the union are
 // [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails],
+// [TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetails],
 // [TransactionSimulationErrorErrorDetailsGenericErrorDetails].
 func (r TransactionSimulationErrorErrorDetails) AsUnion() TransactionSimulationErrorErrorDetailsUnion {
 	return r.union
@@ -6091,7 +6101,8 @@ func (r TransactionSimulationErrorErrorDetails) AsUnion() TransactionSimulationE
 // Error details if the simulation failed.
 //
 // Union satisfied by
-// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails] or
+// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails],
+// [TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetails] or
 // [TransactionSimulationErrorErrorDetailsGenericErrorDetails].
 type TransactionSimulationErrorErrorDetailsUnion interface {
 	implementsTransactionSimulationErrorErrorDetails()
@@ -6104,6 +6115,10 @@ func init() {
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
 			Type:       reflect.TypeOf(TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetails{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
@@ -6445,6 +6460,50 @@ const (
 func (r TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsCode) IsKnown() bool {
 	switch r {
 	case TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsCodeGeneralInsufficientFunds:
+		return true
+	}
+	return false
+}
+
+type TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetails struct {
+	// The address that is invalid
+	Address string `json:"address,required"`
+	// The type of the model
+	Code TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetailsCode `json:"code,required"`
+	JSON transactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetailsJSON `json:"-"`
+}
+
+// transactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetailsJSON
+// contains the JSON metadata for the struct
+// [TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetails]
+type transactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetailsJSON struct {
+	Address     apijson.Field
+	Code        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetails) implementsTransactionSimulationErrorErrorDetails() {
+}
+
+// The type of the model
+type TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetailsCode string
+
+const (
+	TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetailsCodeGeneralInvalidAddress TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetailsCode = "GENERAL_INVALID_ADDRESS"
+)
+
+func (r TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetailsCode) IsKnown() bool {
+	switch r {
+	case TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetailsCodeGeneralInvalidAddress:
 		return true
 	}
 	return false
