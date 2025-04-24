@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.51.0 (2025-04-24)
+
+Full Changelog: [v0.50.0...v0.51.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.50.0...v0.51.0)
+
+### Features
+
+* **api:** api update ([d307581](https://github.com/blockaid-official/blockaid-client-go/commit/d3075810840c1652f50f4f5b283b3031149bf663))
+
+
+### Chores
+
+* **ci:** add timeout thresholds for CI jobs ([a6b0d49](https://github.com/blockaid-official/blockaid-client-go/commit/a6b0d49a149612bd71c29ba351ac3b26b843005d))
+* **ci:** only use depot for staging repos ([ea670d5](https://github.com/blockaid-official/blockaid-client-go/commit/ea670d562bd877adff170ec6bc55f8bfb1dfe55b))
+* **internal:** codegen related update ([5a6765a](https://github.com/blockaid-official/blockaid-client-go/commit/5a6765aae18e07462236eda1eb95c1f328be22e0))
+
 ## 0.50.0 (2025-04-16)
 
 Full Changelog: [v0.49.0...v0.50.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.49.0...v0.50.0)
