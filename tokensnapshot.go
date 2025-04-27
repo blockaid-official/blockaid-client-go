@@ -2056,6 +2056,10 @@ func (r TokenSnapshotFullResponseItemsFeaturesType) IsKnown() bool {
 type TokenSnapshotDiffParams struct {
 	// The chain name
 	Chain param.Field[TokenScanSupportedChain] `query:"chain,required"`
+	// Cursor to start from, if not provided, the first page will be returned
+	Cursor param.Field[string] `query:"cursor"`
+	// Number of tokens to return in a page
+	Size param.Field[int64] `query:"size"`
 	// Timeframe in minutes
 	Timeframe param.Field[int64] `query:"timeframe"`
 }
@@ -2072,6 +2076,10 @@ func (r TokenSnapshotDiffParams) URLQuery() (v url.Values) {
 type TokenSnapshotFullParams struct {
 	// The chain name
 	Chain param.Field[TokenScanSupportedChain] `query:"chain,required"`
+	// Cursor to start from, if not provided, the first page will be returned
+	Cursor param.Field[string] `query:"cursor"`
+	// Number of tokens to return in a page
+	Size param.Field[int64] `query:"size"`
 }
 
 // URLQuery serializes [TokenSnapshotFullParams]'s query parameters as
