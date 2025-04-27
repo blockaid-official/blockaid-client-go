@@ -27,6 +27,8 @@ func TestTokenSnapshotDiffWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.TokenSnapshot.Diff(context.TODO(), blockaidclientgo.TokenSnapshotDiffParams{
 		Chain:     blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainArbitrum),
+		Cursor:    blockaidclientgo.F("cursor"),
+		Size:      blockaidclientgo.F(int64(1)),
 		Timeframe: blockaidclientgo.F(int64(1)),
 	})
 	if err != nil {
@@ -38,7 +40,7 @@ func TestTokenSnapshotDiffWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestTokenSnapshotFull(t *testing.T) {
+func TestTokenSnapshotFullWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -51,7 +53,9 @@ func TestTokenSnapshotFull(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.TokenSnapshot.Full(context.TODO(), blockaidclientgo.TokenSnapshotFullParams{
-		Chain: blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainArbitrum),
+		Chain:  blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainArbitrum),
+		Cursor: blockaidclientgo.F("cursor"),
+		Size:   blockaidclientgo.F(int64(1)),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
