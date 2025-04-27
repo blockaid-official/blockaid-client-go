@@ -59,7 +59,16 @@ func TestEvmTransactionScanWithOptionalParams(t *testing.T) {
 		AccountAddress: blockaidclientgo.F("account_address"),
 		Chain:          blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
 		Data: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsData{
-			From:     blockaidclientgo.F("0x5e1a0d484c5f0de722e82f9dca3a9d5a421d47cb"),
+			From: blockaidclientgo.F("0x5e1a0d484c5f0de722e82f9dca3a9d5a421d47cb"),
+			AuthorizationList: blockaidclientgo.F([]blockaidclientgo.EvmTransactionScanParamsDataAuthorizationList{{
+				Address: blockaidclientgo.F("address"),
+				ChainID: blockaidclientgo.F("chainId"),
+				Eoa:     blockaidclientgo.F("eoa"),
+				Nonce:   blockaidclientgo.F("nonce"),
+				R:       blockaidclientgo.F("r"),
+				S:       blockaidclientgo.F("s"),
+				YParity: blockaidclientgo.F("yParity"),
+			}}),
 			Data:     blockaidclientgo.F("0x"),
 			Gas:      blockaidclientgo.F("gas"),
 			GasPrice: blockaidclientgo.F("gas_price"),

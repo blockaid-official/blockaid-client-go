@@ -5513,30 +5513,33 @@ func (r TransactionSimulationStatus) IsKnown() bool {
 }
 
 type TransactionSimulationContractManagement struct {
+	// The type of the state change
+	Type TransactionSimulationContractManagementType `json:"type,required"`
 	// This field can have the runtime type of
 	// [TransactionSimulationContractManagementProxyUpgradeManagementAfter],
 	// [TransactionSimulationContractManagementOwnershipChangeManagementAfter],
 	// [TransactionSimulationContractManagementModulesChangeManagementAfter].
-	After interface{} `json:"after,required"`
+	After interface{} `json:"after"`
 	// This field can have the runtime type of
 	// [TransactionSimulationContractManagementProxyUpgradeManagementBefore],
 	// [TransactionSimulationContractManagementOwnershipChangeManagementBefore],
 	// [TransactionSimulationContractManagementModulesChangeManagementBefore].
-	Before interface{} `json:"before,required"`
-	// The type of the state change
-	Type  TransactionSimulationContractManagementType `json:"type,required"`
-	JSON  transactionSimulationContractManagementJSON `json:"-"`
-	union TransactionSimulationContractManagementUnion
+	Before interface{} `json:"before"`
+	// The delegated address
+	DelegatedAddress string                                      `json:"delegated_address"`
+	JSON             transactionSimulationContractManagementJSON `json:"-"`
+	union            TransactionSimulationContractManagementUnion
 }
 
 // transactionSimulationContractManagementJSON contains the JSON metadata for the
 // struct [TransactionSimulationContractManagement]
 type transactionSimulationContractManagementJSON struct {
-	After       apijson.Field
-	Before      apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	Type             apijson.Field
+	After            apijson.Field
+	Before           apijson.Field
+	DelegatedAddress apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
 }
 
 func (r transactionSimulationContractManagementJSON) RawJSON() string {
@@ -5558,15 +5561,17 @@ func (r *TransactionSimulationContractManagement) UnmarshalJSON(data []byte) (er
 // Possible runtime types of the union are
 // [TransactionSimulationContractManagementProxyUpgradeManagement],
 // [TransactionSimulationContractManagementOwnershipChangeManagement],
-// [TransactionSimulationContractManagementModulesChangeManagement].
+// [TransactionSimulationContractManagementModulesChangeManagement],
+// [TransactionSimulationContractManagementSetCodeAccountManagement].
 func (r TransactionSimulationContractManagement) AsUnion() TransactionSimulationContractManagementUnion {
 	return r.union
 }
 
 // Union satisfied by
 // [TransactionSimulationContractManagementProxyUpgradeManagement],
-// [TransactionSimulationContractManagementOwnershipChangeManagement] or
-// [TransactionSimulationContractManagementModulesChangeManagement].
+// [TransactionSimulationContractManagementOwnershipChangeManagement],
+// [TransactionSimulationContractManagementModulesChangeManagement] or
+// [TransactionSimulationContractManagementSetCodeAccountManagement].
 type TransactionSimulationContractManagementUnion interface {
 	implementsTransactionSimulationContractManagement()
 }
@@ -5586,6 +5591,10 @@ func init() {
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
 			Type:       reflect.TypeOf(TransactionSimulationContractManagementModulesChangeManagement{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationContractManagementSetCodeAccountManagement{}),
 		},
 	)
 }
@@ -5869,6 +5878,50 @@ func (r TransactionSimulationContractManagementModulesChangeManagementType) IsKn
 	return false
 }
 
+type TransactionSimulationContractManagementSetCodeAccountManagement struct {
+	// The delegated address
+	DelegatedAddress string `json:"delegated_address,required"`
+	// The type of the state change
+	Type TransactionSimulationContractManagementSetCodeAccountManagementType `json:"type,required"`
+	JSON transactionSimulationContractManagementSetCodeAccountManagementJSON `json:"-"`
+}
+
+// transactionSimulationContractManagementSetCodeAccountManagementJSON contains the
+// JSON metadata for the struct
+// [TransactionSimulationContractManagementSetCodeAccountManagement]
+type transactionSimulationContractManagementSetCodeAccountManagementJSON struct {
+	DelegatedAddress apijson.Field
+	Type             apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
+}
+
+func (r *TransactionSimulationContractManagementSetCodeAccountManagement) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationContractManagementSetCodeAccountManagementJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationContractManagementSetCodeAccountManagement) implementsTransactionSimulationContractManagement() {
+}
+
+// The type of the state change
+type TransactionSimulationContractManagementSetCodeAccountManagementType string
+
+const (
+	TransactionSimulationContractManagementSetCodeAccountManagementTypeSetCodeAccount TransactionSimulationContractManagementSetCodeAccountManagementType = "SET_CODE_ACCOUNT"
+)
+
+func (r TransactionSimulationContractManagementSetCodeAccountManagementType) IsKnown() bool {
+	switch r {
+	case TransactionSimulationContractManagementSetCodeAccountManagementTypeSetCodeAccount:
+		return true
+	}
+	return false
+}
+
 // The type of the state change
 type TransactionSimulationContractManagementType string
 
@@ -5876,11 +5929,12 @@ const (
 	TransactionSimulationContractManagementTypeProxyUpgrade    TransactionSimulationContractManagementType = "PROXY_UPGRADE"
 	TransactionSimulationContractManagementTypeOwnershipChange TransactionSimulationContractManagementType = "OWNERSHIP_CHANGE"
 	TransactionSimulationContractManagementTypeModuleChange    TransactionSimulationContractManagementType = "MODULE_CHANGE"
+	TransactionSimulationContractManagementTypeSetCodeAccount  TransactionSimulationContractManagementType = "SET_CODE_ACCOUNT"
 )
 
 func (r TransactionSimulationContractManagementType) IsKnown() bool {
 	switch r {
-	case TransactionSimulationContractManagementTypeProxyUpgrade, TransactionSimulationContractManagementTypeOwnershipChange, TransactionSimulationContractManagementTypeModuleChange:
+	case TransactionSimulationContractManagementTypeProxyUpgrade, TransactionSimulationContractManagementTypeOwnershipChange, TransactionSimulationContractManagementTypeModuleChange, TransactionSimulationContractManagementTypeSetCodeAccount:
 		return true
 	}
 	return false
