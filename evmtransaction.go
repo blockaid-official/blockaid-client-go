@@ -133,6 +133,7 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 
 // Transaction parameters
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsData struct {
+	AuthorizationList param.Field[interface{}] `json:"authorization_list"`
 	// The encoded call data of the transaction in hex string format
 	Data param.Field[string] `json:"data"`
 	// The source address of the transaction in hex string format
@@ -170,6 +171,8 @@ type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDat
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataTransaction struct {
 	// The source address of the transaction in hex string format
 	From param.Field[string] `json:"from,required"`
+	// The authorization list
+	AuthorizationList param.Field[[]EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataTransactionAuthorizationList] `json:"authorization_list"`
 	// The encoded call data of the transaction in hex string format
 	Data param.Field[string] `json:"data"`
 	// The gas required for the transaction in hex string format.
@@ -187,6 +190,24 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 }
 
 func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataTransaction) implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataUnion() {
+}
+
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataTransactionAuthorizationList struct {
+	// The delegation designation address
+	Address param.Field[string] `json:"address,required"`
+	ChainID param.Field[string] `json:"chainId"`
+	// The authority address of the delegation, should be provided when the signature
+	// (r,s,yParity) is not provided in order to simulate the transaction with the
+	// correct delegation
+	Eoa     param.Field[string] `json:"eoa"`
+	Nonce   param.Field[string] `json:"nonce"`
+	R       param.Field[string] `json:"r"`
+	S       param.Field[string] `json:"s"`
+	YParity param.Field[string] `json:"yParity"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataTransactionAuthorizationList) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataJsonRpc struct {
@@ -286,6 +307,8 @@ func (r EvmTransactionScanParams) MarshalJSON() (data []byte, err error) {
 type EvmTransactionScanParamsData struct {
 	// The source address of the transaction in hex string format
 	From param.Field[string] `json:"from,required"`
+	// The authorization list
+	AuthorizationList param.Field[[]EvmTransactionScanParamsDataAuthorizationList] `json:"authorization_list"`
 	// The encoded call data of the transaction in hex string format
 	Data param.Field[string] `json:"data"`
 	// The gas required for the transaction in hex string format.
@@ -299,6 +322,24 @@ type EvmTransactionScanParamsData struct {
 }
 
 func (r EvmTransactionScanParamsData) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type EvmTransactionScanParamsDataAuthorizationList struct {
+	// The delegation designation address
+	Address param.Field[string] `json:"address,required"`
+	ChainID param.Field[string] `json:"chainId"`
+	// The authority address of the delegation, should be provided when the signature
+	// (r,s,yParity) is not provided in order to simulate the transaction with the
+	// correct delegation
+	Eoa     param.Field[string] `json:"eoa"`
+	Nonce   param.Field[string] `json:"nonce"`
+	R       param.Field[string] `json:"r"`
+	S       param.Field[string] `json:"s"`
+	YParity param.Field[string] `json:"yParity"`
+}
+
+func (r EvmTransactionScanParamsDataAuthorizationList) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
