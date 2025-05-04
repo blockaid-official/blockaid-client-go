@@ -335,11 +335,11 @@ func (r ExchangeProtectionWithdrawalScanResponseLabelsEvidencesURLsLabelsSeverit
 }
 
 type ExchangeProtectionWithdrawalScanParams struct {
-	Account            param.Field[ExchangeProtectionWithdrawalScanParamsAccount]                 `json:"account,required"`
-	EventTime          param.Field[time.Time]                                                     `json:"event_time,required" format:"date-time"`
-	OnchainTransaction param.Field[ExchangeProtectionWithdrawalScanParamsOnchainTransactionUnion] `json:"onchain_transaction,required"`
-	WithdrawalID       param.Field[string]                                                        `json:"withdrawal_id,required"`
-	ConnectionMetadata param.Field[ExchangeProtectionWithdrawalScanParamsConnectionMetadata]      `json:"connection_metadata"`
+	Account            param.Field[ExchangeProtectionWithdrawalScanParamsAccount]            `json:"account,required"`
+	EventTime          param.Field[time.Time]                                                `json:"event_time,required" format:"date-time"`
+	OnchainTransaction param.Field[ExchangeProtectionWithdrawalScanParamsOnchainTransaction] `json:"onchain_transaction,required"`
+	WithdrawalID       param.Field[string]                                                   `json:"withdrawal_id,required"`
+	ConnectionMetadata param.Field[ExchangeProtectionWithdrawalScanParamsConnectionMetadata] `json:"connection_metadata"`
 }
 
 func (r ExchangeProtectionWithdrawalScanParams) MarshalJSON() (data []byte, err error) {
@@ -358,8 +358,8 @@ func (r ExchangeProtectionWithdrawalScanParamsAccount) MarshalJSON() (data []byt
 }
 
 type ExchangeProtectionWithdrawalScanParamsOnchainTransaction struct {
-	Amount param.Field[float64]                                                       `json:"amount,required"`
-	Asset  param.Field[ExchangeProtectionWithdrawalScanParamsOnchainTransactionAsset] `json:"asset,required"`
+	Amount param.Field[float64] `json:"amount,required"`
+	Asset  param.Field[string]  `json:"asset,required"`
 	// An enumeration.
 	Chain     param.Field[ExchangeProtectionWithdrawalScanParamsOnchainTransactionChain] `json:"chain,required"`
 	ToAddress param.Field[string]                                                        `json:"to_address,required"`
@@ -367,168 +367,6 @@ type ExchangeProtectionWithdrawalScanParamsOnchainTransaction struct {
 
 func (r ExchangeProtectionWithdrawalScanParamsOnchainTransaction) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransaction) implementsExchangeProtectionWithdrawalScanParamsOnchainTransactionUnion() {
-}
-
-// Satisfied by
-// [ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransaction],
-// [ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransaction],
-// [ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransaction],
-// [ExchangeProtectionWithdrawalScanParamsOnchainTransaction].
-type ExchangeProtectionWithdrawalScanParamsOnchainTransactionUnion interface {
-	implementsExchangeProtectionWithdrawalScanParamsOnchainTransactionUnion()
-}
-
-type ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransaction struct {
-	Amount param.Field[float64]                                                                                                                  `json:"amount,required"`
-	Asset  param.Field[ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionAsset] `json:"asset,required"`
-	// An enumeration.
-	Chain     param.Field[ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChain] `json:"chain,required"`
-	ToAddress param.Field[string]                                                                                                                   `json:"to_address,required"`
-}
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransaction) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransaction) implementsExchangeProtectionWithdrawalScanParamsOnchainTransactionUnion() {
-}
-
-type ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionAsset string
-
-const (
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionAssetEth ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionAsset = "ETH"
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionAssetPol ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionAsset = "POL"
-)
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionAsset) IsKnown() bool {
-	switch r {
-	case ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionAssetEth, ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionAssetPol:
-		return true
-	}
-	return false
-}
-
-// An enumeration.
-type ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChain string
-
-const (
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChainEthereum ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChain = "ethereum"
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChainBase     ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChain = "base"
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChainArbitrum ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChain = "arbitrum"
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChainOptimism ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChain = "optimism"
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChainPolygon  ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChain = "polygon"
-)
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChain) IsKnown() bool {
-	switch r {
-	case ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChainEthereum, ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChainBase, ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChainArbitrum, ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChainOptimism, ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChainPolygon:
-		return true
-	}
-	return false
-}
-
-type ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransaction struct {
-	Amount    param.Field[float64]                                                                                                                      `json:"amount,required"`
-	Asset     param.Field[ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransactionAsset] `json:"asset,required"`
-	Chain     param.Field[ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransactionChain] `json:"chain,required"`
-	ToAddress param.Field[string]                                                                                                                       `json:"to_address,required"`
-}
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransaction) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransaction) implementsExchangeProtectionWithdrawalScanParamsOnchainTransactionUnion() {
-}
-
-type ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransactionAsset string
-
-const (
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransactionAssetBtc ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransactionAsset = "BTC"
-)
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransactionAsset) IsKnown() bool {
-	switch r {
-	case ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransactionAssetBtc:
-		return true
-	}
-	return false
-}
-
-type ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransactionChain string
-
-const (
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransactionChainBitcoin ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransactionChain = "bitcoin"
-)
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransactionChain) IsKnown() bool {
-	switch r {
-	case ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestBitcoinOnchainTransactionChainBitcoin:
-		return true
-	}
-	return false
-}
-
-type ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransaction struct {
-	Amount    param.Field[float64]                                                                                                                      `json:"amount,required"`
-	Asset     param.Field[ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransactionAsset] `json:"asset,required"`
-	Chain     param.Field[ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransactionChain] `json:"chain,required"`
-	ToAddress param.Field[string]                                                                                                                       `json:"to_address,required"`
-}
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransaction) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransaction) implementsExchangeProtectionWithdrawalScanParamsOnchainTransactionUnion() {
-}
-
-type ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransactionAsset string
-
-const (
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransactionAssetXlm ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransactionAsset = "XLM"
-)
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransactionAsset) IsKnown() bool {
-	switch r {
-	case ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransactionAssetXlm:
-		return true
-	}
-	return false
-}
-
-type ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransactionChain string
-
-const (
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransactionChainStellar ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransactionChain = "stellar"
-)
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransactionChain) IsKnown() bool {
-	switch r {
-	case ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestStellarOnchainTransactionChainStellar:
-		return true
-	}
-	return false
-}
-
-type ExchangeProtectionWithdrawalScanParamsOnchainTransactionAsset string
-
-const (
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionAssetEth ExchangeProtectionWithdrawalScanParamsOnchainTransactionAsset = "ETH"
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionAssetPol ExchangeProtectionWithdrawalScanParamsOnchainTransactionAsset = "POL"
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionAssetBtc ExchangeProtectionWithdrawalScanParamsOnchainTransactionAsset = "BTC"
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionAssetXlm ExchangeProtectionWithdrawalScanParamsOnchainTransactionAsset = "XLM"
-)
-
-func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionAsset) IsKnown() bool {
-	switch r {
-	case ExchangeProtectionWithdrawalScanParamsOnchainTransactionAssetEth, ExchangeProtectionWithdrawalScanParamsOnchainTransactionAssetPol, ExchangeProtectionWithdrawalScanParamsOnchainTransactionAssetBtc, ExchangeProtectionWithdrawalScanParamsOnchainTransactionAssetXlm:
-		return true
-	}
-	return false
 }
 
 // An enumeration.
@@ -541,12 +379,12 @@ const (
 	ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainOptimism ExchangeProtectionWithdrawalScanParamsOnchainTransactionChain = "optimism"
 	ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainPolygon  ExchangeProtectionWithdrawalScanParamsOnchainTransactionChain = "polygon"
 	ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainBitcoin  ExchangeProtectionWithdrawalScanParamsOnchainTransactionChain = "bitcoin"
-	ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainStellar  ExchangeProtectionWithdrawalScanParamsOnchainTransactionChain = "stellar"
+	ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainSolana   ExchangeProtectionWithdrawalScanParamsOnchainTransactionChain = "solana"
 )
 
 func (r ExchangeProtectionWithdrawalScanParamsOnchainTransactionChain) IsKnown() bool {
 	switch r {
-	case ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainEthereum, ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainBase, ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainArbitrum, ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainOptimism, ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainPolygon, ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainBitcoin, ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainStellar:
+	case ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainEthereum, ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainBase, ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainArbitrum, ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainOptimism, ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainPolygon, ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainBitcoin, ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainSolana:
 		return true
 	}
 	return false
