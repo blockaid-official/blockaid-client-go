@@ -1948,8 +1948,7 @@ func (r AccountSummaryTracesErc20ExposureTraceType) IsKnown() bool {
 
 type AccountSummaryTracesErc721ExposureTrace struct {
 	// Description of the asset in the trace
-	Asset   AccountSummaryTracesErc721ExposureTraceAsset   `json:"asset,required"`
-	Exposed AccountSummaryTracesErc721ExposureTraceExposed `json:"exposed,required"`
+	Asset AccountSummaryTracesErc721ExposureTraceAsset `json:"asset,required"`
 	// The owner of the assets
 	Owner string `json:"owner,required"`
 	// The spender of the assets
@@ -1957,19 +1956,20 @@ type AccountSummaryTracesErc721ExposureTrace struct {
 	// type of the trace
 	TraceType AccountSummaryTracesErc721ExposureTraceTraceType `json:"trace_type,required"`
 	// The type of the model
-	Type AccountSummaryTracesErc721ExposureTraceType `json:"type,required"`
-	JSON accountSummaryTracesErc721ExposureTraceJSON `json:"-"`
+	Type    AccountSummaryTracesErc721ExposureTraceType    `json:"type,required"`
+	Exposed AccountSummaryTracesErc721ExposureTraceExposed `json:"exposed"`
+	JSON    accountSummaryTracesErc721ExposureTraceJSON    `json:"-"`
 }
 
 // accountSummaryTracesErc721ExposureTraceJSON contains the JSON metadata for the
 // struct [AccountSummaryTracesErc721ExposureTrace]
 type accountSummaryTracesErc721ExposureTraceJSON struct {
 	Asset       apijson.Field
-	Exposed     apijson.Field
 	Owner       apijson.Field
 	Spender     apijson.Field
 	TraceType   apijson.Field
 	Type        apijson.Field
+	Exposed     apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -2072,35 +2072,6 @@ func (r AccountSummaryTracesErc721ExposureTraceAssetType) IsKnown() bool {
 	return false
 }
 
-type AccountSummaryTracesErc721ExposureTraceExposed struct {
-	Amount   int64                                              `json:"amount,required"`
-	TokenID  string                                             `json:"token_id,required"`
-	IsMint   bool                                               `json:"is_mint"`
-	LogoURL  string                                             `json:"logo_url"`
-	UsdPrice float64                                            `json:"usd_price"`
-	JSON     accountSummaryTracesErc721ExposureTraceExposedJSON `json:"-"`
-}
-
-// accountSummaryTracesErc721ExposureTraceExposedJSON contains the JSON metadata
-// for the struct [AccountSummaryTracesErc721ExposureTraceExposed]
-type accountSummaryTracesErc721ExposureTraceExposedJSON struct {
-	Amount      apijson.Field
-	TokenID     apijson.Field
-	IsMint      apijson.Field
-	LogoURL     apijson.Field
-	UsdPrice    apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AccountSummaryTracesErc721ExposureTraceExposed) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountSummaryTracesErc721ExposureTraceExposedJSON) RawJSON() string {
-	return r.raw
-}
-
 // type of the trace
 type AccountSummaryTracesErc721ExposureTraceTraceType string
 
@@ -2129,6 +2100,35 @@ func (r AccountSummaryTracesErc721ExposureTraceType) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+type AccountSummaryTracesErc721ExposureTraceExposed struct {
+	Amount   int64                                              `json:"amount,required"`
+	TokenID  string                                             `json:"token_id,required"`
+	IsMint   bool                                               `json:"is_mint"`
+	LogoURL  string                                             `json:"logo_url"`
+	UsdPrice float64                                            `json:"usd_price"`
+	JSON     accountSummaryTracesErc721ExposureTraceExposedJSON `json:"-"`
+}
+
+// accountSummaryTracesErc721ExposureTraceExposedJSON contains the JSON metadata
+// for the struct [AccountSummaryTracesErc721ExposureTraceExposed]
+type accountSummaryTracesErc721ExposureTraceExposedJSON struct {
+	Amount      apijson.Field
+	TokenID     apijson.Field
+	IsMint      apijson.Field
+	LogoURL     apijson.Field
+	UsdPrice    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AccountSummaryTracesErc721ExposureTraceExposed) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountSummaryTracesErc721ExposureTraceExposedJSON) RawJSON() string {
+	return r.raw
 }
 
 type AccountSummaryTracesErc1155ExposureTrace struct {
