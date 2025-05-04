@@ -34,10 +34,10 @@ func TestExchangeProtectionWithdrawalScanWithOptionalParams(t *testing.T) {
 			Created:         blockaidclientgo.F(time.Now()),
 		}),
 		EventTime: blockaidclientgo.F(time.Now()),
-		OnchainTransaction: blockaidclientgo.F[blockaidclientgo.ExchangeProtectionWithdrawalScanParamsOnchainTransactionUnion](blockaidclientgo.ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransaction{
+		OnchainTransaction: blockaidclientgo.F(blockaidclientgo.ExchangeProtectionWithdrawalScanParamsOnchainTransaction{
 			Amount:    blockaidclientgo.F(1.000000),
-			Asset:     blockaidclientgo.F(blockaidclientgo.ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionAssetEth),
-			Chain:     blockaidclientgo.F(blockaidclientgo.ExchangeProtectionWithdrawalScanParamsOnchainTransactionRoutersExchangeProtectionModelsRequestEvmOnchainTransactionChainEthereum),
+			Asset:     blockaidclientgo.F("asset"),
+			Chain:     blockaidclientgo.F(blockaidclientgo.ExchangeProtectionWithdrawalScanParamsOnchainTransactionChainEthereum),
 			ToAddress: blockaidclientgo.F("to_address"),
 		}),
 		WithdrawalID: blockaidclientgo.F("withdrawal_id"),
