@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.53.0 (2025-05-04)
+
+Full Changelog: [v0.52.0...v0.53.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.52.0...v0.53.0)
+
+### Features
+
+* **api:** api update ([1ad019d](https://github.com/blockaid-official/blockaid-client-go/commit/1ad019d7dc7fadf08af64919d2794a2f62b88e1f))
+* **api:** api update ([6e3a9da](https://github.com/blockaid-official/blockaid-client-go/commit/6e3a9da2a20bece65de6b29b4fd03fe475e73a06))
+* **api:** api update ([54502ec](https://github.com/blockaid-official/blockaid-client-go/commit/54502ec464574f29c5f9e56285f2411789c4c298))
+* **api:** api update ([fc8830e](https://github.com/blockaid-official/blockaid-client-go/commit/fc8830e41164d2756751cb4c218a9ee326cbaa4f))
+* **api:** api update ([23cc87f](https://github.com/blockaid-official/blockaid-client-go/commit/23cc87f6a4d4400f45374ad7896e192cae8bd24c))
+* **api:** api update ([c0d8a73](https://github.com/blockaid-official/blockaid-client-go/commit/c0d8a73a539aa0e6dbecec9ef1e662662e1d94d9))
+
+
+### Bug Fixes
+
+* handle empty bodies in WithJSONSet ([cb490d9](https://github.com/blockaid-official/blockaid-client-go/commit/cb490d9feef70644d2626aaa09f07d8b62a4e8ff))
+
 ## 0.52.0 (2025-04-27)
 
 Full Changelog: [v0.51.0...v0.52.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.51.0...v0.52.0)
