@@ -205,30 +205,22 @@ func (r exchangeProtectionWithdrawalScanResponseLabelsEvidencesAddressJSON) RawJ
 }
 
 type ExchangeProtectionWithdrawalScanResponseLabelsEvidencesAddressesLabel struct {
-	DateAdded string `json:"date_added,required"`
-	IsPublic  bool   `json:"is_public,required"`
-	Label     string `json:"label,required"`
-	Origin    string `json:"origin,required"`
+	Label  string `json:"label,required"`
+	Origin string `json:"origin,required"`
 	// An enumeration.
-	Severity              ExchangeProtectionWithdrawalScanResponseLabelsEvidencesAddressesLabelsSeverity `json:"severity,required"`
-	Chains                []string                                                                       `json:"chains"`
-	ReportingOrganization string                                                                         `json:"reporting_organization"`
-	JSON                  exchangeProtectionWithdrawalScanResponseLabelsEvidencesAddressesLabelJSON      `json:"-"`
+	Severity ExchangeProtectionWithdrawalScanResponseLabelsEvidencesAddressesLabelsSeverity `json:"severity,required"`
+	JSON     exchangeProtectionWithdrawalScanResponseLabelsEvidencesAddressesLabelJSON      `json:"-"`
 }
 
 // exchangeProtectionWithdrawalScanResponseLabelsEvidencesAddressesLabelJSON
 // contains the JSON metadata for the struct
 // [ExchangeProtectionWithdrawalScanResponseLabelsEvidencesAddressesLabel]
 type exchangeProtectionWithdrawalScanResponseLabelsEvidencesAddressesLabelJSON struct {
-	DateAdded             apijson.Field
-	IsPublic              apijson.Field
-	Label                 apijson.Field
-	Origin                apijson.Field
-	Severity              apijson.Field
-	Chains                apijson.Field
-	ReportingOrganization apijson.Field
-	raw                   string
-	ExtraFields           map[string]apijson.Field
+	Label       apijson.Field
+	Origin      apijson.Field
+	Severity    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
 }
 
 func (r *ExchangeProtectionWithdrawalScanResponseLabelsEvidencesAddressesLabel) UnmarshalJSON(data []byte) (err error) {
@@ -282,30 +274,22 @@ func (r exchangeProtectionWithdrawalScanResponseLabelsEvidencesURLJSON) RawJSON(
 }
 
 type ExchangeProtectionWithdrawalScanResponseLabelsEvidencesURLsLabel struct {
-	DateAdded string `json:"date_added,required"`
-	IsPublic  bool   `json:"is_public,required"`
-	Label     string `json:"label,required"`
-	Origin    string `json:"origin,required"`
+	Label  string `json:"label,required"`
+	Origin string `json:"origin,required"`
 	// An enumeration.
-	Severity              ExchangeProtectionWithdrawalScanResponseLabelsEvidencesURLsLabelsSeverity `json:"severity,required"`
-	Chains                []string                                                                  `json:"chains"`
-	ReportingOrganization string                                                                    `json:"reporting_organization"`
-	JSON                  exchangeProtectionWithdrawalScanResponseLabelsEvidencesURLsLabelJSON      `json:"-"`
+	Severity ExchangeProtectionWithdrawalScanResponseLabelsEvidencesURLsLabelsSeverity `json:"severity,required"`
+	JSON     exchangeProtectionWithdrawalScanResponseLabelsEvidencesURLsLabelJSON      `json:"-"`
 }
 
 // exchangeProtectionWithdrawalScanResponseLabelsEvidencesURLsLabelJSON contains
 // the JSON metadata for the struct
 // [ExchangeProtectionWithdrawalScanResponseLabelsEvidencesURLsLabel]
 type exchangeProtectionWithdrawalScanResponseLabelsEvidencesURLsLabelJSON struct {
-	DateAdded             apijson.Field
-	IsPublic              apijson.Field
-	Label                 apijson.Field
-	Origin                apijson.Field
-	Severity              apijson.Field
-	Chains                apijson.Field
-	ReportingOrganization apijson.Field
-	raw                   string
-	ExtraFields           map[string]apijson.Field
+	Label       apijson.Field
+	Origin      apijson.Field
+	Severity    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
 }
 
 func (r *ExchangeProtectionWithdrawalScanResponseLabelsEvidencesURLsLabel) UnmarshalJSON(data []byte) (err error) {
