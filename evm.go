@@ -3375,8 +3375,10 @@ type TransactionScanFeature struct {
 	// An enumeration.
 	Type TransactionScanFeatureType `json:"type,required"`
 	// Address the feature refers to
-	Address string                     `json:"address"`
-	JSON    transactionScanFeatureJSON `json:"-"`
+	Address string `json:"address"`
+	// Metadata related to the feature
+	Metadata interface{}                `json:"metadata"`
+	JSON     transactionScanFeatureJSON `json:"-"`
 }
 
 // transactionScanFeatureJSON contains the JSON metadata for the struct
@@ -3386,6 +3388,7 @@ type transactionScanFeatureJSON struct {
 	FeatureID   apijson.Field
 	Type        apijson.Field
 	Address     apijson.Field
+	Metadata    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
