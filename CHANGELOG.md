@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.55.0 (2025-05-08)
+
+Full Changelog: [v0.54.0...v0.55.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.54.0...v0.55.0)
+
+### Features
+
+* **api:** api update ([49ae333](https://github.com/blockaid-official/blockaid-client-go/commit/49ae3334f6f5708c42a20d7158454407b2ad2baa))
+
+
+### Bug Fixes
+
+* **client:** clean up reader resources ([32f97a7](https://github.com/blockaid-official/blockaid-client-go/commit/32f97a76f3e39d1b2b3b0b9c5e59e6c234708c42))
+* **client:** correctly update body in WithJSONSet ([52f6b54](https://github.com/blockaid-official/blockaid-client-go/commit/52f6b546bb91f9349d293d3dd96ee0ae2c5800a6))
+
 ## 0.54.0 (2025-05-04)
 
 Full Changelog: [v0.53.0...v0.54.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.53.0...v0.54.0)
