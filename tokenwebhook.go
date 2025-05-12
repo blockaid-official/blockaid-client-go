@@ -207,6 +207,8 @@ type TokenWebhookNewParams struct {
 	URL param.Field[string] `json:"url,required" format:"uri"`
 	// Optional shared secret key (32 characters), used to calculate the HMAC signature
 	SharedSecretKey param.Field[string] `json:"shared_secret_key"`
+	// Optional list of up to 100000 token addresses to filter webhook updates
+	TokenAddresses param.Field[[]string] `json:"token_addresses"`
 }
 
 func (r TokenWebhookNewParams) MarshalJSON() (data []byte, err error) {
