@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.55.0 (2025-05-14)
+
+Full Changelog: [v0.54.0...v0.55.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.54.0...v0.55.0)
+
+### Features
+
+* **api:** api update ([332763e](https://github.com/blockaid-official/blockaid-client-go/commit/332763ec2b2f792ef7044a22af00c0ca6d8cc6dd))
+* **api:** api update ([97dda58](https://github.com/blockaid-official/blockaid-client-go/commit/97dda58fffdf0e13ba4108ade7f1a6e023c6b89d))
+* **api:** api update ([49ae333](https://github.com/blockaid-official/blockaid-client-go/commit/49ae3334f6f5708c42a20d7158454407b2ad2baa))
+* **client:** add support for endpoint-specific base URLs in python ([fb00c34](https://github.com/blockaid-official/blockaid-client-go/commit/fb00c3447d50ec6afbbbde5e874186882f20d8df))
+
+
+### Bug Fixes
+
+* **client:** clean up reader resources ([32f97a7](https://github.com/blockaid-official/blockaid-client-go/commit/32f97a76f3e39d1b2b3b0b9c5e59e6c234708c42))
+* **client:** correctly update body in WithJSONSet ([52f6b54](https://github.com/blockaid-official/blockaid-client-go/commit/52f6b546bb91f9349d293d3dd96ee0ae2c5800a6))
+
 ## 0.54.0 (2025-05-04)
 
 Full Changelog: [v0.53.0...v0.54.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.53.0...v0.54.0)

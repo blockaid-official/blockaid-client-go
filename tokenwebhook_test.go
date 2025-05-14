@@ -31,6 +31,7 @@ func TestTokenWebhookNewWithOptionalParams(t *testing.T) {
 		blockaidclientgo.TokenWebhookNewParams{
 			URL:             blockaidclientgo.F("https://example.com"),
 			SharedSecretKey: blockaidclientgo.F("shared_secret_key"),
+			TokenAddresses:  blockaidclientgo.F([]string{"string"}),
 		},
 	)
 	if err != nil {
