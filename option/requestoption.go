@@ -262,14 +262,14 @@ func WithRequestTimeout(dur time.Duration) RequestOption {
 // environment to be the "production" environment. An environment specifies which base URL
 // to use by default.
 func WithEnvironmentProduction() RequestOption {
-	return WithBaseURL("https://api.blockaid.io/")
+	return requestconfig.WithDefaultBaseURL("https://api.blockaid.io/")
 }
 
 // WithEnvironmentClient returns a RequestOption that sets the current
 // environment to be the "client" environment. An environment specifies which base URL
 // to use by default.
 func WithEnvironmentClient() RequestOption {
-	return WithBaseURL("https://client.blockaid.io/")
+	return requestconfig.WithDefaultBaseURL("https://client.blockaid.io/")
 }
 
 // WithAPIKey returns a RequestOption that sets the client setting "api_key".
