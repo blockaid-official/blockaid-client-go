@@ -78,7 +78,7 @@ func TestEvmTransactionScanWithOptionalParams(t *testing.T) {
 		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
 			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
 		}),
-		Block:   blockaidclientgo.F[blockaidclientgo.EvmTransactionScanParamsBlockUnion](shared.UnionInt(int64(0))),
+		Block:   blockaidclientgo.F[blockaidclientgo.EvmTransactionScanParamsBlockUnion](shared.UnionString("21211118")),
 		Options: blockaidclientgo.F([]blockaidclientgo.EvmTransactionScanParamsOption{blockaidclientgo.EvmTransactionScanParamsOptionSimulation, blockaidclientgo.EvmTransactionScanParamsOptionValidation}),
 		StateOverride: blockaidclientgo.F(map[string]blockaidclientgo.EvmTransactionScanParamsStateOverride{
 			"foo": {
