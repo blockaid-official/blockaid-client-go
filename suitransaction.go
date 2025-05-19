@@ -40,7 +40,7 @@ func (r *SuiTransactionService) Scan(ctx context.Context, body SuiTransactionSca
 }
 
 type SuiTransactionScanParams struct {
-	AccountAddress param.Field[interface{}]                   `json:"account_address,required"`
+	AccountAddress param.Field[string]                        `json:"account_address,required"`
 	Chain          param.Field[SuiTransactionScanParamsChain] `json:"chain,required"`
 	// Metadata
 	Metadata    param.Field[SuiTransactionScanParamsMetadataUnion] `json:"metadata,required"`

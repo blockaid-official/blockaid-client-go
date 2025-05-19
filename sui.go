@@ -4,7 +4,6 @@ package blockaidclientgo
 
 import (
 	"reflect"
-	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/option"
@@ -18,9 +17,8 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewSuiService] method instead.
 type SuiService struct {
-	Options         []option.RequestOption
-	Transaction     *SuiTransactionService
-	PostTransaction *SuiPostTransactionService
+	Options     []option.RequestOption
+	Transaction *SuiTransactionService
 }
 
 // NewSuiService generates a new service that applies the given options to each
@@ -30,7 +28,6 @@ func NewSuiService(opts ...option.RequestOption) (r *SuiService) {
 	r = &SuiService{}
 	r.Options = opts
 	r.Transaction = NewSuiTransactionService(opts...)
-	r.PostTransaction = NewSuiPostTransactionService(opts...)
 	return
 }
 
@@ -66,10 +63,10 @@ func (r suiAssetTransferDetailsSchemaJSON) RawJSON() string {
 }
 
 type SuiNativeAssetDetailsSchema struct {
+	// URL of the asset's logo
+	LogoURL string `json:"logo_url,required,nullable"`
 	// Decimals of the asset
 	Decimals SuiNativeAssetDetailsSchemaDecimals `json:"decimals"`
-	// URL of the asset's logo
-	LogoURL SuiNativeAssetDetailsSchemaLogoURL `json:"logo_url"`
 	// Name of the asset
 	Name SuiNativeAssetDetailsSchemaName `json:"name"`
 	// Symbol of the asset
@@ -82,8 +79,8 @@ type SuiNativeAssetDetailsSchema struct {
 // suiNativeAssetDetailsSchemaJSON contains the JSON metadata for the struct
 // [SuiNativeAssetDetailsSchema]
 type suiNativeAssetDetailsSchemaJSON struct {
-	Decimals    apijson.Field
 	LogoURL     apijson.Field
+	Decimals    apijson.Field
 	Name        apijson.Field
 	Symbol      apijson.Field
 	Type        apijson.Field
@@ -109,21 +106,6 @@ const (
 func (r SuiNativeAssetDetailsSchemaDecimals) IsKnown() bool {
 	switch r {
 	case SuiNativeAssetDetailsSchemaDecimals9:
-		return true
-	}
-	return false
-}
-
-// URL of the asset's logo
-type SuiNativeAssetDetailsSchemaLogoURL string
-
-const (
-	SuiNativeAssetDetailsSchemaLogoURLHTTPSImagedeliveryNetCBndGgkrsEaBIxIp9SkQSuiSvgPublic SuiNativeAssetDetailsSchemaLogoURL = "https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/sui.svg/public"
-)
-
-func (r SuiNativeAssetDetailsSchemaLogoURL) IsKnown() bool {
-	switch r {
-	case SuiNativeAssetDetailsSchemaLogoURLHTTPSImagedeliveryNetCBndGgkrsEaBIxIp9SkQSuiSvgPublic:
 		return true
 	}
 	return false
@@ -285,7 +267,8 @@ type SuiTransactionScanResponseSimulation struct {
 	// This field can have the runtime type of
 	// [SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummary].
 	AccountSummary interface{} `json:"account_summary"`
-	// This field can have the runtime type of [[]interface{}].
+	// This field can have the runtime type of
+	// [[]SuiTransactionScanResponseSimulationSuiSimulationResultAddressDetail].
 	AddressDetails interface{} `json:"address_details"`
 	// This field can have the runtime type of
 	// [map[string][]SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiff].
@@ -360,7 +343,7 @@ type SuiTransactionScanResponseSimulationSuiSimulationResult struct {
 	AccountSummary SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummary `json:"account_summary,required"`
 	Status         SuiTransactionScanResponseSimulationSuiSimulationResultStatus         `json:"status,required"`
 	// Details of addresses involved in the transaction
-	AddressDetails []interface{} `json:"address_details"`
+	AddressDetails []SuiTransactionScanResponseSimulationSuiSimulationResultAddressDetail `json:"address_details"`
 	// Mapping between the address of an account to the assets diff during the
 	// transaction
 	AssetsDiffs map[string][]SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiff `json:"assets_diffs"`
@@ -633,39 +616,36 @@ func (r SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAcc
 }
 
 type SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset struct {
-	// Token's package address
-	Address string `json:"address,required"`
-	// Token's decimal precision
+	// The Coin ID
+	ID string `json:"id,required"`
+	// Decimals of the asset
 	Decimals int64 `json:"decimals,required"`
-	// Token's name
+	// The Coin description
+	Description string `json:"description,required"`
+	// The Coin name
 	Name string `json:"name,required"`
-	// Token's symbol (abbreviation)
-	Symbol            string    `json:"symbol,required"`
-	CreationTimestamp time.Time `json:"creation_timestamp,nullable" format:"date-time"`
-	// URL of the token's logo
+	// The Coin's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
 	LogoURL string `json:"logo_url,nullable"`
-	Scam    bool   `json:"scam,nullable"`
-	// Type of the asset (`Coin`)
-	Type     SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType `json:"type"`
-	Verified bool                                                                                                              `json:"verified,nullable"`
-	JSON     suiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetJSON `json:"-"`
+	// Type of the asset (`COIN`)
+	Type SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType `json:"type"`
+	JSON suiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetJSON `json:"-"`
 }
 
 // suiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetJSON
 // contains the JSON metadata for the struct
 // [SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset]
 type suiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetJSON struct {
-	Address           apijson.Field
-	Decimals          apijson.Field
-	Name              apijson.Field
-	Symbol            apijson.Field
-	CreationTimestamp apijson.Field
-	LogoURL           apijson.Field
-	Scam              apijson.Field
-	Type              apijson.Field
-	Verified          apijson.Field
-	raw               string
-	ExtraFields       map[string]apijson.Field
+	ID          apijson.Field
+	Decimals    apijson.Field
+	Description apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
 }
 
 func (r *SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
@@ -676,16 +656,16 @@ func (r suiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAcc
 	return r.raw
 }
 
-// Type of the asset (`Coin`)
+// Type of the asset (`COIN`)
 type SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType string
 
 const (
-	SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetTypeFungible SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType = "fungible"
+	SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetTypeCoin SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType = "COIN"
 )
 
 func (r SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetTypeFungible:
+	case SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetTypeCoin:
 		return true
 	}
 	return false
@@ -703,6 +683,32 @@ func (r SuiTransactionScanResponseSimulationSuiSimulationResultStatus) IsKnown()
 		return true
 	}
 	return false
+}
+
+type SuiTransactionScanResponseSimulationSuiSimulationResultAddressDetail struct {
+	// Encoded public key of the account
+	AccountAddress string `json:"account_address,required"`
+	// Description of the account
+	Description string                                                                   `json:"description,nullable"`
+	JSON        suiTransactionScanResponseSimulationSuiSimulationResultAddressDetailJSON `json:"-"`
+}
+
+// suiTransactionScanResponseSimulationSuiSimulationResultAddressDetailJSON
+// contains the JSON metadata for the struct
+// [SuiTransactionScanResponseSimulationSuiSimulationResultAddressDetail]
+type suiTransactionScanResponseSimulationSuiSimulationResultAddressDetailJSON struct {
+	AccountAddress apijson.Field
+	Description    apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *SuiTransactionScanResponseSimulationSuiSimulationResultAddressDetail) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r suiTransactionScanResponseSimulationSuiSimulationResultAddressDetailJSON) RawJSON() string {
+	return r.raw
 }
 
 type SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiff struct {
@@ -890,39 +896,36 @@ func (r SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoi
 }
 
 type SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset struct {
-	// Token's package address
-	Address string `json:"address,required"`
-	// Token's decimal precision
+	// The Coin ID
+	ID string `json:"id,required"`
+	// Decimals of the asset
 	Decimals int64 `json:"decimals,required"`
-	// Token's name
+	// The Coin description
+	Description string `json:"description,required"`
+	// The Coin name
 	Name string `json:"name,required"`
-	// Token's symbol (abbreviation)
-	Symbol            string    `json:"symbol,required"`
-	CreationTimestamp time.Time `json:"creation_timestamp,nullable" format:"date-time"`
-	// URL of the token's logo
+	// The Coin's symbol
+	Symbol string `json:"symbol,required"`
+	// URL of the asset's logo
 	LogoURL string `json:"logo_url,nullable"`
-	Scam    bool   `json:"scam,nullable"`
-	// Type of the asset (`Coin`)
-	Type     SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType `json:"type"`
-	Verified bool                                                                                         `json:"verified,nullable"`
-	JSON     suiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetJSON `json:"-"`
+	// Type of the asset (`COIN`)
+	Type SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType `json:"type"`
+	JSON suiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetJSON `json:"-"`
 }
 
 // suiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetJSON
 // contains the JSON metadata for the struct
 // [SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset]
 type suiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetJSON struct {
-	Address           apijson.Field
-	Decimals          apijson.Field
-	Name              apijson.Field
-	Symbol            apijson.Field
-	CreationTimestamp apijson.Field
-	LogoURL           apijson.Field
-	Scam              apijson.Field
-	Type              apijson.Field
-	Verified          apijson.Field
-	raw               string
-	ExtraFields       map[string]apijson.Field
+	ID          apijson.Field
+	Decimals    apijson.Field
+	Description apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
 }
 
 func (r *SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
@@ -933,16 +936,16 @@ func (r suiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoi
 	return r.raw
 }
 
-// Type of the asset (`Coin`)
+// Type of the asset (`COIN`)
 type SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType string
 
 const (
-	SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetTypeFungible SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType = "fungible"
+	SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetTypeCoin SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType = "COIN"
 )
 
 func (r SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetTypeFungible:
+	case SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetTypeCoin:
 		return true
 	}
 	return false
