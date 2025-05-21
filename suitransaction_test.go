@@ -26,7 +26,7 @@ func TestSuiTransactionScanWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Sui.Transaction.Scan(context.TODO(), blockaidclientgo.SuiTransactionScanParams{
-		AccountAddress: blockaidclientgo.F("0x45e90b3ea2e1920c43d92d224630d6a865c1b58a7b4e770c2ac156eab30eb491"),
+		AccountAddress: blockaidclientgo.F[any]("0x45e90b3ea2e1920c43d92d224630d6a865c1b58a7b4e770c2ac156eab30eb491"),
 		Chain:          blockaidclientgo.F(blockaidclientgo.SuiTransactionScanParamsChainMainnet),
 		Metadata: blockaidclientgo.F[blockaidclientgo.SuiTransactionScanParamsMetadataUnion](blockaidclientgo.SuiTransactionScanParamsMetadataSuiWalletRequestMetadata{
 			Type: blockaidclientgo.F(blockaidclientgo.SuiTransactionScanParamsMetadataSuiWalletRequestMetadataTypeWallet),
