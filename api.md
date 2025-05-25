@@ -204,6 +204,16 @@ Methods:
 
 - <code title="post /v0/sui/post-transaction/scan">client.Sui.PostTransaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiPostTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiPostTransactionScanParams">SuiPostTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiPostTransactionScanResponse">SuiPostTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
+## Address
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiAddressScanResponse">SuiAddressScanResponse</a>
+
+Methods:
+
+- <code title="post /v0/sui/address/scan">client.Sui.Address.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiAddressService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiAddressScanParams">SuiAddressScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#SuiAddressScanResponse">SuiAddressScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
 # Site
 
 Response Types:
