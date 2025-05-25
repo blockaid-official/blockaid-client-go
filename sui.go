@@ -21,6 +21,7 @@ type SuiService struct {
 	Options         []option.RequestOption
 	Transaction     *SuiTransactionService
 	PostTransaction *SuiPostTransactionService
+	Address         *SuiAddressService
 }
 
 // NewSuiService generates a new service that applies the given options to each
@@ -31,6 +32,7 @@ func NewSuiService(opts ...option.RequestOption) (r *SuiService) {
 	r.Options = opts
 	r.Transaction = NewSuiTransactionService(opts...)
 	r.PostTransaction = NewSuiPostTransactionService(opts...)
+	r.Address = NewSuiAddressService(opts...)
 	return
 }
 
