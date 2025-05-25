@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.55.0 (2025-05-25)
+
+Full Changelog: [v0.54.0...v0.55.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.54.0...v0.55.0)
+
+### Features
+
+* **api:** api update ([b32979d](https://github.com/blockaid-official/blockaid-client-go/commit/b32979d5e3b8e7ef1c732b82b807931a4b08ee8c))
+* **api:** api update ([2f02bce](https://github.com/blockaid-official/blockaid-client-go/commit/2f02bce66321a93aa79d33c893f6cc441b80276a))
+* **api:** api update ([01e4188](https://github.com/blockaid-official/blockaid-client-go/commit/01e4188f8a707a50aefaadd35a0623fd9d77d06e))
+* **api:** api update ([09b7688](https://github.com/blockaid-official/blockaid-client-go/commit/09b76884fe60803d894f3018c0e4fc3c1153f7cc))
+* **api:** api update ([bb75685](https://github.com/blockaid-official/blockaid-client-go/commit/bb75685e7b2ec2f6d0ef9a3bc3d5428f341fea2e))
+* **api:** api update ([05e4efe](https://github.com/blockaid-official/blockaid-client-go/commit/05e4efeeab51bcbfabd1d7a6a6ffc869f0ed903e))
+* **api:** api update ([332763e](https://github.com/blockaid-official/blockaid-client-go/commit/332763ec2b2f792ef7044a22af00c0ca6d8cc6dd))
+* **api:** api update ([97dda58](https://github.com/blockaid-official/blockaid-client-go/commit/97dda58fffdf0e13ba4108ade7f1a6e023c6b89d))
+* **api:** api update ([49ae333](https://github.com/blockaid-official/blockaid-client-go/commit/49ae3334f6f5708c42a20d7158454407b2ad2baa))
+* **client:** add support for endpoint-specific base URLs in python ([fb00c34](https://github.com/blockaid-official/blockaid-client-go/commit/fb00c3447d50ec6afbbbde5e874186882f20d8df))
+
+
+### Bug Fixes
+
+* **client:** clean up reader resources ([32f97a7](https://github.com/blockaid-official/blockaid-client-go/commit/32f97a76f3e39d1b2b3b0b9c5e59e6c234708c42))
+* **client:** correctly update body in WithJSONSet ([52f6b54](https://github.com/blockaid-official/blockaid-client-go/commit/52f6b546bb91f9349d293d3dd96ee0ae2c5800a6))
+
+
+### Chores
+
+* **docs:** grammar improvements ([5754bc6](https://github.com/blockaid-official/blockaid-client-go/commit/5754bc603c8b386c8c121f2b69c119366e3329af))
+* improve devcontainer setup ([822407f](https://github.com/blockaid-official/blockaid-client-go/commit/822407f0c51f7d95758e0c3b9773f313acdb466b))
+
 ## 0.54.0 (2025-05-04)
 
 Full Changelog: [v0.53.0...v0.54.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.53.0...v0.54.0)
