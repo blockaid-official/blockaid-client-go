@@ -29,9 +29,12 @@ func TestTokenWebhookNewWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		blockaidclientgo.TokenScanSupportedChainArbitrum,
 		blockaidclientgo.TokenWebhookNewParams{
-			URL:             blockaidclientgo.F("https://example.com"),
-			SharedSecretKey: blockaidclientgo.F("shared_secret_key"),
-			TokenAddresses:  blockaidclientgo.F([]string{"string"}),
+			URL: blockaidclientgo.F("https://example.com/"),
+			Filter: blockaidclientgo.F(blockaidclientgo.TokenWebhookNewParamsFilter{
+				FilterType:     blockaidclientgo.F(blockaidclientgo.TokenWebhookNewParamsFilterFilterTypeTokenAddress),
+				TokenAddresses: blockaidclientgo.F([]string{"0x1234567890abcdef1234567890abcdef12345678"}),
+			}),
+			SharedSecretKey: blockaidclientgo.F("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 		},
 	)
 	if err != nil {

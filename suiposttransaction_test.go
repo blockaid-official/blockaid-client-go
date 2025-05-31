@@ -28,7 +28,7 @@ func TestSuiPostTransactionScanWithOptionalParams(t *testing.T) {
 	_, err := client.Sui.PostTransaction.Scan(context.TODO(), blockaidclientgo.SuiPostTransactionScanParams{
 		Chain: blockaidclientgo.F(blockaidclientgo.SuiPostTransactionScanParamsChainMainnet),
 		Data: blockaidclientgo.F(blockaidclientgo.SuiPostTransactionScanParamsData{
-			TxHash: blockaidclientgo.F("ErYbAPYewZsbngVAagfeDrvZkHsBWniLGFvwjoGhw33B"),
+			TxHash: blockaidclientgo.F("7h7BZFAq5PfxqJEVqrm5g6oUZNkHGEip57vXsQRVgjmp"),
 		}),
 		Metadata: blockaidclientgo.F(blockaidclientgo.SuiPostTransactionScanParamsMetadata{
 			Domain:  blockaidclientgo.F("valid.com"),
