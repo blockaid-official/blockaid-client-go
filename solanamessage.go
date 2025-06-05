@@ -33,7 +33,7 @@ func NewSolanaMessageService(opts ...option.RequestOption) (r *SolanaMessageServ
 	return
 }
 
-// Scan a message
+// Scan Message
 func (r *SolanaMessageService) Scan(ctx context.Context, body SolanaMessageScanParams, opts ...option.RequestOption) (res *SolanaMessageScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "v0/solana/message/scan"
