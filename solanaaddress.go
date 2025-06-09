@@ -31,9 +31,7 @@ func NewSolanaAddressService(opts ...option.RequestOption) (r *SolanaAddressServ
 	return
 }
 
-// Gets an address and returns a full security assessment indicating weather or not
-// this address is malicious as well as textual reasons of why the address was
-// flagged that way.
+// Scan Address
 func (r *SolanaAddressService) Scan(ctx context.Context, body SolanaAddressScanParams, opts ...option.RequestOption) (res *SolanaAddressScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "v0/solana/address/scan"
@@ -67,11 +65,12 @@ func (r solanaAddressScanResponseJSON) RawJSON() string {
 }
 
 type SolanaAddressScanResponseFeature struct {
-	// Description of the feature
+	// Address the feature refers to
+	Address string `json:"address,required,nullable"`
+	// Textual description
 	Description string `json:"description,required"`
-	// ID of the feature
-	FeatureID string `json:"feature_id,required"`
-	// An enumeration.
+	FeatureID   string `json:"feature_id,required"`
+	// Feature Classification
 	Type SolanaAddressScanResponseFeaturesType `json:"type,required"`
 	JSON solanaAddressScanResponseFeatureJSON  `json:"-"`
 }
@@ -79,6 +78,7 @@ type SolanaAddressScanResponseFeature struct {
 // solanaAddressScanResponseFeatureJSON contains the JSON metadata for the struct
 // [SolanaAddressScanResponseFeature]
 type solanaAddressScanResponseFeatureJSON struct {
+	Address     apijson.Field
 	Description apijson.Field
 	FeatureID   apijson.Field
 	Type        apijson.Field
@@ -94,19 +94,19 @@ func (r solanaAddressScanResponseFeatureJSON) RawJSON() string {
 	return r.raw
 }
 
-// An enumeration.
+// Feature Classification
 type SolanaAddressScanResponseFeaturesType string
 
 const (
-	SolanaAddressScanResponseFeaturesTypeMalicious SolanaAddressScanResponseFeaturesType = "Malicious"
-	SolanaAddressScanResponseFeaturesTypeWarning   SolanaAddressScanResponseFeaturesType = "Warning"
 	SolanaAddressScanResponseFeaturesTypeBenign    SolanaAddressScanResponseFeaturesType = "Benign"
+	SolanaAddressScanResponseFeaturesTypeWarning   SolanaAddressScanResponseFeaturesType = "Warning"
+	SolanaAddressScanResponseFeaturesTypeMalicious SolanaAddressScanResponseFeaturesType = "Malicious"
 	SolanaAddressScanResponseFeaturesTypeInfo      SolanaAddressScanResponseFeaturesType = "Info"
 )
 
 func (r SolanaAddressScanResponseFeaturesType) IsKnown() bool {
 	switch r {
-	case SolanaAddressScanResponseFeaturesTypeMalicious, SolanaAddressScanResponseFeaturesTypeWarning, SolanaAddressScanResponseFeaturesTypeBenign, SolanaAddressScanResponseFeaturesTypeInfo:
+	case SolanaAddressScanResponseFeaturesTypeBenign, SolanaAddressScanResponseFeaturesTypeWarning, SolanaAddressScanResponseFeaturesTypeMalicious, SolanaAddressScanResponseFeaturesTypeInfo:
 		return true
 	}
 	return false
@@ -119,23 +119,20 @@ const (
 	SolanaAddressScanResponseResultTypeBenign    SolanaAddressScanResponseResultType = "Benign"
 	SolanaAddressScanResponseResultTypeWarning   SolanaAddressScanResponseResultType = "Warning"
 	SolanaAddressScanResponseResultTypeMalicious SolanaAddressScanResponseResultType = "Malicious"
-	SolanaAddressScanResponseResultTypeSpam      SolanaAddressScanResponseResultType = "Spam"
 )
 
 func (r SolanaAddressScanResponseResultType) IsKnown() bool {
 	switch r {
-	case SolanaAddressScanResponseResultTypeBenign, SolanaAddressScanResponseResultTypeWarning, SolanaAddressScanResponseResultTypeMalicious, SolanaAddressScanResponseResultTypeSpam:
+	case SolanaAddressScanResponseResultTypeBenign, SolanaAddressScanResponseResultTypeWarning, SolanaAddressScanResponseResultTypeMalicious:
 		return true
 	}
 	return false
 }
 
 type SolanaAddressScanParams struct {
-	// Encoded public key
 	Address  param.Field[string]                          `json:"address,required"`
 	Metadata param.Field[SolanaAddressScanParamsMetadata] `json:"metadata,required"`
-	// Chain to scan the transaction on
-	Chain param.Field[string] `json:"chain"`
+	Chain    param.Field[string]                          `json:"chain"`
 }
 
 func (r SolanaAddressScanParams) MarshalJSON() (data []byte, err error) {
@@ -143,8 +140,8 @@ func (r SolanaAddressScanParams) MarshalJSON() (data []byte, err error) {
 }
 
 type SolanaAddressScanParamsMetadata struct {
-	// URL of the dApp related to the address
-	URL param.Field[string] `json:"url,required"`
+	// URL of the dApp that originated the transaction
+	URL param.Field[string] `json:"url"`
 }
 
 func (r SolanaAddressScanParamsMetadata) MarshalJSON() (data []byte, err error) {

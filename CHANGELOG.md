@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.56.0 (2025-06-08)
+
+Full Changelog: [v0.55.0...v0.56.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.55.0...v0.56.0)
+
+### Features
+
+* **api:** api update ([54af20a](https://github.com/blockaid-official/blockaid-client-go/commit/54af20a578e93c653275bd41380079dd82fc0632))
+* **api:** api update ([54b12a1](https://github.com/blockaid-official/blockaid-client-go/commit/54b12a194e3a2d646a1b2ad54f291f5fe30f4529))
+* **api:** api update ([4e67ed8](https://github.com/blockaid-official/blockaid-client-go/commit/4e67ed87df18a46112723dfc18f3fb2ee88bb8ba))
+* **api:** api update ([889106a](https://github.com/blockaid-official/blockaid-client-go/commit/889106a4285abcb9f5c4ce181849f7929ccf4815))
+* **api:** api update ([32ffe9f](https://github.com/blockaid-official/blockaid-client-go/commit/32ffe9f0969f742033a011b27e0e18dec76a438e))
+
+
+### Chores
+
+* make go mod tidy continue on error ([70f0b08](https://github.com/blockaid-official/blockaid-client-go/commit/70f0b083a131600efe9d6acbe3bbb8f3576a4b11))
+
 ## 0.55.0 (2025-05-25)
 
 Full Changelog: [v0.54.0...v0.55.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.54.0...v0.55.0)
