@@ -2,7 +2,6 @@
 
 Params Types:
 
-- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#MetadataParam">MetadataParam</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenScanSupportedChain">TokenScanSupportedChain</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionScanSupportedChain">TransactionScanSupportedChain</a>
 
@@ -298,3 +297,15 @@ Response Types:
 Methods:
 
 - <code title="post /v0/exchange/withdrawal/scan">client.ExchangeProtection.Withdrawal.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ExchangeProtectionWithdrawalService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ExchangeProtectionWithdrawalScanParams">ExchangeProtectionWithdrawalScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ExchangeProtectionWithdrawalScanResponse">ExchangeProtectionWithdrawalScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
+# ChainAgnostic
+
+## Transaction
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ChainAgnosticTransactionScanResponse">ChainAgnosticTransactionScanResponse</a>
+
+Methods:
+
+- <code title="post /v0/transaction/scan">client.ChainAgnostic.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ChainAgnosticTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ChainAgnosticTransactionScanParams">ChainAgnosticTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ChainAgnosticTransactionScanResponse">ChainAgnosticTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>

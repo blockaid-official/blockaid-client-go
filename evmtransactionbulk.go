@@ -48,7 +48,7 @@ type EvmTransactionBulkScanParams struct {
 	// Transaction bulk parameters
 	Data param.Field[[]EvmTransactionBulkScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[MetadataParam] `json:"metadata,required"`
+	Metadata param.Field[EvmTransactionBulkScanParamsMetadata] `json:"metadata,required"`
 	// Should aggregate the results to one result
 	Aggregated param.Field[bool] `json:"aggregated"`
 	// The relative block for the block validation. Can be "latest" or a block number.
@@ -101,6 +101,16 @@ type EvmTransactionBulkScanParamsDataAuthorizationList struct {
 }
 
 func (r EvmTransactionBulkScanParamsDataAuthorizationList) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Object of additional information to validate against.
+type EvmTransactionBulkScanParamsMetadata struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r EvmTransactionBulkScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

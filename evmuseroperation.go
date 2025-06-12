@@ -47,7 +47,7 @@ type EvmUserOperationScanParams struct {
 	// The user operation request that was received by the wallet
 	Data param.Field[EvmUserOperationScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[MetadataParam] `json:"metadata,required"`
+	Metadata param.Field[EvmUserOperationScanParamsMetadata] `json:"metadata,required"`
 	// The address of the account (wallet) sending the request in hex string format
 	AccountAddress param.Field[string] `json:"account_address"`
 	// The relative block for the block validation. Can be "latest" or a block number.
@@ -180,6 +180,16 @@ func (r EvmUserOperationScanParamsDataOperationUserOperationV7) MarshalJSON() (d
 }
 
 func (r EvmUserOperationScanParamsDataOperationUserOperationV7) implementsEvmUserOperationScanParamsDataOperationUnion() {
+}
+
+// Object of additional information to validate against.
+type EvmUserOperationScanParamsMetadata struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r EvmUserOperationScanParamsMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // The relative block for the block validation. Can be "latest" or a block number.
