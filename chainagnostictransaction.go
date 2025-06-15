@@ -34,9 +34,9 @@ func NewChainAgnosticTransactionService(opts ...option.RequestOption) (r *ChainA
 	return
 }
 
-// Gets a transaction and returns a full security assessment indicating weather or
-// not this transaction is malicious as well as textual reasons of why the
-// transaction was flagged that way.
+// Gets a transaction and returns a full security assessment indicating whether or
+// not the transaction is malicious, along with textual reasons explaining why it
+// was flagged as such.
 func (r *ChainAgnosticTransactionService) Scan(ctx context.Context, body ChainAgnosticTransactionScanParams, opts ...option.RequestOption) (res *ChainAgnosticTransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "v0/transaction/scan"

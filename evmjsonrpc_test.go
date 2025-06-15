@@ -35,9 +35,10 @@ func TestEvmJsonRpcScanWithOptionalParams(t *testing.T) {
 		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
 			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
 		}),
-		AccountAddress: blockaidclientgo.F("0x49c73c9d361c04769a452E85D343b41aC38e0EE4"),
-		Block:          blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsBlockUnion](shared.UnionString("18370320")),
-		Options:        blockaidclientgo.F([]blockaidclientgo.EvmJsonRpcScanParamsOption{blockaidclientgo.EvmJsonRpcScanParamsOptionSimulation, blockaidclientgo.EvmJsonRpcScanParamsOptionValidation}),
+		AccountAddress:           blockaidclientgo.F("0x49c73c9d361c04769a452E85D343b41aC38e0EE4"),
+		Block:                    blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsBlockUnion](shared.UnionString("18370320")),
+		Options:                  blockaidclientgo.F([]blockaidclientgo.EvmJsonRpcScanParamsOption{blockaidclientgo.EvmJsonRpcScanParamsOptionSimulation, blockaidclientgo.EvmJsonRpcScanParamsOptionValidation}),
+		SimulateWithEstimatedGas: blockaidclientgo.F(true),
 		StateOverride: blockaidclientgo.F(map[string]blockaidclientgo.EvmJsonRpcScanParamsStateOverride{
 			"foo": {
 				Balance:                 blockaidclientgo.F("balance"),
