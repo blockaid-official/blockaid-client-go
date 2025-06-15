@@ -33,8 +33,9 @@ func TestEvmTransactionRawScanWithOptionalParams(t *testing.T) {
 		Metadata: blockaidclientgo.F(blockaidclientgo.EvmTransactionRawScanParamsMetadata{
 			Domain: blockaidclientgo.F("https://app.1inch.io"),
 		}),
-		Block:   blockaidclientgo.F[blockaidclientgo.EvmTransactionRawScanParamsBlockUnion](shared.UnionString("17718858")),
-		Options: blockaidclientgo.F([]blockaidclientgo.EvmTransactionRawScanParamsOption{blockaidclientgo.EvmTransactionRawScanParamsOptionSimulation, blockaidclientgo.EvmTransactionRawScanParamsOptionValidation}),
+		Block:                    blockaidclientgo.F[blockaidclientgo.EvmTransactionRawScanParamsBlockUnion](shared.UnionString("17718858")),
+		Options:                  blockaidclientgo.F([]blockaidclientgo.EvmTransactionRawScanParamsOption{blockaidclientgo.EvmTransactionRawScanParamsOptionSimulation, blockaidclientgo.EvmTransactionRawScanParamsOptionValidation}),
+		SimulateWithEstimatedGas: blockaidclientgo.F(true),
 		StateOverride: blockaidclientgo.F(map[string]blockaidclientgo.EvmTransactionRawScanParamsStateOverride{
 			"foo": {
 				Balance:                 blockaidclientgo.F("balance"),

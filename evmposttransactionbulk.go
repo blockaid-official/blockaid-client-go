@@ -53,6 +53,9 @@ type EvmPostTransactionBulkScanParams struct {
 	// simulation output in your response. "validation" - include security validation
 	// of the transaction in your response. Default is ["validation"]
 	Options param.Field[[]EvmPostTransactionBulkScanParamsOption] `json:"options"`
+	// Simulate transactions using gas estimation result. This requires
+	// "gas_estimation" option to be enabled.
+	SimulateWithEstimatedGas param.Field[bool] `json:"simulate_with_estimated_gas"`
 	// Override the state of the chain. This is useful for testing purposes.
 	StateOverride param.Field[map[string]EvmPostTransactionBulkScanParamsStateOverride] `json:"state_override"`
 }
