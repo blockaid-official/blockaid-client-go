@@ -48,7 +48,7 @@ type EvmTransactionBulkScanParams struct {
 	// Transaction bulk parameters
 	Data param.Field[[]EvmTransactionBulkScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[MetadataParam] `json:"metadata,required"`
+	Metadata param.Field[EvmTransactionBulkScanParamsMetadata] `json:"metadata,required"`
 	// Should aggregate the results to one result
 	Aggregated param.Field[bool] `json:"aggregated"`
 	// The relative block for the block validation. Can be "latest" or a block number.
@@ -57,6 +57,9 @@ type EvmTransactionBulkScanParams struct {
 	// simulation output in your response. "validation" - include security validation
 	// of the transaction in your response. Default is ["validation"]
 	Options param.Field[[]EvmTransactionBulkScanParamsOption] `json:"options"`
+	// Simulate transactions using gas estimation result. This requires
+	// "gas_estimation" option to be enabled.
+	SimulateWithEstimatedGas param.Field[bool] `json:"simulate_with_estimated_gas"`
 	// Override the state of the chain. This is useful for testing purposes.
 	StateOverride param.Field[map[string]EvmTransactionBulkScanParamsStateOverride] `json:"state_override"`
 }
@@ -101,6 +104,16 @@ type EvmTransactionBulkScanParamsDataAuthorizationList struct {
 }
 
 func (r EvmTransactionBulkScanParamsDataAuthorizationList) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Object of additional information to validate against.
+type EvmTransactionBulkScanParamsMetadata struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r EvmTransactionBulkScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

@@ -47,15 +47,19 @@ type EvmUserOperationScanParams struct {
 	// The user operation request that was received by the wallet
 	Data param.Field[EvmUserOperationScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[MetadataParam] `json:"metadata,required"`
+	Metadata param.Field[EvmUserOperationScanParamsMetadata] `json:"metadata,required"`
 	// The address of the account (wallet) sending the request in hex string format
 	AccountAddress param.Field[string] `json:"account_address"`
 	// The relative block for the block validation. Can be "latest" or a block number.
 	Block param.Field[EvmUserOperationScanParamsBlockUnion] `json:"block"`
-	// list of one or both of options for the desired output. "simulation" - include
+	// List of one or more of options for the desired output. "simulation" - include
 	// simulation output in your response. "validation" - include security validation
-	// of the transaction in your response. Default is ["validation"]
+	// of the transaction in your response. "gas_estimation" - include gas estimation
+	// result in your response. Default is ["validation"]
 	Options param.Field[[]EvmUserOperationScanParamsOption] `json:"options"`
+	// Simulate transactions using gas estimation result. This requires
+	// "gas_estimation" option to be enabled.
+	SimulateWithEstimatedGas param.Field[bool] `json:"simulate_with_estimated_gas"`
 	// Override the state of the chain. This is useful for testing purposes.
 	StateOverride param.Field[map[string]EvmUserOperationScanParamsStateOverride] `json:"state_override"`
 }
@@ -180,6 +184,16 @@ func (r EvmUserOperationScanParamsDataOperationUserOperationV7) MarshalJSON() (d
 }
 
 func (r EvmUserOperationScanParamsDataOperationUserOperationV7) implementsEvmUserOperationScanParamsDataOperationUnion() {
+}
+
+// Object of additional information to validate against.
+type EvmUserOperationScanParamsMetadata struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r EvmUserOperationScanParamsMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // The relative block for the block validation. Can be "latest" or a block number.
