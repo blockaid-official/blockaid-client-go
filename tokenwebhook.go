@@ -218,7 +218,7 @@ func (r TokenWebhookNewParams) MarshalJSON() (data []byte, err error) {
 // Filter for webhook updates
 type TokenWebhookNewParamsFilter struct {
 	// Type of filter applied to the webhook updates
-	FilterType     param.Field[TokenWebhookNewParamsFilterFilterType] `json:"filter_type,required"`
+	FilterType     param.Field[TokenWebhookNewParamsFilterFilterType] `json:"filter_type"`
 	TokenAddresses param.Field[interface{}]                           `json:"token_addresses"`
 	// Type of token to filter
 	TokenType param.Field[TokenWebhookNewParamsFilterTokenType] `json:"token_type"`
@@ -239,10 +239,10 @@ type TokenWebhookNewParamsFilterUnion interface {
 }
 
 type TokenWebhookNewParamsFilterTokenAddressFilter struct {
-	// Type of filter applied to the webhook updates
-	FilterType param.Field[TokenWebhookNewParamsFilterTokenAddressFilterFilterType] `json:"filter_type,required"`
 	// List of up to 100000 token addresses to filter webhook updates
 	TokenAddresses param.Field[[]string] `json:"token_addresses,required"`
+	// Type of filter applied to the webhook updates
+	FilterType param.Field[TokenWebhookNewParamsFilterTokenAddressFilterFilterType] `json:"filter_type"`
 }
 
 func (r TokenWebhookNewParamsFilterTokenAddressFilter) MarshalJSON() (data []byte, err error) {
@@ -267,10 +267,10 @@ func (r TokenWebhookNewParamsFilterTokenAddressFilterFilterType) IsKnown() bool 
 }
 
 type TokenWebhookNewParamsFilterTokenTypeFilter struct {
-	// Type of filter applied to the webhook updates
-	FilterType param.Field[TokenWebhookNewParamsFilterTokenTypeFilterFilterType] `json:"filter_type,required"`
 	// Type of token to filter
 	TokenType param.Field[TokenWebhookNewParamsFilterTokenTypeFilterTokenType] `json:"token_type,required"`
+	// Type of filter applied to the webhook updates
+	FilterType param.Field[TokenWebhookNewParamsFilterTokenTypeFilterFilterType] `json:"filter_type"`
 }
 
 func (r TokenWebhookNewParamsFilterTokenTypeFilter) MarshalJSON() (data []byte, err error) {
@@ -278,21 +278,6 @@ func (r TokenWebhookNewParamsFilterTokenTypeFilter) MarshalJSON() (data []byte, 
 }
 
 func (r TokenWebhookNewParamsFilterTokenTypeFilter) implementsTokenWebhookNewParamsFilterUnion() {}
-
-// Type of filter applied to the webhook updates
-type TokenWebhookNewParamsFilterTokenTypeFilterFilterType string
-
-const (
-	TokenWebhookNewParamsFilterTokenTypeFilterFilterTypeTokenType TokenWebhookNewParamsFilterTokenTypeFilterFilterType = "token_type"
-)
-
-func (r TokenWebhookNewParamsFilterTokenTypeFilterFilterType) IsKnown() bool {
-	switch r {
-	case TokenWebhookNewParamsFilterTokenTypeFilterFilterTypeTokenType:
-		return true
-	}
-	return false
-}
 
 // Type of token to filter
 type TokenWebhookNewParamsFilterTokenTypeFilterTokenType string
@@ -305,6 +290,21 @@ const (
 func (r TokenWebhookNewParamsFilterTokenTypeFilterTokenType) IsKnown() bool {
 	switch r {
 	case TokenWebhookNewParamsFilterTokenTypeFilterTokenTypeFungible, TokenWebhookNewParamsFilterTokenTypeFilterTokenTypeNonFungible:
+		return true
+	}
+	return false
+}
+
+// Type of filter applied to the webhook updates
+type TokenWebhookNewParamsFilterTokenTypeFilterFilterType string
+
+const (
+	TokenWebhookNewParamsFilterTokenTypeFilterFilterTypeTokenType TokenWebhookNewParamsFilterTokenTypeFilterFilterType = "token_type"
+)
+
+func (r TokenWebhookNewParamsFilterTokenTypeFilterFilterType) IsKnown() bool {
+	switch r {
+	case TokenWebhookNewParamsFilterTokenTypeFilterFilterTypeTokenType:
 		return true
 	}
 	return false
