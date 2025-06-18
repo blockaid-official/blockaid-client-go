@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
+	"github.com/blockaid-official/blockaid-client-go/internal/param"
 	"github.com/blockaid-official/blockaid-client-go/option"
 	"github.com/blockaid-official/blockaid-client-go/shared"
 	"github.com/tidwall/gjson"
@@ -27,6 +28,8 @@ type EvmService struct {
 	UserOperation       *EvmUserOperationService
 	PostTransaction     *EvmPostTransactionService
 	PostTransactionBulk *EvmPostTransactionBulkService
+	Address             *EvmAddressService
+	AddressBulk         *EvmAddressBulkService
 }
 
 // NewEvmService generates a new service that applies the given options to each
@@ -42,6 +45,8 @@ func NewEvmService(opts ...option.RequestOption) (r *EvmService) {
 	r.UserOperation = NewEvmUserOperationService(opts...)
 	r.PostTransaction = NewEvmPostTransactionService(opts...)
 	r.PostTransactionBulk = NewEvmPostTransactionBulkService(opts...)
+	r.Address = NewEvmAddressService(opts...)
+	r.AddressBulk = NewEvmAddressBulkService(opts...)
 	return
 }
 
@@ -2320,6 +2325,147 @@ func (r AccountSummaryTracesType) IsKnown() bool {
 	}
 	return false
 }
+
+type AddressReportParams struct {
+	// The address to report on.
+	Address param.Field[string] `json:"address,required"`
+	// The chain name
+	Chain param.Field[AddressReportParamsChain] `json:"chain,required"`
+	// The domain you came accross this address.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r AddressReportParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The chain name
+type AddressReportParamsChain string
+
+const (
+	AddressReportParamsChainArbitrum              AddressReportParamsChain = "arbitrum"
+	AddressReportParamsChainAvalanche             AddressReportParamsChain = "avalanche"
+	AddressReportParamsChainBase                  AddressReportParamsChain = "base"
+	AddressReportParamsChainBaseSepolia           AddressReportParamsChain = "base-sepolia"
+	AddressReportParamsChainLordchain             AddressReportParamsChain = "lordchain"
+	AddressReportParamsChainLordchainTestnet      AddressReportParamsChain = "lordchain-testnet"
+	AddressReportParamsChainMetacade              AddressReportParamsChain = "metacade"
+	AddressReportParamsChainMetacadeTestnet       AddressReportParamsChain = "metacade-testnet"
+	AddressReportParamsChainBsc                   AddressReportParamsChain = "bsc"
+	AddressReportParamsChainEthereum              AddressReportParamsChain = "ethereum"
+	AddressReportParamsChainOptimism              AddressReportParamsChain = "optimism"
+	AddressReportParamsChainPolygon               AddressReportParamsChain = "polygon"
+	AddressReportParamsChainZksync                AddressReportParamsChain = "zksync"
+	AddressReportParamsChainZksyncSepolia         AddressReportParamsChain = "zksync-sepolia"
+	AddressReportParamsChainZora                  AddressReportParamsChain = "zora"
+	AddressReportParamsChainLinea                 AddressReportParamsChain = "linea"
+	AddressReportParamsChainBlast                 AddressReportParamsChain = "blast"
+	AddressReportParamsChainScroll                AddressReportParamsChain = "scroll"
+	AddressReportParamsChainEthereumSepolia       AddressReportParamsChain = "ethereum-sepolia"
+	AddressReportParamsChainDegen                 AddressReportParamsChain = "degen"
+	AddressReportParamsChainAvalancheFuji         AddressReportParamsChain = "avalanche-fuji"
+	AddressReportParamsChainImmutableZkevm        AddressReportParamsChain = "immutable-zkevm"
+	AddressReportParamsChainImmutableZkevmTestnet AddressReportParamsChain = "immutable-zkevm-testnet"
+	AddressReportParamsChainGnosis                AddressReportParamsChain = "gnosis"
+	AddressReportParamsChainWorldchain            AddressReportParamsChain = "worldchain"
+	AddressReportParamsChainSoneiumMinato         AddressReportParamsChain = "soneium-minato"
+	AddressReportParamsChainRonin                 AddressReportParamsChain = "ronin"
+	AddressReportParamsChainApechain              AddressReportParamsChain = "apechain"
+	AddressReportParamsChainZeroNetwork           AddressReportParamsChain = "zero-network"
+	AddressReportParamsChainBerachain             AddressReportParamsChain = "berachain"
+	AddressReportParamsChainBerachainBartio       AddressReportParamsChain = "berachain-bartio"
+	AddressReportParamsChainInk                   AddressReportParamsChain = "ink"
+	AddressReportParamsChainInkSepolia            AddressReportParamsChain = "ink-sepolia"
+	AddressReportParamsChainAbstract              AddressReportParamsChain = "abstract"
+	AddressReportParamsChainAbstractTestnet       AddressReportParamsChain = "abstract-testnet"
+	AddressReportParamsChainSoneium               AddressReportParamsChain = "soneium"
+	AddressReportParamsChainUnichain              AddressReportParamsChain = "unichain"
+	AddressReportParamsChainSei                   AddressReportParamsChain = "sei"
+	AddressReportParamsChainFlowEvm               AddressReportParamsChain = "flow-evm"
+)
+
+func (r AddressReportParamsChain) IsKnown() bool {
+	switch r {
+	case AddressReportParamsChainArbitrum, AddressReportParamsChainAvalanche, AddressReportParamsChainBase, AddressReportParamsChainBaseSepolia, AddressReportParamsChainLordchain, AddressReportParamsChainLordchainTestnet, AddressReportParamsChainMetacade, AddressReportParamsChainMetacadeTestnet, AddressReportParamsChainBsc, AddressReportParamsChainEthereum, AddressReportParamsChainOptimism, AddressReportParamsChainPolygon, AddressReportParamsChainZksync, AddressReportParamsChainZksyncSepolia, AddressReportParamsChainZora, AddressReportParamsChainLinea, AddressReportParamsChainBlast, AddressReportParamsChainScroll, AddressReportParamsChainEthereumSepolia, AddressReportParamsChainDegen, AddressReportParamsChainAvalancheFuji, AddressReportParamsChainImmutableZkevm, AddressReportParamsChainImmutableZkevmTestnet, AddressReportParamsChainGnosis, AddressReportParamsChainWorldchain, AddressReportParamsChainSoneiumMinato, AddressReportParamsChainRonin, AddressReportParamsChainApechain, AddressReportParamsChainZeroNetwork, AddressReportParamsChainBerachain, AddressReportParamsChainBerachainBartio, AddressReportParamsChainInk, AddressReportParamsChainInkSepolia, AddressReportParamsChainAbstract, AddressReportParamsChainAbstractTestnet, AddressReportParamsChainSoneium, AddressReportParamsChainUnichain, AddressReportParamsChainSei, AddressReportParamsChainFlowEvm:
+		return true
+	}
+	return false
+}
+
+type AddressValidation struct {
+	// An enumeration.
+	ResultType AddressValidationResultType `json:"result_type,required"`
+	// An error message if the validation failed.
+	Error string `json:"error"`
+	// A list of textual features about this transaction that can be presented to the
+	// user.
+	Features AddressValidationFeaturesUnion `json:"features"`
+	JSON     addressValidationJSON          `json:"-"`
+}
+
+// addressValidationJSON contains the JSON metadata for the struct
+// [AddressValidation]
+type addressValidationJSON struct {
+	ResultType  apijson.Field
+	Error       apijson.Field
+	Features    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AddressValidation) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r addressValidationJSON) RawJSON() string {
+	return r.raw
+}
+
+// An enumeration.
+type AddressValidationResultType string
+
+const (
+	AddressValidationResultTypeMalicious AddressValidationResultType = "Malicious"
+	AddressValidationResultTypeWarning   AddressValidationResultType = "Warning"
+	AddressValidationResultTypeBenign    AddressValidationResultType = "Benign"
+	AddressValidationResultTypeError     AddressValidationResultType = "Error"
+)
+
+func (r AddressValidationResultType) IsKnown() bool {
+	switch r {
+	case AddressValidationResultTypeMalicious, AddressValidationResultTypeWarning, AddressValidationResultTypeBenign, AddressValidationResultTypeError:
+		return true
+	}
+	return false
+}
+
+// A list of textual features about this transaction that can be presented to the
+// user.
+//
+// Union satisfied by [AddressValidationFeaturesArray] or
+// [AddressValidationFeaturesArray].
+type AddressValidationFeaturesUnion interface {
+	implementsAddressValidationFeaturesUnion()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*AddressValidationFeaturesUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AddressValidationFeaturesArray{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(AddressValidationFeaturesArray{}),
+		},
+	)
+}
+
+type AddressValidationFeaturesArray []string
+
+func (r AddressValidationFeaturesArray) implementsAddressValidationFeaturesUnion() {}
 
 type Erc1155Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
@@ -6860,4 +7006,50 @@ func (r *UsdDiff) UnmarshalJSON(data []byte) (err error) {
 
 func (r usdDiffJSON) RawJSON() string {
 	return r.raw
+}
+
+type ValidateAddressParam struct {
+	// The address to validate.
+	Address param.Field[string] `json:"address,required"`
+	// The chain name
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	// Object of additional information to validate against.
+	Metadata param.Field[ValidateAddressMetadataParam] `json:"metadata,required"`
+}
+
+func (r ValidateAddressParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Object of additional information to validate against.
+type ValidateAddressMetadataParam struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r ValidateAddressMetadataParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type ValidateBulkAddressesParam struct {
+	// List of addresses to validate.
+	Addresses param.Field[[]string] `json:"addresses,required"`
+	// The chain name
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	// Object of additional information to validate against.
+	Metadata param.Field[ValidateBulkAddressesMetadataParam] `json:"metadata,required"`
+}
+
+func (r ValidateBulkAddressesParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Object of additional information to validate against.
+type ValidateBulkAddressesMetadataParam struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r ValidateBulkAddressesMetadataParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
