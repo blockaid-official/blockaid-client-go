@@ -2,12 +2,16 @@
 
 Params Types:
 
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#AddressReportParams">AddressReportParams</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenScanSupportedChain">TokenScanSupportedChain</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionScanSupportedChain">TransactionScanSupportedChain</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ValidateAddressParam">ValidateAddressParam</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ValidateBulkAddressesParam">ValidateBulkAddressesParam</a>
 
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#AccountSummary">AccountSummary</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#AddressValidation">AddressValidation</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#Erc1155Diff">Erc1155Diff</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#Erc1155Exposure">Erc1155Exposure</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#Erc1155TokenDetails">Erc1155TokenDetails</a>
@@ -82,6 +86,27 @@ Methods:
 Methods:
 
 - <code title="post /v0/evm/post-transaction-bulk/scan">client.Evm.PostTransactionBulk.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmPostTransactionBulkService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmPostTransactionBulkScanParams">EvmPostTransactionBulkScanParams</a>) ([]<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionScanResponse">TransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
+## Address
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressReportResponse">EvmAddressReportResponse</a>
+
+Methods:
+
+- <code title="post /v0/evm/address/report">client.Evm.Address.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressService.Report">Report</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressReportParams">EvmAddressReportParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressReportResponse">EvmAddressReportResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="post /v0/evm/address/scan">client.Evm.Address.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressScanParams">EvmAddressScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#AddressValidation">AddressValidation</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
+## AddressBulk
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressBulkScanResponse">EvmAddressBulkScanResponse</a>
+
+Methods:
+
+- <code title="post /v0/evm/address-bulk/scan">client.Evm.AddressBulk.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressBulkService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressBulkScanParams">EvmAddressBulkScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressBulkScanResponse">EvmAddressBulkScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Solana
 
