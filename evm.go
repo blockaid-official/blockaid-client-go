@@ -7053,3 +7053,113 @@ type ValidateBulkAddressesMetadataParam struct {
 func (r ValidateBulkAddressesMetadataParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+type ValidateBulkExtendedAddressesRequestParam struct {
+	// List of addresses to validate.
+	Addresses param.Field[[]string] `json:"addresses,required"`
+	// The chain name
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	// Object of additional information to validate against.
+	Metadata param.Field[ValidateBulkExtendedAddressesRequestMetadataParam] `json:"metadata,required"`
+}
+
+func (r ValidateBulkExtendedAddressesRequestParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Object of additional information to validate against.
+type ValidateBulkExtendedAddressesRequestMetadataParam struct {
+	Account            param.Field[ValidateBulkExtendedAddressesRequestMetadataAccountParam]            `json:"account,required"`
+	ConnectionMetadata param.Field[ValidateBulkExtendedAddressesRequestMetadataConnectionMetadataParam] `json:"connection_metadata,required"`
+}
+
+func (r ValidateBulkExtendedAddressesRequestMetadataParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type ValidateBulkExtendedAddressesRequestMetadataAccountParam struct {
+	AccountID       param.Field[string]    `json:"account_id,required"`
+	UserCountryCode param.Field[string]    `json:"user_country_code,required"`
+	AgeInYears      param.Field[int64]     `json:"age_in_years"`
+	Created         param.Field[time.Time] `json:"created" format:"date-time"`
+}
+
+func (r ValidateBulkExtendedAddressesRequestMetadataAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type ValidateBulkExtendedAddressesRequestMetadataConnectionMetadataParam struct {
+	CustomerIP param.Field[string] `json:"customer_ip,required"`
+	UserAgent  param.Field[string] `json:"user_agent,required"`
+}
+
+func (r ValidateBulkExtendedAddressesRequestMetadataConnectionMetadataParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type ValidateBulkExtendedAddressesResponse struct {
+	Results []ValidateBulkExtendedAddressesResponseResult `json:"results,required"`
+	JSON    validateBulkExtendedAddressesResponseJSON     `json:"-"`
+}
+
+// validateBulkExtendedAddressesResponseJSON contains the JSON metadata for the
+// struct [ValidateBulkExtendedAddressesResponse]
+type validateBulkExtendedAddressesResponseJSON struct {
+	Results     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ValidateBulkExtendedAddressesResponse) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r validateBulkExtendedAddressesResponseJSON) RawJSON() string {
+	return r.raw
+}
+
+type ValidateBulkExtendedAddressesResponseResult struct {
+	// Address to validate.
+	Address string `json:"address,required"`
+	// Label of the address.
+	Label string `json:"label,required"`
+	// An enumeration.
+	Validation ValidateBulkExtendedAddressesResponseResultsValidation `json:"validation,required"`
+	JSON       validateBulkExtendedAddressesResponseResultJSON        `json:"-"`
+}
+
+// validateBulkExtendedAddressesResponseResultJSON contains the JSON metadata for
+// the struct [ValidateBulkExtendedAddressesResponseResult]
+type validateBulkExtendedAddressesResponseResultJSON struct {
+	Address     apijson.Field
+	Label       apijson.Field
+	Validation  apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ValidateBulkExtendedAddressesResponseResult) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r validateBulkExtendedAddressesResponseResultJSON) RawJSON() string {
+	return r.raw
+}
+
+// An enumeration.
+type ValidateBulkExtendedAddressesResponseResultsValidation string
+
+const (
+	ValidateBulkExtendedAddressesResponseResultsValidationMalicious ValidateBulkExtendedAddressesResponseResultsValidation = "Malicious"
+	ValidateBulkExtendedAddressesResponseResultsValidationWarning   ValidateBulkExtendedAddressesResponseResultsValidation = "Warning"
+	ValidateBulkExtendedAddressesResponseResultsValidationBenign    ValidateBulkExtendedAddressesResponseResultsValidation = "Benign"
+	ValidateBulkExtendedAddressesResponseResultsValidationError     ValidateBulkExtendedAddressesResponseResultsValidation = "Error"
+)
+
+func (r ValidateBulkExtendedAddressesResponseResultsValidation) IsKnown() bool {
+	switch r {
+	case ValidateBulkExtendedAddressesResponseResultsValidationMalicious, ValidateBulkExtendedAddressesResponseResultsValidationWarning, ValidateBulkExtendedAddressesResponseResultsValidationBenign, ValidateBulkExtendedAddressesResponseResultsValidationError:
+		return true
+	}
+	return false
+}

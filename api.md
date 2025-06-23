@@ -7,6 +7,7 @@ Params Types:
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionScanSupportedChain">TransactionScanSupportedChain</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ValidateAddressParam">ValidateAddressParam</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ValidateBulkAddressesParam">ValidateBulkAddressesParam</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ValidateBulkExtendedAddressesRequestParam">ValidateBulkExtendedAddressesRequestParam</a>
 
 Response Types:
 
@@ -34,6 +35,7 @@ Response Types:
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionValidation">TransactionValidation</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionValidationError">TransactionValidationError</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#UsdDiff">UsdDiff</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ValidateBulkExtendedAddressesResponse">ValidateBulkExtendedAddressesResponse</a>
 
 ## JsonRpc
 
@@ -107,6 +109,7 @@ Response Types:
 Methods:
 
 - <code title="post /v0/evm/address-bulk/scan">client.Evm.AddressBulk.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressBulkService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressBulkScanParams">EvmAddressBulkScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressBulkScanResponse">EvmAddressBulkScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="post /v0/evm/address-bulk/scan-extended">client.Evm.AddressBulk.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressBulkService.ScanExtended">ScanExtended</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#EvmAddressBulkScanExtendedParams">EvmAddressBulkScanExtendedParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ValidateBulkExtendedAddressesResponse">ValidateBulkExtendedAddressesResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Solana
 
