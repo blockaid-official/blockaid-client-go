@@ -6307,6 +6307,10 @@ type TransactionSimulationErrorErrorDetails struct {
 	Asset interface{} `json:"asset"`
 	// The current balance of the account
 	CurrentBalance int64 `json:"current_balance"`
+	// The domain name that is unsupported
+	DomainName string `json:"domain_name"`
+	// The message type that is unsupported
+	MessageType string `json:"message_type"`
 	// The required balance of the account
 	RequiredBalance int64                                      `json:"required_balance"`
 	JSON            transactionSimulationErrorErrorDetailsJSON `json:"-"`
@@ -6321,6 +6325,8 @@ type transactionSimulationErrorErrorDetailsJSON struct {
 	Address         apijson.Field
 	Asset           apijson.Field
 	CurrentBalance  apijson.Field
+	DomainName      apijson.Field
+	MessageType     apijson.Field
 	RequiredBalance apijson.Field
 	raw             string
 	ExtraFields     map[string]apijson.Field
@@ -6345,7 +6351,8 @@ func (r *TransactionSimulationErrorErrorDetails) UnmarshalJSON(data []byte) (err
 // Possible runtime types of the union are
 // [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails],
 // [TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetails],
-// [TransactionSimulationErrorErrorDetailsGenericErrorDetails].
+// [TransactionSimulationErrorErrorDetailsGenericErrorDetails],
+// [TransactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetails].
 func (r TransactionSimulationErrorErrorDetails) AsUnion() TransactionSimulationErrorErrorDetailsUnion {
 	return r.union
 }
@@ -6354,8 +6361,9 @@ func (r TransactionSimulationErrorErrorDetails) AsUnion() TransactionSimulationE
 //
 // Union satisfied by
 // [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails],
-// [TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetails] or
-// [TransactionSimulationErrorErrorDetailsGenericErrorDetails].
+// [TransactionSimulationErrorErrorDetailsGeneralInvalidAddressErrorDetails],
+// [TransactionSimulationErrorErrorDetailsGenericErrorDetails] or
+// [TransactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetails].
 type TransactionSimulationErrorErrorDetailsUnion interface {
 	implementsTransactionSimulationErrorErrorDetails()
 }
@@ -6375,6 +6383,10 @@ func init() {
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
 			Type:       reflect.TypeOf(TransactionSimulationErrorErrorDetailsGenericErrorDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetails{}),
 		},
 	)
 }
@@ -6785,6 +6797,53 @@ func (r transactionSimulationErrorErrorDetailsGenericErrorDetailsJSON) RawJSON()
 }
 
 func (r TransactionSimulationErrorErrorDetailsGenericErrorDetails) implementsTransactionSimulationErrorErrorDetails() {
+}
+
+type TransactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetails struct {
+	// The type of the model
+	Code TransactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetailsCode `json:"code,required"`
+	// The domain name that is unsupported
+	DomainName string `json:"domain_name,required"`
+	// The message type that is unsupported
+	MessageType string                                                                         `json:"message_type,required"`
+	JSON        transactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetailsJSON `json:"-"`
+}
+
+// transactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetailsJSON
+// contains the JSON metadata for the struct
+// [TransactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetails]
+type transactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetailsJSON struct {
+	Code        apijson.Field
+	DomainName  apijson.Field
+	MessageType apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetails) implementsTransactionSimulationErrorErrorDetails() {
+}
+
+// The type of the model
+type TransactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetailsCode string
+
+const (
+	TransactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetailsCodeUnsupportedEip712Message TransactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetailsCode = "UNSUPPORTED_EIP712_MESSAGE"
+)
+
+func (r TransactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetailsCode) IsKnown() bool {
+	switch r {
+	case TransactionSimulationErrorErrorDetailsUnsupportedEip712MessageErrorDetailsCodeUnsupportedEip712Message:
+		return true
+	}
+	return false
 }
 
 type TransactionValidation struct {
