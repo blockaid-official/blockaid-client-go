@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.59.0 (2025-06-28)
+
+Full Changelog: [v0.58.0...v0.59.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.58.0...v0.59.0)
+
+### Features
+
+* **api:** api update ([2c95e4f](https://github.com/blockaid-official/blockaid-client-go/commit/2c95e4fcad4bc01301cbee1300a14f610413a1cd))
+* **api:** api update ([d44b148](https://github.com/blockaid-official/blockaid-client-go/commit/d44b148aa189aa133226c85ba4410e740ef57396))
+* **api:** api update ([ff68cd2](https://github.com/blockaid-official/blockaid-client-go/commit/ff68cd25cf61ac7f410910e57105155823da19d5))
+
+
+### Bug Fixes
+
+* don't try to deserialize as json when ResponseBodyInto is []byte ([2655654](https://github.com/blockaid-official/blockaid-client-go/commit/2655654ad27bdd1f83e660915649a81a54f50cfe))
+
+
+### Chores
+
+* **ci:** only run for pushes and fork pull requests ([71d751a](https://github.com/blockaid-official/blockaid-client-go/commit/71d751a132c1d23bd527ff111492b32f2ecd23f1))
+
 ## 0.58.0 (2025-06-18)
 
 Full Changelog: [v0.57.0...v0.58.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.57.0...v0.58.0)
