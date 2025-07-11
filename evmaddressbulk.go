@@ -38,6 +38,15 @@ func (r *EvmAddressBulkService) Scan(ctx context.Context, body EvmAddressBulkSca
 	return
 }
 
+// Gets a list of addresses and returns a security assessment with the feature
+// information of each address.
+func (r *EvmAddressBulkService) ScanExtended(ctx context.Context, body EvmAddressBulkScanExtendedParams, opts ...option.RequestOption) (res *ValidateBulkExtendedAddressesResponse, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "v0/evm/address-bulk/scan-extended"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 type EvmAddressBulkScanResponse map[string]EvmAddressBulkScanResponseItem
 
 // An enumeration.
@@ -64,4 +73,12 @@ type EvmAddressBulkScanParams struct {
 
 func (r EvmAddressBulkScanParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r.ValidateBulkAddresses)
+}
+
+type EvmAddressBulkScanExtendedParams struct {
+	ValidateBulkExtendedAddressesRequest ValidateBulkExtendedAddressesRequestParam `json:"ValidateBulkExtendedAddressesRequest,required"`
+}
+
+func (r EvmAddressBulkScanExtendedParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r.ValidateBulkExtendedAddressesRequest)
 }
