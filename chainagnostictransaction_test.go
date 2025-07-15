@@ -29,23 +29,23 @@ func TestChainAgnosticTransactionScanWithOptionalParams(t *testing.T) {
 	_, err := client.ChainAgnostic.Transaction.Scan(context.TODO(), blockaidclientgo.ChainAgnosticTransactionScanParams{
 		Data: blockaidclientgo.F(blockaidclientgo.ChainAgnosticTransactionScanParamsData{
 			Amount: blockaidclientgo.F(1.000000),
-			Asset: blockaidclientgo.F[blockaidclientgo.ChainAgnosticTransactionScanParamsDataAssetUnion](blockaidclientgo.ChainAgnosticTransactionScanParamsDataAssetAssetAddress{
-				Address: blockaidclientgo.F("address"),
+			Asset: blockaidclientgo.F[blockaidclientgo.ChainAgnosticTransactionScanParamsDataAssetUnion](blockaidclientgo.ChainAgnosticTransactionScanParamsDataAssetAssetSymbol{
+				Symbol: blockaidclientgo.F("BTC"),
 			}),
-			Chain: blockaidclientgo.F(blockaidclientgo.ChainAgnosticTransactionScanParamsDataChainEthereum),
-			To:    blockaidclientgo.F("to"),
+			Chain: blockaidclientgo.F(blockaidclientgo.ChainAgnosticTransactionScanParamsDataChainBitcoin),
+			To:    blockaidclientgo.F("bc1qanrfutwqh854g74lqrygr55jkgf99em4lpfm80"),
 			From:  blockaidclientgo.F("from"),
 		}),
 		Metadata: blockaidclientgo.F(blockaidclientgo.ChainAgnosticTransactionScanParamsMetadata{
 			Account: blockaidclientgo.F(blockaidclientgo.ChainAgnosticTransactionScanParamsMetadataAccount{
-				AccountID:                blockaidclientgo.F("account_id"),
+				AccountID:                blockaidclientgo.F("1"),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
 				UserAge:                  blockaidclientgo.F(int64(1)),
 				UserCountryCode:          blockaidclientgo.F("user_country_code"),
 			}),
 			Connection: blockaidclientgo.F(blockaidclientgo.ChainAgnosticTransactionScanParamsMetadataConnection{
-				IPAddress: blockaidclientgo.F("ip_address"),
-				UserAgent: blockaidclientgo.F("user_agent"),
+				IPAddress: blockaidclientgo.F("1.1.1.1"),
+				UserAgent: blockaidclientgo.F("1"),
 			}),
 		}),
 		Options: blockaidclientgo.F([]blockaidclientgo.ChainAgnosticTransactionScanParamsOption{blockaidclientgo.ChainAgnosticTransactionScanParamsOptionValidation}),
