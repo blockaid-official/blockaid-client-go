@@ -28,10 +28,10 @@ func TestExchangeProtectionWithdrawalScanWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.ExchangeProtection.Withdrawal.Scan(context.TODO(), blockaidclientgo.ExchangeProtectionWithdrawalScanParams{
 		Account: blockaidclientgo.F(blockaidclientgo.ExchangeProtectionWithdrawalScanParamsAccount{
-			AccountID:       blockaidclientgo.F("account_id"),
-			UserCountryCode: blockaidclientgo.F("user_country_code"),
-			AgeInYears:      blockaidclientgo.F(int64(1)),
-			Created:         blockaidclientgo.F(time.Now()),
+			AccountID:                blockaidclientgo.F("account_id"),
+			AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
+			UserAge:                  blockaidclientgo.F(int64(1)),
+			UserCountryCode:          blockaidclientgo.F("user_country_code"),
 		}),
 		EventTime: blockaidclientgo.F(time.Now()),
 		OnchainTransaction: blockaidclientgo.F(blockaidclientgo.ExchangeProtectionWithdrawalScanParamsOnchainTransaction{

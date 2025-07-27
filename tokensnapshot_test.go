@@ -53,9 +53,10 @@ func TestTokenSnapshotFullWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.TokenSnapshot.Full(context.TODO(), blockaidclientgo.TokenSnapshotFullParams{
-		Chain:  blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainArbitrum),
-		Cursor: blockaidclientgo.F("cursor"),
-		Size:   blockaidclientgo.F(int64(1)),
+		Chain:     blockaidclientgo.F(blockaidclientgo.TokenScanSupportedChainArbitrum),
+		Cursor:    blockaidclientgo.F("cursor"),
+		Size:      blockaidclientgo.F(int64(1)),
+		TokenType: blockaidclientgo.F(blockaidclientgo.TokenSnapshotFullParamsTokenTypeFungible),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
