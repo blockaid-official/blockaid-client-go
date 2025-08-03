@@ -4740,11 +4740,12 @@ const (
 	SolanaMessageScanResponseResultValidationResultTypeBenign    SolanaMessageScanResponseResultValidationResultType = "Benign"
 	SolanaMessageScanResponseResultValidationResultTypeWarning   SolanaMessageScanResponseResultValidationResultType = "Warning"
 	SolanaMessageScanResponseResultValidationResultTypeMalicious SolanaMessageScanResponseResultValidationResultType = "Malicious"
+	SolanaMessageScanResponseResultValidationResultTypeError     SolanaMessageScanResponseResultValidationResultType = "Error"
 )
 
 func (r SolanaMessageScanResponseResultValidationResultType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseResultValidationResultTypeBenign, SolanaMessageScanResponseResultValidationResultTypeWarning, SolanaMessageScanResponseResultValidationResultTypeMalicious:
+	case SolanaMessageScanResponseResultValidationResultTypeBenign, SolanaMessageScanResponseResultValidationResultTypeWarning, SolanaMessageScanResponseResultValidationResultTypeMalicious, SolanaMessageScanResponseResultValidationResultTypeError:
 		return true
 	}
 	return false

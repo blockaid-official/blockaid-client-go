@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.59.0 (2025-08-03)
+
+Full Changelog: [v0.58.0...v0.59.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.58.0...v0.59.0)
+
+### Features
+
+* **api:** api update ([ddf211f](https://github.com/blockaid-official/blockaid-client-go/commit/ddf211fdd82c2bcfc3ac1838c4099e55a5edee04))
+* **api:** api update ([6e9ba05](https://github.com/blockaid-official/blockaid-client-go/commit/6e9ba05adaf379890357865f8a10edc72ef60919))
+* **api:** api update ([dd0494c](https://github.com/blockaid-official/blockaid-client-go/commit/dd0494c1ad1d721b29d31040a5d2c1d91f9d03d8))
+* **api:** api update ([9f88a23](https://github.com/blockaid-official/blockaid-client-go/commit/9f88a23aed269da52c806fe855a878663dec6bc5))
+* **api:** api update ([70a4ae1](https://github.com/blockaid-official/blockaid-client-go/commit/70a4ae1070b3451d5ee609d343863a7069bd2c0b))
+* **api:** api update ([2c95e4f](https://github.com/blockaid-official/blockaid-client-go/commit/2c95e4fcad4bc01301cbee1300a14f610413a1cd))
+* **api:** api update ([d44b148](https://github.com/blockaid-official/blockaid-client-go/commit/d44b148aa189aa133226c85ba4410e740ef57396))
+* **api:** api update ([ff68cd2](https://github.com/blockaid-official/blockaid-client-go/commit/ff68cd25cf61ac7f410910e57105155823da19d5))
+
+
+### Bug Fixes
+
+* **client:** process custom base url ahead of time ([d273054](https://github.com/blockaid-official/blockaid-client-go/commit/d2730542fed6aff15f354ba246126a2a09ea3bd9))
+* don't try to deserialize as json when ResponseBodyInto is []byte ([2655654](https://github.com/blockaid-official/blockaid-client-go/commit/2655654ad27bdd1f83e660915649a81a54f50cfe))
+
+
+### Chores
+
+* **ci:** only run for pushes and fork pull requests ([71d751a](https://github.com/blockaid-official/blockaid-client-go/commit/71d751a132c1d23bd527ff111492b32f2ecd23f1))
+* **internal:** fix lint script for tests ([c6bf395](https://github.com/blockaid-official/blockaid-client-go/commit/c6bf395256fa9793c70ff06ce16c773dca44747e))
+* lint tests ([301bcb8](https://github.com/blockaid-official/blockaid-client-go/commit/301bcb87c851a3c28bf4a730c8d62e5ba829e15d))
+* lint tests in subpackages ([8056949](https://github.com/blockaid-official/blockaid-client-go/commit/80569499ec6d49017d8ffcf13a440a907bfa1ab0))
+
 ## 0.58.0 (2025-06-18)
 
 Full Changelog: [v0.57.0...v0.58.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.57.0...v0.58.0)

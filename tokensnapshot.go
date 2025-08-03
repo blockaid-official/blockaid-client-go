@@ -2080,6 +2080,9 @@ type TokenSnapshotFullParams struct {
 	Cursor param.Field[string] `query:"cursor"`
 	// Number of tokens to return in a page
 	Size param.Field[int64] `query:"size"`
+	// Filter tokens by type. Allowed values are "Fungible" or "NonFungible". If not
+	// provided, all types will be included.
+	TokenType param.Field[TokenSnapshotFullParamsTokenType] `query:"token_type"`
 }
 
 // URLQuery serializes [TokenSnapshotFullParams]'s query parameters as
@@ -2089,4 +2092,21 @@ func (r TokenSnapshotFullParams) URLQuery() (v url.Values) {
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
+}
+
+// Filter tokens by type. Allowed values are "Fungible" or "NonFungible". If not
+// provided, all types will be included.
+type TokenSnapshotFullParamsTokenType string
+
+const (
+	TokenSnapshotFullParamsTokenTypeFungible    TokenSnapshotFullParamsTokenType = "Fungible"
+	TokenSnapshotFullParamsTokenTypeNonFungible TokenSnapshotFullParamsTokenType = "NonFungible"
+)
+
+func (r TokenSnapshotFullParamsTokenType) IsKnown() bool {
+	switch r {
+	case TokenSnapshotFullParamsTokenTypeFungible, TokenSnapshotFullParamsTokenTypeNonFungible:
+		return true
+	}
+	return false
 }

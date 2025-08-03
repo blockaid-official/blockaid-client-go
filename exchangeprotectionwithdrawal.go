@@ -331,10 +331,10 @@ func (r ExchangeProtectionWithdrawalScanParams) MarshalJSON() (data []byte, err 
 }
 
 type ExchangeProtectionWithdrawalScanParamsAccount struct {
-	AccountID       param.Field[string]    `json:"account_id,required"`
-	UserCountryCode param.Field[string]    `json:"user_country_code,required"`
-	AgeInYears      param.Field[int64]     `json:"age_in_years"`
-	Created         param.Field[time.Time] `json:"created" format:"date-time"`
+	AccountID                param.Field[string]    `json:"account_id,required"`
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	UserAge                  param.Field[int64]     `json:"user_age"`
+	UserCountryCode          param.Field[string]    `json:"user_country_code"`
 }
 
 func (r ExchangeProtectionWithdrawalScanParamsAccount) MarshalJSON() (data []byte, err error) {
