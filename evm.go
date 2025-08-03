@@ -6306,13 +6306,13 @@ type TransactionSimulationErrorErrorDetails struct {
 	// [TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsAsset].
 	Asset interface{} `json:"asset"`
 	// The current balance of the account
-	CurrentBalance int64 `json:"current_balance"`
+	CurrentBalance string `json:"current_balance"`
 	// The domain name that is unsupported
 	DomainName string `json:"domain_name"`
 	// The message type that is unsupported
 	MessageType string `json:"message_type"`
 	// The required balance of the account
-	RequiredBalance int64                                      `json:"required_balance"`
+	RequiredBalance string                                     `json:"required_balance"`
 	JSON            transactionSimulationErrorErrorDetailsJSON `json:"-"`
 	union           TransactionSimulationErrorErrorDetailsUnion
 }
@@ -6399,9 +6399,9 @@ type TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetails 
 	// The type of the model
 	Code TransactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsCode `json:"code,required"`
 	// The current balance of the account
-	CurrentBalance int64 `json:"current_balance"`
+	CurrentBalance string `json:"current_balance"`
 	// The required balance of the account
-	RequiredBalance int64                                                                          `json:"required_balance"`
+	RequiredBalance string                                                                         `json:"required_balance"`
 	JSON            transactionSimulationErrorErrorDetailsGeneralInsufficientFundsErrorDetailsJSON `json:"-"`
 }
 
