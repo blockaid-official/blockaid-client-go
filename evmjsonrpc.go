@@ -48,7 +48,8 @@ type EvmJsonRpcScanParams struct {
 	Data param.Field[EvmJsonRpcScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[EvmJsonRpcScanParamsMetadata] `json:"metadata,required"`
-	// The address of the account (wallet) received the request in hex string format
+	// The address of the account (wallet) that received the request, in hex string
+	// format
 	AccountAddress param.Field[string] `json:"account_address"`
 	// The relative block for the block validation. Can be "latest" or a block number.
 	Block param.Field[EvmJsonRpcScanParamsBlockUnion] `json:"block"`
