@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.60.0 (2025-08-10)
+
+Full Changelog: [v0.59.0...v0.60.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.59.0...v0.60.0)
+
+### Features
+
+* **api:** api update ([100bc30](https://github.com/blockaid-official/blockaid-client-go/commit/100bc3019c79d94d04d480001d1fed7b76c5cfa0))
+* **api:** api update ([e96834e](https://github.com/blockaid-official/blockaid-client-go/commit/e96834ef650129f479b33dc832040a84b8a3d782))
+* **api:** api update ([6a089d0](https://github.com/blockaid-official/blockaid-client-go/commit/6a089d09c05bc507e2391045d3dd67cf0bbe1144))
+* **client:** support optional json html escaping ([75508d1](https://github.com/blockaid-official/blockaid-client-go/commit/75508d11474a89011f93ab0c2c86bc3412113ba9))
+
+
+### Chores
+
+* **internal:** update comment in script ([78554a4](https://github.com/blockaid-official/blockaid-client-go/commit/78554a451ae37ee60f216e36f4f34ebb779fd62d))
+* update @stainless-api/prism-cli to v5.15.0 ([aed3027](https://github.com/blockaid-official/blockaid-client-go/commit/aed3027db4ef036900fd809742c3fc64ec8835f0))
+
 ## 0.59.0 (2025-08-03)
 
 Full Changelog: [v0.58.0...v0.59.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.58.0...v0.59.0)

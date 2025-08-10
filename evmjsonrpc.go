@@ -48,7 +48,8 @@ type EvmJsonRpcScanParams struct {
 	Data param.Field[EvmJsonRpcScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
 	Metadata param.Field[EvmJsonRpcScanParamsMetadata] `json:"metadata,required"`
-	// The address of the account (wallet) received the request in hex string format
+	// The address of the account (wallet) that received the request, in hex string
+	// format
 	AccountAddress param.Field[string] `json:"account_address"`
 	// The relative block for the block validation. Can be "latest" or a block number.
 	Block param.Field[EvmJsonRpcScanParamsBlockUnion] `json:"block"`
@@ -70,14 +71,39 @@ func (r EvmJsonRpcScanParams) MarshalJSON() (data []byte, err error) {
 
 // JSON-RPC request that was received by the wallet.
 type EvmJsonRpcScanParamsData struct {
-	// The method of the JSON-RPC request
-	Method param.Field[string] `json:"method,required"`
+	// An enumeration.
+	Method param.Field[EvmJsonRpcScanParamsDataMethod] `json:"method,required"`
 	// The parameters of the JSON-RPC request in JSON format
 	Params param.Field[[]interface{}] `json:"params,required"`
 }
 
 func (r EvmJsonRpcScanParamsData) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// An enumeration.
+type EvmJsonRpcScanParamsDataMethod string
+
+const (
+	EvmJsonRpcScanParamsDataMethodEthSendTransaction    EvmJsonRpcScanParamsDataMethod = "eth_sendTransaction"
+	EvmJsonRpcScanParamsDataMethodEthSendRawTransaction EvmJsonRpcScanParamsDataMethod = "eth_sendRawTransaction"
+	EvmJsonRpcScanParamsDataMethodEthSignTransaction    EvmJsonRpcScanParamsDataMethod = "eth_signTransaction"
+	EvmJsonRpcScanParamsDataMethodEthSignTypedData      EvmJsonRpcScanParamsDataMethod = "eth_signTypedData"
+	EvmJsonRpcScanParamsDataMethodEthSignTypedDataV1    EvmJsonRpcScanParamsDataMethod = "eth_signTypedData_v1"
+	EvmJsonRpcScanParamsDataMethodEthSignTypedDataV2    EvmJsonRpcScanParamsDataMethod = "eth_signTypedData_v2"
+	EvmJsonRpcScanParamsDataMethodEthSignTypedDataV3    EvmJsonRpcScanParamsDataMethod = "eth_signTypedData_v3"
+	EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4    EvmJsonRpcScanParamsDataMethod = "eth_signTypedData_v4"
+	EvmJsonRpcScanParamsDataMethodEthSendUserOperation  EvmJsonRpcScanParamsDataMethod = "eth_sendUserOperation"
+	EvmJsonRpcScanParamsDataMethodPersonalSign          EvmJsonRpcScanParamsDataMethod = "personal_sign"
+	EvmJsonRpcScanParamsDataMethodEthSign               EvmJsonRpcScanParamsDataMethod = "eth_sign"
+)
+
+func (r EvmJsonRpcScanParamsDataMethod) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanParamsDataMethodEthSendTransaction, EvmJsonRpcScanParamsDataMethodEthSendRawTransaction, EvmJsonRpcScanParamsDataMethodEthSignTransaction, EvmJsonRpcScanParamsDataMethodEthSignTypedData, EvmJsonRpcScanParamsDataMethodEthSignTypedDataV1, EvmJsonRpcScanParamsDataMethodEthSignTypedDataV2, EvmJsonRpcScanParamsDataMethodEthSignTypedDataV3, EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4, EvmJsonRpcScanParamsDataMethodEthSendUserOperation, EvmJsonRpcScanParamsDataMethodPersonalSign, EvmJsonRpcScanParamsDataMethodEthSign:
+		return true
+	}
+	return false
 }
 
 // Object of additional information to validate against.

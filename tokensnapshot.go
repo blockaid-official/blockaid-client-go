@@ -210,10 +210,16 @@ func (r tokenSnapshotDiffResponseItemsFeesJSON) RawJSON() string {
 type TokenSnapshotDiffResponseItemsFinancialStats struct {
 	// Token liquidity burned percentage
 	BurnedLiquidityPercentage float64 `json:"burned_liquidity_percentage,nullable"`
+	// Percentage of token's supply held by sniper bots (0.0 to 100.0). Currently
+	// available for Solana only.
+	DevHoldingPercentage float64 `json:"dev_holding_percentage,nullable"`
 	// Amount of token holders
 	HoldersCount int64 `json:"holders_count,nullable"`
 	// Token liquidity locked percentage
 	LockedLiquidityPercentage float64 `json:"locked_liquidity_percentage,nullable"`
+	// Percentage of token's supply held in known developer wallets (0.0 to 100.0).
+	// Currently available for Solana only.
+	SnipersHoldingPercentage float64 `json:"snipers_holding_percentage,nullable"`
 	// token supply
 	Supply int64 `json:"supply,nullable"`
 	// Top token holders
@@ -229,8 +235,10 @@ type TokenSnapshotDiffResponseItemsFinancialStats struct {
 // the struct [TokenSnapshotDiffResponseItemsFinancialStats]
 type tokenSnapshotDiffResponseItemsFinancialStatsJSON struct {
 	BurnedLiquidityPercentage apijson.Field
+	DevHoldingPercentage      apijson.Field
 	HoldersCount              apijson.Field
 	LockedLiquidityPercentage apijson.Field
+	SnipersHoldingPercentage  apijson.Field
 	Supply                    apijson.Field
 	TopHolders                apijson.Field
 	TotalReserveInUsd         apijson.Field
@@ -1203,10 +1211,16 @@ func (r tokenSnapshotFullResponseItemsFeesJSON) RawJSON() string {
 type TokenSnapshotFullResponseItemsFinancialStats struct {
 	// Token liquidity burned percentage
 	BurnedLiquidityPercentage float64 `json:"burned_liquidity_percentage,nullable"`
+	// Percentage of token's supply held by sniper bots (0.0 to 100.0). Currently
+	// available for Solana only.
+	DevHoldingPercentage float64 `json:"dev_holding_percentage,nullable"`
 	// Amount of token holders
 	HoldersCount int64 `json:"holders_count,nullable"`
 	// Token liquidity locked percentage
 	LockedLiquidityPercentage float64 `json:"locked_liquidity_percentage,nullable"`
+	// Percentage of token's supply held in known developer wallets (0.0 to 100.0).
+	// Currently available for Solana only.
+	SnipersHoldingPercentage float64 `json:"snipers_holding_percentage,nullable"`
 	// token supply
 	Supply int64 `json:"supply,nullable"`
 	// Top token holders
@@ -1222,8 +1236,10 @@ type TokenSnapshotFullResponseItemsFinancialStats struct {
 // the struct [TokenSnapshotFullResponseItemsFinancialStats]
 type tokenSnapshotFullResponseItemsFinancialStatsJSON struct {
 	BurnedLiquidityPercentage apijson.Field
+	DevHoldingPercentage      apijson.Field
 	HoldersCount              apijson.Field
 	LockedLiquidityPercentage apijson.Field
+	SnipersHoldingPercentage  apijson.Field
 	Supply                    apijson.Field
 	TopHolders                apijson.Field
 	TotalReserveInUsd         apijson.Field
