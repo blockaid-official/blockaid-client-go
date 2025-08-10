@@ -337,3 +337,5 @@ Response Types:
 Methods:
 
 - <code title="post /v0/transaction/scan">client.ChainAgnostic.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ChainAgnosticTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ChainAgnosticTransactionScanParams">ChainAgnosticTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ChainAgnosticTransactionScanResponse">ChainAgnosticTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
+# Enrichment
