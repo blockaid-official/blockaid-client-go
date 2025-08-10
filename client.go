@@ -30,6 +30,7 @@ type Client struct {
 	TokenSnapshot      *TokenSnapshotService
 	ExchangeProtection *ExchangeProtectionService
 	ChainAgnostic      *ChainAgnosticService
+	Enrichment         *EnrichmentService
 }
 
 // DefaultClientOptions read from the environment (BLOCKAID_CLIENT_API_KEY,
@@ -73,6 +74,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.TokenSnapshot = NewTokenSnapshotService(opts...)
 	r.ExchangeProtection = NewExchangeProtectionService(opts...)
 	r.ChainAgnostic = NewChainAgnosticService(opts...)
+	r.Enrichment = NewEnrichmentService(opts...)
 
 	return
 }
