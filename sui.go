@@ -645,9 +645,12 @@ type SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccoun
 	// Token's symbol (abbreviation)
 	Symbol            string    `json:"symbol,required"`
 	CreationTimestamp time.Time `json:"creation_timestamp,nullable" format:"date-time"`
+	// Address of the token's deployer
+	Deployer string `json:"deployer,nullable"`
 	// URL of the token's logo
-	LogoURL string `json:"logo_url,nullable"`
-	Scam    bool   `json:"scam,nullable"`
+	LogoURL     string `json:"logo_url,nullable"`
+	Scam        bool   `json:"scam,nullable"`
+	TotalSupply int64  `json:"total_supply,nullable"`
 	// Type of the asset (`Coin`)
 	Type     SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType `json:"type"`
 	Verified bool                                                                                                              `json:"verified,nullable"`
@@ -663,8 +666,10 @@ type suiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccoun
 	Name              apijson.Field
 	Symbol            apijson.Field
 	CreationTimestamp apijson.Field
+	Deployer          apijson.Field
 	LogoURL           apijson.Field
 	Scam              apijson.Field
+	TotalSupply       apijson.Field
 	Type              apijson.Field
 	Verified          apijson.Field
 	raw               string
@@ -928,9 +933,12 @@ type SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsA
 	// Token's symbol (abbreviation)
 	Symbol            string    `json:"symbol,required"`
 	CreationTimestamp time.Time `json:"creation_timestamp,nullable" format:"date-time"`
+	// Address of the token's deployer
+	Deployer string `json:"deployer,nullable"`
 	// URL of the token's logo
-	LogoURL string `json:"logo_url,nullable"`
-	Scam    bool   `json:"scam,nullable"`
+	LogoURL     string `json:"logo_url,nullable"`
+	Scam        bool   `json:"scam,nullable"`
+	TotalSupply int64  `json:"total_supply,nullable"`
 	// Type of the asset (`Coin`)
 	Type     SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType `json:"type"`
 	Verified bool                                                                                         `json:"verified,nullable"`
@@ -946,8 +954,10 @@ type suiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsA
 	Name              apijson.Field
 	Symbol            apijson.Field
 	CreationTimestamp apijson.Field
+	Deployer          apijson.Field
 	LogoURL           apijson.Field
 	Scam              apijson.Field
+	TotalSupply       apijson.Field
 	Type              apijson.Field
 	Verified          apijson.Field
 	raw               string
@@ -1213,11 +1223,12 @@ const (
 	SuiTransactionScanResponseValidationSuiValidationResultResultTypeBenign    SuiTransactionScanResponseValidationSuiValidationResultResultType = "Benign"
 	SuiTransactionScanResponseValidationSuiValidationResultResultTypeWarning   SuiTransactionScanResponseValidationSuiValidationResultResultType = "Warning"
 	SuiTransactionScanResponseValidationSuiValidationResultResultTypeMalicious SuiTransactionScanResponseValidationSuiValidationResultResultType = "Malicious"
+	SuiTransactionScanResponseValidationSuiValidationResultResultTypeError     SuiTransactionScanResponseValidationSuiValidationResultResultType = "Error"
 )
 
 func (r SuiTransactionScanResponseValidationSuiValidationResultResultType) IsKnown() bool {
 	switch r {
-	case SuiTransactionScanResponseValidationSuiValidationResultResultTypeBenign, SuiTransactionScanResponseValidationSuiValidationResultResultTypeWarning, SuiTransactionScanResponseValidationSuiValidationResultResultTypeMalicious:
+	case SuiTransactionScanResponseValidationSuiValidationResultResultTypeBenign, SuiTransactionScanResponseValidationSuiValidationResultResultTypeWarning, SuiTransactionScanResponseValidationSuiValidationResultResultTypeMalicious, SuiTransactionScanResponseValidationSuiValidationResultResultTypeError:
 		return true
 	}
 	return false
@@ -1301,11 +1312,12 @@ const (
 	SuiTransactionScanResponseValidationResultTypeBenign    SuiTransactionScanResponseValidationResultType = "Benign"
 	SuiTransactionScanResponseValidationResultTypeWarning   SuiTransactionScanResponseValidationResultType = "Warning"
 	SuiTransactionScanResponseValidationResultTypeMalicious SuiTransactionScanResponseValidationResultType = "Malicious"
+	SuiTransactionScanResponseValidationResultTypeError     SuiTransactionScanResponseValidationResultType = "Error"
 )
 
 func (r SuiTransactionScanResponseValidationResultType) IsKnown() bool {
 	switch r {
-	case SuiTransactionScanResponseValidationResultTypeBenign, SuiTransactionScanResponseValidationResultTypeWarning, SuiTransactionScanResponseValidationResultTypeMalicious:
+	case SuiTransactionScanResponseValidationResultTypeBenign, SuiTransactionScanResponseValidationResultTypeWarning, SuiTransactionScanResponseValidationResultTypeMalicious, SuiTransactionScanResponseValidationResultTypeError:
 		return true
 	}
 	return false

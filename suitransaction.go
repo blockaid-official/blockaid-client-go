@@ -31,7 +31,9 @@ func NewSuiTransactionService(opts ...option.RequestOption) (r *SuiTransactionSe
 	return
 }
 
-// Scan Transaction
+// Gets a transaction and returns a full simulation indicating what will happen in
+// the transaction together with a recommended action and some textual reasons of
+// why the transaction was flagged that way.
 func (r *SuiTransactionService) Scan(ctx context.Context, body SuiTransactionScanParams, opts ...option.RequestOption) (res *SuiTransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "v0/sui/transaction/scan"

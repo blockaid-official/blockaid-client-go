@@ -31,7 +31,9 @@ func NewSuiAddressService(opts ...option.RequestOption) (r *SuiAddressService) {
 	return
 }
 
-// Scan Address
+// Gets an address and returns a full security assessment indicating weather or not
+// this address is malicious as well as textual reasons of why the address was
+// flagged that way.
 func (r *SuiAddressService) Scan(ctx context.Context, body SuiAddressScanParams, opts ...option.RequestOption) (res *SuiAddressScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "v0/sui/address/scan"
@@ -70,13 +72,15 @@ type SuiAddressScanResponseResultType string
 
 const (
 	SuiAddressScanResponseResultTypeBenign    SuiAddressScanResponseResultType = "Benign"
+	SuiAddressScanResponseResultTypeSpam      SuiAddressScanResponseResultType = "Spam"
 	SuiAddressScanResponseResultTypeWarning   SuiAddressScanResponseResultType = "Warning"
 	SuiAddressScanResponseResultTypeMalicious SuiAddressScanResponseResultType = "Malicious"
+	SuiAddressScanResponseResultTypeError     SuiAddressScanResponseResultType = "Error"
 )
 
 func (r SuiAddressScanResponseResultType) IsKnown() bool {
 	switch r {
-	case SuiAddressScanResponseResultTypeBenign, SuiAddressScanResponseResultTypeWarning, SuiAddressScanResponseResultTypeMalicious:
+	case SuiAddressScanResponseResultTypeBenign, SuiAddressScanResponseResultTypeSpam, SuiAddressScanResponseResultTypeWarning, SuiAddressScanResponseResultTypeMalicious, SuiAddressScanResponseResultTypeError:
 		return true
 	}
 	return false
@@ -125,7 +129,7 @@ func (r SuiAddressScanResponseFeaturesType) IsKnown() bool {
 }
 
 type SuiAddressScanParams struct {
-	Address param.Field[interface{}]               `json:"address,required"`
+	Address param.Field[string]                    `json:"address,required"`
 	Chain   param.Field[SuiAddressScanParamsChain] `json:"chain,required"`
 }
 

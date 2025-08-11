@@ -26,7 +26,7 @@ func TestSuiAddressScan(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Sui.Address.Scan(context.TODO(), blockaidclientgo.SuiAddressScanParams{
-		Address: blockaidclientgo.F[any](map[string]interface{}{}),
+		Address: blockaidclientgo.F("0x2"),
 		Chain:   blockaidclientgo.F(blockaidclientgo.SuiAddressScanParamsChainMainnet),
 	})
 	if err != nil {
