@@ -607,7 +607,7 @@ type ChainAgnosticTransactionScanParamsMetadataConnection struct {
 	// IP address of the customer making the request
 	IPAddress param.Field[string] `json:"ip_address,required" format:"ipvanyaddress"`
 	// User agent string from the client's browser or application
-	UserAgent param.Field[string] `json:"user_agent,required"`
+	UserAgent param.Field[string] `json:"user_agent"`
 }
 
 func (r ChainAgnosticTransactionScanParamsMetadataConnection) MarshalJSON() (data []byte, err error) {

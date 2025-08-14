@@ -33,7 +33,9 @@ func NewSolanaMessageService(opts ...option.RequestOption) (r *SolanaMessageServ
 	return
 }
 
-// Scan Message
+// Gets a transaction and returns a full simulation indicating what will happen in
+// the transaction together with a recommended action and some textual reasons of
+// why the transaction was flagged that way.
 func (r *SolanaMessageService) Scan(ctx context.Context, body SolanaMessageScanParams, opts ...option.RequestOption) (res *SolanaMessageScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "v0/solana/message/scan"
