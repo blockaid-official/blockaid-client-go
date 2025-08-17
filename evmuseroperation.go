@@ -173,9 +173,9 @@ type EvmUserOperationScanParamsDataOperationUserOperationV6Eip7702Auth struct {
 	Eoa param.Field[string] `json:"eoa"`
 	// The nonce value as hex string
 	Nonce param.Field[string] `json:"nonce"`
-	// The r value as hex string (excluding leading 0 digits)
+	// The r value as hex string
 	R param.Field[string] `json:"r"`
-	// The s value as hex string (excluding leading 0 digits)
+	// The s value as hex string
 	S param.Field[string] `json:"s"`
 	// The yParity value as hex string
 	YParity param.Field[string] `json:"yParity"`
@@ -227,9 +227,9 @@ type EvmUserOperationScanParamsDataOperationUserOperationV7Eip7702Auth struct {
 	Eoa param.Field[string] `json:"eoa"`
 	// The nonce value as hex string
 	Nonce param.Field[string] `json:"nonce"`
-	// The r value as hex string (excluding leading 0 digits)
+	// The r value as hex string
 	R param.Field[string] `json:"r"`
-	// The s value as hex string (excluding leading 0 digits)
+	// The s value as hex string
 	S param.Field[string] `json:"s"`
 	// The yParity value as hex string
 	YParity param.Field[string] `json:"yParity"`
