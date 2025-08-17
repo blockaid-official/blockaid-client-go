@@ -87,7 +87,8 @@ type EvmUserOperationScanParamsDataOperation struct {
 	// The call data value in hex string format.
 	CallData param.Field[string] `json:"call_data"`
 	// The call gas limit value in hex string format.
-	CallGasLimit param.Field[string] `json:"call_gas_limit"`
+	CallGasLimit param.Field[string]      `json:"call_gas_limit"`
+	Eip7702Auth  param.Field[interface{}] `json:"eip7702_auth"`
 	// The gas fees value in hex string format.
 	GasFees param.Field[string] `json:"gas_fees"`
 	// The init code value in hex string format.
@@ -131,6 +132,8 @@ type EvmUserOperationScanParamsDataOperationUserOperationV6 struct {
 	CallData param.Field[string] `json:"call_data"`
 	// The call gas limit value in hex string format.
 	CallGasLimit param.Field[string] `json:"call_gas_limit"`
+	// The EIP-7702 authorization tuple for the user operation (optional)
+	Eip7702Auth param.Field[EvmUserOperationScanParamsDataOperationUserOperationV6Eip7702Auth] `json:"eip7702_auth"`
 	// The init code value in hex string format.
 	InitCode param.Field[string] `json:"init_code"`
 	// The max fee per gas value in hex string format.
@@ -158,11 +161,37 @@ func (r EvmUserOperationScanParamsDataOperationUserOperationV6) MarshalJSON() (d
 func (r EvmUserOperationScanParamsDataOperationUserOperationV6) implementsEvmUserOperationScanParamsDataOperationUnion() {
 }
 
+// The EIP-7702 authorization tuple for the user operation (optional)
+type EvmUserOperationScanParamsDataOperationUserOperationV6Eip7702Auth struct {
+	// The delegation designation address
+	Address param.Field[string] `json:"address,required"`
+	// The chain ID as hex string
+	ChainID param.Field[string] `json:"chainId"`
+	// The authority address of the delegation, should be provided when the signature
+	// (r,s,yParity) is not provided in order to simulate the transaction with the
+	// correct delegation
+	Eoa param.Field[string] `json:"eoa"`
+	// The nonce value as hex string
+	Nonce param.Field[string] `json:"nonce"`
+	// The r value as hex string (excluding leading 0 digits)
+	R param.Field[string] `json:"r"`
+	// The s value as hex string (excluding leading 0 digits)
+	S param.Field[string] `json:"s"`
+	// The yParity value as hex string
+	YParity param.Field[string] `json:"yParity"`
+}
+
+func (r EvmUserOperationScanParamsDataOperationUserOperationV6Eip7702Auth) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type EvmUserOperationScanParamsDataOperationUserOperationV7 struct {
 	// The account gas limits value in hex string format.
 	AccountGasLimits param.Field[string] `json:"account_gas_limits"`
 	// The call data value in hex string format.
 	CallData param.Field[string] `json:"call_data"`
+	// The EIP-7702 authorization tuple for the user operation (optional)
+	Eip7702Auth param.Field[EvmUserOperationScanParamsDataOperationUserOperationV7Eip7702Auth] `json:"eip7702_auth"`
 	// The gas fees value in hex string format.
 	GasFees param.Field[string] `json:"gas_fees"`
 	// The init code value in hex string format.
@@ -184,6 +213,30 @@ func (r EvmUserOperationScanParamsDataOperationUserOperationV7) MarshalJSON() (d
 }
 
 func (r EvmUserOperationScanParamsDataOperationUserOperationV7) implementsEvmUserOperationScanParamsDataOperationUnion() {
+}
+
+// The EIP-7702 authorization tuple for the user operation (optional)
+type EvmUserOperationScanParamsDataOperationUserOperationV7Eip7702Auth struct {
+	// The delegation designation address
+	Address param.Field[string] `json:"address,required"`
+	// The chain ID as hex string
+	ChainID param.Field[string] `json:"chainId"`
+	// The authority address of the delegation, should be provided when the signature
+	// (r,s,yParity) is not provided in order to simulate the transaction with the
+	// correct delegation
+	Eoa param.Field[string] `json:"eoa"`
+	// The nonce value as hex string
+	Nonce param.Field[string] `json:"nonce"`
+	// The r value as hex string (excluding leading 0 digits)
+	R param.Field[string] `json:"r"`
+	// The s value as hex string (excluding leading 0 digits)
+	S param.Field[string] `json:"s"`
+	// The yParity value as hex string
+	YParity param.Field[string] `json:"yParity"`
+}
+
+func (r EvmUserOperationScanParamsDataOperationUserOperationV7Eip7702Auth) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // Object of additional information to validate against.
