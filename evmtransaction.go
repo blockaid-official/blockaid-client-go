@@ -195,14 +195,19 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataTransactionAuthorizationList struct {
 	// The delegation designation address
 	Address param.Field[string] `json:"address,required"`
+	// The chain ID as hex string
 	ChainID param.Field[string] `json:"chainId"`
 	// The authority address of the delegation, should be provided when the signature
 	// (r,s,yParity) is not provided in order to simulate the transaction with the
 	// correct delegation
-	Eoa     param.Field[string] `json:"eoa"`
-	Nonce   param.Field[string] `json:"nonce"`
-	R       param.Field[string] `json:"r"`
-	S       param.Field[string] `json:"s"`
+	Eoa param.Field[string] `json:"eoa"`
+	// The nonce value as hex string
+	Nonce param.Field[string] `json:"nonce"`
+	// The r value as hex string
+	R param.Field[string] `json:"r"`
+	// The s value as hex string
+	S param.Field[string] `json:"s"`
+	// The yParity value as hex string
 	YParity param.Field[string] `json:"yParity"`
 }
 
@@ -394,14 +399,19 @@ func (r EvmTransactionScanParamsData) MarshalJSON() (data []byte, err error) {
 type EvmTransactionScanParamsDataAuthorizationList struct {
 	// The delegation designation address
 	Address param.Field[string] `json:"address,required"`
+	// The chain ID as hex string
 	ChainID param.Field[string] `json:"chainId"`
 	// The authority address of the delegation, should be provided when the signature
 	// (r,s,yParity) is not provided in order to simulate the transaction with the
 	// correct delegation
-	Eoa     param.Field[string] `json:"eoa"`
-	Nonce   param.Field[string] `json:"nonce"`
-	R       param.Field[string] `json:"r"`
-	S       param.Field[string] `json:"s"`
+	Eoa param.Field[string] `json:"eoa"`
+	// The nonce value as hex string
+	Nonce param.Field[string] `json:"nonce"`
+	// The r value as hex string
+	R param.Field[string] `json:"r"`
+	// The s value as hex string
+	S param.Field[string] `json:"s"`
+	// The yParity value as hex string
 	YParity param.Field[string] `json:"yParity"`
 }
 

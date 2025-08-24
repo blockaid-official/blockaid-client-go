@@ -30,8 +30,17 @@ func TestEvmUserOperationScanWithOptionalParams(t *testing.T) {
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
 		Data: blockaidclientgo.F(blockaidclientgo.EvmUserOperationScanParamsData{
 			Operation: blockaidclientgo.F[blockaidclientgo.EvmUserOperationScanParamsDataOperationUnion](blockaidclientgo.EvmUserOperationScanParamsDataOperationUserOperationV6{
-				CallData:             blockaidclientgo.F("0x51945447000000000000000000000000aeed57a826a998f9388ce2fd6cdb0b6aa75e3d190000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044095ea7b300000000000000000000000050a9266605ba303b659ff105919205570f2af971000000000000000000000000000000000000000000000000000000000000006400000000000000000000000000000000000000000000000000000000"),
-				CallGasLimit:         blockaidclientgo.F("0x3c38"),
+				CallData:     blockaidclientgo.F("0x51945447000000000000000000000000aeed57a826a998f9388ce2fd6cdb0b6aa75e3d190000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044095ea7b300000000000000000000000050a9266605ba303b659ff105919205570f2af971000000000000000000000000000000000000000000000000000000000000006400000000000000000000000000000000000000000000000000000000"),
+				CallGasLimit: blockaidclientgo.F("0x3c38"),
+				Eip7702Auth: blockaidclientgo.F(blockaidclientgo.EvmUserOperationScanParamsDataOperationUserOperationV6Eip7702Auth{
+					Address: blockaidclientgo.F("address"),
+					ChainID: blockaidclientgo.F("chainId"),
+					Eoa:     blockaidclientgo.F("eoa"),
+					Nonce:   blockaidclientgo.F("nonce"),
+					R:       blockaidclientgo.F("r"),
+					S:       blockaidclientgo.F("s"),
+					YParity: blockaidclientgo.F("yParity"),
+				}),
 				InitCode:             blockaidclientgo.F("0x"),
 				MaxFeePerGas:         blockaidclientgo.F("0x218fe7"),
 				MaxPriorityFeePerGas: blockaidclientgo.F("0xf4240"),
@@ -47,10 +56,11 @@ func TestEvmUserOperationScanWithOptionalParams(t *testing.T) {
 		Metadata: blockaidclientgo.F(blockaidclientgo.EvmUserOperationScanParamsMetadata{
 			Domain: blockaidclientgo.F("example.com"),
 		}),
-		AccountAddress:           blockaidclientgo.F("0x77bA5AC3ca4864be26CA3112baDf07286CcC3324"),
-		Block:                    blockaidclientgo.F[blockaidclientgo.EvmUserOperationScanParamsBlockUnion](shared.UnionString("0x5c6fd5")),
-		Options:                  blockaidclientgo.F([]blockaidclientgo.EvmUserOperationScanParamsOption{blockaidclientgo.EvmUserOperationScanParamsOptionSimulation, blockaidclientgo.EvmUserOperationScanParamsOptionValidation}),
-		SimulateWithEstimatedGas: blockaidclientgo.F(true),
+		AccountAddress:                blockaidclientgo.F("0x77bA5AC3ca4864be26CA3112baDf07286CcC3324"),
+		Block:                         blockaidclientgo.F[blockaidclientgo.EvmUserOperationScanParamsBlockUnion](shared.UnionString("0x5c6fd5")),
+		Options:                       blockaidclientgo.F([]blockaidclientgo.EvmUserOperationScanParamsOption{blockaidclientgo.EvmUserOperationScanParamsOptionSimulation, blockaidclientgo.EvmUserOperationScanParamsOptionValidation}),
+		ShouldCalculateMissingBalance: blockaidclientgo.F(true),
+		SimulateWithEstimatedGas:      blockaidclientgo.F(true),
 		StateOverride: blockaidclientgo.F(map[string]blockaidclientgo.EvmUserOperationScanParamsStateOverride{
 			"foo": {
 				Balance:                 blockaidclientgo.F("balance"),

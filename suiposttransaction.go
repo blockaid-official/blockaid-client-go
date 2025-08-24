@@ -34,7 +34,8 @@ func NewSuiPostTransactionService(opts ...option.RequestOption) (r *SuiPostTrans
 	return
 }
 
-// Scan Post Transaction
+// Scan a transaction that was already executed on chain, returns validation with
+// features indicating address poisoning entities and malicious operators.
 func (r *SuiPostTransactionService) Scan(ctx context.Context, body SuiPostTransactionScanParams, opts ...option.RequestOption) (res *SuiPostTransactionScanResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "v0/sui/post-transaction/scan"
@@ -73,18 +74,21 @@ func (r suiPostTransactionScanResponseJSON) RawJSON() string {
 type SuiPostTransactionScanResponseSimulation struct {
 	Status SuiPostTransactionScanResponseSimulationStatus `json:"status,required"`
 	// This field can have the runtime type of
-	// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummary].
+	// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummary].
 	AccountSummary interface{} `json:"account_summary"`
 	// This field can have the runtime type of
-	// [[]SuiPostTransactionScanResponseSimulationSuiSimulationResultAddressDetail].
+	// [[]SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAddressDetail].
 	AddressDetails interface{} `json:"address_details"`
 	// This field can have the runtime type of
-	// [map[string][]SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiff].
+	// [map[string][]SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiff].
 	AssetsDiffs interface{} `json:"assets_diffs"`
 	// Error message
-	Error string                                       `json:"error"`
-	JSON  suiPostTransactionScanResponseSimulationJSON `json:"-"`
-	union SuiPostTransactionScanResponseSimulationUnion
+	Error string `json:"error"`
+	// This field can have the runtime type of
+	// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultParams].
+	Params interface{}                                  `json:"params"`
+	JSON   suiPostTransactionScanResponseSimulationJSON `json:"-"`
+	union  SuiPostTransactionScanResponseSimulationUnion
 }
 
 // suiPostTransactionScanResponseSimulationJSON contains the JSON metadata for the
@@ -95,6 +99,7 @@ type suiPostTransactionScanResponseSimulationJSON struct {
 	AddressDetails apijson.Field
 	AssetsDiffs    apijson.Field
 	Error          apijson.Field
+	Params         apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
@@ -116,7 +121,7 @@ func (r *SuiPostTransactionScanResponseSimulation) UnmarshalJSON(data []byte) (e
 // which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResult],
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResult],
 // [SuiPostTransactionScanResponseSimulationSuiSimulationErrorSchema].
 func (r SuiPostTransactionScanResponseSimulation) AsUnion() SuiPostTransactionScanResponseSimulationUnion {
 	return r.union
@@ -124,8 +129,9 @@ func (r SuiPostTransactionScanResponseSimulation) AsUnion() SuiPostTransactionSc
 
 // Simulation result; Only present if simulation option is included in the request
 //
-// Union satisfied by [SuiPostTransactionScanResponseSimulationSuiSimulationResult]
-// or [SuiPostTransactionScanResponseSimulationSuiSimulationErrorSchema].
+// Union satisfied by
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResult] or
+// [SuiPostTransactionScanResponseSimulationSuiSimulationErrorSchema].
 type SuiPostTransactionScanResponseSimulationUnion interface {
 	implementsSuiPostTransactionScanResponseSimulation()
 }
@@ -136,7 +142,7 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiSimulationResult{}),
+			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResult{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
@@ -145,24 +151,26 @@ func init() {
 	)
 }
 
-type SuiPostTransactionScanResponseSimulationSuiSimulationResult struct {
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResult struct {
 	// Summary of the actions and asset transfers that were made by the requested
 	// account address
-	AccountSummary SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummary `json:"account_summary,required"`
-	Status         SuiPostTransactionScanResponseSimulationSuiSimulationResultStatus         `json:"status,required"`
+	AccountSummary SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummary `json:"account_summary,required"`
+	Params         SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultParams         `json:"params,required"`
+	Status         SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultStatus         `json:"status,required"`
 	// Details of addresses involved in the transaction
-	AddressDetails []SuiPostTransactionScanResponseSimulationSuiSimulationResultAddressDetail `json:"address_details"`
+	AddressDetails []SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAddressDetail `json:"address_details"`
 	// Mapping between the address of an account to the assets diff during the
 	// transaction
-	AssetsDiffs map[string][]SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiff `json:"assets_diffs"`
-	JSON        suiPostTransactionScanResponseSimulationSuiSimulationResultJSON                    `json:"-"`
+	AssetsDiffs map[string][]SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiff `json:"assets_diffs"`
+	JSON        suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultJSON                    `json:"-"`
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultJSON contains the
-// JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResult]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultJSON struct {
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultJSON
+// contains the JSON metadata for the struct
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResult]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultJSON struct {
 	AccountSummary apijson.Field
+	Params         apijson.Field
 	Status         apijson.Field
 	AddressDetails apijson.Field
 	AssetsDiffs    apijson.Field
@@ -170,60 +178,60 @@ type suiPostTransactionScanResponseSimulationSuiSimulationResultJSON struct {
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResult) UnmarshalJSON(data []byte) (err error) {
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResult) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SuiPostTransactionScanResponseSimulationSuiSimulationResult) implementsSuiPostTransactionScanResponseSimulation() {
+func (r SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResult) implementsSuiPostTransactionScanResponseSimulation() {
 }
 
 // Summary of the actions and asset transfers that were made by the requested
 // account address
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummary struct {
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummary struct {
 	// Total USD diff for the requested account address
-	TotalUsdDiff SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryTotalUsdDiff `json:"total_usd_diff,required"`
+	TotalUsdDiff SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryTotalUsdDiff `json:"total_usd_diff,required"`
 	// Assets diffs of the requested account address
-	AccountAssetsDiffs []SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiff `json:"account_assets_diffs"`
-	JSON               suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryJSON                `json:"-"`
+	AccountAssetsDiffs []SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiff `json:"account_assets_diffs"`
+	JSON               suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryJSON                `json:"-"`
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryJSON
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryJSON
 // contains the JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummary]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryJSON struct {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummary]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryJSON struct {
 	TotalUsdDiff       apijson.Field
 	AccountAssetsDiffs apijson.Field
 	raw                string
 	ExtraFields        map[string]apijson.Field
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummary) UnmarshalJSON(data []byte) (err error) {
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummary) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryJSON) RawJSON() string {
 	return r.raw
 }
 
 // Total USD diff for the requested account address
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryTotalUsdDiff struct {
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryTotalUsdDiff struct {
 	// Total incoming USD transfers
 	In float64 `json:"in,required"`
 	// Total outgoing USD transfers
 	Out float64 `json:"out,required"`
 	// Total USD transfers
-	Total float64                                                                                   `json:"total"`
-	JSON  suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryTotalUsdDiffJSON `json:"-"`
+	Total float64                                                                                                  `json:"total"`
+	JSON  suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryTotalUsdDiffJSON `json:"-"`
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryTotalUsdDiffJSON
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryTotalUsdDiffJSON
 // contains the JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryTotalUsdDiff]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryTotalUsdDiffJSON struct {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryTotalUsdDiff]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryTotalUsdDiffJSON struct {
 	In          apijson.Field
 	Out         apijson.Field
 	Total       apijson.Field
@@ -231,18 +239,18 @@ type suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryTo
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryTotalUsdDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryTotalUsdDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryTotalUsdDiffJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryTotalUsdDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiff struct {
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiff struct {
 	// This field can have the runtime type of [SuiNativeAssetDetailsSchema],
 	// [SuiNFTDetailsSchema],
-	// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset].
+	// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset].
 	Asset interface{} `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
@@ -251,15 +259,15 @@ type SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAc
 	In interface{} `json:"in"`
 	// This field can have the runtime type of [SuiAssetTransferDetailsSchema],
 	// [SuiNFTDiffSchema].
-	Out   interface{}                                                                                    `json:"out"`
-	JSON  suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffJSON `json:"-"`
-	union SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsUnion
+	Out   interface{}                                                                                                   `json:"out"`
+	JSON  suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffJSON `json:"-"`
+	union SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsUnion
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffJSON
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffJSON
 // contains the JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiff]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffJSON struct {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiff]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -268,12 +276,12 @@ type suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAc
 	ExtraFields map[string]apijson.Field
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiff) UnmarshalJSON(data []byte) (err error) {
-	*r = SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiff{}
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -282,60 +290,60 @@ func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSumma
 }
 
 // AsUnion returns a
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsUnion]
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsUnion]
 // interface which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff],
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff],
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff].
-func (r SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiff) AsUnion() SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsUnion {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff],
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff],
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff].
+func (r SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiff) AsUnion() SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff],
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff]
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff],
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff]
 // or
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff].
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsUnion interface {
-	implementsSuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiff()
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff].
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsUnion interface {
+	implementsSuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiff()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsUnion)(nil)).Elem(),
+		reflect.TypeOf((*SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff{}),
+			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff{}),
+			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff{}),
+			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff{}),
 		},
 	)
 }
 
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff struct {
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff struct {
 	Asset SuiNativeAssetDetailsSchema `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
 	In SuiAssetTransferDetailsSchema `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SuiAssetTransferDetailsSchema                                                                                     `json:"out,nullable"`
-	JSON suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiffJSON `json:"-"`
+	Out  SuiAssetTransferDetailsSchema                                                                                                    `json:"out,nullable"`
+	JSON suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiffJSON `json:"-"`
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiffJSON
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiffJSON struct {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -344,32 +352,32 @@ type suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAc
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiffJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff) implementsSuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiff() {
+func (r SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff) implementsSuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiff() {
 }
 
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff struct {
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff struct {
 	Asset SuiNFTDetailsSchema `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
 	In SuiNFTDiffSchema `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SuiNFTDiffSchema                                                                                               `json:"out,nullable"`
-	JSON suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiffJSON `json:"-"`
+	Out  SuiNFTDiffSchema                                                                                                              `json:"out,nullable"`
+	JSON suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiffJSON `json:"-"`
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiffJSON
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiffJSON struct {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -378,32 +386,32 @@ type suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAc
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiffJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff) implementsSuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiff() {
+func (r SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff) implementsSuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiff() {
 }
 
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff struct {
-	Asset SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset `json:"asset,required"`
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff struct {
+	Asset SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
 	In SuiAssetTransferDetailsSchema `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SuiAssetTransferDetailsSchema                                                                                    `json:"out,nullable"`
-	JSON suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffJSON `json:"-"`
+	Out  SuiAssetTransferDetailsSchema                                                                                                   `json:"out,nullable"`
+	JSON suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffJSON `json:"-"`
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffJSON
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffJSON struct {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -412,18 +420,18 @@ type suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAc
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff) implementsSuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiff() {
+func (r SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff) implementsSuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiff() {
 }
 
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset struct {
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset struct {
 	// Token's package address
 	Address string `json:"address,required"`
 	// Token's decimal precision
@@ -433,99 +441,133 @@ type SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAc
 	// Token's symbol (abbreviation)
 	Symbol            string    `json:"symbol,required"`
 	CreationTimestamp time.Time `json:"creation_timestamp,nullable" format:"date-time"`
+	// Address of the token's deployer
+	Deployer string `json:"deployer,nullable"`
 	// URL of the token's logo
-	LogoURL string `json:"logo_url,nullable"`
-	Scam    bool   `json:"scam,nullable"`
+	LogoURL     string `json:"logo_url,nullable"`
+	Scam        bool   `json:"scam,nullable"`
+	TotalSupply int64  `json:"total_supply,nullable"`
 	// Type of the asset (`Coin`)
-	Type     SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType `json:"type"`
-	Verified bool                                                                                                                  `json:"verified,nullable"`
-	JSON     suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetJSON `json:"-"`
+	Type     SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType `json:"type"`
+	Verified bool                                                                                                                                 `json:"verified,nullable"`
+	JSON     suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetJSON `json:"-"`
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetJSON
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetJSON struct {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetJSON struct {
 	Address           apijson.Field
 	Decimals          apijson.Field
 	Name              apijson.Field
 	Symbol            apijson.Field
 	CreationTimestamp apijson.Field
+	Deployer          apijson.Field
 	LogoURL           apijson.Field
 	Scam              apijson.Field
+	TotalSupply       apijson.Field
 	Type              apijson.Field
 	Verified          apijson.Field
 	raw               string
 	ExtraFields       map[string]apijson.Field
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
 // Type of the asset (`Coin`)
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType string
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType string
 
 const (
-	SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetTypeFungible SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType = "fungible"
+	SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetTypeFungible SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType = "fungible"
 )
 
-func (r SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType) IsKnown() bool {
+func (r SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case SuiPostTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetTypeFungible:
+	case SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetTypeFungible:
 		return true
 	}
 	return false
 }
 
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultStatus string
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultParams struct {
+	BlockTag    string                                                                               `json:"block_tag,required"`
+	Chain       string                                                                               `json:"chain,required"`
+	From        string                                                                               `json:"from,required"`
+	Value       string                                                                               `json:"value,required"`
+	ExtraFields map[string]interface{}                                                               `json:"-,extras"`
+	JSON        suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultParamsJSON `json:"-"`
+}
+
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultParamsJSON
+// contains the JSON metadata for the struct
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultParams]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultParamsJSON struct {
+	BlockTag    apijson.Field
+	Chain       apijson.Field
+	From        apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultParams) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultParamsJSON) RawJSON() string {
+	return r.raw
+}
+
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultStatus string
 
 const (
-	SuiPostTransactionScanResponseSimulationSuiSimulationResultStatusSuccess SuiPostTransactionScanResponseSimulationSuiSimulationResultStatus = "Success"
+	SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultStatusSuccess SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultStatus = "Success"
 )
 
-func (r SuiPostTransactionScanResponseSimulationSuiSimulationResultStatus) IsKnown() bool {
+func (r SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultStatus) IsKnown() bool {
 	switch r {
-	case SuiPostTransactionScanResponseSimulationSuiSimulationResultStatusSuccess:
+	case SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultStatusSuccess:
 		return true
 	}
 	return false
 }
 
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAddressDetail struct {
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAddressDetail struct {
 	// Encoded public key of the account
 	AccountAddress string `json:"account_address,required"`
 	// Description of the account
-	Description string                                                                       `json:"description,nullable"`
-	JSON        suiPostTransactionScanResponseSimulationSuiSimulationResultAddressDetailJSON `json:"-"`
+	Description string                                                                                      `json:"description,nullable"`
+	JSON        suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAddressDetailJSON `json:"-"`
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultAddressDetailJSON
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAddressDetailJSON
 // contains the JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAddressDetail]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultAddressDetailJSON struct {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAddressDetail]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAddressDetailJSON struct {
 	AccountAddress apijson.Field
 	Description    apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAddressDetail) UnmarshalJSON(data []byte) (err error) {
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAddressDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultAddressDetailJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAddressDetailJSON) RawJSON() string {
 	return r.raw
 }
 
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiff struct {
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiff struct {
 	// This field can have the runtime type of [SuiNativeAssetDetailsSchema],
 	// [SuiNFTDetailsSchema],
-	// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset].
+	// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset].
 	Asset interface{} `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
@@ -534,15 +576,15 @@ type SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiff struc
 	In interface{} `json:"in"`
 	// This field can have the runtime type of [SuiAssetTransferDetailsSchema],
 	// [SuiNFTDiffSchema].
-	Out   interface{}                                                               `json:"out"`
-	JSON  suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffJSON `json:"-"`
-	union SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsUnion
+	Out   interface{}                                                                              `json:"out"`
+	JSON  suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffJSON `json:"-"`
+	union SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsUnion
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffJSON
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffJSON
 // contains the JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiff]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffJSON struct {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiff]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -551,12 +593,12 @@ type suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffJSON s
 	ExtraFields map[string]apijson.Field
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiff) UnmarshalJSON(data []byte) (err error) {
-	*r = SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiff{}
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiff) UnmarshalJSON(data []byte) (err error) {
+	*r = SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiff{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
@@ -565,60 +607,60 @@ func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiff) 
 }
 
 // AsUnion returns a
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsUnion]
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsUnion]
 // interface which you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNativeAssetDiff],
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFTAssetDiff],
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiff].
-func (r SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiff) AsUnion() SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsUnion {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNativeAssetDiff],
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNFTAssetDiff],
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiff].
+func (r SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiff) AsUnion() SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsUnion {
 	return r.union
 }
 
 // Union satisfied by
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNativeAssetDiff],
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFTAssetDiff]
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNativeAssetDiff],
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNFTAssetDiff]
 // or
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiff].
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsUnion interface {
-	implementsSuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiff()
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiff].
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsUnion interface {
+	implementsSuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiff()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsUnion)(nil)).Elem(),
+		reflect.TypeOf((*SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNativeAssetDiff{}),
+			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNativeAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFTAssetDiff{}),
+			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNFTAssetDiff{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiff{}),
+			Type:       reflect.TypeOf(SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiff{}),
 		},
 	)
 }
 
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNativeAssetDiff struct {
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNativeAssetDiff struct {
 	Asset SuiNativeAssetDetailsSchema `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
 	In SuiAssetTransferDetailsSchema `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SuiAssetTransferDetailsSchema                                                                `json:"out,nullable"`
-	JSON suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNativeAssetDiffJSON `json:"-"`
+	Out  SuiAssetTransferDetailsSchema                                                                               `json:"out,nullable"`
+	JSON suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNativeAssetDiffJSON `json:"-"`
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNativeAssetDiffJSON
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNativeAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNativeAssetDiff]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNativeAssetDiffJSON struct {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNativeAssetDiff]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNativeAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -627,32 +669,32 @@ type suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNa
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNativeAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNativeAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNativeAssetDiffJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNativeAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNativeAssetDiff) implementsSuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiff() {
+func (r SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNativeAssetDiff) implementsSuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiff() {
 }
 
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFTAssetDiff struct {
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNFTAssetDiff struct {
 	Asset SuiNFTDetailsSchema `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
 	In SuiNFTDiffSchema `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SuiNFTDiffSchema                                                                          `json:"out,nullable"`
-	JSON suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFTAssetDiffJSON `json:"-"`
+	Out  SuiNFTDiffSchema                                                                                         `json:"out,nullable"`
+	JSON suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNFTAssetDiffJSON `json:"-"`
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFTAssetDiffJSON
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNFTAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFTAssetDiff]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFTAssetDiffJSON struct {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNFTAssetDiff]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNFTAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -661,32 +703,32 @@ type suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNF
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFTAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNFTAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFTAssetDiffJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNFTAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFTAssetDiff) implementsSuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiff() {
+func (r SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiNFTAssetDiff) implementsSuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiff() {
 }
 
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiff struct {
-	Asset SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset `json:"asset,required"`
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiff struct {
+	Asset SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset `json:"asset,required"`
 	// The type of the assets in this diff
 	AssetType string `json:"asset_type,required"`
 	// Details of the incoming transfer
 	In SuiAssetTransferDetailsSchema `json:"in,nullable"`
 	// Details of the outgoing transfer
-	Out  SuiAssetTransferDetailsSchema                                                               `json:"out,nullable"`
-	JSON suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffJSON `json:"-"`
+	Out  SuiAssetTransferDetailsSchema                                                                              `json:"out,nullable"`
+	JSON suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffJSON `json:"-"`
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffJSON
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffJSON
 // contains the JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiff]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffJSON struct {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiff]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffJSON struct {
 	Asset       apijson.Field
 	AssetType   apijson.Field
 	In          apijson.Field
@@ -695,18 +737,18 @@ type suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCo
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiff) UnmarshalJSON(data []byte) (err error) {
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiff) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiff) implementsSuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiff() {
+func (r SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiff) implementsSuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiff() {
 }
 
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset struct {
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset struct {
 	// Token's package address
 	Address string `json:"address,required"`
 	// Token's decimal precision
@@ -716,50 +758,55 @@ type SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCo
 	// Token's symbol (abbreviation)
 	Symbol            string    `json:"symbol,required"`
 	CreationTimestamp time.Time `json:"creation_timestamp,nullable" format:"date-time"`
+	// Address of the token's deployer
+	Deployer string `json:"deployer,nullable"`
 	// URL of the token's logo
-	LogoURL string `json:"logo_url,nullable"`
-	Scam    bool   `json:"scam,nullable"`
+	LogoURL     string `json:"logo_url,nullable"`
+	Scam        bool   `json:"scam,nullable"`
+	TotalSupply int64  `json:"total_supply,nullable"`
 	// Type of the asset (`Coin`)
-	Type     SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType `json:"type"`
-	Verified bool                                                                                             `json:"verified,nullable"`
-	JSON     suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetJSON `json:"-"`
+	Type     SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType `json:"type"`
+	Verified bool                                                                                                            `json:"verified,nullable"`
+	JSON     suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetJSON `json:"-"`
 }
 
-// suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetJSON
+// suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetJSON
 // contains the JSON metadata for the struct
-// [SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset]
-type suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetJSON struct {
+// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset]
+type suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetJSON struct {
 	Address           apijson.Field
 	Decimals          apijson.Field
 	Name              apijson.Field
 	Symbol            apijson.Field
 	CreationTimestamp apijson.Field
+	Deployer          apijson.Field
 	LogoURL           apijson.Field
 	Scam              apijson.Field
+	TotalSupply       apijson.Field
 	Type              apijson.Field
 	Verified          apijson.Field
 	raw               string
 	ExtraFields       map[string]apijson.Field
 }
 
-func (r *SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
+func (r *SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r suiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetJSON) RawJSON() string {
+func (r suiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
 }
 
 // Type of the asset (`Coin`)
-type SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType string
+type SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType string
 
 const (
-	SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetTypeFungible SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType = "fungible"
+	SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetTypeFungible SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType = "fungible"
 )
 
-func (r SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType) IsKnown() bool {
+func (r SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType) IsKnown() bool {
 	switch r {
-	case SuiPostTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetTypeFungible:
+	case SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetTypeFungible:
 		return true
 	}
 	return false
@@ -1001,11 +1048,12 @@ const (
 	SuiPostTransactionScanResponseValidationSuiValidationResultResultTypeBenign    SuiPostTransactionScanResponseValidationSuiValidationResultResultType = "Benign"
 	SuiPostTransactionScanResponseValidationSuiValidationResultResultTypeWarning   SuiPostTransactionScanResponseValidationSuiValidationResultResultType = "Warning"
 	SuiPostTransactionScanResponseValidationSuiValidationResultResultTypeMalicious SuiPostTransactionScanResponseValidationSuiValidationResultResultType = "Malicious"
+	SuiPostTransactionScanResponseValidationSuiValidationResultResultTypeError     SuiPostTransactionScanResponseValidationSuiValidationResultResultType = "Error"
 )
 
 func (r SuiPostTransactionScanResponseValidationSuiValidationResultResultType) IsKnown() bool {
 	switch r {
-	case SuiPostTransactionScanResponseValidationSuiValidationResultResultTypeBenign, SuiPostTransactionScanResponseValidationSuiValidationResultResultTypeWarning, SuiPostTransactionScanResponseValidationSuiValidationResultResultTypeMalicious:
+	case SuiPostTransactionScanResponseValidationSuiValidationResultResultTypeBenign, SuiPostTransactionScanResponseValidationSuiValidationResultResultTypeWarning, SuiPostTransactionScanResponseValidationSuiValidationResultResultTypeMalicious, SuiPostTransactionScanResponseValidationSuiValidationResultResultTypeError:
 		return true
 	}
 	return false
@@ -1089,11 +1137,12 @@ const (
 	SuiPostTransactionScanResponseValidationResultTypeBenign    SuiPostTransactionScanResponseValidationResultType = "Benign"
 	SuiPostTransactionScanResponseValidationResultTypeWarning   SuiPostTransactionScanResponseValidationResultType = "Warning"
 	SuiPostTransactionScanResponseValidationResultTypeMalicious SuiPostTransactionScanResponseValidationResultType = "Malicious"
+	SuiPostTransactionScanResponseValidationResultTypeError     SuiPostTransactionScanResponseValidationResultType = "Error"
 )
 
 func (r SuiPostTransactionScanResponseValidationResultType) IsKnown() bool {
 	switch r {
-	case SuiPostTransactionScanResponseValidationResultTypeBenign, SuiPostTransactionScanResponseValidationResultTypeWarning, SuiPostTransactionScanResponseValidationResultTypeMalicious:
+	case SuiPostTransactionScanResponseValidationResultTypeBenign, SuiPostTransactionScanResponseValidationResultTypeWarning, SuiPostTransactionScanResponseValidationResultTypeMalicious, SuiPostTransactionScanResponseValidationResultTypeError:
 		return true
 	}
 	return false
