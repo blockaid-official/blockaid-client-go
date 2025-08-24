@@ -57,6 +57,9 @@ type EvmUserOperationScanParams struct {
 	// of the transaction in your response. "gas_estimation" - include gas estimation
 	// result in your response. Default is ["validation"]
 	Options param.Field[[]EvmUserOperationScanParamsOption] `json:"options"`
+	// For simulations, determine whether to calculate missing balances in user
+	// operations.
+	ShouldCalculateMissingBalance param.Field[bool] `json:"should_calculate_missing_balance"`
 	// Simulate transactions using gas estimation result. This requires
 	// "gas_estimation" option to be enabled.
 	SimulateWithEstimatedGas param.Field[bool] `json:"simulate_with_estimated_gas"`

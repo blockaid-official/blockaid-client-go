@@ -2467,6 +2467,30 @@ type AddressValidationFeaturesArray []string
 
 func (r AddressValidationFeaturesArray) implementsAddressValidationFeaturesUnion() {}
 
+type Balance struct {
+	// The raw value of the balance in hex string format
+	RawValue string `json:"raw_value,required"`
+	// The value of the balance in decimal string format
+	Value string      `json:"value"`
+	JSON  balanceJSON `json:"-"`
+}
+
+// balanceJSON contains the JSON metadata for the struct [Balance]
+type balanceJSON struct {
+	RawValue    apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *Balance) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r balanceJSON) RawJSON() string {
+	return r.raw
+}
+
 type Erc1155Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
@@ -2883,6 +2907,8 @@ func (r Erc20TokenDetails) implementsAccountSummaryTracesErc20AssetTraceAsset() 
 
 func (r Erc20TokenDetails) implementsAccountSummaryTracesErc20ExposureTraceAsset() {}
 
+func (r Erc20TokenDetails) implementsMissingBalanceAsset() {}
+
 func (r Erc20TokenDetails) implementsTransactionSimulationAssetsDiffsErc20AddressAssetDiffAsset() {}
 
 func (r Erc20TokenDetails) implementsTransactionSimulationExposuresErc20AddressExposureAsset() {}
@@ -3118,6 +3144,131 @@ func (r Erc721TokenDetailsType) IsKnown() bool {
 	return false
 }
 
+type MissingBalance struct {
+	// The asset that is missing balance
+	Asset MissingBalanceAsset `json:"asset,required"`
+	// The account address's current balance of the asset
+	CurrentBalance Balance `json:"current_balance,required"`
+	// The account address's missing balance of the asset
+	MissingBalance Balance `json:"missing_balance,required"`
+	// The required balance of the asset for this action
+	RequiredBalance Balance            `json:"required_balance,required"`
+	JSON            missingBalanceJSON `json:"-"`
+}
+
+// missingBalanceJSON contains the JSON metadata for the struct [MissingBalance]
+type missingBalanceJSON struct {
+	Asset           apijson.Field
+	CurrentBalance  apijson.Field
+	MissingBalance  apijson.Field
+	RequiredBalance apijson.Field
+	raw             string
+	ExtraFields     map[string]apijson.Field
+}
+
+func (r *MissingBalance) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r missingBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
+// The asset that is missing balance
+type MissingBalanceAsset struct {
+	// asset's decimals
+	Decimals int64 `json:"decimals,required"`
+	// asset type.
+	Type MissingBalanceAssetType `json:"type,required"`
+	// address of the token
+	Address   string `json:"address"`
+	ChainID   int64  `json:"chain_id"`
+	ChainName string `json:"chain_name"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                  `json:"symbol"`
+	JSON   missingBalanceAssetJSON `json:"-"`
+	union  MissingBalanceAssetUnion
+}
+
+// missingBalanceAssetJSON contains the JSON metadata for the struct
+// [MissingBalanceAsset]
+type missingBalanceAssetJSON struct {
+	Decimals    apijson.Field
+	Type        apijson.Field
+	Address     apijson.Field
+	ChainID     apijson.Field
+	ChainName   apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r missingBalanceAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *MissingBalanceAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = MissingBalanceAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [MissingBalanceAssetUnion] interface which you can cast to the
+// specific types for more type safety.
+//
+// Possible runtime types of the union are [Erc20TokenDetails],
+// [NativeAssetDetails].
+func (r MissingBalanceAsset) AsUnion() MissingBalanceAssetUnion {
+	return r.union
+}
+
+// The asset that is missing balance
+//
+// Union satisfied by [Erc20TokenDetails] or [NativeAssetDetails].
+type MissingBalanceAssetUnion interface {
+	implementsMissingBalanceAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*MissingBalanceAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(Erc20TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(NativeAssetDetails{}),
+		},
+	)
+}
+
+// asset type.
+type MissingBalanceAssetType string
+
+const (
+	MissingBalanceAssetTypeErc20  MissingBalanceAssetType = "ERC20"
+	MissingBalanceAssetTypeNative MissingBalanceAssetType = "NATIVE"
+)
+
+func (r MissingBalanceAssetType) IsKnown() bool {
+	switch r {
+	case MissingBalanceAssetTypeErc20, MissingBalanceAssetTypeNative:
+		return true
+	}
+	return false
+}
+
 type NativeAddressAssetBalanceChangeDiff struct {
 	// description of the asset for the current diff
 	Asset NativeAssetDetails `json:"asset,required"`
@@ -3230,6 +3381,8 @@ func (r *NativeAssetDetails) UnmarshalJSON(data []byte) (err error) {
 func (r nativeAssetDetailsJSON) RawJSON() string {
 	return r.raw
 }
+
+func (r NativeAssetDetails) implementsMissingBalanceAsset() {}
 
 func (r NativeAssetDetails) implementsTransactionSimulationSessionKeyPoliciesTransferPolicyAssetDetails() {
 }
@@ -3865,11 +4018,15 @@ type TransactionScanResponseSimulation struct {
 	// This field can have the runtime type of
 	// [map[string][]TransactionSimulationExposure].
 	Exposures interface{} `json:"exposures"`
+	// This field can have the runtime type of [[]MissingBalance].
+	MissingBalances interface{} `json:"missing_balances"`
 	// This field can have the runtime type of [TransactionSimulationParams].
 	Params interface{} `json:"params"`
 	// This field can have the runtime type of
 	// [map[string][]TransactionSimulationSessionKey].
 	SessionKey interface{} `json:"session_key"`
+	// The number of times the simulation ran until success
+	SimulationRunCount int64 `json:"simulation_run_count"`
 	// This field can have the runtime type of [map[string]UsdDiff].
 	TotalUsdDiff interface{} `json:"total_usd_diff"`
 	// This field can have the runtime type of [map[string]map[string]string].
@@ -3890,8 +4047,10 @@ type transactionScanResponseSimulationJSON struct {
 	Error              apijson.Field
 	ErrorDetails       apijson.Field
 	Exposures          apijson.Field
+	MissingBalances    apijson.Field
 	Params             apijson.Field
 	SessionKey         apijson.Field
+	SimulationRunCount apijson.Field
 	TotalUsdDiff       apijson.Field
 	TotalUsdExposure   apijson.Field
 	raw                string
@@ -4148,9 +4307,13 @@ type TransactionSimulation struct {
 	// Describes the state differences as a result of this transaction for every
 	// involved address
 	ContractManagement map[string][]TransactionSimulationContractManagement `json:"contract_management"`
+	// Missing balances in the transaction
+	MissingBalances []MissingBalance `json:"missing_balances"`
 	// The parameters of the transaction that was simulated.
 	Params TransactionSimulationParams `json:"params"`
-	JSON   transactionSimulationJSON   `json:"-"`
+	// The number of times the simulation ran until success
+	SimulationRunCount int64                     `json:"simulation_run_count"`
+	JSON               transactionSimulationJSON `json:"-"`
 }
 
 // transactionSimulationJSON contains the JSON metadata for the struct
@@ -4165,7 +4328,9 @@ type transactionSimulationJSON struct {
 	TotalUsdDiff       apijson.Field
 	TotalUsdExposure   apijson.Field
 	ContractManagement apijson.Field
+	MissingBalances    apijson.Field
 	Params             apijson.Field
+	SimulationRunCount apijson.Field
 	raw                string
 	ExtraFields        map[string]apijson.Field
 }
