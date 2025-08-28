@@ -30,6 +30,7 @@ Response Types:
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#NativeDiff">NativeDiff</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#NonercTokenDetails">NonercTokenDetails</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenScanSupportedChain">TokenScanSupportedChain</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionAction">TransactionAction</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionScanFeature">TransactionScanFeature</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionScanResponse">TransactionScanResponse</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionSimulation">TransactionSimulation</a>
