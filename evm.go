@@ -3657,6 +3657,29 @@ func (r TokenScanSupportedChain) IsKnown() bool {
 	return false
 }
 
+// An enumeration.
+type TransactionAction string
+
+const (
+	TransactionActionMint            TransactionAction = "mint"
+	TransactionActionStake           TransactionAction = "stake"
+	TransactionActionSwap            TransactionAction = "swap"
+	TransactionActionNativeTransfer  TransactionAction = "native_transfer"
+	TransactionActionTokenTransfer   TransactionAction = "token_transfer"
+	TransactionActionApproval        TransactionAction = "approval"
+	TransactionActionSetCodeAccount  TransactionAction = "set_code_account"
+	TransactionActionProxyUpgrade    TransactionAction = "proxy_upgrade"
+	TransactionActionOwnershipChange TransactionAction = "ownership_change"
+)
+
+func (r TransactionAction) IsKnown() bool {
+	switch r {
+	case TransactionActionMint, TransactionActionStake, TransactionActionSwap, TransactionActionNativeTransfer, TransactionActionTokenTransfer, TransactionActionApproval, TransactionActionSetCodeAccount, TransactionActionProxyUpgrade, TransactionActionOwnershipChange:
+		return true
+	}
+	return false
+}
+
 type TransactionScanFeature struct {
 	// Textual description
 	Description string `json:"description,required"`
@@ -4030,9 +4053,11 @@ type TransactionScanResponseSimulation struct {
 	// This field can have the runtime type of [map[string]UsdDiff].
 	TotalUsdDiff interface{} `json:"total_usd_diff"`
 	// This field can have the runtime type of [map[string]map[string]string].
-	TotalUsdExposure interface{}                           `json:"total_usd_exposure"`
-	JSON             transactionScanResponseSimulationJSON `json:"-"`
-	union            TransactionScanResponseSimulationUnion
+	TotalUsdExposure interface{} `json:"total_usd_exposure"`
+	// This field can have the runtime type of [[]TransactionAction].
+	TransactionActions interface{}                           `json:"transaction_actions"`
+	JSON               transactionScanResponseSimulationJSON `json:"-"`
+	union              TransactionScanResponseSimulationUnion
 }
 
 // transactionScanResponseSimulationJSON contains the JSON metadata for the struct
@@ -4053,6 +4078,7 @@ type transactionScanResponseSimulationJSON struct {
 	SimulationRunCount apijson.Field
 	TotalUsdDiff       apijson.Field
 	TotalUsdExposure   apijson.Field
+	TransactionActions apijson.Field
 	raw                string
 	ExtraFields        map[string]apijson.Field
 }
@@ -4304,6 +4330,8 @@ type TransactionSimulation struct {
 	// a dictionary representing the usd value each address is exposed to, split by
 	// spenders
 	TotalUsdExposure map[string]map[string]string `json:"total_usd_exposure,required"`
+	// Describes the nature of the transaction and what happened as part of it
+	TransactionActions []TransactionAction `json:"transaction_actions,required"`
 	// Describes the state differences as a result of this transaction for every
 	// involved address
 	ContractManagement map[string][]TransactionSimulationContractManagement `json:"contract_management"`
@@ -4327,6 +4355,7 @@ type transactionSimulationJSON struct {
 	Status             apijson.Field
 	TotalUsdDiff       apijson.Field
 	TotalUsdExposure   apijson.Field
+	TransactionActions apijson.Field
 	ContractManagement apijson.Field
 	MissingBalances    apijson.Field
 	Params             apijson.Field
