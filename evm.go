@@ -3647,11 +3647,12 @@ const (
 	TokenScanSupportedChainRonin           TokenScanSupportedChain = "ronin"
 	TokenScanSupportedChainSui             TokenScanSupportedChain = "sui"
 	TokenScanSupportedChainHedera          TokenScanSupportedChain = "hedera"
+	TokenScanSupportedChainHyperevm        TokenScanSupportedChain = "hyperevm"
 )
 
 func (r TokenScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStarknetSepolia, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainDegen, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainBlast, TokenScanSupportedChainSoneiumMinato, TokenScanSupportedChainBaseSepolia, TokenScanSupportedChainBitcoin, TokenScanSupportedChainAbstract, TokenScanSupportedChainSoneium, TokenScanSupportedChainInk, TokenScanSupportedChainZeroNetwork, TokenScanSupportedChainBerachain, TokenScanSupportedChainUnichain, TokenScanSupportedChainRonin, TokenScanSupportedChainSui, TokenScanSupportedChainHedera:
+	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStarknetSepolia, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainDegen, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainBlast, TokenScanSupportedChainSoneiumMinato, TokenScanSupportedChainBaseSepolia, TokenScanSupportedChainBitcoin, TokenScanSupportedChainAbstract, TokenScanSupportedChainSoneium, TokenScanSupportedChainInk, TokenScanSupportedChainZeroNetwork, TokenScanSupportedChainBerachain, TokenScanSupportedChainUnichain, TokenScanSupportedChainRonin, TokenScanSupportedChainSui, TokenScanSupportedChainHedera, TokenScanSupportedChainHyperevm:
 		return true
 	}
 	return false
