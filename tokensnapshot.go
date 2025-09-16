@@ -208,9 +208,9 @@ func (r tokenSnapshotDiffResponseItemsFeesJSON) RawJSON() string {
 
 // financial stats of the token
 type TokenSnapshotDiffResponseItemsFinancialStats struct {
-	// Percentage of token currently held by bundler's wallets that bought in the exact
-	// same Solana slot, at any point in the token's life-cycle. Currently available
-	// for Solana only.
+	// Percentage of token currently held by bundlers - wallets that bought in the
+	// exact same Solana slot, at any point in the token's life-cycle. Currently
+	// available for Solana only.
 	BundlersHoldingPercentage float64 `json:"bundlers_holding_percentage,nullable"`
 	// Token liquidity burned percentage
 	BurnedLiquidityPercentage float64 `json:"burned_liquidity_percentage,nullable"`
@@ -1217,9 +1217,9 @@ func (r tokenSnapshotFullResponseItemsFeesJSON) RawJSON() string {
 
 // financial stats of the token
 type TokenSnapshotFullResponseItemsFinancialStats struct {
-	// Percentage of token currently held by bundler's wallets that bought in the exact
-	// same Solana slot, at any point in the token's life-cycle. Currently available
-	// for Solana only.
+	// Percentage of token currently held by bundlers - wallets that bought in the
+	// exact same Solana slot, at any point in the token's life-cycle. Currently
+	// available for Solana only.
 	BundlersHoldingPercentage float64 `json:"bundlers_holding_percentage,nullable"`
 	// Token liquidity burned percentage
 	BurnedLiquidityPercentage float64 `json:"burned_liquidity_percentage,nullable"`
