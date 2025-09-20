@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
@@ -70,7 +71,7 @@ func NewTokenWebhookService(opts ...option.RequestOption) (r *TokenWebhookServic
 //   - Ensure that your system properly handles state overrides to reflect the most
 //     up-to-date token status.
 func (r *TokenWebhookService) New(ctx context.Context, chain TokenScanSupportedChain, body TokenWebhookNewParams, opts ...option.RequestOption) (res *TokenWebhookNewResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("v0/token/hooks/%v", chain)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -81,7 +82,7 @@ func (r *TokenWebhookService) New(ctx context.Context, chain TokenScanSupportedC
 // This will immediately stop sending token scan updates to the webhook URL.
 // Returns a 204 status code on successful deletion.
 func (r *TokenWebhookService) Delete(ctx context.Context, chain TokenScanSupportedChain, opts ...option.RequestOption) (err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
 	path := fmt.Sprintf("v0/token/hooks/%v", chain)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
@@ -90,7 +91,7 @@ func (r *TokenWebhookService) Delete(ctx context.Context, chain TokenScanSupport
 
 // Get information about an existing webhook for a given chain
 func (r *TokenWebhookService) Get(ctx context.Context, chain TokenScanSupportedChain, opts ...option.RequestOption) (res *TokenWebhookGetResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("v0/token/hooks/%v", chain)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -98,7 +99,7 @@ func (r *TokenWebhookService) Get(ctx context.Context, chain TokenScanSupportedC
 
 // List all active webhook subscriptions across all chains
 func (r *TokenWebhookService) GetAll(ctx context.Context, opts ...option.RequestOption) (res *[]TokenWebhookGetAllResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/token/hooks/"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return

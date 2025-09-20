@@ -5,6 +5,7 @@ package blockaidclientgo
 import (
 	"context"
 	"net/http"
+	"slices"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -33,7 +34,7 @@ func NewBitcoinTransactionRawService(opts ...option.RequestOption) (r *BitcoinTr
 
 // Report Transaction
 func (r *BitcoinTransactionRawService) Report(ctx context.Context, body BitcoinTransactionRawReportParams, opts ...option.RequestOption) (res *int64, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/bitcoin/transaction/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -41,7 +42,7 @@ func (r *BitcoinTransactionRawService) Report(ctx context.Context, body BitcoinT
 
 // Scan Transaction
 func (r *BitcoinTransactionRawService) Scan(ctx context.Context, body BitcoinTransactionRawScanParams, opts ...option.RequestOption) (res *BitcoinTransactionScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/bitcoin/transaction-raw/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return

@@ -5,6 +5,7 @@ package blockaidclientgo
 import (
 	"context"
 	"net/http"
+	"slices"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/requestconfig"
@@ -32,7 +33,7 @@ func NewEvmAddressBulkService(opts ...option.RequestOption) (r *EvmAddressBulkSe
 
 // Gets a list of addresses and returns a security assessment of each address.
 func (r *EvmAddressBulkService) Scan(ctx context.Context, body EvmAddressBulkScanParams, opts ...option.RequestOption) (res *EvmAddressBulkScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/address-bulk/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -41,7 +42,7 @@ func (r *EvmAddressBulkService) Scan(ctx context.Context, body EvmAddressBulkSca
 // Gets a list of addresses and returns a security assessment with the feature
 // information of each address.
 func (r *EvmAddressBulkService) ScanExtended(ctx context.Context, body EvmAddressBulkScanExtendedParams, opts ...option.RequestOption) (res *ValidateBulkExtendedAddressesResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/address-bulk/scan-extended"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
