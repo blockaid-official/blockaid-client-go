@@ -5,6 +5,7 @@ package blockaidclientgo
 import (
 	"context"
 	"net/http"
+	"slices"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -33,7 +34,7 @@ func NewEvmTransactionService(opts ...option.RequestOption) (r *EvmTransactionSe
 
 // Report for misclassification of a transaction.
 func (r *EvmTransactionService) Report(ctx context.Context, body EvmTransactionReportParams, opts ...option.RequestOption) (res *EvmTransactionReportResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/transaction/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -43,7 +44,7 @@ func (r *EvmTransactionService) Report(ctx context.Context, body EvmTransactionR
 // the transaction together with a recommended action and some textual reasons of
 // why the transaction was flagged that way.
 func (r *EvmTransactionService) Scan(ctx context.Context, body EvmTransactionScanParams, opts ...option.RequestOption) (res *TransactionScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return

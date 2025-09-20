@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"reflect"
+	"slices"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -35,7 +36,7 @@ func NewTokenService(opts ...option.RequestOption) (r *TokenService) {
 
 // Report for misclassification of a token.
 func (r *TokenService) Report(ctx context.Context, body TokenReportParams, opts ...option.RequestOption) (res *TokenReportResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/token/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -44,7 +45,7 @@ func (r *TokenService) Report(ctx context.Context, body TokenReportParams, opts 
 // Gets a token address and scan the token to identify any indication of malicious
 // behavior
 func (r *TokenService) Scan(ctx context.Context, body TokenScanParams, opts ...option.RequestOption) (res *TokenScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/token/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return

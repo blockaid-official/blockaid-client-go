@@ -5,6 +5,7 @@ package blockaidclientgo
 import (
 	"context"
 	"net/http"
+	"slices"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -35,7 +36,7 @@ func NewSolanaAddressService(opts ...option.RequestOption) (r *SolanaAddressServ
 // this address is malicious as well as textual reasons of why the address was
 // flagged that way.
 func (r *SolanaAddressService) Scan(ctx context.Context, body SolanaAddressScanParams, opts ...option.RequestOption) (res *SolanaAddressScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/solana/address/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return

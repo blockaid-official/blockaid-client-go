@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"reflect"
+	"slices"
 	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
@@ -37,7 +38,7 @@ func NewSuiPostTransactionService(opts ...option.RequestOption) (r *SuiPostTrans
 // Scan a transaction that was already executed on chain, returns validation with
 // features indicating address poisoning entities and malicious operators.
 func (r *SuiPostTransactionService) Scan(ctx context.Context, body SuiPostTransactionScanParams, opts ...option.RequestOption) (res *SuiPostTransactionScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/sui/post-transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return

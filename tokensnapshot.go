@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"slices"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/apiquery"
@@ -45,7 +46,7 @@ func NewTokenSnapshotService(opts ...option.RequestOption) (r *TokenSnapshotServ
 // retrieve the complete data set, iterate through all pages using the cursors
 // provided in the response
 func (r *TokenSnapshotService) Diff(ctx context.Context, query TokenSnapshotDiffParams, opts ...option.RequestOption) (res *TokenSnapshotDiffResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/token/snapshot/diff"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
@@ -61,7 +62,7 @@ func (r *TokenSnapshotService) Diff(ctx context.Context, query TokenSnapshotDiff
 // To retrieve the complete data set, iterate through all pages using the cursors
 // provided in the response
 func (r *TokenSnapshotService) Full(ctx context.Context, query TokenSnapshotFullParams, opts ...option.RequestOption) (res *TokenSnapshotFullResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/token/snapshot/full"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return

@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"reflect"
+	"slices"
 	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
@@ -36,7 +37,7 @@ func NewSiteService(opts ...option.RequestOption) (r *SiteService) {
 
 // Report for misclassification of a site.
 func (r *SiteService) Report(ctx context.Context, body SiteReportParams, opts ...option.RequestOption) (res *SiteReportResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/site/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -44,7 +45,7 @@ func (r *SiteService) Report(ctx context.Context, body SiteReportParams, opts ..
 
 // Scan Site
 func (r *SiteService) Scan(ctx context.Context, body SiteScanParams, opts ...option.RequestOption) (res *SiteScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/site/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return

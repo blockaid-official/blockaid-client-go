@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"reflect"
+	"slices"
 	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
@@ -38,7 +39,7 @@ func NewChainAgnosticTransactionService(opts ...option.RequestOption) (r *ChainA
 // not the transaction is malicious, along with textual reasons explaining why it
 // was flagged as such.
 func (r *ChainAgnosticTransactionService) Scan(ctx context.Context, body ChainAgnosticTransactionScanParams, opts ...option.RequestOption) (res *ChainAgnosticTransactionScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
