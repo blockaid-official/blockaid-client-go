@@ -31,7 +31,7 @@ go get -u 'github.com/blockaid-official/blockaid-client-go@v0.64.0'
 
 ## Requirements
 
-This library requires Go 1.18+.
+This library requires Go 1.22+.
 
 ## Usage
 
