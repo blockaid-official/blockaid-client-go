@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.64.1 (2025-09-20)
+
+Full Changelog: [v0.64.0...v0.64.1](https://github.com/blockaid-official/blockaid-client-go/compare/v0.64.0...v0.64.1)
+
+### Bug Fixes
+
+* use slices.Concat instead of sometimes modifying r.Options ([261ccb1](https://github.com/blockaid-official/blockaid-client-go/commit/261ccb1d9a0afadf2822e9ffea1b6e2b7420680a))
+
+
+### Chores
+
+* bump minimum go version to 1.22 ([347c3ee](https://github.com/blockaid-official/blockaid-client-go/commit/347c3eee65f297d845067c7860ce366335000cad))
+* do not install brew dependencies in ./scripts/bootstrap by default ([eee2fa3](https://github.com/blockaid-official/blockaid-client-go/commit/eee2fa31c84a3be1f29d64a4560ea1aa9467b702))
+* update more docs for 1.22 ([1b5753b](https://github.com/blockaid-official/blockaid-client-go/commit/1b5753b2195b2fc38c084515c82bb697facd99fe))
+
 ## 0.64.0 (2025-09-17)
 
 Full Changelog: [v0.63.0...v0.64.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.63.0...v0.64.0)
