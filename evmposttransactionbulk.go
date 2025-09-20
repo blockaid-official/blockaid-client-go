@@ -5,6 +5,7 @@ package blockaidclientgo
 import (
 	"context"
 	"net/http"
+	"slices"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -34,7 +35,7 @@ func NewEvmPostTransactionBulkService(opts ...option.RequestOption) (r *EvmPostT
 // Scan transactions that were already executed on chain, returns validation with
 // features indicating address poisoning entites and malicious operators.
 func (r *EvmPostTransactionBulkService) Scan(ctx context.Context, body EvmPostTransactionBulkScanParams, opts ...option.RequestOption) (res *[]TransactionScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/post-transaction-bulk/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return

@@ -5,6 +5,7 @@ package blockaidclientgo
 import (
 	"context"
 	"net/http"
+	"slices"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -34,7 +35,7 @@ func NewScanService(opts ...option.RequestOption) (r *ScanService) {
 // Report whether the end-user accepted the Blockaid classification on the entity
 // being scanned.
 func (r *ScanService) Status(ctx context.Context, body ScanStatusParams, opts ...option.RequestOption) (res *ScanStatusResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/scan/status/"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
