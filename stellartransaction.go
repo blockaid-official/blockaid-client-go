@@ -5,6 +5,7 @@ package blockaidclientgo
 import (
 	"context"
 	"net/http"
+	"slices"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -33,7 +34,7 @@ func NewStellarTransactionService(opts ...option.RequestOption) (r *StellarTrans
 
 // Report Transaction
 func (r *StellarTransactionService) Report(ctx context.Context, body StellarTransactionReportParams, opts ...option.RequestOption) (res *int64, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/stellar/transaction/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -43,7 +44,7 @@ func (r *StellarTransactionService) Report(ctx context.Context, body StellarTran
 // the transaction together with a recommended action and some textual reasons of
 // why the transaction was flagged that way.
 func (r *StellarTransactionService) Scan(ctx context.Context, body StellarTransactionScanParams, opts ...option.RequestOption) (res *StellarTransactionScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/stellar/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return

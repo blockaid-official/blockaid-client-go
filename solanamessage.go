@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"reflect"
+	"slices"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -37,7 +38,7 @@ func NewSolanaMessageService(opts ...option.RequestOption) (r *SolanaMessageServ
 // the transaction together with a recommended action and some textual reasons of
 // why the transaction was flagged that way.
 func (r *SolanaMessageService) Scan(ctx context.Context, body SolanaMessageScanParams, opts ...option.RequestOption) (res *SolanaMessageScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/solana/message/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return

@@ -2383,11 +2383,13 @@ const (
 	AddressReportParamsChainSei                   AddressReportParamsChain = "sei"
 	AddressReportParamsChainFlowEvm               AddressReportParamsChain = "flow-evm"
 	AddressReportParamsChainHyperevm              AddressReportParamsChain = "hyperevm"
+	AddressReportParamsChainKatana                AddressReportParamsChain = "katana"
+	AddressReportParamsChainPlume                 AddressReportParamsChain = "plume"
 )
 
 func (r AddressReportParamsChain) IsKnown() bool {
 	switch r {
-	case AddressReportParamsChainArbitrum, AddressReportParamsChainAvalanche, AddressReportParamsChainBase, AddressReportParamsChainBaseSepolia, AddressReportParamsChainLordchain, AddressReportParamsChainLordchainTestnet, AddressReportParamsChainMetacade, AddressReportParamsChainMetacadeTestnet, AddressReportParamsChainBsc, AddressReportParamsChainEthereum, AddressReportParamsChainOptimism, AddressReportParamsChainPolygon, AddressReportParamsChainZksync, AddressReportParamsChainZksyncSepolia, AddressReportParamsChainZora, AddressReportParamsChainLinea, AddressReportParamsChainBlast, AddressReportParamsChainScroll, AddressReportParamsChainEthereumSepolia, AddressReportParamsChainDegen, AddressReportParamsChainAvalancheFuji, AddressReportParamsChainImmutableZkevm, AddressReportParamsChainImmutableZkevmTestnet, AddressReportParamsChainGnosis, AddressReportParamsChainWorldchain, AddressReportParamsChainSoneiumMinato, AddressReportParamsChainRonin, AddressReportParamsChainApechain, AddressReportParamsChainZeroNetwork, AddressReportParamsChainBerachain, AddressReportParamsChainBerachainBartio, AddressReportParamsChainInk, AddressReportParamsChainInkSepolia, AddressReportParamsChainAbstract, AddressReportParamsChainAbstractTestnet, AddressReportParamsChainSoneium, AddressReportParamsChainUnichain, AddressReportParamsChainSei, AddressReportParamsChainFlowEvm, AddressReportParamsChainHyperevm:
+	case AddressReportParamsChainArbitrum, AddressReportParamsChainAvalanche, AddressReportParamsChainBase, AddressReportParamsChainBaseSepolia, AddressReportParamsChainLordchain, AddressReportParamsChainLordchainTestnet, AddressReportParamsChainMetacade, AddressReportParamsChainMetacadeTestnet, AddressReportParamsChainBsc, AddressReportParamsChainEthereum, AddressReportParamsChainOptimism, AddressReportParamsChainPolygon, AddressReportParamsChainZksync, AddressReportParamsChainZksyncSepolia, AddressReportParamsChainZora, AddressReportParamsChainLinea, AddressReportParamsChainBlast, AddressReportParamsChainScroll, AddressReportParamsChainEthereumSepolia, AddressReportParamsChainDegen, AddressReportParamsChainAvalancheFuji, AddressReportParamsChainImmutableZkevm, AddressReportParamsChainImmutableZkevmTestnet, AddressReportParamsChainGnosis, AddressReportParamsChainWorldchain, AddressReportParamsChainSoneiumMinato, AddressReportParamsChainRonin, AddressReportParamsChainApechain, AddressReportParamsChainZeroNetwork, AddressReportParamsChainBerachain, AddressReportParamsChainBerachainBartio, AddressReportParamsChainInk, AddressReportParamsChainInkSepolia, AddressReportParamsChainAbstract, AddressReportParamsChainAbstractTestnet, AddressReportParamsChainSoneium, AddressReportParamsChainUnichain, AddressReportParamsChainSei, AddressReportParamsChainFlowEvm, AddressReportParamsChainHyperevm, AddressReportParamsChainKatana, AddressReportParamsChainPlume:
 		return true
 	}
 	return false
@@ -3735,30 +3737,32 @@ func (r TransactionScanFeatureType) IsKnown() bool {
 }
 
 type TransactionScanResponse struct {
-	Block          string                               `json:"block,required"`
-	Chain          string                               `json:"chain,required"`
-	AccountAddress string                               `json:"account_address"`
-	Events         []TransactionScanResponseEvent       `json:"events"`
-	Features       interface{}                          `json:"features"`
-	GasEstimation  TransactionScanResponseGasEstimation `json:"gas_estimation"`
-	Simulation     TransactionScanResponseSimulation    `json:"simulation"`
-	Validation     TransactionScanResponseValidation    `json:"validation"`
-	JSON           transactionScanResponseJSON          `json:"-"`
+	Block                      string                                            `json:"block,required"`
+	Chain                      string                                            `json:"chain,required"`
+	AccountAddress             string                                            `json:"account_address"`
+	Events                     []TransactionScanResponseEvent                    `json:"events"`
+	Features                   interface{}                                       `json:"features"`
+	GasEstimation              TransactionScanResponseGasEstimation              `json:"gas_estimation"`
+	Simulation                 TransactionScanResponseSimulation                 `json:"simulation"`
+	UserOperationGasEstimation TransactionScanResponseUserOperationGasEstimation `json:"user_operation_gas_estimation"`
+	Validation                 TransactionScanResponseValidation                 `json:"validation"`
+	JSON                       transactionScanResponseJSON                       `json:"-"`
 }
 
 // transactionScanResponseJSON contains the JSON metadata for the struct
 // [TransactionScanResponse]
 type transactionScanResponseJSON struct {
-	Block          apijson.Field
-	Chain          apijson.Field
-	AccountAddress apijson.Field
-	Events         apijson.Field
-	Features       apijson.Field
-	GasEstimation  apijson.Field
-	Simulation     apijson.Field
-	Validation     apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
+	Block                      apijson.Field
+	Chain                      apijson.Field
+	AccountAddress             apijson.Field
+	Events                     apijson.Field
+	Features                   apijson.Field
+	GasEstimation              apijson.Field
+	Simulation                 apijson.Field
+	UserOperationGasEstimation apijson.Field
+	Validation                 apijson.Field
+	raw                        string
+	ExtraFields                map[string]apijson.Field
 }
 
 func (r *TransactionScanResponse) UnmarshalJSON(data []byte) (err error) {
@@ -4143,6 +4147,230 @@ func (r TransactionScanResponseSimulationStatus) IsKnown() bool {
 	return false
 }
 
+type TransactionScanResponseUserOperationGasEstimation struct {
+	Status                           TransactionScanResponseUserOperationGasEstimationStatus `json:"status,required"`
+	CallGasEstimate                  string                                                  `json:"call_gas_estimate"`
+	Error                            string                                                  `json:"error"`
+	PaymasterVerificationGasEstimate string                                                  `json:"paymaster_verification_gas_estimate"`
+	PreVerificationGasEstimate       string                                                  `json:"pre_verification_gas_estimate"`
+	VerificationGasEstimate          string                                                  `json:"verification_gas_estimate"`
+	JSON                             transactionScanResponseUserOperationGasEstimationJSON   `json:"-"`
+	union                            TransactionScanResponseUserOperationGasEstimationUnion
+}
+
+// transactionScanResponseUserOperationGasEstimationJSON contains the JSON metadata
+// for the struct [TransactionScanResponseUserOperationGasEstimation]
+type transactionScanResponseUserOperationGasEstimationJSON struct {
+	Status                           apijson.Field
+	CallGasEstimate                  apijson.Field
+	Error                            apijson.Field
+	PaymasterVerificationGasEstimate apijson.Field
+	PreVerificationGasEstimate       apijson.Field
+	VerificationGasEstimate          apijson.Field
+	raw                              string
+	ExtraFields                      map[string]apijson.Field
+}
+
+func (r transactionScanResponseUserOperationGasEstimationJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *TransactionScanResponseUserOperationGasEstimation) UnmarshalJSON(data []byte) (err error) {
+	*r = TransactionScanResponseUserOperationGasEstimation{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [TransactionScanResponseUserOperationGasEstimationUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [TransactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimation],
+// [TransactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimation],
+// [TransactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationError].
+func (r TransactionScanResponseUserOperationGasEstimation) AsUnion() TransactionScanResponseUserOperationGasEstimationUnion {
+	return r.union
+}
+
+// Union satisfied by
+// [TransactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimation],
+// [TransactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimation]
+// or
+// [TransactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationError].
+type TransactionScanResponseUserOperationGasEstimationUnion interface {
+	implementsTransactionScanResponseUserOperationGasEstimation()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*TransactionScanResponseUserOperationGasEstimationUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimation{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimation{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(TransactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationError{}),
+		},
+	)
+}
+
+type TransactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimation struct {
+	CallGasEstimate            string                                                                              `json:"call_gas_estimate,required"`
+	PreVerificationGasEstimate string                                                                              `json:"pre_verification_gas_estimate,required"`
+	Status                     TransactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimationStatus `json:"status,required"`
+	VerificationGasEstimate    string                                                                              `json:"verification_gas_estimate,required"`
+	JSON                       transactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimationJSON   `json:"-"`
+}
+
+// transactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimationJSON
+// contains the JSON metadata for the struct
+// [TransactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimation]
+type transactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimationJSON struct {
+	CallGasEstimate            apijson.Field
+	PreVerificationGasEstimate apijson.Field
+	Status                     apijson.Field
+	VerificationGasEstimate    apijson.Field
+	raw                        string
+	ExtraFields                map[string]apijson.Field
+}
+
+func (r *TransactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimation) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimationJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimation) implementsTransactionScanResponseUserOperationGasEstimation() {
+}
+
+type TransactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimationStatus string
+
+const (
+	TransactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimationStatusSuccess TransactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimationStatus = "Success"
+)
+
+func (r TransactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimationStatus) IsKnown() bool {
+	switch r {
+	case TransactionScanResponseUserOperationGasEstimationUserOperationV6GasEstimationStatusSuccess:
+		return true
+	}
+	return false
+}
+
+type TransactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimation struct {
+	CallGasEstimate                  string                                                                              `json:"call_gas_estimate,required"`
+	PaymasterVerificationGasEstimate string                                                                              `json:"paymaster_verification_gas_estimate,required"`
+	PreVerificationGasEstimate       string                                                                              `json:"pre_verification_gas_estimate,required"`
+	Status                           TransactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimationStatus `json:"status,required"`
+	VerificationGasEstimate          string                                                                              `json:"verification_gas_estimate,required"`
+	JSON                             transactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimationJSON   `json:"-"`
+}
+
+// transactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimationJSON
+// contains the JSON metadata for the struct
+// [TransactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimation]
+type transactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimationJSON struct {
+	CallGasEstimate                  apijson.Field
+	PaymasterVerificationGasEstimate apijson.Field
+	PreVerificationGasEstimate       apijson.Field
+	Status                           apijson.Field
+	VerificationGasEstimate          apijson.Field
+	raw                              string
+	ExtraFields                      map[string]apijson.Field
+}
+
+func (r *TransactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimation) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimationJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimation) implementsTransactionScanResponseUserOperationGasEstimation() {
+}
+
+type TransactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimationStatus string
+
+const (
+	TransactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimationStatusSuccess TransactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimationStatus = "Success"
+)
+
+func (r TransactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimationStatus) IsKnown() bool {
+	switch r {
+	case TransactionScanResponseUserOperationGasEstimationUserOperationV7GasEstimationStatusSuccess:
+		return true
+	}
+	return false
+}
+
+type TransactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationError struct {
+	Error  string                                                                                   `json:"error,required"`
+	Status TransactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationErrorStatus `json:"status,required"`
+	JSON   transactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationErrorJSON   `json:"-"`
+}
+
+// transactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationErrorJSON
+// contains the JSON metadata for the struct
+// [TransactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationError]
+type transactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationErrorJSON struct {
+	Error       apijson.Field
+	Status      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TransactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationError) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationErrorJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r TransactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationError) implementsTransactionScanResponseUserOperationGasEstimation() {
+}
+
+type TransactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationErrorStatus string
+
+const (
+	TransactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationErrorStatusError TransactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationErrorStatus = "Error"
+)
+
+func (r TransactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationErrorStatus) IsKnown() bool {
+	switch r {
+	case TransactionScanResponseUserOperationGasEstimationTransactionScanGasEstimationErrorStatusError:
+		return true
+	}
+	return false
+}
+
+type TransactionScanResponseUserOperationGasEstimationStatus string
+
+const (
+	TransactionScanResponseUserOperationGasEstimationStatusSuccess TransactionScanResponseUserOperationGasEstimationStatus = "Success"
+	TransactionScanResponseUserOperationGasEstimationStatusError   TransactionScanResponseUserOperationGasEstimationStatus = "Error"
+)
+
+func (r TransactionScanResponseUserOperationGasEstimationStatus) IsKnown() bool {
+	switch r {
+	case TransactionScanResponseUserOperationGasEstimationStatusSuccess, TransactionScanResponseUserOperationGasEstimationStatusError:
+		return true
+	}
+	return false
+}
+
 type TransactionScanResponseValidation struct {
 	// This field can have the runtime type of [[]TransactionScanFeature].
 	Features interface{} `json:"features,required"`
@@ -4298,11 +4526,13 @@ const (
 	TransactionScanSupportedChainSei                   TransactionScanSupportedChain = "sei"
 	TransactionScanSupportedChainFlowEvm               TransactionScanSupportedChain = "flow-evm"
 	TransactionScanSupportedChainHyperevm              TransactionScanSupportedChain = "hyperevm"
+	TransactionScanSupportedChainKatana                TransactionScanSupportedChain = "katana"
+	TransactionScanSupportedChainPlume                 TransactionScanSupportedChain = "plume"
 )
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainLordchain, TransactionScanSupportedChainLordchainTestnet, TransactionScanSupportedChainMetacade, TransactionScanSupportedChainMetacadeTestnet, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainZeroNetwork, TransactionScanSupportedChainBerachain, TransactionScanSupportedChainBerachainBartio, TransactionScanSupportedChainInk, TransactionScanSupportedChainInkSepolia, TransactionScanSupportedChainAbstract, TransactionScanSupportedChainAbstractTestnet, TransactionScanSupportedChainSoneium, TransactionScanSupportedChainUnichain, TransactionScanSupportedChainSei, TransactionScanSupportedChainFlowEvm, TransactionScanSupportedChainHyperevm:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainLordchain, TransactionScanSupportedChainLordchainTestnet, TransactionScanSupportedChainMetacade, TransactionScanSupportedChainMetacadeTestnet, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainZeroNetwork, TransactionScanSupportedChainBerachain, TransactionScanSupportedChainBerachainBartio, TransactionScanSupportedChainInk, TransactionScanSupportedChainInkSepolia, TransactionScanSupportedChainAbstract, TransactionScanSupportedChainAbstractTestnet, TransactionScanSupportedChainSoneium, TransactionScanSupportedChainUnichain, TransactionScanSupportedChainSei, TransactionScanSupportedChainFlowEvm, TransactionScanSupportedChainHyperevm, TransactionScanSupportedChainKatana, TransactionScanSupportedChainPlume:
 		return true
 	}
 	return false

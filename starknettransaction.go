@@ -5,6 +5,7 @@ package blockaidclientgo
 import (
 	"context"
 	"net/http"
+	"slices"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -33,7 +34,7 @@ func NewStarknetTransactionService(opts ...option.RequestOption) (r *StarknetTra
 
 // Report Transaction
 func (r *StarknetTransactionService) Report(ctx context.Context, body StarknetTransactionReportParams, opts ...option.RequestOption) (res *int64, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/starknet/transaction/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -41,7 +42,7 @@ func (r *StarknetTransactionService) Report(ctx context.Context, body StarknetTr
 
 // Scan Transactions
 func (r *StarknetTransactionService) Scan(ctx context.Context, body StarknetTransactionScanParams, opts ...option.RequestOption) (res *StarknetTransactionScanResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v0/starknet/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
