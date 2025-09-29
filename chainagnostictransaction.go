@@ -556,19 +556,55 @@ func (r ChainAgnosticTransactionScanParamsDataAssetAssetSymbol) implementsChainA
 type ChainAgnosticTransactionScanParamsDataChain string
 
 const (
-	ChainAgnosticTransactionScanParamsDataChainEthereum ChainAgnosticTransactionScanParamsDataChain = "ethereum"
-	ChainAgnosticTransactionScanParamsDataChainBase     ChainAgnosticTransactionScanParamsDataChain = "base"
-	ChainAgnosticTransactionScanParamsDataChainArbitrum ChainAgnosticTransactionScanParamsDataChain = "arbitrum"
-	ChainAgnosticTransactionScanParamsDataChainOptimism ChainAgnosticTransactionScanParamsDataChain = "optimism"
-	ChainAgnosticTransactionScanParamsDataChainPolygon  ChainAgnosticTransactionScanParamsDataChain = "polygon"
-	ChainAgnosticTransactionScanParamsDataChainSolana   ChainAgnosticTransactionScanParamsDataChain = "solana"
-	ChainAgnosticTransactionScanParamsDataChainStellar  ChainAgnosticTransactionScanParamsDataChain = "stellar"
-	ChainAgnosticTransactionScanParamsDataChainBitcoin  ChainAgnosticTransactionScanParamsDataChain = "bitcoin"
+	ChainAgnosticTransactionScanParamsDataChainArbitrum              ChainAgnosticTransactionScanParamsDataChain = "arbitrum"
+	ChainAgnosticTransactionScanParamsDataChainAvalanche             ChainAgnosticTransactionScanParamsDataChain = "avalanche"
+	ChainAgnosticTransactionScanParamsDataChainBase                  ChainAgnosticTransactionScanParamsDataChain = "base"
+	ChainAgnosticTransactionScanParamsDataChainBaseSepolia           ChainAgnosticTransactionScanParamsDataChain = "base-sepolia"
+	ChainAgnosticTransactionScanParamsDataChainBsc                   ChainAgnosticTransactionScanParamsDataChain = "bsc"
+	ChainAgnosticTransactionScanParamsDataChainEthereum              ChainAgnosticTransactionScanParamsDataChain = "ethereum"
+	ChainAgnosticTransactionScanParamsDataChainEthereumSepolia       ChainAgnosticTransactionScanParamsDataChain = "ethereum-sepolia"
+	ChainAgnosticTransactionScanParamsDataChainOptimism              ChainAgnosticTransactionScanParamsDataChain = "optimism"
+	ChainAgnosticTransactionScanParamsDataChainPolygon               ChainAgnosticTransactionScanParamsDataChain = "polygon"
+	ChainAgnosticTransactionScanParamsDataChainZksync                ChainAgnosticTransactionScanParamsDataChain = "zksync"
+	ChainAgnosticTransactionScanParamsDataChainZksyncSepolia         ChainAgnosticTransactionScanParamsDataChain = "zksync-sepolia"
+	ChainAgnosticTransactionScanParamsDataChainZora                  ChainAgnosticTransactionScanParamsDataChain = "zora"
+	ChainAgnosticTransactionScanParamsDataChainLinea                 ChainAgnosticTransactionScanParamsDataChain = "linea"
+	ChainAgnosticTransactionScanParamsDataChainBlast                 ChainAgnosticTransactionScanParamsDataChain = "blast"
+	ChainAgnosticTransactionScanParamsDataChainScroll                ChainAgnosticTransactionScanParamsDataChain = "scroll"
+	ChainAgnosticTransactionScanParamsDataChainAvalancheFuji         ChainAgnosticTransactionScanParamsDataChain = "avalanche-fuji"
+	ChainAgnosticTransactionScanParamsDataChainDegen                 ChainAgnosticTransactionScanParamsDataChain = "degen"
+	ChainAgnosticTransactionScanParamsDataChainImmutableZkevm        ChainAgnosticTransactionScanParamsDataChain = "immutable-zkevm"
+	ChainAgnosticTransactionScanParamsDataChainImmutableZkevmTestnet ChainAgnosticTransactionScanParamsDataChain = "immutable-zkevm-testnet"
+	ChainAgnosticTransactionScanParamsDataChainGnosis                ChainAgnosticTransactionScanParamsDataChain = "gnosis"
+	ChainAgnosticTransactionScanParamsDataChainWorldchain            ChainAgnosticTransactionScanParamsDataChain = "worldchain"
+	ChainAgnosticTransactionScanParamsDataChainSoneiumMinato         ChainAgnosticTransactionScanParamsDataChain = "soneium-minato"
+	ChainAgnosticTransactionScanParamsDataChainRonin                 ChainAgnosticTransactionScanParamsDataChain = "ronin"
+	ChainAgnosticTransactionScanParamsDataChainApechain              ChainAgnosticTransactionScanParamsDataChain = "apechain"
+	ChainAgnosticTransactionScanParamsDataChainZeroNetwork           ChainAgnosticTransactionScanParamsDataChain = "zero-network"
+	ChainAgnosticTransactionScanParamsDataChainBerachain             ChainAgnosticTransactionScanParamsDataChain = "berachain"
+	ChainAgnosticTransactionScanParamsDataChainInkSepolia            ChainAgnosticTransactionScanParamsDataChain = "ink-sepolia"
+	ChainAgnosticTransactionScanParamsDataChainInk                   ChainAgnosticTransactionScanParamsDataChain = "ink"
+	ChainAgnosticTransactionScanParamsDataChainAbstract              ChainAgnosticTransactionScanParamsDataChain = "abstract"
+	ChainAgnosticTransactionScanParamsDataChainAbstractTestnet       ChainAgnosticTransactionScanParamsDataChain = "abstract-testnet"
+	ChainAgnosticTransactionScanParamsDataChainMetacade              ChainAgnosticTransactionScanParamsDataChain = "metacade"
+	ChainAgnosticTransactionScanParamsDataChainMetacadeTestnet       ChainAgnosticTransactionScanParamsDataChain = "metacade-testnet"
+	ChainAgnosticTransactionScanParamsDataChainSoneium               ChainAgnosticTransactionScanParamsDataChain = "soneium"
+	ChainAgnosticTransactionScanParamsDataChainUnichain              ChainAgnosticTransactionScanParamsDataChain = "unichain"
+	ChainAgnosticTransactionScanParamsDataChainLordchainTestnet      ChainAgnosticTransactionScanParamsDataChain = "lordchain-testnet"
+	ChainAgnosticTransactionScanParamsDataChainLordchain             ChainAgnosticTransactionScanParamsDataChain = "lordchain"
+	ChainAgnosticTransactionScanParamsDataChainSei                   ChainAgnosticTransactionScanParamsDataChain = "sei"
+	ChainAgnosticTransactionScanParamsDataChainFlowEvm               ChainAgnosticTransactionScanParamsDataChain = "flow-evm"
+	ChainAgnosticTransactionScanParamsDataChainHyperevm              ChainAgnosticTransactionScanParamsDataChain = "hyperevm"
+	ChainAgnosticTransactionScanParamsDataChainKatana                ChainAgnosticTransactionScanParamsDataChain = "katana"
+	ChainAgnosticTransactionScanParamsDataChainPlume                 ChainAgnosticTransactionScanParamsDataChain = "plume"
+	ChainAgnosticTransactionScanParamsDataChainSolana                ChainAgnosticTransactionScanParamsDataChain = "solana"
+	ChainAgnosticTransactionScanParamsDataChainStellar               ChainAgnosticTransactionScanParamsDataChain = "stellar"
+	ChainAgnosticTransactionScanParamsDataChainBitcoin               ChainAgnosticTransactionScanParamsDataChain = "bitcoin"
 )
 
 func (r ChainAgnosticTransactionScanParamsDataChain) IsKnown() bool {
 	switch r {
-	case ChainAgnosticTransactionScanParamsDataChainEthereum, ChainAgnosticTransactionScanParamsDataChainBase, ChainAgnosticTransactionScanParamsDataChainArbitrum, ChainAgnosticTransactionScanParamsDataChainOptimism, ChainAgnosticTransactionScanParamsDataChainPolygon, ChainAgnosticTransactionScanParamsDataChainSolana, ChainAgnosticTransactionScanParamsDataChainStellar, ChainAgnosticTransactionScanParamsDataChainBitcoin:
+	case ChainAgnosticTransactionScanParamsDataChainArbitrum, ChainAgnosticTransactionScanParamsDataChainAvalanche, ChainAgnosticTransactionScanParamsDataChainBase, ChainAgnosticTransactionScanParamsDataChainBaseSepolia, ChainAgnosticTransactionScanParamsDataChainBsc, ChainAgnosticTransactionScanParamsDataChainEthereum, ChainAgnosticTransactionScanParamsDataChainEthereumSepolia, ChainAgnosticTransactionScanParamsDataChainOptimism, ChainAgnosticTransactionScanParamsDataChainPolygon, ChainAgnosticTransactionScanParamsDataChainZksync, ChainAgnosticTransactionScanParamsDataChainZksyncSepolia, ChainAgnosticTransactionScanParamsDataChainZora, ChainAgnosticTransactionScanParamsDataChainLinea, ChainAgnosticTransactionScanParamsDataChainBlast, ChainAgnosticTransactionScanParamsDataChainScroll, ChainAgnosticTransactionScanParamsDataChainAvalancheFuji, ChainAgnosticTransactionScanParamsDataChainDegen, ChainAgnosticTransactionScanParamsDataChainImmutableZkevm, ChainAgnosticTransactionScanParamsDataChainImmutableZkevmTestnet, ChainAgnosticTransactionScanParamsDataChainGnosis, ChainAgnosticTransactionScanParamsDataChainWorldchain, ChainAgnosticTransactionScanParamsDataChainSoneiumMinato, ChainAgnosticTransactionScanParamsDataChainRonin, ChainAgnosticTransactionScanParamsDataChainApechain, ChainAgnosticTransactionScanParamsDataChainZeroNetwork, ChainAgnosticTransactionScanParamsDataChainBerachain, ChainAgnosticTransactionScanParamsDataChainInkSepolia, ChainAgnosticTransactionScanParamsDataChainInk, ChainAgnosticTransactionScanParamsDataChainAbstract, ChainAgnosticTransactionScanParamsDataChainAbstractTestnet, ChainAgnosticTransactionScanParamsDataChainMetacade, ChainAgnosticTransactionScanParamsDataChainMetacadeTestnet, ChainAgnosticTransactionScanParamsDataChainSoneium, ChainAgnosticTransactionScanParamsDataChainUnichain, ChainAgnosticTransactionScanParamsDataChainLordchainTestnet, ChainAgnosticTransactionScanParamsDataChainLordchain, ChainAgnosticTransactionScanParamsDataChainSei, ChainAgnosticTransactionScanParamsDataChainFlowEvm, ChainAgnosticTransactionScanParamsDataChainHyperevm, ChainAgnosticTransactionScanParamsDataChainKatana, ChainAgnosticTransactionScanParamsDataChainPlume, ChainAgnosticTransactionScanParamsDataChainSolana, ChainAgnosticTransactionScanParamsDataChainStellar, ChainAgnosticTransactionScanParamsDataChainBitcoin:
 		return true
 	}
 	return false
