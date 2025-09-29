@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.66.0 (2025-09-29)
+
+Full Changelog: [v0.65.0...v0.66.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.65.0...v0.66.0)
+
+### Features
+
+* **api:** api update ([fe36505](https://github.com/blockaid-official/blockaid-client-go/commit/fe36505117e0dba51ba95657230380cb878abf5d))
+
 ## 0.65.0 (2025-09-28)
 
 Full Changelog: [v0.64.0...v0.65.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.64.0...v0.65.0)
