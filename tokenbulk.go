@@ -188,6 +188,10 @@ type TokenBulkScanResponseResultsFinancialStats struct {
 	// Percentage of token's supply _currently_ held by sniper bots (0.0 to 100.0).
 	// Currently available for Solana only.
 	InitialSnipersHoldingPercentage float64 `json:"initial_snipers_holding_percentage,nullable"`
+	// Percentage of supply that is currently held by insiders - defined as wallets
+	// exhibiting early acquisition behaviors typically associated with insider
+	// activity.
+	InsidersHoldingPercentage float64 `json:"insiders_holding_percentage,nullable"`
 	// Token liquidity locked percentage
 	LockedLiquidityPercentage float64 `json:"locked_liquidity_percentage,nullable"`
 	// Percentage of token's supply _initially_ held by sniper bots (0.0 to 100.0).
@@ -212,6 +216,7 @@ type tokenBulkScanResponseResultsFinancialStatsJSON struct {
 	DevHoldingPercentage            apijson.Field
 	HoldersCount                    apijson.Field
 	InitialSnipersHoldingPercentage apijson.Field
+	InsidersHoldingPercentage       apijson.Field
 	LockedLiquidityPercentage       apijson.Field
 	SnipersHoldingPercentage        apijson.Field
 	Supply                          apijson.Field
