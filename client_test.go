@@ -44,9 +44,7 @@ func TestUserAgentHeader(t *testing.T) {
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 	})
 	if userAgent != fmt.Sprintf("Blockaid/Go %s", internal.PackageVersion) {
 		t.Errorf("Expected User-Agent to be correct, but got: %#v", userAgent)
@@ -77,9 +75,7 @@ func TestRetryAfter(t *testing.T) {
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
@@ -121,9 +117,7 @@ func TestDeleteRetryCountHeader(t *testing.T) {
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
@@ -160,9 +154,7 @@ func TestOverwriteRetryCountHeader(t *testing.T) {
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
@@ -198,9 +190,7 @@ func TestRetryAfterMs(t *testing.T) {
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
@@ -230,9 +220,7 @@ func TestContextCancel(t *testing.T) {
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
@@ -259,9 +247,7 @@ func TestContextCancelDelay(t *testing.T) {
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 	})
 	if err == nil {
 		t.Error("expected there to be a cancel error")
@@ -294,9 +280,7 @@ func TestContextDeadline(t *testing.T) {
 				Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 				Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 			}),
-			Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-				Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-			}),
+			Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 		})
 		if err == nil {
 			t.Error("expected there to be a deadline error")

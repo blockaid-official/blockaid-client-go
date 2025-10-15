@@ -125,7 +125,7 @@ type EvmTransactionReportParamsReportParamReportTransactionReportParamsParams st
 	// Transaction parameters
 	Data param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataUnion] `json:"data,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadata] `json:"metadata,required"`
+	Metadata param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataUnion] `json:"metadata,required"`
 }
 
 func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams) MarshalJSON() (data []byte, err error) {
@@ -285,11 +285,52 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 // Object of additional information to validate against.
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadata struct {
 	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain"`
+	// Indicates that the transaction was not initiated by a dapp.
+	NonDapp param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataNonDapp] `json:"non_dapp"`
 }
 
 func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadata) implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataUnion() {
+}
+
+// Object of additional information to validate against.
+//
+// Satisfied by [MetadataNonDappParam],
+// [EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataMetadataDapp],
+// [EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadata].
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataUnion interface {
+	implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataUnion()
+}
+
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataMetadataDapp struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataMetadataDapp) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataMetadataDapp) implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataUnion() {
+}
+
+// Indicates that the transaction was not initiated by a dapp.
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataNonDapp bool
+
+const (
+	EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataNonDappTrue EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataNonDapp = true
+)
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataNonDapp) IsKnown() bool {
+	switch r {
+	case EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataNonDappTrue:
+		return true
+	}
+	return false
 }
 
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsType string
@@ -356,7 +397,7 @@ type EvmTransactionScanParams struct {
 	// Transaction parameters
 	Data param.Field[EvmTransactionScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[EvmTransactionScanParamsMetadata] `json:"metadata,required"`
+	Metadata param.Field[EvmTransactionScanParamsMetadataUnion] `json:"metadata,required"`
 	// The relative block for the block validation. Can be "latest" or a block number.
 	Block param.Field[EvmTransactionScanParamsBlockUnion] `json:"block"`
 	// List of one or more of options for the desired output. "simulation" - include
@@ -423,11 +464,51 @@ func (r EvmTransactionScanParamsDataAuthorizationList) MarshalJSON() (data []byt
 // Object of additional information to validate against.
 type EvmTransactionScanParamsMetadata struct {
 	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain"`
+	// Indicates that the transaction was not initiated by a dapp.
+	NonDapp param.Field[EvmTransactionScanParamsMetadataNonDapp] `json:"non_dapp"`
 }
 
 func (r EvmTransactionScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionScanParamsMetadata) implementsEvmTransactionScanParamsMetadataUnion() {}
+
+// Object of additional information to validate against.
+//
+// Satisfied by [MetadataNonDappParam],
+// [EvmTransactionScanParamsMetadataMetadataDapp],
+// [EvmTransactionScanParamsMetadata].
+type EvmTransactionScanParamsMetadataUnion interface {
+	implementsEvmTransactionScanParamsMetadataUnion()
+}
+
+type EvmTransactionScanParamsMetadataMetadataDapp struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r EvmTransactionScanParamsMetadataMetadataDapp) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionScanParamsMetadataMetadataDapp) implementsEvmTransactionScanParamsMetadataUnion() {
+}
+
+// Indicates that the transaction was not initiated by a dapp.
+type EvmTransactionScanParamsMetadataNonDapp bool
+
+const (
+	EvmTransactionScanParamsMetadataNonDappTrue EvmTransactionScanParamsMetadataNonDapp = true
+)
+
+func (r EvmTransactionScanParamsMetadataNonDapp) IsKnown() bool {
+	switch r {
+	case EvmTransactionScanParamsMetadataNonDappTrue:
+		return true
+	}
+	return false
 }
 
 // The relative block for the block validation. Can be "latest" or a block number.

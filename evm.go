@@ -3147,6 +3147,90 @@ func (r Erc721TokenDetailsType) IsKnown() bool {
 	return false
 }
 
+type MetadataNonDappParam struct {
+	// Indicates that the transaction was not initiated by a dapp.
+	NonDapp param.Field[MetadataNonDappParamNonDapp] `json:"non_dapp"`
+}
+
+func (r MetadataNonDappParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r MetadataNonDappParam) implementsValidateAddressMetadataUnionParam() {}
+
+func (r MetadataNonDappParam) implementsValidateBulkAddressesMetadataUnionParam() {}
+
+func (r MetadataNonDappParam) implementsEvmJsonRpcScanParamsMetadataUnion() {}
+
+func (r MetadataNonDappParam) implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataUnion() {
+}
+
+func (r MetadataNonDappParam) implementsEvmTransactionScanParamsMetadataUnion() {}
+
+func (r MetadataNonDappParam) implementsEvmTransactionBulkScanParamsMetadataUnion() {}
+
+func (r MetadataNonDappParam) implementsEvmTransactionRawScanParamsMetadataUnion() {}
+
+func (r MetadataNonDappParam) implementsEvmUserOperationScanParamsMetadataUnion() {}
+
+func (r MetadataNonDappParam) implementsEvmPostTransactionScanParamsMetadataUnion() {}
+
+func (r MetadataNonDappParam) implementsEvmPostTransactionBulkScanParamsMetadataUnion() {}
+
+// Indicates that the transaction was not initiated by a dapp.
+type MetadataNonDappParamNonDapp bool
+
+const (
+	MetadataNonDappParamNonDappTrue MetadataNonDappParamNonDapp = true
+)
+
+func (r MetadataNonDappParamNonDapp) IsKnown() bool {
+	switch r {
+	case MetadataNonDappParamNonDappTrue:
+		return true
+	}
+	return false
+}
+
+type MetadataParam struct {
+	// Account information associated with the request
+	Account param.Field[MetadataParamAccount] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[MetadataParamConnection] `json:"connection"`
+}
+
+func (r MetadataParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Account information associated with the request
+type MetadataParamAccount struct {
+	// Unique identifier for the account
+	AccountID param.Field[string] `json:"account_id,required"`
+	// Timestamp when the account was created
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r MetadataParamAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type MetadataParamConnection struct {
+	// IP address of the customer making the request
+	IPAddress param.Field[string] `json:"ip_address,required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r MetadataParamConnection) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type MissingBalance struct {
 	// The asset that is missing balance
 	Asset MissingBalanceAsset `json:"asset,required"`
@@ -7500,7 +7584,7 @@ type ValidateAddressParam struct {
 	// The chain name
 	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[ValidateAddressMetadataParam] `json:"metadata,required"`
+	Metadata param.Field[ValidateAddressMetadataUnionParam] `json:"metadata,required"`
 }
 
 func (r ValidateAddressParam) MarshalJSON() (data []byte, err error) {
@@ -7510,11 +7594,49 @@ func (r ValidateAddressParam) MarshalJSON() (data []byte, err error) {
 // Object of additional information to validate against.
 type ValidateAddressMetadataParam struct {
 	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain"`
+	// Indicates that the transaction was not initiated by a dapp.
+	NonDapp param.Field[ValidateAddressMetadataNonDapp] `json:"non_dapp"`
 }
 
 func (r ValidateAddressMetadataParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+func (r ValidateAddressMetadataParam) implementsValidateAddressMetadataUnionParam() {}
+
+// Object of additional information to validate against.
+//
+// Satisfied by [MetadataNonDappParam], [ValidateAddressMetadataMetadataDappParam],
+// [ValidateAddressMetadataParam].
+type ValidateAddressMetadataUnionParam interface {
+	implementsValidateAddressMetadataUnionParam()
+}
+
+type ValidateAddressMetadataMetadataDappParam struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r ValidateAddressMetadataMetadataDappParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r ValidateAddressMetadataMetadataDappParam) implementsValidateAddressMetadataUnionParam() {}
+
+// Indicates that the transaction was not initiated by a dapp.
+type ValidateAddressMetadataNonDapp bool
+
+const (
+	ValidateAddressMetadataNonDappTrue ValidateAddressMetadataNonDapp = true
+)
+
+func (r ValidateAddressMetadataNonDapp) IsKnown() bool {
+	switch r {
+	case ValidateAddressMetadataNonDappTrue:
+		return true
+	}
+	return false
 }
 
 type ValidateBulkAddressesParam struct {
@@ -7523,7 +7645,7 @@ type ValidateBulkAddressesParam struct {
 	// The chain name
 	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[ValidateBulkAddressesMetadataParam] `json:"metadata,required"`
+	Metadata param.Field[ValidateBulkAddressesMetadataUnionParam] `json:"metadata,required"`
 }
 
 func (r ValidateBulkAddressesParam) MarshalJSON() (data []byte, err error) {
@@ -7533,11 +7655,51 @@ func (r ValidateBulkAddressesParam) MarshalJSON() (data []byte, err error) {
 // Object of additional information to validate against.
 type ValidateBulkAddressesMetadataParam struct {
 	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain"`
+	// Indicates that the transaction was not initiated by a dapp.
+	NonDapp param.Field[ValidateBulkAddressesMetadataNonDapp] `json:"non_dapp"`
 }
 
 func (r ValidateBulkAddressesMetadataParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+func (r ValidateBulkAddressesMetadataParam) implementsValidateBulkAddressesMetadataUnionParam() {}
+
+// Object of additional information to validate against.
+//
+// Satisfied by [MetadataNonDappParam],
+// [ValidateBulkAddressesMetadataMetadataDappParam],
+// [ValidateBulkAddressesMetadataParam].
+type ValidateBulkAddressesMetadataUnionParam interface {
+	implementsValidateBulkAddressesMetadataUnionParam()
+}
+
+type ValidateBulkAddressesMetadataMetadataDappParam struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r ValidateBulkAddressesMetadataMetadataDappParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r ValidateBulkAddressesMetadataMetadataDappParam) implementsValidateBulkAddressesMetadataUnionParam() {
+}
+
+// Indicates that the transaction was not initiated by a dapp.
+type ValidateBulkAddressesMetadataNonDapp bool
+
+const (
+	ValidateBulkAddressesMetadataNonDappTrue ValidateBulkAddressesMetadataNonDapp = true
+)
+
+func (r ValidateBulkAddressesMetadataNonDapp) IsKnown() bool {
+	switch r {
+	case ValidateBulkAddressesMetadataNonDappTrue:
+		return true
+	}
+	return false
 }
 
 type ValidateBulkExtendedAddressesRequestParam struct {

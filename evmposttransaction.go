@@ -186,7 +186,7 @@ type EvmPostTransactionScanParams struct {
 	Chain param.Field[TransactionScanSupportedChain]    `json:"chain,required"`
 	Data  param.Field[EvmPostTransactionScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[EvmPostTransactionScanParamsMetadata] `json:"metadata,required"`
+	Metadata param.Field[EvmPostTransactionScanParamsMetadataUnion] `json:"metadata,required"`
 	// The relative block for the block validation. Can be "latest" or a block number.
 	Block param.Field[EvmPostTransactionScanParamsBlockUnion] `json:"block"`
 	// List of one or more of options for the desired output. "simulation" - include
@@ -217,11 +217,51 @@ func (r EvmPostTransactionScanParamsData) MarshalJSON() (data []byte, err error)
 // Object of additional information to validate against.
 type EvmPostTransactionScanParamsMetadata struct {
 	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain"`
+	// Indicates that the transaction was not initiated by a dapp.
+	NonDapp param.Field[EvmPostTransactionScanParamsMetadataNonDapp] `json:"non_dapp"`
 }
 
 func (r EvmPostTransactionScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+func (r EvmPostTransactionScanParamsMetadata) implementsEvmPostTransactionScanParamsMetadataUnion() {}
+
+// Object of additional information to validate against.
+//
+// Satisfied by [MetadataNonDappParam],
+// [EvmPostTransactionScanParamsMetadataMetadataDapp],
+// [EvmPostTransactionScanParamsMetadata].
+type EvmPostTransactionScanParamsMetadataUnion interface {
+	implementsEvmPostTransactionScanParamsMetadataUnion()
+}
+
+type EvmPostTransactionScanParamsMetadataMetadataDapp struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r EvmPostTransactionScanParamsMetadataMetadataDapp) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmPostTransactionScanParamsMetadataMetadataDapp) implementsEvmPostTransactionScanParamsMetadataUnion() {
+}
+
+// Indicates that the transaction was not initiated by a dapp.
+type EvmPostTransactionScanParamsMetadataNonDapp bool
+
+const (
+	EvmPostTransactionScanParamsMetadataNonDappTrue EvmPostTransactionScanParamsMetadataNonDapp = true
+)
+
+func (r EvmPostTransactionScanParamsMetadataNonDapp) IsKnown() bool {
+	switch r {
+	case EvmPostTransactionScanParamsMetadataNonDappTrue:
+		return true
+	}
+	return false
 }
 
 // The relative block for the block validation. Can be "latest" or a block number.
