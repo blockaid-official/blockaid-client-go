@@ -32,7 +32,7 @@ func NewSolanaAddressService(opts ...option.RequestOption) (r *SolanaAddressServ
 	return
 }
 
-// Gets an address and returns a full security assessment indicating weather or not
+// Gets an address and returns a full security assessment indicating whether or not
 // this address is malicious as well as textual reasons of why the address was
 // flagged that way.
 func (r *SolanaAddressService) Scan(ctx context.Context, body SolanaAddressScanParams, opts ...option.RequestOption) (res *SolanaAddressScanResponse, err error) {
@@ -129,10 +129,29 @@ func (r SolanaAddressScanResponseFeaturesType) IsKnown() bool {
 }
 
 type SolanaAddressScanParams struct {
-	Address param.Field[string] `json:"address,required"`
-	Chain   param.Field[string] `json:"chain"`
+	Address param.Field[string]                       `json:"address,required"`
+	Chain   param.Field[SolanaAddressScanParamsChain] `json:"chain"`
 }
 
 func (r SolanaAddressScanParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type SolanaAddressScanParamsChain string
+
+const (
+	SolanaAddressScanParamsChainMainnet                           SolanaAddressScanParamsChain = "mainnet"
+	SolanaAddressScanParamsChainEclipseMainnet                    SolanaAddressScanParamsChain = "eclipse_mainnet"
+	SolanaAddressScanParamsChainSonicMainnet                      SolanaAddressScanParamsChain = "sonic_mainnet"
+	SolanaAddressScanParamsChain5eykt4UsFv8P8NJdTrEpY1vzqKqZKvdp  SolanaAddressScanParamsChain = "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"
+	SolanaAddressScanParamsChainEtWtrabZaYq6iMfeYKouRu166Vu2xqa1  SolanaAddressScanParamsChain = "EtWTRABZaYq6iMfeYKouRu166VU2xqa1"
+	SolanaAddressScanParamsChainEaqljcv2mh23BsK2P9oYpV5ChvldnhTxY SolanaAddressScanParamsChain = "EAQLJCV2mh23BsK2P9oYpV5CHVLDNHTxY"
+)
+
+func (r SolanaAddressScanParamsChain) IsKnown() bool {
+	switch r {
+	case SolanaAddressScanParamsChainMainnet, SolanaAddressScanParamsChainEclipseMainnet, SolanaAddressScanParamsChainSonicMainnet, SolanaAddressScanParamsChain5eykt4UsFv8P8NJdTrEpY1vzqKqZKvdp, SolanaAddressScanParamsChainEtWtrabZaYq6iMfeYKouRu166Vu2xqa1, SolanaAddressScanParamsChainEaqljcv2mh23BsK2P9oYpV5ChvldnhTxY:
+		return true
+	}
+	return false
 }
