@@ -59,9 +59,7 @@ func main() {
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 	})
 	if err != nil {
 		panic(err.Error())
@@ -190,9 +188,7 @@ _, err := client.Evm.JsonRpc.Scan(context.TODO(), blockaidclientgo.EvmJsonRpcSca
 		Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 		Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 	}),
-	Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-		Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-	}),
+	Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 })
 if err != nil {
 	var apierr *blockaidclientgo.Error
@@ -226,9 +222,7 @@ client.Evm.JsonRpc.Scan(
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 	},
 	// This sets the per-retry timeout
 	option.WithRequestTimeout(20*time.Second),
@@ -271,9 +265,7 @@ client.Evm.JsonRpc.Scan(
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 	},
 	option.WithMaxRetries(5),
 )
@@ -295,9 +287,7 @@ transactionScanResponse, err := client.Evm.JsonRpc.Scan(
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 	},
 	option.WithResponseInto(&response),
 )

@@ -48,7 +48,7 @@ type EvmUserOperationScanParams struct {
 	// The user operation request that was received by the wallet
 	Data param.Field[EvmUserOperationScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[EvmUserOperationScanParamsMetadata] `json:"metadata,required"`
+	Metadata param.Field[EvmUserOperationScanParamsMetadataUnion] `json:"metadata,required"`
 	// The address of the account (wallet) sending the request in hex string format
 	AccountAddress param.Field[string] `json:"account_address"`
 	// The relative block for the block validation. Can be "latest" or a block number.
@@ -246,11 +246,51 @@ func (r EvmUserOperationScanParamsDataOperationUserOperationV7Eip7702Auth) Marsh
 // Object of additional information to validate against.
 type EvmUserOperationScanParamsMetadata struct {
 	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain"`
+	// Indicates that the transaction was not initiated by a dapp.
+	NonDapp param.Field[EvmUserOperationScanParamsMetadataNonDapp] `json:"non_dapp"`
 }
 
 func (r EvmUserOperationScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+func (r EvmUserOperationScanParamsMetadata) implementsEvmUserOperationScanParamsMetadataUnion() {}
+
+// Object of additional information to validate against.
+//
+// Satisfied by [MetadataNonDappParam],
+// [EvmUserOperationScanParamsMetadataMetadataDapp],
+// [EvmUserOperationScanParamsMetadata].
+type EvmUserOperationScanParamsMetadataUnion interface {
+	implementsEvmUserOperationScanParamsMetadataUnion()
+}
+
+type EvmUserOperationScanParamsMetadataMetadataDapp struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r EvmUserOperationScanParamsMetadataMetadataDapp) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmUserOperationScanParamsMetadataMetadataDapp) implementsEvmUserOperationScanParamsMetadataUnion() {
+}
+
+// Indicates that the transaction was not initiated by a dapp.
+type EvmUserOperationScanParamsMetadataNonDapp bool
+
+const (
+	EvmUserOperationScanParamsMetadataNonDappTrue EvmUserOperationScanParamsMetadataNonDapp = true
+)
+
+func (r EvmUserOperationScanParamsMetadataNonDapp) IsKnown() bool {
+	switch r {
+	case EvmUserOperationScanParamsMetadataNonDappTrue:
+		return true
+	}
+	return false
 }
 
 // The relative block for the block validation. Can be "latest" or a block number.

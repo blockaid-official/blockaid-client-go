@@ -48,7 +48,7 @@ type EvmJsonRpcScanParams struct {
 	// JSON-RPC request that was received by the wallet.
 	Data param.Field[EvmJsonRpcScanParamsData] `json:"data,required"`
 	// Object of additional information to validate against.
-	Metadata param.Field[EvmJsonRpcScanParamsMetadata] `json:"metadata,required"`
+	Metadata param.Field[EvmJsonRpcScanParamsMetadataUnion] `json:"metadata,required"`
 	// The address of the account (wallet) that received the request, in hex string
 	// format
 	AccountAddress param.Field[string] `json:"account_address"`
@@ -111,11 +111,49 @@ func (r EvmJsonRpcScanParamsDataMethod) IsKnown() bool {
 // Object of additional information to validate against.
 type EvmJsonRpcScanParamsMetadata struct {
 	// cross reference transaction against the domain.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain"`
+	// Indicates that the transaction was not initiated by a dapp.
+	NonDapp param.Field[EvmJsonRpcScanParamsMetadataNonDapp] `json:"non_dapp"`
 }
 
 func (r EvmJsonRpcScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+func (r EvmJsonRpcScanParamsMetadata) implementsEvmJsonRpcScanParamsMetadataUnion() {}
+
+// Object of additional information to validate against.
+//
+// Satisfied by [MetadataNonDappParam], [EvmJsonRpcScanParamsMetadataMetadataDapp],
+// [EvmJsonRpcScanParamsMetadata].
+type EvmJsonRpcScanParamsMetadataUnion interface {
+	implementsEvmJsonRpcScanParamsMetadataUnion()
+}
+
+type EvmJsonRpcScanParamsMetadataMetadataDapp struct {
+	// cross reference transaction against the domain.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r EvmJsonRpcScanParamsMetadataMetadataDapp) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmJsonRpcScanParamsMetadataMetadataDapp) implementsEvmJsonRpcScanParamsMetadataUnion() {}
+
+// Indicates that the transaction was not initiated by a dapp.
+type EvmJsonRpcScanParamsMetadataNonDapp bool
+
+const (
+	EvmJsonRpcScanParamsMetadataNonDappTrue EvmJsonRpcScanParamsMetadataNonDapp = true
+)
+
+func (r EvmJsonRpcScanParamsMetadataNonDapp) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanParamsMetadataNonDappTrue:
+		return true
+	}
+	return false
 }
 
 // The relative block for the block validation. Can be "latest" or a block number.

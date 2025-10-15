@@ -30,9 +30,7 @@ func TestUsage(t *testing.T) {
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.MetadataNonDappParam{}),
 	})
 	if err != nil {
 		t.Error(err)

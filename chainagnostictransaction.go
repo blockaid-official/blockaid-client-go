@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"reflect"
 	"slices"
-	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -477,7 +476,7 @@ type ChainAgnosticTransactionScanParams struct {
 	Data param.Field[ChainAgnosticTransactionScanParamsData] `json:"data,required"`
 	// Additional metadata about the request including account and connection
 	// information
-	Metadata param.Field[ChainAgnosticTransactionScanParamsMetadata] `json:"metadata,required"`
+	Metadata param.Field[MetadataParam] `json:"metadata,required"`
 	// List of options to apply during the transaction scan
 	Options param.Field[[]ChainAgnosticTransactionScanParamsOption] `json:"options,required"`
 }
@@ -608,47 +607,6 @@ func (r ChainAgnosticTransactionScanParamsDataChain) IsKnown() bool {
 		return true
 	}
 	return false
-}
-
-// Additional metadata about the request including account and connection
-// information
-type ChainAgnosticTransactionScanParamsMetadata struct {
-	// Account information associated with the request
-	Account param.Field[ChainAgnosticTransactionScanParamsMetadataAccount] `json:"account"`
-	// Connection metadata including user agent and IP information
-	Connection param.Field[ChainAgnosticTransactionScanParamsMetadataConnection] `json:"connection"`
-}
-
-func (r ChainAgnosticTransactionScanParamsMetadata) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Account information associated with the request
-type ChainAgnosticTransactionScanParamsMetadataAccount struct {
-	// Unique identifier for the account
-	AccountID param.Field[string] `json:"account_id,required"`
-	// Timestamp when the account was created
-	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
-	// Age of the user in years
-	UserAge param.Field[int64] `json:"user_age"`
-	// ISO country code of the user's location
-	UserCountryCode param.Field[string] `json:"user_country_code"`
-}
-
-func (r ChainAgnosticTransactionScanParamsMetadataAccount) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Connection metadata including user agent and IP information
-type ChainAgnosticTransactionScanParamsMetadataConnection struct {
-	// IP address of the customer making the request
-	IPAddress param.Field[string] `json:"ip_address,required" format:"ipvanyaddress"`
-	// User agent string from the client's browser or application
-	UserAgent param.Field[string] `json:"user_agent"`
-}
-
-func (r ChainAgnosticTransactionScanParamsMetadataConnection) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
 }
 
 // An enumeration.
