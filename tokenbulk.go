@@ -288,6 +288,11 @@ type TokenBulkScanResponseResultsMetadata struct {
 	FormattedName string `json:"formatted_name,nullable"`
 	// Solana token freeze authority account
 	FreezeAuthority string `json:"freeze_authority,nullable"`
+	// This field can have the runtime type of
+	// [TokenBulkScanResponseResultsMetadataSolanaMetadataGovernance],
+	// [TokenBulkScanResponseResultsMetadataBitcoinMetadataTokenGovernance],
+	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenGovernance].
+	Governance interface{} `json:"governance"`
 	// URL of the token image
 	ImageURL string `json:"image_url,nullable"`
 	// This field can have the runtime type of [[]string].
@@ -332,6 +337,7 @@ type tokenBulkScanResponseResultsMetadataJSON struct {
 	ExternalLinks          apijson.Field
 	FormattedName          apijson.Field
 	FreezeAuthority        apijson.Field
+	Governance             apijson.Field
 	ImageURL               apijson.Field
 	MaliciousURLs          apijson.Field
 	MintAuthority          apijson.Field
@@ -417,6 +423,9 @@ type TokenBulkScanResponseResultsMetadataSolanaMetadata struct {
 	ExternalLinks TokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinks `json:"external_links"`
 	// Solana token freeze authority account
 	FreezeAuthority string `json:"freeze_authority,nullable"`
+	// Contains metadata about the governance model and structure associated with the
+	// token
+	Governance TokenBulkScanResponseResultsMetadataSolanaMetadataGovernance `json:"governance,nullable"`
 	// URL of the token image
 	ImageURL string `json:"image_url,nullable"`
 	// Malicious urls associated with the token
@@ -454,6 +463,7 @@ type tokenBulkScanResponseResultsMetadataSolanaMetadataJSON struct {
 	Description            apijson.Field
 	ExternalLinks          apijson.Field
 	FreezeAuthority        apijson.Field
+	Governance             apijson.Field
 	ImageURL               apijson.Field
 	MaliciousURLs          apijson.Field
 	MintAuthority          apijson.Field
@@ -557,6 +567,31 @@ func (r tokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinksJSON) Raw
 	return r.raw
 }
 
+// Contains metadata about the governance model and structure associated with the
+// token
+type TokenBulkScanResponseResultsMetadataSolanaMetadataGovernance struct {
+	// Solana token permanent delegate account
+	PermanentDelegate string                                                           `json:"permanent_delegate,nullable"`
+	JSON              tokenBulkScanResponseResultsMetadataSolanaMetadataGovernanceJSON `json:"-"`
+}
+
+// tokenBulkScanResponseResultsMetadataSolanaMetadataGovernanceJSON contains the
+// JSON metadata for the struct
+// [TokenBulkScanResponseResultsMetadataSolanaMetadataGovernance]
+type tokenBulkScanResponseResultsMetadataSolanaMetadataGovernanceJSON struct {
+	PermanentDelegate apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
+}
+
+func (r *TokenBulkScanResponseResultsMetadataSolanaMetadataGovernance) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenBulkScanResponseResultsMetadataSolanaMetadataGovernanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // Contract owner balance
 type TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance struct {
 	Amount    float64                                                            `json:"amount,nullable"`
@@ -589,6 +624,9 @@ type TokenBulkScanResponseResultsMetadataBitcoinMetadataToken struct {
 	Decimals int64 `json:"decimals,nullable"`
 	// The formatted name of the rune, with spacers
 	FormattedName string `json:"formatted_name,nullable"`
+	// Contains metadata about the governance model and structure associated with the
+	// token
+	Governance TokenBulkScanResponseResultsMetadataBitcoinMetadataTokenGovernance `json:"governance,nullable"`
 	// Name of the token
 	Name string `json:"name,nullable"`
 	// The rune's unique sequential number.
@@ -607,6 +645,7 @@ type tokenBulkScanResponseResultsMetadataBitcoinMetadataTokenJSON struct {
 	ID            apijson.Field
 	Decimals      apijson.Field
 	FormattedName apijson.Field
+	Governance    apijson.Field
 	Name          apijson.Field
 	Number        apijson.Field
 	Symbol        apijson.Field
@@ -626,6 +665,31 @@ func (r tokenBulkScanResponseResultsMetadataBitcoinMetadataTokenJSON) RawJSON() 
 func (r TokenBulkScanResponseResultsMetadataBitcoinMetadataToken) implementsTokenBulkScanResponseResultsMetadata() {
 }
 
+// Contains metadata about the governance model and structure associated with the
+// token
+type TokenBulkScanResponseResultsMetadataBitcoinMetadataTokenGovernance struct {
+	// Solana token permanent delegate account
+	PermanentDelegate string                                                                 `json:"permanent_delegate,nullable"`
+	JSON              tokenBulkScanResponseResultsMetadataBitcoinMetadataTokenGovernanceJSON `json:"-"`
+}
+
+// tokenBulkScanResponseResultsMetadataBitcoinMetadataTokenGovernanceJSON contains
+// the JSON metadata for the struct
+// [TokenBulkScanResponseResultsMetadataBitcoinMetadataTokenGovernance]
+type tokenBulkScanResponseResultsMetadataBitcoinMetadataTokenGovernanceJSON struct {
+	PermanentDelegate apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
+}
+
+func (r *TokenBulkScanResponseResultsMetadataBitcoinMetadataTokenGovernance) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenBulkScanResponseResultsMetadataBitcoinMetadataTokenGovernanceJSON) RawJSON() string {
+	return r.raw
+}
+
 type TokenBulkScanResponseResultsMetadataEvmMetadataToken struct {
 	// Contract balance
 	ContractBalance TokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalance `json:"contract_balance,nullable"`
@@ -641,6 +705,9 @@ type TokenBulkScanResponseResultsMetadataEvmMetadataToken struct {
 	Description string `json:"description,nullable"`
 	// social links of the token
 	ExternalLinks TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks `json:"external_links"`
+	// Contains metadata about the governance model and structure associated with the
+	// token
+	Governance TokenBulkScanResponseResultsMetadataEvmMetadataTokenGovernance `json:"governance,nullable"`
 	// URL of the token image
 	ImageURL string `json:"image_url,nullable"`
 	// Malicious urls associated with the token
@@ -673,6 +740,7 @@ type tokenBulkScanResponseResultsMetadataEvmMetadataTokenJSON struct {
 	DeployerBalance        apijson.Field
 	Description            apijson.Field
 	ExternalLinks          apijson.Field
+	Governance             apijson.Field
 	ImageURL               apijson.Field
 	MaliciousURLs          apijson.Field
 	Name                   apijson.Field
@@ -771,6 +839,31 @@ func (r *TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks) Unma
 }
 
 func (r tokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinksJSON) RawJSON() string {
+	return r.raw
+}
+
+// Contains metadata about the governance model and structure associated with the
+// token
+type TokenBulkScanResponseResultsMetadataEvmMetadataTokenGovernance struct {
+	// Solana token permanent delegate account
+	PermanentDelegate string                                                             `json:"permanent_delegate,nullable"`
+	JSON              tokenBulkScanResponseResultsMetadataEvmMetadataTokenGovernanceJSON `json:"-"`
+}
+
+// tokenBulkScanResponseResultsMetadataEvmMetadataTokenGovernanceJSON contains the
+// JSON metadata for the struct
+// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenGovernance]
+type tokenBulkScanResponseResultsMetadataEvmMetadataTokenGovernanceJSON struct {
+	PermanentDelegate apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
+}
+
+func (r *TokenBulkScanResponseResultsMetadataEvmMetadataTokenGovernance) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenBulkScanResponseResultsMetadataEvmMetadataTokenGovernanceJSON) RawJSON() string {
 	return r.raw
 }
 
