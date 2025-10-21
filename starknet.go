@@ -299,12 +299,11 @@ type StarknetTransactionScanRequestChain string
 
 const (
 	StarknetTransactionScanRequestChainMainnet StarknetTransactionScanRequestChain = "mainnet"
-	StarknetTransactionScanRequestChainSepolia StarknetTransactionScanRequestChain = "sepolia"
 )
 
 func (r StarknetTransactionScanRequestChain) IsKnown() bool {
 	switch r {
-	case StarknetTransactionScanRequestChainMainnet, StarknetTransactionScanRequestChainSepolia:
+	case StarknetTransactionScanRequestChainMainnet:
 		return true
 	}
 	return false
@@ -1981,11 +1980,12 @@ const (
 	StarknetTransactionScanResponseValidationStarknetValidationResultResultTypeBenign    StarknetTransactionScanResponseValidationStarknetValidationResultResultType = "Benign"
 	StarknetTransactionScanResponseValidationStarknetValidationResultResultTypeWarning   StarknetTransactionScanResponseValidationStarknetValidationResultResultType = "Warning"
 	StarknetTransactionScanResponseValidationStarknetValidationResultResultTypeMalicious StarknetTransactionScanResponseValidationStarknetValidationResultResultType = "Malicious"
+	StarknetTransactionScanResponseValidationStarknetValidationResultResultTypeError     StarknetTransactionScanResponseValidationStarknetValidationResultResultType = "Error"
 )
 
 func (r StarknetTransactionScanResponseValidationStarknetValidationResultResultType) IsKnown() bool {
 	switch r {
-	case StarknetTransactionScanResponseValidationStarknetValidationResultResultTypeBenign, StarknetTransactionScanResponseValidationStarknetValidationResultResultTypeWarning, StarknetTransactionScanResponseValidationStarknetValidationResultResultTypeMalicious:
+	case StarknetTransactionScanResponseValidationStarknetValidationResultResultTypeBenign, StarknetTransactionScanResponseValidationStarknetValidationResultResultTypeWarning, StarknetTransactionScanResponseValidationStarknetValidationResultResultTypeMalicious, StarknetTransactionScanResponseValidationStarknetValidationResultResultTypeError:
 		return true
 	}
 	return false
@@ -2069,11 +2069,12 @@ const (
 	StarknetTransactionScanResponseValidationResultTypeBenign    StarknetTransactionScanResponseValidationResultType = "Benign"
 	StarknetTransactionScanResponseValidationResultTypeWarning   StarknetTransactionScanResponseValidationResultType = "Warning"
 	StarknetTransactionScanResponseValidationResultTypeMalicious StarknetTransactionScanResponseValidationResultType = "Malicious"
+	StarknetTransactionScanResponseValidationResultTypeError     StarknetTransactionScanResponseValidationResultType = "Error"
 )
 
 func (r StarknetTransactionScanResponseValidationResultType) IsKnown() bool {
 	switch r {
-	case StarknetTransactionScanResponseValidationResultTypeBenign, StarknetTransactionScanResponseValidationResultTypeWarning, StarknetTransactionScanResponseValidationResultTypeMalicious:
+	case StarknetTransactionScanResponseValidationResultTypeBenign, StarknetTransactionScanResponseValidationResultTypeWarning, StarknetTransactionScanResponseValidationResultTypeMalicious, StarknetTransactionScanResponseValidationResultTypeError:
 		return true
 	}
 	return false
