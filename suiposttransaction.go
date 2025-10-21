@@ -1169,13 +1169,11 @@ type SuiPostTransactionScanParamsChain string
 
 const (
 	SuiPostTransactionScanParamsChainMainnet SuiPostTransactionScanParamsChain = "mainnet"
-	SuiPostTransactionScanParamsChainTestnet SuiPostTransactionScanParamsChain = "testnet"
-	SuiPostTransactionScanParamsChainDevnet  SuiPostTransactionScanParamsChain = "devnet"
 )
 
 func (r SuiPostTransactionScanParamsChain) IsKnown() bool {
 	switch r {
-	case SuiPostTransactionScanParamsChainMainnet, SuiPostTransactionScanParamsChainTestnet, SuiPostTransactionScanParamsChainDevnet:
+	case SuiPostTransactionScanParamsChainMainnet:
 		return true
 	}
 	return false
