@@ -32,7 +32,7 @@ func NewSuiAddressService(opts ...option.RequestOption) (r *SuiAddressService) {
 	return
 }
 
-// Gets an address and returns a full security assessment indicating weather or not
+// Gets an address and returns a full security assessment indicating whether or not
 // this address is malicious as well as textual reasons of why the address was
 // flagged that way.
 func (r *SuiAddressService) Scan(ctx context.Context, body SuiAddressScanParams, opts ...option.RequestOption) (res *SuiAddressScanResponse, err error) {
@@ -142,13 +142,11 @@ type SuiAddressScanParamsChain string
 
 const (
 	SuiAddressScanParamsChainMainnet SuiAddressScanParamsChain = "mainnet"
-	SuiAddressScanParamsChainTestnet SuiAddressScanParamsChain = "testnet"
-	SuiAddressScanParamsChainDevnet  SuiAddressScanParamsChain = "devnet"
 )
 
 func (r SuiAddressScanParamsChain) IsKnown() bool {
 	switch r {
-	case SuiAddressScanParamsChainMainnet, SuiAddressScanParamsChainTestnet, SuiAddressScanParamsChainDevnet:
+	case SuiAddressScanParamsChainMainnet:
 		return true
 	}
 	return false

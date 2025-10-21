@@ -71,7 +71,7 @@ type SuiNativeAssetDetailsSchema struct {
 	// Decimals of the asset
 	Decimals SuiNativeAssetDetailsSchemaDecimals `json:"decimals"`
 	// URL of the asset's logo
-	LogoURL SuiNativeAssetDetailsSchemaLogoURL `json:"logo_url"`
+	LogoURL string `json:"logo_url"`
 	// Name of the asset
 	Name SuiNativeAssetDetailsSchemaName `json:"name"`
 	// Symbol of the asset
@@ -111,21 +111,6 @@ const (
 func (r SuiNativeAssetDetailsSchemaDecimals) IsKnown() bool {
 	switch r {
 	case SuiNativeAssetDetailsSchemaDecimals9:
-		return true
-	}
-	return false
-}
-
-// URL of the asset's logo
-type SuiNativeAssetDetailsSchemaLogoURL string
-
-const (
-	SuiNativeAssetDetailsSchemaLogoURLHTTPSImagedeliveryNetCBndGgkrsEaBIxIp9SkQSuiSvgPublic SuiNativeAssetDetailsSchemaLogoURL = "https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/sui.svg/public"
-)
-
-func (r SuiNativeAssetDetailsSchemaLogoURL) IsKnown() bool {
-	switch r {
-	case SuiNativeAssetDetailsSchemaLogoURLHTTPSImagedeliveryNetCBndGgkrsEaBIxIp9SkQSuiSvgPublic:
 		return true
 	}
 	return false
