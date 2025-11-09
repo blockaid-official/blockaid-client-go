@@ -32,7 +32,7 @@ func NewEvmTransactionService(opts ...option.RequestOption) (r *EvmTransactionSe
 	return
 }
 
-// Report for misclassification of a transaction.
+// Report a misclassification of a transaction.
 func (r *EvmTransactionService) Report(ctx context.Context, body EvmTransactionReportParams, opts ...option.RequestOption) (res *EvmTransactionReportResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/transaction/report"

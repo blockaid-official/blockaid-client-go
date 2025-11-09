@@ -32,7 +32,7 @@ func NewEvmAddressService(opts ...option.RequestOption) (r *EvmAddressService) {
 	return
 }
 
-// Report for misclassification of an EVM address.
+// Report a misclassification of an EVM address.
 func (r *EvmAddressService) Report(ctx context.Context, body EvmAddressReportParams, opts ...option.RequestOption) (res *EvmAddressReportResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/address/report"
@@ -84,7 +84,7 @@ func (r EvmAddressReportParamsEvent) IsKnown() bool {
 // The report parameters.
 type EvmAddressReportParamsReport struct {
 	Type      param.Field[EvmAddressReportParamsReportType] `json:"type,required"`
-	Params    param.Field[AddressReportParams]              `json:"params"`
+	Params    param.Field[interface{}]                      `json:"params"`
 	RequestID param.Field[string]                           `json:"request_id"`
 }
 
@@ -96,33 +96,106 @@ func (r EvmAddressReportParamsReport) implementsEvmAddressReportParamsReportUnio
 
 // The report parameters.
 //
-// Satisfied by [EvmAddressReportParamsReportParamReportAddressReportParams],
+// Satisfied by [EvmAddressReportParamsReportParamReportEvmAddressReportParams],
 // [EvmAddressReportParamsReportRequestIDReport], [EvmAddressReportParamsReport].
 type EvmAddressReportParamsReportUnion interface {
 	implementsEvmAddressReportParamsReportUnion()
 }
 
-type EvmAddressReportParamsReportParamReportAddressReportParams struct {
-	Params param.Field[AddressReportParams]                                            `json:"params,required"`
-	Type   param.Field[EvmAddressReportParamsReportParamReportAddressReportParamsType] `json:"type,required"`
+type EvmAddressReportParamsReportParamReportEvmAddressReportParams struct {
+	Params param.Field[EvmAddressReportParamsReportParamReportEvmAddressReportParamsParams] `json:"params,required"`
+	Type   param.Field[EvmAddressReportParamsReportParamReportEvmAddressReportParamsType]   `json:"type,required"`
 }
 
-func (r EvmAddressReportParamsReportParamReportAddressReportParams) MarshalJSON() (data []byte, err error) {
+func (r EvmAddressReportParamsReportParamReportEvmAddressReportParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r EvmAddressReportParamsReportParamReportAddressReportParams) implementsEvmAddressReportParamsReportUnion() {
+func (r EvmAddressReportParamsReportParamReportEvmAddressReportParams) implementsEvmAddressReportParamsReportUnion() {
 }
 
-type EvmAddressReportParamsReportParamReportAddressReportParamsType string
+type EvmAddressReportParamsReportParamReportEvmAddressReportParamsParams struct {
+	// The address to report on.
+	Address param.Field[string] `json:"address,required"`
+	// The chain name
+	Chain param.Field[EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain] `json:"chain,required"`
+	// The domain related to this address.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r EvmAddressReportParamsReportParamReportEvmAddressReportParamsParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The chain name
+type EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain string
 
 const (
-	EvmAddressReportParamsReportParamReportAddressReportParamsTypeParams EvmAddressReportParamsReportParamReportAddressReportParamsType = "params"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainArbitrum              EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "arbitrum"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainAvalanche             EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "avalanche"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainBase                  EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "base"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainBaseSepolia           EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "base-sepolia"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainLordchain             EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "lordchain"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainLordchainTestnet      EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "lordchain-testnet"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainMetacade              EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "metacade"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainMetacadeTestnet       EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "metacade-testnet"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainBsc                   EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "bsc"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainEthereum              EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "ethereum"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainOptimism              EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "optimism"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainPolygon               EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "polygon"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainZksync                EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "zksync"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainZksyncSepolia         EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "zksync-sepolia"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainZora                  EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "zora"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainLinea                 EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "linea"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainBlast                 EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "blast"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainScroll                EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "scroll"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainEthereumSepolia       EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "ethereum-sepolia"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainDegen                 EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "degen"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainAvalancheFuji         EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "avalanche-fuji"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainImmutableZkevm        EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "immutable-zkevm"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainImmutableZkevmTestnet EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "immutable-zkevm-testnet"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainGnosis                EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "gnosis"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainWorldchain            EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "worldchain"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainSoneiumMinato         EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "soneium-minato"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainRonin                 EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "ronin"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainApechain              EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "apechain"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainZeroNetwork           EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "zero-network"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainBerachain             EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "berachain"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainBerachainBartio       EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "berachain-bartio"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainInk                   EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "ink"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainInkSepolia            EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "ink-sepolia"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainAbstract              EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "abstract"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainAbstractTestnet       EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "abstract-testnet"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainSoneium               EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "soneium"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainUnichain              EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "unichain"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainSei                   EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "sei"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainFlowEvm               EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "flow-evm"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainHyperevm              EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "hyperevm"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainKatana                EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "katana"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainPlume                 EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "plume"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainXlayer                EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "xlayer"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainMonad                 EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "monad"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainMonadTestnet          EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "monad-testnet"
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainHedera                EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain = "hedera"
 )
 
-func (r EvmAddressReportParamsReportParamReportAddressReportParamsType) IsKnown() bool {
+func (r EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain) IsKnown() bool {
 	switch r {
-	case EvmAddressReportParamsReportParamReportAddressReportParamsTypeParams:
+	case EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainArbitrum, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainAvalanche, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainBase, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainBaseSepolia, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainLordchain, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainLordchainTestnet, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainMetacade, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainMetacadeTestnet, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainBsc, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainEthereum, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainOptimism, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainPolygon, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainZksync, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainZksyncSepolia, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainZora, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainLinea, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainBlast, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainScroll, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainEthereumSepolia, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainDegen, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainAvalancheFuji, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainImmutableZkevm, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainImmutableZkevmTestnet, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainGnosis, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainWorldchain, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainSoneiumMinato, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainRonin, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainApechain, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainZeroNetwork, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainBerachain, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainBerachainBartio, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainInk, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainInkSepolia, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainAbstract, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainAbstractTestnet, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainSoneium, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainUnichain, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainSei, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainFlowEvm, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainHyperevm, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainKatana, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainPlume, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainXlayer, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainMonad, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainMonadTestnet, EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChainHedera:
+		return true
+	}
+	return false
+}
+
+type EvmAddressReportParamsReportParamReportEvmAddressReportParamsType string
+
+const (
+	EvmAddressReportParamsReportParamReportEvmAddressReportParamsTypeParams EvmAddressReportParamsReportParamReportEvmAddressReportParamsType = "params"
+)
+
+func (r EvmAddressReportParamsReportParamReportEvmAddressReportParamsType) IsKnown() bool {
+	switch r {
+	case EvmAddressReportParamsReportParamReportEvmAddressReportParamsTypeParams:
 		return true
 	}
 	return false

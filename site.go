@@ -35,7 +35,7 @@ func NewSiteService(opts ...option.RequestOption) (r *SiteService) {
 	return
 }
 
-// Report for misclassification of a site.
+// Report a misclassification of a site.
 func (r *SiteService) Report(ctx context.Context, body SiteReportParams, opts ...option.RequestOption) (res *SiteReportResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/site/report"
