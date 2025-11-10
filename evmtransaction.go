@@ -284,7 +284,9 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 
 // Object of additional information to validate against.
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadata struct {
-	// cross reference transaction against the domain.
+	// The full URL of the DApp or website that initiated the transaction, for
+	// cross-reference. Must use the https or http scheme and contain a valid hostname.
+	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain"`
 	// Indicates that the transaction was not initiated by a dapp.
 	NonDapp param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataNonDapp] `json:"non_dapp"`
@@ -307,7 +309,9 @@ type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMet
 }
 
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataMetadataDapp struct {
-	// cross reference transaction against the domain.
+	// The full URL of the DApp or website that initiated the transaction, for
+	// cross-reference. Must use the https or http scheme and contain a valid hostname.
+	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain,required"`
 }
 
@@ -463,7 +467,9 @@ func (r EvmTransactionScanParamsDataAuthorizationList) MarshalJSON() (data []byt
 
 // Object of additional information to validate against.
 type EvmTransactionScanParamsMetadata struct {
-	// cross reference transaction against the domain.
+	// The full URL of the DApp or website that initiated the transaction, for
+	// cross-reference. Must use the https or http scheme and contain a valid hostname.
+	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain"`
 	// Indicates that the transaction was not initiated by a dapp.
 	NonDapp param.Field[EvmTransactionScanParamsMetadataNonDapp] `json:"non_dapp"`
@@ -485,7 +491,9 @@ type EvmTransactionScanParamsMetadataUnion interface {
 }
 
 type EvmTransactionScanParamsMetadataMetadataDapp struct {
-	// cross reference transaction against the domain.
+	// The full URL of the DApp or website that initiated the transaction, for
+	// cross-reference. Must use the https or http scheme and contain a valid hostname.
+	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain,required"`
 }
 
