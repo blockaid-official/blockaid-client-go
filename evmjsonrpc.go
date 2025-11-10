@@ -110,7 +110,9 @@ func (r EvmJsonRpcScanParamsDataMethod) IsKnown() bool {
 
 // Object of additional information to validate against.
 type EvmJsonRpcScanParamsMetadata struct {
-	// cross reference transaction against the domain.
+	// The full URL of the DApp or website that initiated the transaction, for
+	// cross-reference. Must use the https or http scheme and contain a valid hostname.
+	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain"`
 	// Indicates that the transaction was not initiated by a dapp.
 	NonDapp param.Field[EvmJsonRpcScanParamsMetadataNonDapp] `json:"non_dapp"`
@@ -131,7 +133,9 @@ type EvmJsonRpcScanParamsMetadataUnion interface {
 }
 
 type EvmJsonRpcScanParamsMetadataMetadataDapp struct {
-	// cross reference transaction against the domain.
+	// The full URL of the DApp or website that initiated the transaction, for
+	// cross-reference. Must use the https or http scheme and contain a valid hostname.
+	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain,required"`
 }
 
