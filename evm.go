@@ -2334,20 +2334,17 @@ type AddressValidation struct {
 	// A list of textual features about this transaction that can be presented to the
 	// user.
 	Features AddressValidationFeaturesUnion `json:"features"`
-	// Risk profiling result
-	RiskProfiling AddressValidationRiskProfiling `json:"risk_profiling"`
-	JSON          addressValidationJSON          `json:"-"`
+	JSON     addressValidationJSON          `json:"-"`
 }
 
 // addressValidationJSON contains the JSON metadata for the struct
 // [AddressValidation]
 type addressValidationJSON struct {
-	ResultType    apijson.Field
-	Error         apijson.Field
-	Features      apijson.Field
-	RiskProfiling apijson.Field
-	raw           string
-	ExtraFields   map[string]apijson.Field
+	ResultType  apijson.Field
+	Error       apijson.Field
+	Features    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
 }
 
 func (r *AddressValidation) UnmarshalJSON(data []byte) (err error) {
@@ -2403,132 +2400,6 @@ func init() {
 type AddressValidationFeaturesArray []string
 
 func (r AddressValidationFeaturesArray) implementsAddressValidationFeaturesUnion() {}
-
-// Risk profiling result
-type AddressValidationRiskProfiling struct {
-	// The address to validate.
-	Address     string                                    `json:"address,required"`
-	RiskSummary AddressValidationRiskProfilingRiskSummary `json:"risk_summary,required"`
-	// List of individual exposures
-	Exposures []AddressValidationRiskProfilingExposure `json:"exposures"`
-	// Entity name
-	Name string                             `json:"name"`
-	JSON addressValidationRiskProfilingJSON `json:"-"`
-}
-
-// addressValidationRiskProfilingJSON contains the JSON metadata for the struct
-// [AddressValidationRiskProfiling]
-type addressValidationRiskProfilingJSON struct {
-	Address     apijson.Field
-	RiskSummary apijson.Field
-	Exposures   apijson.Field
-	Name        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AddressValidationRiskProfiling) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r addressValidationRiskProfilingJSON) RawJSON() string {
-	return r.raw
-}
-
-type AddressValidationRiskProfilingRiskSummary struct {
-	// The type of validation result
-	RiskLevel AddressValidationRiskProfilingRiskSummaryRiskLevel `json:"risk_level,required"`
-	// Total malicious exposure in USD
-	TotalMaliciousExposure float64 `json:"total_malicious_exposure,required"`
-	// Total USD value
-	TotalUsd float64                                       `json:"total_usd,required"`
-	JSON     addressValidationRiskProfilingRiskSummaryJSON `json:"-"`
-}
-
-// addressValidationRiskProfilingRiskSummaryJSON contains the JSON metadata for the
-// struct [AddressValidationRiskProfilingRiskSummary]
-type addressValidationRiskProfilingRiskSummaryJSON struct {
-	RiskLevel              apijson.Field
-	TotalMaliciousExposure apijson.Field
-	TotalUsd               apijson.Field
-	raw                    string
-	ExtraFields            map[string]apijson.Field
-}
-
-func (r *AddressValidationRiskProfilingRiskSummary) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r addressValidationRiskProfilingRiskSummaryJSON) RawJSON() string {
-	return r.raw
-}
-
-// The type of validation result
-type AddressValidationRiskProfilingRiskSummaryRiskLevel string
-
-const (
-	AddressValidationRiskProfilingRiskSummaryRiskLevelMalicious AddressValidationRiskProfilingRiskSummaryRiskLevel = "Malicious"
-	AddressValidationRiskProfilingRiskSummaryRiskLevelWarning   AddressValidationRiskProfilingRiskSummaryRiskLevel = "Warning"
-	AddressValidationRiskProfilingRiskSummaryRiskLevelBenign    AddressValidationRiskProfilingRiskSummaryRiskLevel = "Benign"
-	AddressValidationRiskProfilingRiskSummaryRiskLevelHighRisk  AddressValidationRiskProfilingRiskSummaryRiskLevel = "High-Risk"
-)
-
-func (r AddressValidationRiskProfilingRiskSummaryRiskLevel) IsKnown() bool {
-	switch r {
-	case AddressValidationRiskProfilingRiskSummaryRiskLevelMalicious, AddressValidationRiskProfilingRiskSummaryRiskLevelWarning, AddressValidationRiskProfilingRiskSummaryRiskLevelBenign, AddressValidationRiskProfilingRiskSummaryRiskLevelHighRisk:
-		return true
-	}
-	return false
-}
-
-type AddressValidationRiskProfilingExposure struct {
-	// Exposure amount in USD
-	AmountUsd float64 `json:"amount_usd,required"`
-	// Exposure category (e.g., Sanctioned, Fraud, Drainer)
-	Category string `json:"category,required"`
-	// The percentage of the address’s total balance that is currently exposed.
-	Percentage float64 `json:"percentage,required"`
-	// The type of validation result
-	RiskLevel AddressValidationRiskProfilingExposuresRiskLevel `json:"risk_level,required"`
-	JSON      addressValidationRiskProfilingExposureJSON       `json:"-"`
-}
-
-// addressValidationRiskProfilingExposureJSON contains the JSON metadata for the
-// struct [AddressValidationRiskProfilingExposure]
-type addressValidationRiskProfilingExposureJSON struct {
-	AmountUsd   apijson.Field
-	Category    apijson.Field
-	Percentage  apijson.Field
-	RiskLevel   apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *AddressValidationRiskProfilingExposure) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r addressValidationRiskProfilingExposureJSON) RawJSON() string {
-	return r.raw
-}
-
-// The type of validation result
-type AddressValidationRiskProfilingExposuresRiskLevel string
-
-const (
-	AddressValidationRiskProfilingExposuresRiskLevelMalicious AddressValidationRiskProfilingExposuresRiskLevel = "Malicious"
-	AddressValidationRiskProfilingExposuresRiskLevelWarning   AddressValidationRiskProfilingExposuresRiskLevel = "Warning"
-	AddressValidationRiskProfilingExposuresRiskLevelBenign    AddressValidationRiskProfilingExposuresRiskLevel = "Benign"
-	AddressValidationRiskProfilingExposuresRiskLevelHighRisk  AddressValidationRiskProfilingExposuresRiskLevel = "High-Risk"
-)
-
-func (r AddressValidationRiskProfilingExposuresRiskLevel) IsKnown() bool {
-	switch r {
-	case AddressValidationRiskProfilingExposuresRiskLevelMalicious, AddressValidationRiskProfilingExposuresRiskLevelWarning, AddressValidationRiskProfilingExposuresRiskLevelBenign, AddressValidationRiskProfilingExposuresRiskLevelHighRisk:
-		return true
-	}
-	return false
-}
 
 type Balance struct {
 	// The raw value of the balance in hex string format
