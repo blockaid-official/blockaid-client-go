@@ -4,14 +4,20 @@ package shared
 
 type UnionString string
 
-func (UnionString) ImplementsTransactionScanResponseEventsParamsValueUnion() {}
-func (UnionString) ImplementsEvmJsonRpcScanParamsBlockUnion()                {}
-func (UnionString) ImplementsEvmTransactionScanParamsBlockUnion()            {}
-func (UnionString) ImplementsEvmTransactionBulkScanParamsBlockUnion()        {}
-func (UnionString) ImplementsEvmTransactionRawScanParamsBlockUnion()         {}
-func (UnionString) ImplementsEvmUserOperationScanParamsBlockUnion()          {}
-func (UnionString) ImplementsEvmPostTransactionScanParamsBlockUnion()        {}
-func (UnionString) ImplementsEvmPostTransactionBulkScanParamsBlockUnion()    {}
+func (UnionString) ImplementsEvmJsonRpcScanResponseEventsParamsValueUnion()             {}
+func (UnionString) ImplementsEvmJsonRpcScanParamsBlockUnion()                           {}
+func (UnionString) ImplementsEvmTransactionScanResponseEventsParamsValueUnion()         {}
+func (UnionString) ImplementsEvmTransactionScanParamsBlockUnion()                       {}
+func (UnionString) ImplementsEvmTransactionBulkScanResponseEventsParamsValueUnion()     {}
+func (UnionString) ImplementsEvmTransactionBulkScanParamsBlockUnion()                   {}
+func (UnionString) ImplementsEvmTransactionRawScanResponseEventsParamsValueUnion()      {}
+func (UnionString) ImplementsEvmTransactionRawScanParamsBlockUnion()                    {}
+func (UnionString) ImplementsEvmUserOperationScanResponseEventsParamsValueUnion()       {}
+func (UnionString) ImplementsEvmUserOperationScanParamsBlockUnion()                     {}
+func (UnionString) ImplementsEvmPostTransactionScanResponseEventsParamsValueUnion()     {}
+func (UnionString) ImplementsEvmPostTransactionScanParamsBlockUnion()                   {}
+func (UnionString) ImplementsEvmPostTransactionBulkScanResponseEventsParamsValueUnion() {}
+func (UnionString) ImplementsEvmPostTransactionBulkScanParamsBlockUnion()               {}
 
 type UnionInt int64
 

@@ -58,8 +58,8 @@ func TestEvmAddressScan(t *testing.T) {
 		ValidateAddress: blockaidclientgo.ValidateAddressParam{
 			Address: blockaidclientgo.F("0x946D45c866AFD5b8F436d40E551D8E50A5B84230"),
 			Chain:   blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainEthereum),
-			Metadata: blockaidclientgo.F[blockaidclientgo.ValidateAddressMetadataUnionParam](blockaidclientgo.MetadataNonDappParam{
-				NonDapp: blockaidclientgo.F(blockaidclientgo.MetadataNonDappParamNonDappTrue),
+			Metadata: blockaidclientgo.F[blockaidclientgo.ValidateAddressMetadataUnionParam](blockaidclientgo.ValidateAddressMetadataRoutersEvmModelsMetadataNonDappParam{
+				NonDapp: blockaidclientgo.F(blockaidclientgo.ValidateAddressMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
 			}),
 		},
 	})
