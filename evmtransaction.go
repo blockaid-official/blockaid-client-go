@@ -11918,9 +11918,11 @@ func (r EvmTransactionScanResponseValidationStatus) IsKnown() bool {
 type EvmTransactionReportParams struct {
 	// Details about the report.
 	Details param.Field[string] `json:"details,required"`
-	// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
+	// The event type of the report. Could be `FALSE_POSITIVE` or `FALSE_NEGATIVE`.
 	Event param.Field[EvmTransactionReportParamsEvent] `json:"event,required"`
-	// The report parameters.
+	// Parameters identifying the transaction to report, provided either as transaction
+	// details (chain, account address, and transaction data) or as a request ID from a
+	// previous scan.
 	Report param.Field[EvmTransactionReportParamsReportUnion] `json:"report,required"`
 }
 
@@ -11928,7 +11930,7 @@ func (r EvmTransactionReportParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
+// The event type of the report. Could be `FALSE_POSITIVE` or `FALSE_NEGATIVE`.
 type EvmTransactionReportParamsEvent string
 
 const (
@@ -11944,11 +11946,16 @@ func (r EvmTransactionReportParamsEvent) IsKnown() bool {
 	return false
 }
 
-// The report parameters.
+// Parameters identifying the transaction to report, provided either as transaction
+// details (chain, account address, and transaction data) or as a request ID from a
+// previous scan.
 type EvmTransactionReportParamsReport struct {
-	Type      param.Field[EvmTransactionReportParamsReportType] `json:"type,required"`
-	Params    param.Field[interface{}]                          `json:"params"`
-	RequestID param.Field[string]                               `json:"request_id"`
+	Type   param.Field[EvmTransactionReportParamsReportType] `json:"type,required"`
+	Params param.Field[interface{}]                          `json:"params"`
+	// The request ID of a previous request. This can be found in the value of the
+	// `x-request-id` field in the headers of the response of the previous request. For
+	// instance: `6c3cf6c1-a80d-4927-91b9-03d841ea61fe`.
+	RequestID param.Field[string] `json:"request_id"`
 }
 
 func (r EvmTransactionReportParamsReport) MarshalJSON() (data []byte, err error) {
@@ -11957,7 +11964,9 @@ func (r EvmTransactionReportParamsReport) MarshalJSON() (data []byte, err error)
 
 func (r EvmTransactionReportParamsReport) implementsEvmTransactionReportParamsReportUnion() {}
 
-// The report parameters.
+// Parameters identifying the transaction to report, provided either as transaction
+// details (chain, account address, and transaction data) or as a request ID from a
+// previous scan.
 //
 // Satisfied by
 // [EvmTransactionReportParamsReportParamReportTransactionReportParams],
@@ -12243,8 +12252,13 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsType) 
 }
 
 type EvmTransactionReportParamsReportRequestIDReport struct {
-	RequestID param.Field[string]                                              `json:"request_id,required"`
-	Type      param.Field[EvmTransactionReportParamsReportRequestIDReportType] `json:"type,required"`
+	// The request ID of a previous request. This can be found in the value of the
+	// `x-request-id` field in the headers of the response of the previous request. For
+	// instance: `6c3cf6c1-a80d-4927-91b9-03d841ea61fe`.
+	RequestID param.Field[string] `json:"request_id,required"`
+	// The type identifier indicating that a request ID from a previous scan is being
+	// used.
+	Type param.Field[EvmTransactionReportParamsReportRequestIDReportType] `json:"type,required"`
 }
 
 func (r EvmTransactionReportParamsReportRequestIDReport) MarshalJSON() (data []byte, err error) {
@@ -12254,6 +12268,8 @@ func (r EvmTransactionReportParamsReportRequestIDReport) MarshalJSON() (data []b
 func (r EvmTransactionReportParamsReportRequestIDReport) implementsEvmTransactionReportParamsReportUnion() {
 }
 
+// The type identifier indicating that a request ID from a previous scan is being
+// used.
 type EvmTransactionReportParamsReportRequestIDReportType string
 
 const (

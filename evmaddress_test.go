@@ -29,7 +29,7 @@ func TestEvmAddressReport(t *testing.T) {
 		Details: blockaidclientgo.F("Details about the report"),
 		Event:   blockaidclientgo.F(blockaidclientgo.EvmAddressReportParamsEventFalseNegative),
 		Report: blockaidclientgo.F[blockaidclientgo.EvmAddressReportParamsReportUnion](blockaidclientgo.EvmAddressReportParamsReportRequestIDReport{
-			RequestID: blockaidclientgo.F("11111111-1111-1111-1111-111111111111"),
+			RequestID: blockaidclientgo.F("6c3cf6c1-a80d-4927-91b9-03d841ea61fe"),
 			Type:      blockaidclientgo.F(blockaidclientgo.EvmAddressReportParamsReportRequestIDReportTypeRequestID),
 		}),
 	})

@@ -1035,9 +1035,10 @@ func (r TokenScanResponseFeaturesType) IsKnown() bool {
 type TokenReportParams struct {
 	// Details about the report.
 	Details param.Field[string] `json:"details,required"`
-	// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
+	// The event type of the report. Could be `FALSE_POSITIVE` or `FALSE_NEGATIVE`.
 	Event param.Field[TokenReportParamsEvent] `json:"event,required"`
-	// The report parameters.
+	// Parameters identifying the token to report, provided either as token details
+	// (address and chain) or as a request ID from a previous scan.
 	Report param.Field[TokenReportParamsReportUnion] `json:"report,required"`
 }
 
@@ -1045,7 +1046,7 @@ func (r TokenReportParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
+// The event type of the report. Could be `FALSE_POSITIVE` or `FALSE_NEGATIVE`.
 type TokenReportParamsEvent string
 
 const (
@@ -1061,11 +1062,15 @@ func (r TokenReportParamsEvent) IsKnown() bool {
 	return false
 }
 
-// The report parameters.
+// Parameters identifying the token to report, provided either as token details
+// (address and chain) or as a request ID from a previous scan.
 type TokenReportParamsReport struct {
-	Type      param.Field[TokenReportParamsReportType] `json:"type,required"`
-	Params    param.Field[interface{}]                 `json:"params"`
-	RequestID param.Field[string]                      `json:"request_id"`
+	Type   param.Field[TokenReportParamsReportType] `json:"type,required"`
+	Params param.Field[interface{}]                 `json:"params"`
+	// The request ID of a previous request. This can be found in the value of the
+	// `x-request-id` field in the headers of the response of the previous request. For
+	// instance: `6c3cf6c1-a80d-4927-91b9-03d841ea61fe`.
+	RequestID param.Field[string] `json:"request_id"`
 }
 
 func (r TokenReportParamsReport) MarshalJSON() (data []byte, err error) {
@@ -1074,7 +1079,8 @@ func (r TokenReportParamsReport) MarshalJSON() (data []byte, err error) {
 
 func (r TokenReportParamsReport) implementsTokenReportParamsReportUnion() {}
 
-// The report parameters.
+// Parameters identifying the token to report, provided either as token details
+// (address and chain) or as a request ID from a previous scan.
 //
 // Satisfied by [TokenReportParamsReportParamReportTokenReportParams],
 // [TokenReportParamsReportRequestIDReport], [TokenReportParamsReport].
@@ -1120,8 +1126,13 @@ func (r TokenReportParamsReportParamReportTokenReportParamsType) IsKnown() bool 
 }
 
 type TokenReportParamsReportRequestIDReport struct {
-	RequestID param.Field[string]                                     `json:"request_id,required"`
-	Type      param.Field[TokenReportParamsReportRequestIDReportType] `json:"type,required"`
+	// The request ID of a previous request. This can be found in the value of the
+	// `x-request-id` field in the headers of the response of the previous request. For
+	// instance: `6c3cf6c1-a80d-4927-91b9-03d841ea61fe`.
+	RequestID param.Field[string] `json:"request_id,required"`
+	// The type identifier indicating that a request ID from a previous scan is being
+	// used.
+	Type param.Field[TokenReportParamsReportRequestIDReportType] `json:"type,required"`
 }
 
 func (r TokenReportParamsReportRequestIDReport) MarshalJSON() (data []byte, err error) {
@@ -1130,6 +1141,8 @@ func (r TokenReportParamsReportRequestIDReport) MarshalJSON() (data []byte, err 
 
 func (r TokenReportParamsReportRequestIDReport) implementsTokenReportParamsReportUnion() {}
 
+// The type identifier indicating that a request ID from a previous scan is being
+// used.
 type TokenReportParamsReportRequestIDReportType string
 
 const (
