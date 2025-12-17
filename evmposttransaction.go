@@ -11921,9 +11921,10 @@ func (r EvmPostTransactionScanResponseValidationStatus) IsKnown() bool {
 type EvmPostTransactionReportParams struct {
 	// Details about the report.
 	Details param.Field[string] `json:"details,required"`
-	// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
+	// The event type of the report. Could be `FALSE_POSITIVE` or `FALSE_NEGATIVE`.
 	Event param.Field[EvmPostTransactionReportParamsEvent] `json:"event,required"`
-	// The report parameters.
+	// Parameters identifying the transaction to report, provided either as transaction
+	// details (chain and transaction hash) or as a request ID from a previous scan.
 	Report param.Field[EvmPostTransactionReportParamsReportUnion] `json:"report,required"`
 }
 
@@ -11931,7 +11932,7 @@ func (r EvmPostTransactionReportParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
+// The event type of the report. Could be `FALSE_POSITIVE` or `FALSE_NEGATIVE`.
 type EvmPostTransactionReportParamsEvent string
 
 const (
@@ -11947,11 +11948,15 @@ func (r EvmPostTransactionReportParamsEvent) IsKnown() bool {
 	return false
 }
 
-// The report parameters.
+// Parameters identifying the transaction to report, provided either as transaction
+// details (chain and transaction hash) or as a request ID from a previous scan.
 type EvmPostTransactionReportParamsReport struct {
-	Type      param.Field[EvmPostTransactionReportParamsReportType] `json:"type,required"`
-	Params    param.Field[interface{}]                              `json:"params"`
-	RequestID param.Field[string]                                   `json:"request_id"`
+	Type   param.Field[EvmPostTransactionReportParamsReportType] `json:"type,required"`
+	Params param.Field[interface{}]                              `json:"params"`
+	// The request ID of a previous request. This can be found in the value of the
+	// `x-request-id` field in the headers of the response of the previous request. For
+	// instance: `6c3cf6c1-a80d-4927-91b9-03d841ea61fe`.
+	RequestID param.Field[string] `json:"request_id"`
 }
 
 func (r EvmPostTransactionReportParamsReport) MarshalJSON() (data []byte, err error) {
@@ -11960,7 +11965,8 @@ func (r EvmPostTransactionReportParamsReport) MarshalJSON() (data []byte, err er
 
 func (r EvmPostTransactionReportParamsReport) implementsEvmPostTransactionReportParamsReportUnion() {}
 
-// The report parameters.
+// Parameters identifying the transaction to report, provided either as transaction
+// details (chain and transaction hash) or as a request ID from a previous scan.
 //
 // Satisfied by
 // [EvmPostTransactionReportParamsReportParamReportChainTransactionHashParams],
@@ -12008,8 +12014,13 @@ func (r EvmPostTransactionReportParamsReportParamReportChainTransactionHashParam
 }
 
 type EvmPostTransactionReportParamsReportRequestIDReport struct {
-	RequestID param.Field[string]                                                  `json:"request_id,required"`
-	Type      param.Field[EvmPostTransactionReportParamsReportRequestIDReportType] `json:"type,required"`
+	// The request ID of a previous request. This can be found in the value of the
+	// `x-request-id` field in the headers of the response of the previous request. For
+	// instance: `6c3cf6c1-a80d-4927-91b9-03d841ea61fe`.
+	RequestID param.Field[string] `json:"request_id,required"`
+	// The type identifier indicating that a request ID from a previous scan is being
+	// used.
+	Type param.Field[EvmPostTransactionReportParamsReportRequestIDReportType] `json:"type,required"`
 }
 
 func (r EvmPostTransactionReportParamsReportRequestIDReport) MarshalJSON() (data []byte, err error) {
@@ -12019,6 +12030,8 @@ func (r EvmPostTransactionReportParamsReportRequestIDReport) MarshalJSON() (data
 func (r EvmPostTransactionReportParamsReportRequestIDReport) implementsEvmPostTransactionReportParamsReportUnion() {
 }
 
+// The type identifier indicating that a request ID from a previous scan is being
+// used.
 type EvmPostTransactionReportParamsReportRequestIDReportType string
 
 const (
