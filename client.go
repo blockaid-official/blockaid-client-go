@@ -19,6 +19,7 @@ type Client struct {
 	Options            []option.RequestOption
 	Evm                *EvmService
 	Solana             *SolanaService
+	Hedera             *HederaService
 	Stellar            *StellarService
 	Bitcoin            *BitcoinService
 	Starknet           *StarknetService
@@ -63,6 +64,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 
 	r.Evm = NewEvmService(opts...)
 	r.Solana = NewSolanaService(opts...)
+	r.Hedera = NewHederaService(opts...)
 	r.Stellar = NewStellarService(opts...)
 	r.Bitcoin = NewBitcoinService(opts...)
 	r.Starknet = NewStarknetService(opts...)
