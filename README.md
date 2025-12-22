@@ -24,7 +24,7 @@ Or to pin the version:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/blockaid-official/blockaid-client-go@v0.66.0'
+go get -u 'github.com/blockaid-official/blockaid-client-go@v0.67.0'
 ```
 
 <!-- x-release-please-end -->
@@ -53,20 +53,18 @@ func main() {
 		option.WithAPIKey("My API Key"), // defaults to os.LookupEnv("BLOCKAID_CLIENT_API_KEY")
 		option.WithEnvironmentClient(),  // defaults to option.WithEnvironmentProduction()
 	)
-	transactionScanResponse, err := client.Evm.JsonRpc.Scan(context.TODO(), blockaidclientgo.EvmJsonRpcScanParams{
+	response, err := client.Evm.JsonRpc.Scan(context.TODO(), blockaidclientgo.EvmJsonRpcScanParams{
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
 		Data: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsData{
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDapp{}),
 	})
 	if err != nil {
 		panic(err.Error())
 	}
-	fmt.Printf("%+v\n", transactionScanResponse.Validation)
+	fmt.Printf("%+v\n", response.Validation)
 }
 
 ```
@@ -190,9 +188,7 @@ _, err := client.Evm.JsonRpc.Scan(context.TODO(), blockaidclientgo.EvmJsonRpcSca
 		Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 		Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 	}),
-	Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-		Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-	}),
+	Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDapp{}),
 })
 if err != nil {
 	var apierr *blockaidclientgo.Error
@@ -226,9 +222,7 @@ client.Evm.JsonRpc.Scan(
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDapp{}),
 	},
 	// This sets the per-retry timeout
 	option.WithRequestTimeout(20*time.Second),
@@ -271,9 +265,7 @@ client.Evm.JsonRpc.Scan(
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDapp{}),
 	},
 	option.WithMaxRetries(5),
 )
@@ -287,7 +279,7 @@ you need to examine response headers, status codes, or other details.
 ```go
 // Create a variable to store the HTTP response
 var response *http.Response
-transactionScanResponse, err := client.Evm.JsonRpc.Scan(
+response, err := client.Evm.JsonRpc.Scan(
 	context.TODO(),
 	blockaidclientgo.EvmJsonRpcScanParams{
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
@@ -295,16 +287,14 @@ transactionScanResponse, err := client.Evm.JsonRpc.Scan(
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
-		}),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDapp{}),
 	},
 	option.WithResponseInto(&response),
 )
 if err != nil {
 	// handle error
 }
-fmt.Printf("%+v\n", transactionScanResponse)
+fmt.Printf("%+v\n", response)
 
 fmt.Printf("Status Code: %d\n", response.StatusCode)
 fmt.Printf("Headers: %+#v\n", response.Header)

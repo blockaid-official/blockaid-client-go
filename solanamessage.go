@@ -47,7 +47,7 @@ func (r *SolanaMessageService) Scan(ctx context.Context, body SolanaMessageScanP
 type SolanaMessageScanResponse struct {
 	Encoding SolanaMessageScanResponseEncoding `json:"encoding,required"`
 	// Unique identifier of the request
-	RequestID string                          `json:"request_id,required"`
+	RequestID string                          `json:"request_id,required,nullable"`
 	Status    SolanaMessageScanResponseStatus `json:"status,required"`
 	// Error message if the simulation failed
 	Error string `json:"error,nullable"`
@@ -111,12 +111,12 @@ func (r SolanaMessageScanResponseStatus) IsKnown() bool {
 
 // Error details
 type SolanaMessageScanResponseErrorDetails struct {
-	// Advanced message of the error
-	Message string `json:"message,required"`
 	// Machine readable error code
 	Code string `json:"code,nullable"`
 	// Index of the instruction in the transaction
 	InstructionIndex int64 `json:"instruction_index"`
+	// Advanced message of the error
+	Message string `json:"message"`
 	// Error number
 	Number int64 `json:"number,nullable"`
 	// The program account that caused the error
@@ -131,9 +131,9 @@ type SolanaMessageScanResponseErrorDetails struct {
 // solanaMessageScanResponseErrorDetailsJSON contains the JSON metadata for the
 // struct [SolanaMessageScanResponseErrorDetails]
 type solanaMessageScanResponseErrorDetailsJSON struct {
-	Message          apijson.Field
 	Code             apijson.Field
 	InstructionIndex apijson.Field
+	Message          apijson.Field
 	Number           apijson.Field
 	ProgramAccount   apijson.Field
 	TransactionIndex apijson.Field
@@ -159,18 +159,20 @@ func (r *SolanaMessageScanResponseErrorDetails) UnmarshalJSON(data []byte) (err 
 // you can cast to the specific types for more type safety.
 //
 // Possible runtime types of the union are
-// [SolanaMessageScanResponseErrorDetailsSolanaAPIErrorDetails],
-// [SolanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetails],
-// [SolanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetails].
+// [SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetails],
+// [SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetails],
+// [SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetails].
 func (r SolanaMessageScanResponseErrorDetails) AsUnion() SolanaMessageScanResponseErrorDetailsUnion {
 	return r.union
 }
 
 // Error details
 //
-// Union satisfied by [SolanaMessageScanResponseErrorDetailsSolanaAPIErrorDetails],
-// [SolanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetails] or
-// [SolanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetails].
+// Union satisfied by
+// [SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetails],
+// [SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetails]
+// or
+// [SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetails].
 type SolanaMessageScanResponseErrorDetailsUnion interface {
 	implementsSolanaMessageScanResponseErrorDetails()
 }
@@ -181,134 +183,137 @@ func init() {
 		"type",
 		apijson.UnionVariant{
 			TypeFilter:         gjson.JSON,
-			Type:               reflect.TypeOf(SolanaMessageScanResponseErrorDetailsSolanaAPIErrorDetails{}),
+			Type:               reflect.TypeOf(SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetails{}),
 			DiscriminatorValue: "ApiError",
 		},
 		apijson.UnionVariant{
 			TypeFilter:         gjson.JSON,
-			Type:               reflect.TypeOf(SolanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetails{}),
+			Type:               reflect.TypeOf(SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetails{}),
 			DiscriminatorValue: "TransactionError",
 		},
 		apijson.UnionVariant{
 			TypeFilter:         gjson.JSON,
-			Type:               reflect.TypeOf(SolanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetails{}),
+			Type:               reflect.TypeOf(SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetails{}),
 			DiscriminatorValue: "InstructionError",
 		},
 	)
 }
 
-type SolanaMessageScanResponseErrorDetailsSolanaAPIErrorDetails struct {
+type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetails struct {
 	// Advanced message of the error
-	Message string                                                         `json:"message,required"`
-	Type    SolanaMessageScanResponseErrorDetailsSolanaAPIErrorDetailsType `json:"type"`
-	JSON    solanaMessageScanResponseErrorDetailsSolanaAPIErrorDetailsJSON `json:"-"`
+	Message     string                                                                                                          `json:"message"`
+	Type        SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsType `json:"type"`
+	ExtraFields map[string]interface{}                                                                                          `json:"-,extras"`
+	JSON        solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsJSON `json:"-"`
 }
 
-// solanaMessageScanResponseErrorDetailsSolanaAPIErrorDetailsJSON contains the JSON
-// metadata for the struct
-// [SolanaMessageScanResponseErrorDetailsSolanaAPIErrorDetails]
-type solanaMessageScanResponseErrorDetailsSolanaAPIErrorDetailsJSON struct {
+// solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsJSON
+// contains the JSON metadata for the struct
+// [SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetails]
+type solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsJSON struct {
 	Message     apijson.Field
 	Type        apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseErrorDetailsSolanaAPIErrorDetails) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetails) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseErrorDetailsSolanaAPIErrorDetailsJSON) RawJSON() string {
+func (r solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseErrorDetailsSolanaAPIErrorDetails) implementsSolanaMessageScanResponseErrorDetails() {
+func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetails) implementsSolanaMessageScanResponseErrorDetails() {
 }
 
-type SolanaMessageScanResponseErrorDetailsSolanaAPIErrorDetailsType string
+type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsType string
 
 const (
-	SolanaMessageScanResponseErrorDetailsSolanaAPIErrorDetailsTypeAPIError SolanaMessageScanResponseErrorDetailsSolanaAPIErrorDetailsType = "ApiError"
+	SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsTypeAPIError SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsType = "ApiError"
 )
 
-func (r SolanaMessageScanResponseErrorDetailsSolanaAPIErrorDetailsType) IsKnown() bool {
+func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseErrorDetailsSolanaAPIErrorDetailsTypeAPIError:
+	case SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsTypeAPIError:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetails struct {
-	// Advanced message of the error
-	Message string `json:"message,required"`
+type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetails struct {
 	// Index of the transaction in the bulk
-	TransactionIndex int64                                                                  `json:"transaction_index,required"`
-	Type             SolanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetailsType `json:"type"`
-	JSON             solanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetailsJSON `json:"-"`
+	TransactionIndex int64 `json:"transaction_index,required"`
+	// Advanced message of the error
+	Message     string                                                                                                                  `json:"message"`
+	Type        SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsType `json:"type"`
+	ExtraFields map[string]interface{}                                                                                                  `json:"-,extras"`
+	JSON        solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsJSON `json:"-"`
 }
 
-// solanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetailsJSON contains
-// the JSON metadata for the struct
-// [SolanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetails]
-type solanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetailsJSON struct {
-	Message          apijson.Field
+// solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsJSON
+// contains the JSON metadata for the struct
+// [SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetails]
+type solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsJSON struct {
 	TransactionIndex apijson.Field
+	Message          apijson.Field
 	Type             apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetails) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetails) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetailsJSON) RawJSON() string {
+func (r solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetails) implementsSolanaMessageScanResponseErrorDetails() {
+func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetails) implementsSolanaMessageScanResponseErrorDetails() {
 }
 
-type SolanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetailsType string
+type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsType string
 
 const (
-	SolanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetailsTypeTransactionError SolanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetailsType = "TransactionError"
+	SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsTypeTransactionError SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsType = "TransactionError"
 )
 
-func (r SolanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetailsType) IsKnown() bool {
+func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseErrorDetailsSolanaTransactionErrorDetailsTypeTransactionError:
+	case SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsTypeTransactionError:
 		return true
 	}
 	return false
 }
 
-type SolanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetails struct {
+type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetails struct {
 	// Index of the instruction in the transaction
 	InstructionIndex int64 `json:"instruction_index,required"`
-	// Human readable error
-	Message string `json:"message,required"`
 	// Index of the transaction in the bulk
 	TransactionIndex int64 `json:"transaction_index,required"`
 	// Machine readable error code
 	Code string `json:"code,nullable"`
+	// Human readable error
+	Message string `json:"message"`
 	// Error number
 	Number int64 `json:"number,nullable"`
 	// The program account that caused the error
-	ProgramAccount string                                                                 `json:"program_account,nullable"`
-	Type           SolanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetailsType `json:"type"`
-	JSON           solanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetailsJSON `json:"-"`
+	ProgramAccount string                                                                                                                  `json:"program_account,nullable"`
+	Type           SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsType `json:"type"`
+	ExtraFields    map[string]interface{}                                                                                                  `json:"-,extras"`
+	JSON           solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsJSON `json:"-"`
 }
 
-// solanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetailsJSON contains
-// the JSON metadata for the struct
-// [SolanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetails]
-type solanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetailsJSON struct {
+// solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsJSON
+// contains the JSON metadata for the struct
+// [SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetails]
+type solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsJSON struct {
 	InstructionIndex apijson.Field
-	Message          apijson.Field
 	TransactionIndex apijson.Field
 	Code             apijson.Field
+	Message          apijson.Field
 	Number           apijson.Field
 	ProgramAccount   apijson.Field
 	Type             apijson.Field
@@ -316,26 +321,26 @@ type solanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetailsJSON stru
 	ExtraFields      map[string]apijson.Field
 }
 
-func (r *SolanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetails) UnmarshalJSON(data []byte) (err error) {
+func (r *SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetails) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r solanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetailsJSON) RawJSON() string {
+func (r solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsJSON) RawJSON() string {
 	return r.raw
 }
 
-func (r SolanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetails) implementsSolanaMessageScanResponseErrorDetails() {
+func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetails) implementsSolanaMessageScanResponseErrorDetails() {
 }
 
-type SolanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetailsType string
+type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsType string
 
 const (
-	SolanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetailsTypeInstructionError SolanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetailsType = "InstructionError"
+	SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsTypeInstructionError SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsType = "InstructionError"
 )
 
-func (r SolanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetailsType) IsKnown() bool {
+func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsType) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanResponseErrorDetailsSolanaInstructionErrorDetailsTypeInstructionError:
+	case SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsTypeInstructionError:
 		return true
 	}
 	return false
@@ -397,8 +402,9 @@ type SolanaMessageScanResponseResultSimulation struct {
 	AssetsDiff map[string][]SolanaMessageScanResponseResultSimulationAssetsDiff `json:"assets_diff"`
 	// Mapping between the address of an account to the exposure of the assets during
 	// the transaction
-	Delegations map[string][]SolanaMessageScanResponseResultSimulationDelegation `json:"delegations"`
-	JSON        solanaMessageScanResponseResultSimulationJSON                    `json:"-"`
+	Delegations        map[string][]SolanaMessageScanResponseResultSimulationDelegation `json:"delegations"`
+	TransactionActions []SolanaMessageScanResponseResultSimulationTransactionActions    `json:"transaction_actions,nullable"`
+	JSON               solanaMessageScanResponseResultSimulationJSON                    `json:"-"`
 }
 
 // solanaMessageScanResponseResultSimulationJSON contains the JSON metadata for the
@@ -409,6 +415,7 @@ type solanaMessageScanResponseResultSimulationJSON struct {
 	AccountsDetails     apijson.Field
 	AssetsDiff          apijson.Field
 	Delegations         apijson.Field
+	TransactionActions  apijson.Field
 	raw                 string
 	ExtraFields         map[string]apijson.Field
 }
@@ -4653,6 +4660,29 @@ func (r solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSpl
 	return r.raw
 }
 
+type SolanaMessageScanResponseResultSimulationTransactionActions string
+
+const (
+	SolanaMessageScanResponseResultSimulationTransactionActionsNativeWrap      SolanaMessageScanResponseResultSimulationTransactionActions = "native_wrap"
+	SolanaMessageScanResponseResultSimulationTransactionActionsNativeTransfer  SolanaMessageScanResponseResultSimulationTransactionActions = "native_transfer"
+	SolanaMessageScanResponseResultSimulationTransactionActionsTokenTransfer   SolanaMessageScanResponseResultSimulationTransactionActions = "token_transfer"
+	SolanaMessageScanResponseResultSimulationTransactionActionsSwap            SolanaMessageScanResponseResultSimulationTransactionActions = "swap"
+	SolanaMessageScanResponseResultSimulationTransactionActionsMint            SolanaMessageScanResponseResultSimulationTransactionActions = "mint"
+	SolanaMessageScanResponseResultSimulationTransactionActionsStake           SolanaMessageScanResponseResultSimulationTransactionActions = "stake"
+	SolanaMessageScanResponseResultSimulationTransactionActionsApproval        SolanaMessageScanResponseResultSimulationTransactionActions = "approval"
+	SolanaMessageScanResponseResultSimulationTransactionActionsProxyUpgrade    SolanaMessageScanResponseResultSimulationTransactionActions = "proxy_upgrade"
+	SolanaMessageScanResponseResultSimulationTransactionActionsOwnershipChange SolanaMessageScanResponseResultSimulationTransactionActions = "ownership_change"
+	SolanaMessageScanResponseResultSimulationTransactionActionsSetCodeAccount  SolanaMessageScanResponseResultSimulationTransactionActions = "set_code_account"
+)
+
+func (r SolanaMessageScanResponseResultSimulationTransactionActions) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseResultSimulationTransactionActionsNativeWrap, SolanaMessageScanResponseResultSimulationTransactionActionsNativeTransfer, SolanaMessageScanResponseResultSimulationTransactionActionsTokenTransfer, SolanaMessageScanResponseResultSimulationTransactionActionsSwap, SolanaMessageScanResponseResultSimulationTransactionActionsMint, SolanaMessageScanResponseResultSimulationTransactionActionsStake, SolanaMessageScanResponseResultSimulationTransactionActionsApproval, SolanaMessageScanResponseResultSimulationTransactionActionsProxyUpgrade, SolanaMessageScanResponseResultSimulationTransactionActionsOwnershipChange, SolanaMessageScanResponseResultSimulationTransactionActionsSetCodeAccount:
+		return true
+	}
+	return false
+}
+
 // Transaction Validation Result
 type SolanaMessageScanResponseResultValidation struct {
 	// A list of features explaining what is happening in the transaction in different
@@ -4759,7 +4789,7 @@ type SolanaMessageScanParams struct {
 	Metadata       param.Field[SolanaMessageScanParamsMetadata] `json:"metadata,required"`
 	// Transactions to scan
 	Transactions param.Field[[]string]                        `json:"transactions,required"`
-	Chain        param.Field[string]                          `json:"chain"`
+	Chain        param.Field[SolanaMessageScanParamsChain]    `json:"chain"`
 	Encoding     param.Field[SolanaMessageScanParamsEncoding] `json:"encoding"`
 	// The RPC method used by the dApp to propose the transaction
 	Method param.Field[string] `json:"method"`
@@ -4782,6 +4812,28 @@ type SolanaMessageScanParamsMetadata struct {
 
 func (r SolanaMessageScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type SolanaMessageScanParamsChain string
+
+const (
+	SolanaMessageScanParamsChainMainnet                           SolanaMessageScanParamsChain = "mainnet"
+	SolanaMessageScanParamsChainTestnet                           SolanaMessageScanParamsChain = "testnet"
+	SolanaMessageScanParamsChainDevnet                            SolanaMessageScanParamsChain = "devnet"
+	SolanaMessageScanParamsChainEclipseMainnet                    SolanaMessageScanParamsChain = "eclipse_mainnet"
+	SolanaMessageScanParamsChainEclipseDevnet                     SolanaMessageScanParamsChain = "eclipse_devnet"
+	SolanaMessageScanParamsChainSonicMainnet                      SolanaMessageScanParamsChain = "sonic_mainnet"
+	SolanaMessageScanParamsChain5eykt4UsFv8P8NJdTrEpY1vzqKqZKvdp  SolanaMessageScanParamsChain = "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"
+	SolanaMessageScanParamsChainEtWtrabZaYq6iMfeYKouRu166Vu2xqa1  SolanaMessageScanParamsChain = "EtWTRABZaYq6iMfeYKouRu166VU2xqa1"
+	SolanaMessageScanParamsChainEaqljcv2mh23BsK2P9oYpV5ChvldnhTxY SolanaMessageScanParamsChain = "EAQLJCV2mh23BsK2P9oYpV5CHVLDNHTxY"
+)
+
+func (r SolanaMessageScanParamsChain) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanParamsChainMainnet, SolanaMessageScanParamsChainTestnet, SolanaMessageScanParamsChainDevnet, SolanaMessageScanParamsChainEclipseMainnet, SolanaMessageScanParamsChainEclipseDevnet, SolanaMessageScanParamsChainSonicMainnet, SolanaMessageScanParamsChain5eykt4UsFv8P8NJdTrEpY1vzqKqZKvdp, SolanaMessageScanParamsChainEtWtrabZaYq6iMfeYKouRu166Vu2xqa1, SolanaMessageScanParamsChainEaqljcv2mh23BsK2P9oYpV5ChvldnhTxY:
+		return true
+	}
+	return false
 }
 
 type SolanaMessageScanParamsEncoding string

@@ -53,8 +53,8 @@ func TestEvmUserOperationScanWithOptionalParams(t *testing.T) {
 			}),
 			Entrypoint: blockaidclientgo.F("0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmUserOperationScanParamsMetadata{
-			Domain: blockaidclientgo.F("example.com"),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmUserOperationScanParamsMetadataUnion](blockaidclientgo.EvmUserOperationScanParamsMetadataRoutersEvmModelsMetadataNonDapp{
+			NonDapp: blockaidclientgo.F(blockaidclientgo.EvmUserOperationScanParamsMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
 		}),
 		AccountAddress:                blockaidclientgo.F("0x77bA5AC3ca4864be26CA3112baDf07286CcC3324"),
 		Block:                         blockaidclientgo.F[blockaidclientgo.EvmUserOperationScanParamsBlockUnion](shared.UnionString("0x5c6fd5")),

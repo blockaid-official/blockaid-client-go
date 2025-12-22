@@ -188,6 +188,10 @@ type TokenBulkScanResponseResultsFinancialStats struct {
 	// Percentage of token's supply _currently_ held by sniper bots (0.0 to 100.0).
 	// Currently available for Solana only.
 	InitialSnipersHoldingPercentage float64 `json:"initial_snipers_holding_percentage,nullable"`
+	// Percentage of supply that is currently held by insiders - defined as wallets
+	// exhibiting early acquisition behaviors typically associated with insider
+	// activity.
+	InsidersHoldingPercentage float64 `json:"insiders_holding_percentage,nullable"`
 	// Token liquidity locked percentage
 	LockedLiquidityPercentage float64 `json:"locked_liquidity_percentage,nullable"`
 	// Percentage of token's supply _initially_ held by sniper bots (0.0 to 100.0).
@@ -212,6 +216,7 @@ type tokenBulkScanResponseResultsFinancialStatsJSON struct {
 	DevHoldingPercentage            apijson.Field
 	HoldersCount                    apijson.Field
 	InitialSnipersHoldingPercentage apijson.Field
+	InsidersHoldingPercentage       apijson.Field
 	LockedLiquidityPercentage       apijson.Field
 	SnipersHoldingPercentage        apijson.Field
 	Supply                          apijson.Field
@@ -299,6 +304,8 @@ type TokenBulkScanResponseResultsMetadata struct {
 	// [TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance],
 	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalance].
 	OwnerBalance interface{} `json:"owner_balance"`
+	// Solana token permanent delegate account
+	PermanentDelegate string `json:"permanent_delegate,nullable"`
 	// Symbol of the token
 	Symbol string `json:"symbol,nullable"`
 	// Address of the token creation initiator, only set if the tokens was created by a
@@ -334,6 +341,7 @@ type tokenBulkScanResponseResultsMetadataJSON struct {
 	Number                 apijson.Field
 	Owner                  apijson.Field
 	OwnerBalance           apijson.Field
+	PermanentDelegate      apijson.Field
 	Symbol                 apijson.Field
 	TokenCreationInitiator apijson.Field
 	Type                   apijson.Field
@@ -424,6 +432,8 @@ type TokenBulkScanResponseResultsMetadataSolanaMetadata struct {
 	Owner string `json:"owner,nullable"`
 	// Contract owner balance
 	OwnerBalance TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance `json:"owner_balance,nullable"`
+	// Solana token permanent delegate account
+	PermanentDelegate string `json:"permanent_delegate,nullable"`
 	// Symbol of the token
 	Symbol string `json:"symbol,nullable"`
 	// Address of the token creation initiator, only set if the tokens was created by a
@@ -455,6 +465,7 @@ type tokenBulkScanResponseResultsMetadataSolanaMetadataJSON struct {
 	Name                   apijson.Field
 	Owner                  apijson.Field
 	OwnerBalance           apijson.Field
+	PermanentDelegate      apijson.Field
 	Symbol                 apijson.Field
 	TokenCreationInitiator apijson.Field
 	Type                   apijson.Field

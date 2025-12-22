@@ -32,8 +32,8 @@ func TestEvmJsonRpcScanWithOptionalParams(t *testing.T) {
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}}),
 		}),
-		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
-			Domain: blockaidclientgo.F("https://boredapeyartclub.com"),
+		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDapp{
+			NonDapp: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
 		}),
 		AccountAddress:           blockaidclientgo.F("0x49c73c9d361c04769a452E85D343b41aC38e0EE4"),
 		Block:                    blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsBlockUnion](shared.UnionString("18370320")),

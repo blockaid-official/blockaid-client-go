@@ -177,6 +177,10 @@ type TokenScanResponseFinancialStats struct {
 	// Percentage of token's supply _currently_ held by sniper bots (0.0 to 100.0).
 	// Currently available for Solana only.
 	InitialSnipersHoldingPercentage float64 `json:"initial_snipers_holding_percentage,nullable"`
+	// Percentage of supply that is currently held by insiders - defined as wallets
+	// exhibiting early acquisition behaviors typically associated with insider
+	// activity.
+	InsidersHoldingPercentage float64 `json:"insiders_holding_percentage,nullable"`
 	// Token liquidity locked percentage
 	LockedLiquidityPercentage float64 `json:"locked_liquidity_percentage,nullable"`
 	// Percentage of token's supply _initially_ held by sniper bots (0.0 to 100.0).
@@ -201,6 +205,7 @@ type tokenScanResponseFinancialStatsJSON struct {
 	DevHoldingPercentage            apijson.Field
 	HoldersCount                    apijson.Field
 	InitialSnipersHoldingPercentage apijson.Field
+	InsidersHoldingPercentage       apijson.Field
 	LockedLiquidityPercentage       apijson.Field
 	SnipersHoldingPercentage        apijson.Field
 	Supply                          apijson.Field
@@ -288,6 +293,8 @@ type TokenScanResponseMetadata struct {
 	// [TokenScanResponseMetadataSolanaMetadataOwnerBalance],
 	// [TokenScanResponseMetadataEvmMetadataTokenOwnerBalance].
 	OwnerBalance interface{} `json:"owner_balance"`
+	// Solana token permanent delegate account
+	PermanentDelegate string `json:"permanent_delegate,nullable"`
 	// Symbol of the token
 	Symbol string `json:"symbol,nullable"`
 	// Address of the token creation initiator, only set if the tokens was created by a
@@ -323,6 +330,7 @@ type tokenScanResponseMetadataJSON struct {
 	Number                 apijson.Field
 	Owner                  apijson.Field
 	OwnerBalance           apijson.Field
+	PermanentDelegate      apijson.Field
 	Symbol                 apijson.Field
 	TokenCreationInitiator apijson.Field
 	Type                   apijson.Field
@@ -413,6 +421,8 @@ type TokenScanResponseMetadataSolanaMetadata struct {
 	Owner string `json:"owner,nullable"`
 	// Contract owner balance
 	OwnerBalance TokenScanResponseMetadataSolanaMetadataOwnerBalance `json:"owner_balance,nullable"`
+	// Solana token permanent delegate account
+	PermanentDelegate string `json:"permanent_delegate,nullable"`
 	// Symbol of the token
 	Symbol string `json:"symbol,nullable"`
 	// Address of the token creation initiator, only set if the tokens was created by a
@@ -444,6 +454,7 @@ type tokenScanResponseMetadataSolanaMetadataJSON struct {
 	Name                   apijson.Field
 	Owner                  apijson.Field
 	OwnerBalance           apijson.Field
+	PermanentDelegate      apijson.Field
 	Symbol                 apijson.Field
 	TokenCreationInitiator apijson.Field
 	Type                   apijson.Field
@@ -1024,9 +1035,10 @@ func (r TokenScanResponseFeaturesType) IsKnown() bool {
 type TokenReportParams struct {
 	// Details about the report.
 	Details param.Field[string] `json:"details,required"`
-	// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
+	// The event type of the report. Could be `FALSE_POSITIVE` or `FALSE_NEGATIVE`.
 	Event param.Field[TokenReportParamsEvent] `json:"event,required"`
-	// The report parameters.
+	// Parameters identifying the token to report, provided either as token details
+	// (address and chain) or as a request ID from a previous scan.
 	Report param.Field[TokenReportParamsReportUnion] `json:"report,required"`
 }
 
@@ -1034,7 +1046,7 @@ func (r TokenReportParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// The event type of the report. Could be FALSE_POSITIVE or FALSE_NEGATIVE.
+// The event type of the report. Could be `FALSE_POSITIVE` or `FALSE_NEGATIVE`.
 type TokenReportParamsEvent string
 
 const (
@@ -1050,11 +1062,15 @@ func (r TokenReportParamsEvent) IsKnown() bool {
 	return false
 }
 
-// The report parameters.
+// Parameters identifying the token to report, provided either as token details
+// (address and chain) or as a request ID from a previous scan.
 type TokenReportParamsReport struct {
-	Type      param.Field[TokenReportParamsReportType] `json:"type,required"`
-	Params    param.Field[interface{}]                 `json:"params"`
-	RequestID param.Field[string]                      `json:"request_id"`
+	Type   param.Field[TokenReportParamsReportType] `json:"type,required"`
+	Params param.Field[interface{}]                 `json:"params"`
+	// The request ID of a previous request. This can be found in the value of the
+	// `x-request-id` field in the headers of the response of the previous request. For
+	// instance: `6c3cf6c1-a80d-4927-91b9-03d841ea61fe`.
+	RequestID param.Field[string] `json:"request_id"`
 }
 
 func (r TokenReportParamsReport) MarshalJSON() (data []byte, err error) {
@@ -1063,7 +1079,8 @@ func (r TokenReportParamsReport) MarshalJSON() (data []byte, err error) {
 
 func (r TokenReportParamsReport) implementsTokenReportParamsReportUnion() {}
 
-// The report parameters.
+// Parameters identifying the token to report, provided either as token details
+// (address and chain) or as a request ID from a previous scan.
 //
 // Satisfied by [TokenReportParamsReportParamReportTokenReportParams],
 // [TokenReportParamsReportRequestIDReport], [TokenReportParamsReport].
@@ -1109,8 +1126,13 @@ func (r TokenReportParamsReportParamReportTokenReportParamsType) IsKnown() bool 
 }
 
 type TokenReportParamsReportRequestIDReport struct {
-	RequestID param.Field[string]                                     `json:"request_id,required"`
-	Type      param.Field[TokenReportParamsReportRequestIDReportType] `json:"type,required"`
+	// The request ID of a previous request. This can be found in the value of the
+	// `x-request-id` field in the headers of the response of the previous request. For
+	// instance: `6c3cf6c1-a80d-4927-91b9-03d841ea61fe`.
+	RequestID param.Field[string] `json:"request_id,required"`
+	// The type identifier indicating that a request ID from a previous scan is being
+	// used.
+	Type param.Field[TokenReportParamsReportRequestIDReportType] `json:"type,required"`
 }
 
 func (r TokenReportParamsReportRequestIDReport) MarshalJSON() (data []byte, err error) {
@@ -1119,6 +1141,8 @@ func (r TokenReportParamsReportRequestIDReport) MarshalJSON() (data []byte, err 
 
 func (r TokenReportParamsReportRequestIDReport) implementsTokenReportParamsReportUnion() {}
 
+// The type identifier indicating that a request ID from a previous scan is being
+// used.
 type TokenReportParamsReportRequestIDReportType string
 
 const (

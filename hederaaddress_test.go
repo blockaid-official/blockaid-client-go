@@ -13,7 +13,7 @@ import (
 	"github.com/blockaid-official/blockaid-client-go/option"
 )
 
-func TestSolanaAddressScanWithOptionalParams(t *testing.T) {
+func TestHederaAddressScan(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -25,9 +25,9 @@ func TestSolanaAddressScanWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Solana.Address.Scan(context.TODO(), blockaidclientgo.SolanaAddressScanParams{
-		Address: blockaidclientgo.F("2ojv9BAiHUrvsm9gxDe7fJSzbNZSJcxZvf8dqmWGHG8S"),
-		Chain:   blockaidclientgo.F(blockaidclientgo.SolanaAddressScanParamsChainMainnet),
+	_, err := client.Hedera.Address.Scan(context.TODO(), blockaidclientgo.HederaAddressScanParams{
+		Address: blockaidclientgo.F("0.0.1456986"),
+		Chain:   blockaidclientgo.F(blockaidclientgo.HederaAddressScanParamsChainMainnet),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
