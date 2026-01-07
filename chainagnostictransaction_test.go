@@ -32,9 +32,10 @@ func TestChainAgnosticTransactionScanWithOptionalParams(t *testing.T) {
 			Asset: blockaidclientgo.F[blockaidclientgo.ChainAgnosticTransactionScanParamsDataAssetUnion](blockaidclientgo.ChainAgnosticTransactionScanParamsDataAssetAssetSymbol{
 				Symbol: blockaidclientgo.F("BTC"),
 			}),
-			Chain: blockaidclientgo.F(blockaidclientgo.ChainAgnosticTransactionScanParamsDataChainBitcoin),
-			To:    blockaidclientgo.F("bc1qanrfutwqh854g74lqrygr55jkgf99em4lpfm80"),
-			From:  blockaidclientgo.F("from"),
+			Chain:             blockaidclientgo.F(blockaidclientgo.ChainAgnosticTransactionScanParamsDataChainBitcoin),
+			To:                blockaidclientgo.F("bc1qanrfutwqh854g74lqrygr55jkgf99em4lpfm80"),
+			From:              blockaidclientgo.F("from"),
+			TransactionAction: blockaidclientgo.F(blockaidclientgo.ChainAgnosticTransactionScanParamsDataTransactionActionWithdrawal),
 		}),
 		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
 			Account: blockaidclientgo.F(blockaidclientgo.MetadataParamAccount{
