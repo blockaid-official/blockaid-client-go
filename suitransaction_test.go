@@ -30,7 +30,7 @@ func TestSuiTransactionScanWithOptionalParams(t *testing.T) {
 		Chain:          blockaidclientgo.F(blockaidclientgo.SuiTransactionScanParamsChainMainnet),
 		Metadata: blockaidclientgo.F[blockaidclientgo.SuiTransactionScanParamsMetadataUnion](blockaidclientgo.SuiTransactionScanParamsMetadataSuiWalletRequestMetadata{
 			Type: blockaidclientgo.F(blockaidclientgo.SuiTransactionScanParamsMetadataSuiWalletRequestMetadataTypeWallet),
-			URL:  blockaidclientgo.F("localhost"),
+			URL:  blockaidclientgo.F("https://example.com"),
 		}),
 		Transaction: blockaidclientgo.F("AAACAAgA4fUFAAAAAAAgHvls2mKzo/48s/fPdWP8xKtE4BhIjR2O8gMaZ6bI1+sCAgABAQAAAQECAAABAQBF6Qs+ouGSDEPZLSJGMNaoZcG1intOdwwqwVbqsw60kQFySkLceU6uis9QxxK4CDYqttqK3ilc9/yEcCgxdaeA0cl/xhwAAAAAIEuXU9TpAtIJmbPVFpxdc70+RWUqlSrfyIUKT9q1Au0ERekLPqLhkgxD2S0iRjDWqGXBtYp7TncMKsFW6rMOtJHuAgAAAAAAACAKNQAAAAAAAA=="),
 		Options:     blockaidclientgo.F([]blockaidclientgo.SuiTransactionScanParamsOption{blockaidclientgo.SuiTransactionScanParamsOptionSimulation}),
