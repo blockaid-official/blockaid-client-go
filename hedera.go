@@ -13,8 +13,9 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewHederaService] method instead.
 type HederaService struct {
-	Options []option.RequestOption
-	Address *HederaAddressService
+	Options     []option.RequestOption
+	Transaction *HederaTransactionService
+	Address     *HederaAddressService
 }
 
 // NewHederaService generates a new service that applies the given options to each
@@ -23,6 +24,7 @@ type HederaService struct {
 func NewHederaService(opts ...option.RequestOption) (r *HederaService) {
 	r = &HederaService{}
 	r.Options = opts
+	r.Transaction = NewHederaTransactionService(opts...)
 	r.Address = NewHederaAddressService(opts...)
 	return
 }

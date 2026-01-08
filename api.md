@@ -135,6 +135,16 @@ Methods:
 
 # Hedera
 
+## Transaction
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#HederaTransactionScanResponse">HederaTransactionScanResponse</a>
+
+Methods:
+
+- <code title="post /v0/hedera/transaction/scan">client.Hedera.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#HederaTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#HederaTransactionScanParams">HederaTransactionScanParams</a>) (<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#HederaTransactionScanResponse">HederaTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
 ## Address
 
 Response Types:
