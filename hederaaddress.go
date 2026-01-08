@@ -151,8 +151,7 @@ func (r HederaAddressScanResponseFeaturesType) IsKnown() bool {
 type HederaAddressScanParams struct {
 	// The address to validate.
 	Address param.Field[string] `json:"address,required"`
-	// The Hedera network on which the address exists. Possible values are `mainnet` or
-	// `testnet`.
+	// The chain the transaction runs on.
 	Chain param.Field[HederaAddressScanParamsChain] `json:"chain,required"`
 }
 
@@ -160,18 +159,16 @@ func (r HederaAddressScanParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// The Hedera network on which the address exists. Possible values are `mainnet` or
-// `testnet`.
+// The chain the transaction runs on.
 type HederaAddressScanParamsChain string
 
 const (
 	HederaAddressScanParamsChainMainnet HederaAddressScanParamsChain = "mainnet"
-	HederaAddressScanParamsChainTestnet HederaAddressScanParamsChain = "testnet"
 )
 
 func (r HederaAddressScanParamsChain) IsKnown() bool {
 	switch r {
-	case HederaAddressScanParamsChainMainnet, HederaAddressScanParamsChainTestnet:
+	case HederaAddressScanParamsChainMainnet:
 		return true
 	}
 	return false
