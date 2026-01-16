@@ -50,7 +50,7 @@ func (r *EvmAddressBulkService) ScanExtended(ctx context.Context, body EvmAddres
 
 type EvmAddressBulkScanResponse map[string]EvmAddressBulkScanResponseItem
 
-// An enumeration.
+// Overall validation outcome for the scan.
 type EvmAddressBulkScanResponseItem string
 
 const (

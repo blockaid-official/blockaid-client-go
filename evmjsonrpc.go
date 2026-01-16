@@ -4269,7 +4269,7 @@ func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationA
 	return false
 }
 
-// An enumeration.
+// Label assigned to a trace entry.
 type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceLabels string
 
 const (
@@ -4595,7 +4595,7 @@ func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationA
 	return false
 }
 
-// An enumeration.
+// Label assigned to a trace entry.
 type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceLabels string
 
 const (
@@ -4924,7 +4924,7 @@ func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationA
 	return false
 }
 
-// An enumeration.
+// Label assigned to a trace entry.
 type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceLabels string
 
 const (
@@ -5099,7 +5099,7 @@ func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationA
 	return false
 }
 
-// An enumeration.
+// Label assigned to a trace entry.
 type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceLabels string
 
 const (
@@ -9278,7 +9278,8 @@ func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationS
 }
 
 type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysCallPolicyArg struct {
-	// An enumeration.
+	// Comparison operator used to evaluate an argument/value against a policy
+	// constraint.
 	Condition EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysCallPolicyArgsCondition `json:"condition,required"`
 	Index     int64                                                                                                                                 `json:"index,required"`
 	Value     string                                                                                                                                `json:"value,required"`
@@ -9304,7 +9305,8 @@ func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationS
 	return r.raw
 }
 
-// An enumeration.
+// Comparison operator used to evaluate an argument/value against a policy
+// constraint.
 type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysCallPolicyArgsCondition string
 
 const (
@@ -9481,7 +9483,7 @@ func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationT
 	return r.raw
 }
 
-// An enumeration.
+// Type of action performed in the transaction.
 type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions string
 
 const (
@@ -11487,7 +11489,7 @@ type EvmJsonRpcScanResponseValidation struct {
 	// [[]EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationFeature],
 	// [[]EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationErrorFeature].
 	Features interface{} `json:"features,required"`
-	// An enumeration.
+	// Result type returned when validation succeeds.
 	ResultType EvmJsonRpcScanResponseValidationResultType `json:"result_type,required"`
 	// A string indicating if the simulation was successful or not.
 	Status EvmJsonRpcScanResponseValidationStatus `json:"status,required"`
@@ -11568,7 +11570,7 @@ func init() {
 type EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidation struct {
 	// A list of features about this transaction explaining the validation.
 	Features []EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationFeature `json:"features,required"`
-	// An enumeration.
+	// Result type returned when validation succeeds.
 	ResultType EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationResultType `json:"result_type,required"`
 	// A string indicating if the simulation was successful or not.
 	Status EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationStatus `json:"status,required"`
@@ -11614,7 +11616,7 @@ type EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationFeat
 	Description string `json:"description,required"`
 	// Feature name
 	FeatureID string `json:"feature_id,required"`
-	// An enumeration.
+	// Security result of a transaction scan feature.
 	Type EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationFeaturesType `json:"type,required"`
 	// Address the feature refers to
 	Address string `json:"address"`
@@ -11644,7 +11646,7 @@ func (r evmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationF
 	return r.raw
 }
 
-// An enumeration.
+// Security result of a transaction scan feature.
 type EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationFeaturesType string
 
 const (
@@ -11662,7 +11664,7 @@ func (r EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationF
 	return false
 }
 
-// An enumeration.
+// Result type returned when validation succeeds.
 type EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationResultType string
 
 const (
@@ -11778,7 +11780,7 @@ type EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationErro
 	Description string `json:"description,required"`
 	// Feature name
 	FeatureID string `json:"feature_id,required"`
-	// An enumeration.
+	// Security result of a transaction scan feature.
 	Type EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationErrorFeaturesType `json:"type,required"`
 	// Address the feature refers to
 	Address string `json:"address"`
@@ -11808,7 +11810,7 @@ func (r evmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationE
 	return r.raw
 }
 
-// An enumeration.
+// Security result of a transaction scan feature.
 type EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationErrorFeaturesType string
 
 const (
@@ -11872,7 +11874,7 @@ func (r EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationE
 	return false
 }
 
-// An enumeration.
+// Result type returned when validation succeeds.
 type EvmJsonRpcScanResponseValidationResultType string
 
 const (
@@ -11910,7 +11912,8 @@ type EvmJsonRpcScanParams struct {
 	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
 	// JSON-RPC request that was received by the wallet.
 	Data param.Field[EvmJsonRpcScanParamsData] `json:"data,required"`
-	// Object of additional information to validate against.
+	// Additional context for the scan (e.g., dapp URL/domain, integration source).
+	// Used to enrich results and reduce false positives/negatives.
 	Metadata param.Field[EvmJsonRpcScanParamsMetadataUnion] `json:"metadata,required"`
 	// The address of the account (wallet) that received the request, in hex string
 	// format
@@ -11935,7 +11938,7 @@ func (r EvmJsonRpcScanParams) MarshalJSON() (data []byte, err error) {
 
 // JSON-RPC request that was received by the wallet.
 type EvmJsonRpcScanParamsData struct {
-	// An enumeration.
+	// Supported JSON-RPC methods that can be scanned.
 	Method param.Field[EvmJsonRpcScanParamsDataMethod] `json:"method,required"`
 	// The parameters of the JSON-RPC request in JSON format
 	Params param.Field[[]interface{}] `json:"params,required"`
@@ -11945,7 +11948,7 @@ func (r EvmJsonRpcScanParamsData) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// An enumeration.
+// Supported JSON-RPC methods that can be scanned.
 type EvmJsonRpcScanParamsDataMethod string
 
 const (
@@ -11971,7 +11974,8 @@ func (r EvmJsonRpcScanParamsDataMethod) IsKnown() bool {
 	return false
 }
 
-// Object of additional information to validate against.
+// Additional context for the scan (e.g., dapp URL/domain, integration source).
+// Used to enrich results and reduce false positives/negatives.
 type EvmJsonRpcScanParamsMetadata struct {
 	// The full URL of the DApp or website that initiated the transaction, for
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
@@ -11987,7 +11991,8 @@ func (r EvmJsonRpcScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 
 func (r EvmJsonRpcScanParamsMetadata) implementsEvmJsonRpcScanParamsMetadataUnion() {}
 
-// Object of additional information to validate against.
+// Additional context for the scan (e.g., dapp URL/domain, integration source).
+// Used to enrich results and reduce false positives/negatives.
 //
 // Satisfied by [EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDapp],
 // [EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDapp],
@@ -12059,7 +12064,8 @@ type EvmJsonRpcScanParamsBlockUnion interface {
 	ImplementsEvmJsonRpcScanParamsBlockUnion()
 }
 
-// An enumeration.
+// Response sections to include (e.g., validation, simulation, gas estimation,
+// events).
 type EvmJsonRpcScanParamsOption string
 
 const (

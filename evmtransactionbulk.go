@@ -4271,7 +4271,7 @@ func (r EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSim
 	return false
 }
 
-// An enumeration.
+// Label assigned to a trace entry.
 type EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceLabels string
 
 const (
@@ -4597,7 +4597,7 @@ func (r EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSim
 	return false
 }
 
-// An enumeration.
+// Label assigned to a trace entry.
 type EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceLabels string
 
 const (
@@ -4926,7 +4926,7 @@ func (r EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSim
 	return false
 }
 
-// An enumeration.
+// Label assigned to a trace entry.
 type EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceLabels string
 
 const (
@@ -5101,7 +5101,7 @@ func (r EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSim
 	return false
 }
 
-// An enumeration.
+// Label assigned to a trace entry.
 type EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceLabels string
 
 const (
@@ -9280,7 +9280,8 @@ func (r EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSim
 }
 
 type EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysCallPolicyArg struct {
-	// An enumeration.
+	// Comparison operator used to evaluate an argument/value against a policy
+	// constraint.
 	Condition EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysCallPolicyArgsCondition `json:"condition,required"`
 	Index     int64                                                                                                                                         `json:"index,required"`
 	Value     string                                                                                                                                        `json:"value,required"`
@@ -9306,7 +9307,8 @@ func (r evmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSim
 	return r.raw
 }
 
-// An enumeration.
+// Comparison operator used to evaluate an argument/value against a policy
+// constraint.
 type EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysCallPolicyArgsCondition string
 
 const (
@@ -9483,7 +9485,7 @@ func (r evmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSim
 	return r.raw
 }
 
-// An enumeration.
+// Type of action performed in the transaction.
 type EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions string
 
 const (
@@ -11491,7 +11493,7 @@ type EvmTransactionBulkScanResponseValidation struct {
 	// [[]EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionValidationFeature],
 	// [[]EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionValidationErrorFeature].
 	Features interface{} `json:"features,required"`
-	// An enumeration.
+	// Result type returned when validation succeeds.
 	ResultType EvmTransactionBulkScanResponseValidationResultType `json:"result_type,required"`
 	// A string indicating if the simulation was successful or not.
 	Status EvmTransactionBulkScanResponseValidationStatus `json:"status,required"`
@@ -11573,7 +11575,7 @@ func init() {
 type EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionValidation struct {
 	// A list of features about this transaction explaining the validation.
 	Features []EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionValidationFeature `json:"features,required"`
-	// An enumeration.
+	// Result type returned when validation succeeds.
 	ResultType EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionValidationResultType `json:"result_type,required"`
 	// A string indicating if the simulation was successful or not.
 	Status EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionValidationStatus `json:"status,required"`
@@ -11619,7 +11621,7 @@ type EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionValida
 	Description string `json:"description,required"`
 	// Feature name
 	FeatureID string `json:"feature_id,required"`
-	// An enumeration.
+	// Security result of a transaction scan feature.
 	Type EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionValidationFeaturesType `json:"type,required"`
 	// Address the feature refers to
 	Address string `json:"address"`
@@ -11649,7 +11651,7 @@ func (r evmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionVal
 	return r.raw
 }
 
-// An enumeration.
+// Security result of a transaction scan feature.
 type EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionValidationFeaturesType string
 
 const (
@@ -11667,7 +11669,7 @@ func (r EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionVal
 	return false
 }
 
-// An enumeration.
+// Result type returned when validation succeeds.
 type EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionValidationResultType string
 
 const (
@@ -11783,7 +11785,7 @@ type EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionValida
 	Description string `json:"description,required"`
 	// Feature name
 	FeatureID string `json:"feature_id,required"`
-	// An enumeration.
+	// Security result of a transaction scan feature.
 	Type EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionValidationErrorFeaturesType `json:"type,required"`
 	// Address the feature refers to
 	Address string `json:"address"`
@@ -11813,7 +11815,7 @@ func (r evmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionVal
 	return r.raw
 }
 
-// An enumeration.
+// Security result of a transaction scan feature.
 type EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionValidationErrorFeaturesType string
 
 const (
@@ -11877,7 +11879,7 @@ func (r EvmTransactionBulkScanResponseValidationRoutersEvmResponseTransactionVal
 	return false
 }
 
-// An enumeration.
+// Result type returned when validation succeeds.
 type EvmTransactionBulkScanResponseValidationResultType string
 
 const (
@@ -11915,7 +11917,8 @@ type EvmTransactionBulkScanParams struct {
 	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
 	// Transaction bulk parameters
 	Data param.Field[[]EvmTransactionBulkScanParamsData] `json:"data,required"`
-	// Object of additional information to validate against.
+	// Additional context for the scan (e.g., dapp URL/domain, integration source).
+	// Used to enrich results and reduce false positives/negatives.
 	Metadata param.Field[EvmTransactionBulkScanParamsMetadataUnion] `json:"metadata,required"`
 	// Should aggregate the results to one result
 	Aggregated param.Field[bool] `json:"aggregated"`
@@ -11980,7 +11983,8 @@ func (r EvmTransactionBulkScanParamsDataAuthorizationList) MarshalJSON() (data [
 	return apijson.MarshalRoot(r)
 }
 
-// Object of additional information to validate against.
+// Additional context for the scan (e.g., dapp URL/domain, integration source).
+// Used to enrich results and reduce false positives/negatives.
 type EvmTransactionBulkScanParamsMetadata struct {
 	// The full URL of the DApp or website that initiated the transaction, for
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
@@ -11996,7 +12000,8 @@ func (r EvmTransactionBulkScanParamsMetadata) MarshalJSON() (data []byte, err er
 
 func (r EvmTransactionBulkScanParamsMetadata) implementsEvmTransactionBulkScanParamsMetadataUnion() {}
 
-// Object of additional information to validate against.
+// Additional context for the scan (e.g., dapp URL/domain, integration source).
+// Used to enrich results and reduce false positives/negatives.
 //
 // Satisfied by
 // [EvmTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDapp],
@@ -12069,7 +12074,8 @@ type EvmTransactionBulkScanParamsBlockUnion interface {
 	ImplementsEvmTransactionBulkScanParamsBlockUnion()
 }
 
-// An enumeration.
+// Response sections to include (e.g., validation, simulation, gas estimation,
+// events).
 type EvmTransactionBulkScanParamsOption string
 
 const (
