@@ -970,6 +970,11 @@ const (
 	TokenScanResponseFeaturesFeatureIDOnchainActivityValidator       TokenScanResponseFeaturesFeatureID = "ONCHAIN_ACTIVITY_VALIDATOR"
 	TokenScanResponseFeaturesFeatureIDStaticCodeSignature            TokenScanResponseFeaturesFeatureID = "STATIC_CODE_SIGNATURE"
 	TokenScanResponseFeaturesFeatureIDKnownMalicious                 TokenScanResponseFeaturesFeatureID = "KNOWN_MALICIOUS"
+	TokenScanResponseFeaturesFeatureIDIsEoa                          TokenScanResponseFeaturesFeatureID = "IS_EOA"
+	TokenScanResponseFeaturesFeatureIDIsContract                     TokenScanResponseFeaturesFeatureID = "IS_CONTRACT"
+	TokenScanResponseFeaturesFeatureIDErc20Contract                  TokenScanResponseFeaturesFeatureID = "ERC20_CONTRACT"
+	TokenScanResponseFeaturesFeatureIDTrustedContract                TokenScanResponseFeaturesFeatureID = "TRUSTED_CONTRACT"
+	TokenScanResponseFeaturesFeatureIDBenignCreator                  TokenScanResponseFeaturesFeatureID = "BENIGN_CREATOR"
 	TokenScanResponseFeaturesFeatureIDMetadata                       TokenScanResponseFeaturesFeatureID = "METADATA"
 	TokenScanResponseFeaturesFeatureIDAirdropPattern                 TokenScanResponseFeaturesFeatureID = "AIRDROP_PATTERN"
 	TokenScanResponseFeaturesFeatureIDImpersonator                   TokenScanResponseFeaturesFeatureID = "IMPERSONATOR"
@@ -1008,7 +1013,7 @@ const (
 
 func (r TokenScanResponseFeaturesFeatureID) IsKnown() bool {
 	switch r {
-	case TokenScanResponseFeaturesFeatureIDVerifiedContract, TokenScanResponseFeaturesFeatureIDUnverifiedContract, TokenScanResponseFeaturesFeatureIDHighTradeVolume, TokenScanResponseFeaturesFeatureIDMarketPlaceSalesHistory, TokenScanResponseFeaturesFeatureIDHighReputationToken, TokenScanResponseFeaturesFeatureIDOnchainActivityValidator, TokenScanResponseFeaturesFeatureIDStaticCodeSignature, TokenScanResponseFeaturesFeatureIDKnownMalicious, TokenScanResponseFeaturesFeatureIDMetadata, TokenScanResponseFeaturesFeatureIDAirdropPattern, TokenScanResponseFeaturesFeatureIDImpersonator, TokenScanResponseFeaturesFeatureIDInorganicVolume, TokenScanResponseFeaturesFeatureIDDynamicAnalysis, TokenScanResponseFeaturesFeatureIDConcentratedSupplyDistribution, TokenScanResponseFeaturesFeatureIDHoneypot, TokenScanResponseFeaturesFeatureIDInsufficientLockedLiquidity, TokenScanResponseFeaturesFeatureIDUnstableTokenPrice, TokenScanResponseFeaturesFeatureIDRugpull, TokenScanResponseFeaturesFeatureIDWashTrading, TokenScanResponseFeaturesFeatureIDConsumerOverride, TokenScanResponseFeaturesFeatureIDInappropriateContent, TokenScanResponseFeaturesFeatureIDHighTransferFee, TokenScanResponseFeaturesFeatureIDHighBuyFee, TokenScanResponseFeaturesFeatureIDHighSellFee, TokenScanResponseFeaturesFeatureIDUnsellableToken, TokenScanResponseFeaturesFeatureIDIsMintable, TokenScanResponseFeaturesFeatureIDRebaseToken, TokenScanResponseFeaturesFeatureIDLiquidStakingToken, TokenScanResponseFeaturesFeatureIDModifiableTaxes, TokenScanResponseFeaturesFeatureIDCanBlacklist, TokenScanResponseFeaturesFeatureIDCanWhitelist, TokenScanResponseFeaturesFeatureIDHasTradingCooldown, TokenScanResponseFeaturesFeatureIDExternalFunctions, TokenScanResponseFeaturesFeatureIDHiddenOwner, TokenScanResponseFeaturesFeatureIDTransferPauseable, TokenScanResponseFeaturesFeatureIDOwnershipRenounced, TokenScanResponseFeaturesFeatureIDOwnerCanChangeBalance, TokenScanResponseFeaturesFeatureIDProxyContract, TokenScanResponseFeaturesFeatureIDSimilarMaliciousContract, TokenScanResponseFeaturesFeatureIDFakeVolume, TokenScanResponseFeaturesFeatureIDHiddenSupplyByKeyHolder, TokenScanResponseFeaturesFeatureIDFakeTradeMakerCount:
+	case TokenScanResponseFeaturesFeatureIDVerifiedContract, TokenScanResponseFeaturesFeatureIDUnverifiedContract, TokenScanResponseFeaturesFeatureIDHighTradeVolume, TokenScanResponseFeaturesFeatureIDMarketPlaceSalesHistory, TokenScanResponseFeaturesFeatureIDHighReputationToken, TokenScanResponseFeaturesFeatureIDOnchainActivityValidator, TokenScanResponseFeaturesFeatureIDStaticCodeSignature, TokenScanResponseFeaturesFeatureIDKnownMalicious, TokenScanResponseFeaturesFeatureIDIsEoa, TokenScanResponseFeaturesFeatureIDIsContract, TokenScanResponseFeaturesFeatureIDErc20Contract, TokenScanResponseFeaturesFeatureIDTrustedContract, TokenScanResponseFeaturesFeatureIDBenignCreator, TokenScanResponseFeaturesFeatureIDMetadata, TokenScanResponseFeaturesFeatureIDAirdropPattern, TokenScanResponseFeaturesFeatureIDImpersonator, TokenScanResponseFeaturesFeatureIDInorganicVolume, TokenScanResponseFeaturesFeatureIDDynamicAnalysis, TokenScanResponseFeaturesFeatureIDConcentratedSupplyDistribution, TokenScanResponseFeaturesFeatureIDHoneypot, TokenScanResponseFeaturesFeatureIDInsufficientLockedLiquidity, TokenScanResponseFeaturesFeatureIDUnstableTokenPrice, TokenScanResponseFeaturesFeatureIDRugpull, TokenScanResponseFeaturesFeatureIDWashTrading, TokenScanResponseFeaturesFeatureIDConsumerOverride, TokenScanResponseFeaturesFeatureIDInappropriateContent, TokenScanResponseFeaturesFeatureIDHighTransferFee, TokenScanResponseFeaturesFeatureIDHighBuyFee, TokenScanResponseFeaturesFeatureIDHighSellFee, TokenScanResponseFeaturesFeatureIDUnsellableToken, TokenScanResponseFeaturesFeatureIDIsMintable, TokenScanResponseFeaturesFeatureIDRebaseToken, TokenScanResponseFeaturesFeatureIDLiquidStakingToken, TokenScanResponseFeaturesFeatureIDModifiableTaxes, TokenScanResponseFeaturesFeatureIDCanBlacklist, TokenScanResponseFeaturesFeatureIDCanWhitelist, TokenScanResponseFeaturesFeatureIDHasTradingCooldown, TokenScanResponseFeaturesFeatureIDExternalFunctions, TokenScanResponseFeaturesFeatureIDHiddenOwner, TokenScanResponseFeaturesFeatureIDTransferPauseable, TokenScanResponseFeaturesFeatureIDOwnershipRenounced, TokenScanResponseFeaturesFeatureIDOwnerCanChangeBalance, TokenScanResponseFeaturesFeatureIDProxyContract, TokenScanResponseFeaturesFeatureIDSimilarMaliciousContract, TokenScanResponseFeaturesFeatureIDFakeVolume, TokenScanResponseFeaturesFeatureIDHiddenSupplyByKeyHolder, TokenScanResponseFeaturesFeatureIDFakeTradeMakerCount:
 		return true
 	}
 	return false
@@ -1177,7 +1182,8 @@ type TokenScanParams struct {
 	Address param.Field[string] `json:"address,required"`
 	// The chain name
 	Chain param.Field[TokenScanSupportedChain] `json:"chain,required"`
-	// Object of additional information to validate against.
+	// Optional token metadata context (e.g., source/integration hints) used to enrich
+	// results.
 	Metadata param.Field[TokenScanParamsMetadata] `json:"metadata"`
 }
 
@@ -1185,7 +1191,8 @@ func (r TokenScanParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// Object of additional information to validate against.
+// Optional token metadata context (e.g., source/integration hints) used to enrich
+// results.
 type TokenScanParamsMetadata struct {
 	// cross reference transaction against the domain.
 	Domain param.Field[string] `json:"domain"`

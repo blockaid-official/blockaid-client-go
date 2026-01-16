@@ -72,7 +72,7 @@ type ChainAgnosticTransactionScanResponseValidation struct {
 	Classification string `json:"classification,required"`
 	// Detailed description of the validation result
 	Description string `json:"description,required"`
-	// The type of validation result
+	// The type of validation result.
 	ResultType ChainAgnosticTransactionScanResponseValidationResultType `json:"result_type,required"`
 	// The status of the transaction scan
 	Status ChainAgnosticTransactionScanResponseValidationStatus `json:"status,required"`
@@ -101,7 +101,7 @@ func (r chainAgnosticTransactionScanResponseValidationJSON) RawJSON() string {
 	return r.raw
 }
 
-// The type of validation result
+// The type of validation result.
 type ChainAgnosticTransactionScanResponseValidationResultType string
 
 const (
@@ -140,7 +140,7 @@ type ChainAgnosticTransactionScanResponseValidationFeature struct {
 	Description string `json:"description,required"`
 	// Unique identifier for the detected feature
 	FeatureID string `json:"feature_id,required"`
-	// The type of feature detected in the scan
+	// The type of feature detected in the scan.
 	Type ChainAgnosticTransactionScanResponseValidationFeaturesType `json:"type,required"`
 	// The blockchain address where the feature was detected
 	Address string `json:"address"`
@@ -228,7 +228,7 @@ type ChainAgnosticTransactionScanResponseValidationFeaturesAddressFeature struct
 	Description string `json:"description,required"`
 	// Unique identifier for the detected feature
 	FeatureID string `json:"feature_id,required"`
-	// The type of feature detected in the scan
+	// The type of feature detected in the scan.
 	Type ChainAgnosticTransactionScanResponseValidationFeaturesAddressFeatureType `json:"type,required"`
 	// Type of entity associated with the feature
 	Entity ChainAgnosticTransactionScanResponseValidationFeaturesAddressFeatureEntity `json:"entity"`
@@ -260,7 +260,7 @@ func (r chainAgnosticTransactionScanResponseValidationFeaturesAddressFeatureJSON
 func (r ChainAgnosticTransactionScanResponseValidationFeaturesAddressFeature) implementsChainAgnosticTransactionScanResponseValidationFeature() {
 }
 
-// The type of feature detected in the scan
+// The type of feature detected in the scan.
 type ChainAgnosticTransactionScanResponseValidationFeaturesAddressFeatureType string
 
 const (
@@ -299,7 +299,7 @@ type ChainAgnosticTransactionScanResponseValidationFeaturesURLFeature struct {
 	Description string `json:"description,required"`
 	// Unique identifier for the detected feature
 	FeatureID string `json:"feature_id,required"`
-	// The type of feature detected in the scan
+	// The type of feature detected in the scan.
 	Type ChainAgnosticTransactionScanResponseValidationFeaturesURLFeatureType `json:"type,required"`
 	// The URL where the feature was detected
 	URL string `json:"url,required"`
@@ -332,7 +332,7 @@ func (r chainAgnosticTransactionScanResponseValidationFeaturesURLFeatureJSON) Ra
 func (r ChainAgnosticTransactionScanResponseValidationFeaturesURLFeature) implementsChainAgnosticTransactionScanResponseValidationFeature() {
 }
 
-// The type of feature detected in the scan
+// The type of feature detected in the scan.
 type ChainAgnosticTransactionScanResponseValidationFeaturesURLFeatureType string
 
 const (
@@ -371,7 +371,7 @@ type ChainAgnosticTransactionScanResponseValidationFeaturesTransactionFeature st
 	Description string `json:"description,required"`
 	// Unique identifier for the detected feature
 	FeatureID string `json:"feature_id,required"`
-	// The type of feature detected in the scan
+	// The type of feature detected in the scan.
 	Type ChainAgnosticTransactionScanResponseValidationFeaturesTransactionFeatureType `json:"type,required"`
 	// Type of entity associated with the feature
 	Entity ChainAgnosticTransactionScanResponseValidationFeaturesTransactionFeatureEntity `json:"entity"`
@@ -401,7 +401,7 @@ func (r chainAgnosticTransactionScanResponseValidationFeaturesTransactionFeature
 func (r ChainAgnosticTransactionScanResponseValidationFeaturesTransactionFeature) implementsChainAgnosticTransactionScanResponseValidationFeature() {
 }
 
-// The type of feature detected in the scan
+// The type of feature detected in the scan.
 type ChainAgnosticTransactionScanResponseValidationFeaturesTransactionFeatureType string
 
 const (
@@ -435,7 +435,7 @@ func (r ChainAgnosticTransactionScanResponseValidationFeaturesTransactionFeature
 	return false
 }
 
-// The type of feature detected in the scan
+// The type of feature detected in the scan.
 type ChainAgnosticTransactionScanResponseValidationFeaturesType string
 
 const (
@@ -636,7 +636,7 @@ func (r ChainAgnosticTransactionScanParamsDataTransactionAction) IsKnown() bool 
 	return false
 }
 
-// An enumeration.
+// Requested output section to include in the response.
 type ChainAgnosticTransactionScanParamsOption string
 
 const (
