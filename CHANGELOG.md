@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.68.0 (2026-01-18)
+
+Full Changelog: [v0.67.0...v0.68.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.67.0...v0.68.0)
+
+### Features
+
+* **api:** api update ([70202a4](https://github.com/blockaid-official/blockaid-client-go/commit/70202a438e4b887071ddd5b0aa195a1daba764b8))
+* **api:** api update ([18a6849](https://github.com/blockaid-official/blockaid-client-go/commit/18a684923d8c066e36f40de5aeb9e8cdda9b68dd))
+* **api:** api update ([ce7f156](https://github.com/blockaid-official/blockaid-client-go/commit/ce7f1569e1efc1f7d5519938309773dfca097104))
+* **api:** api update ([e7f58a8](https://github.com/blockaid-official/blockaid-client-go/commit/e7f58a8216f62635992d2d408f886dca2846c40a))
+* **api:** api update ([33d703e](https://github.com/blockaid-official/blockaid-client-go/commit/33d703e64bfde75f1299421accccfdd04392bb4d))
+
+
+### Bug Fixes
+
+* **docs:** add missing pointer prefix to api.md return types ([bedd576](https://github.com/blockaid-official/blockaid-client-go/commit/bedd576f96d09e544ab4e03842dbe715c99979af))
+
+
+### Chores
+
+* **internal:** update `actions/checkout` version ([a91d3e0](https://github.com/blockaid-official/blockaid-client-go/commit/a91d3e0c40739deeffd73c2f00825b66a975aa6d))
+* **internal:** use different example values for some enums ([a526890](https://github.com/blockaid-official/blockaid-client-go/commit/a5268900c93a5e051ba07718b2904c001d9ef6f4))
+
 ## 0.67.0 (2025-12-22)
 
 Full Changelog: [v0.66.0...v0.67.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.66.0...v0.67.0)
