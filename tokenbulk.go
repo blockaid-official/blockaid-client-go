@@ -45,13 +45,16 @@ func (r *TokenBulkService) Scan(ctx context.Context, body TokenBulkScanParams, o
 
 type TokenBulkScanResponse struct {
 	Results map[string]TokenBulkScanResponseResult `json:"results,required"`
-	JSON    tokenBulkScanResponseJSON              `json:"-"`
+	// Errors encountered during bulk scanning, keyed by token address
+	Errors map[string]TokenBulkScanResponseError `json:"errors"`
+	JSON   tokenBulkScanResponseJSON             `json:"-"`
 }
 
 // tokenBulkScanResponseJSON contains the JSON metadata for the struct
 // [TokenBulkScanResponse]
 type tokenBulkScanResponseJSON struct {
 	Results     apijson.Field
+	Errors      apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -1057,6 +1060,28 @@ func (r TokenBulkScanResponseResultsFeaturesType) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+type TokenBulkScanResponseError struct {
+	// Error message describing why the scan failed for this token
+	Message string                         `json:"message,required"`
+	JSON    tokenBulkScanResponseErrorJSON `json:"-"`
+}
+
+// tokenBulkScanResponseErrorJSON contains the JSON metadata for the struct
+// [TokenBulkScanResponseError]
+type tokenBulkScanResponseErrorJSON struct {
+	Message     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TokenBulkScanResponseError) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenBulkScanResponseErrorJSON) RawJSON() string {
+	return r.raw
 }
 
 type TokenBulkScanParams struct {
