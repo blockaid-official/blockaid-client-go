@@ -60,7 +60,7 @@ func TestEvmTransactionScanWithOptionalParams(t *testing.T) {
 		Chain:          blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainEthereum),
 		Data: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsData{
 			From: blockaidclientgo.F("0x5e1a0d484c5f0de722e82f9dca3a9d5a421d47cb"),
-			AuthorizationList: blockaidclientgo.F([]blockaidclientgo.EvmTransactionScanParamsDataAuthorizationList{{
+			AuthorizationList: blockaidclientgo.F([]blockaidclientgo.AuthorizationParam{{
 				Address: blockaidclientgo.F("address"),
 				ChainID: blockaidclientgo.F("chainId"),
 				Eoa:     blockaidclientgo.F("eoa"),

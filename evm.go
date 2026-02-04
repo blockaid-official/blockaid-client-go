@@ -231,6 +231,29 @@ func (r AddressValidationFeaturesArrayType) IsKnown() bool {
 	return false
 }
 
+type AuthorizationParam struct {
+	// The delegation designation address
+	Address param.Field[string] `json:"address,required"`
+	// The chain ID as hex string
+	ChainID param.Field[string] `json:"chainId"`
+	// The authority address of the delegation, should be provided when the signature
+	// (r,s,yParity) is not provided in order to simulate the transaction with the
+	// correct delegation
+	Eoa param.Field[string] `json:"eoa"`
+	// The nonce value as hex string
+	Nonce param.Field[string] `json:"nonce"`
+	// The r value as hex string
+	R param.Field[string] `json:"r"`
+	// The s value as hex string
+	S param.Field[string] `json:"s"`
+	// The yParity value as hex string
+	YParity param.Field[string] `json:"yParity"`
+}
+
+func (r AuthorizationParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type MetadataParam struct {
 	// Account information associated with the request
 	Account param.Field[MetadataParamAccount] `json:"account"`
@@ -306,11 +329,12 @@ const (
 	TokenScanSupportedChainHyperevm        TokenScanSupportedChain = "hyperevm"
 	TokenScanSupportedChainXlayer          TokenScanSupportedChain = "xlayer"
 	TokenScanSupportedChainMonad           TokenScanSupportedChain = "monad"
+	TokenScanSupportedChainTron            TokenScanSupportedChain = "tron"
 )
 
 func (r TokenScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStarknetSepolia, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainDegen, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainBlast, TokenScanSupportedChainSoneiumMinato, TokenScanSupportedChainBaseSepolia, TokenScanSupportedChainBitcoin, TokenScanSupportedChainAbstract, TokenScanSupportedChainSoneium, TokenScanSupportedChainInk, TokenScanSupportedChainZeroNetwork, TokenScanSupportedChainBerachain, TokenScanSupportedChainUnichain, TokenScanSupportedChainRonin, TokenScanSupportedChainSui, TokenScanSupportedChainHedera, TokenScanSupportedChainHyperevm, TokenScanSupportedChainXlayer, TokenScanSupportedChainMonad:
+	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStarknetSepolia, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainDegen, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainBlast, TokenScanSupportedChainSoneiumMinato, TokenScanSupportedChainBaseSepolia, TokenScanSupportedChainBitcoin, TokenScanSupportedChainAbstract, TokenScanSupportedChainSoneium, TokenScanSupportedChainInk, TokenScanSupportedChainZeroNetwork, TokenScanSupportedChainBerachain, TokenScanSupportedChainUnichain, TokenScanSupportedChainRonin, TokenScanSupportedChainSui, TokenScanSupportedChainHedera, TokenScanSupportedChainHyperevm, TokenScanSupportedChainXlayer, TokenScanSupportedChainMonad, TokenScanSupportedChainTron:
 		return true
 	}
 	return false
@@ -371,6 +395,410 @@ const (
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
 	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainLordchain, TransactionScanSupportedChainLordchainTestnet, TransactionScanSupportedChainMetacade, TransactionScanSupportedChainMetacadeTestnet, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainZeroNetwork, TransactionScanSupportedChainBerachain, TransactionScanSupportedChainBerachainBartio, TransactionScanSupportedChainInk, TransactionScanSupportedChainInkSepolia, TransactionScanSupportedChainAbstract, TransactionScanSupportedChainAbstractTestnet, TransactionScanSupportedChainSoneium, TransactionScanSupportedChainUnichain, TransactionScanSupportedChainSei, TransactionScanSupportedChainFlowEvm, TransactionScanSupportedChainHyperevm, TransactionScanSupportedChainKatana, TransactionScanSupportedChainPlume, TransactionScanSupportedChainXlayer, TransactionScanSupportedChainMonad, TransactionScanSupportedChainMonadTestnet, TransactionScanSupportedChainTempoTestnet:
+		return true
+	}
+	return false
+}
+
+type UserOperationDataParam struct {
+	// The operation parameters of the user operation request
+	Operation param.Field[UserOperationDataOperationUnionParam] `json:"operation,required"`
+	// The address of the entrypoint receiving the request in hex string format
+	Entrypoint param.Field[string] `json:"entrypoint"`
+}
+
+func (r UserOperationDataParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The operation parameters of the user operation request
+type UserOperationDataOperationParam struct {
+	// The account gas limits value in hex string format.
+	AccountGasLimits param.Field[string] `json:"account_gas_limits"`
+	// The call data value in hex string format.
+	CallData param.Field[string] `json:"call_data"`
+	// The call gas limit value in hex string format.
+	CallGasLimit param.Field[string] `json:"call_gas_limit"`
+	// The EIP-7702 authorization tuple for the user operation (optional)
+	Eip7702Auth param.Field[AuthorizationParam] `json:"eip7702_auth"`
+	// The gas fees value in hex string format.
+	GasFees param.Field[string] `json:"gas_fees"`
+	// The init code value in hex string format.
+	InitCode param.Field[string] `json:"init_code"`
+	// The max fee per gas value in hex string format.
+	MaxFeePerGas param.Field[string] `json:"max_fee_per_gas"`
+	// The max priority fee per gas value in hex string format.
+	MaxPriorityFeePerGas param.Field[string] `json:"max_priority_fee_per_gas"`
+	// The nonce value in hex string format.
+	Nonce param.Field[string] `json:"nonce"`
+	// The paymaster and data value in hex string format.
+	PaymasterAndData param.Field[string] `json:"paymaster_and_data"`
+	// The pre verification gas value in hex string format.
+	PreVerificationGas param.Field[string] `json:"pre_verification_gas"`
+	// The sender address of the operation in hex string format
+	Sender param.Field[string] `json:"sender"`
+	// The signature value in hex string format.
+	Signature param.Field[string] `json:"signature"`
+	// The verification gas limit value in hex string format.
+	VerificationGasLimit param.Field[string] `json:"verification_gas_limit"`
+}
+
+func (r UserOperationDataOperationParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r UserOperationDataOperationParam) implementsUserOperationDataOperationUnionParam() {}
+
+// The operation parameters of the user operation request
+//
+// Satisfied by [UserOperationV6Param], [UserOperationV7Param],
+// [UserOperationDataOperationParam].
+type UserOperationDataOperationUnionParam interface {
+	implementsUserOperationDataOperationUnionParam()
+}
+
+type UserOperationRequestParam struct {
+	// The chain name or chain ID
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	// The user operation request that was received by the wallet
+	Data param.Field[UserOperationDataParam] `json:"data,required"`
+	// Additional context for the scan (e.g., dapp URL/domain, integration source).
+	// Used to enrich results and reduce false positives/negatives.
+	Metadata param.Field[UserOperationRequestMetadataUnionParam] `json:"metadata,required"`
+	// The address of the account (wallet) sending the request in hex string format
+	AccountAddress param.Field[string] `json:"account_address"`
+	// The relative block for the block validation. Can be "latest" or a block number.
+	Block param.Field[UserOperationRequestBlockUnionParam] `json:"block"`
+	// List of one or more of options for the desired output. "simulation" - include
+	// simulation output in your response. "validation" - include security validation
+	// of the transaction in your response. "gas_estimation" - include gas estimation
+	// result in your response. Default is ["validation"]
+	Options param.Field[[]UserOperationRequestOption] `json:"options"`
+	// For simulations, determine whether to calculate missing balances in user
+	// operations.
+	ShouldCalculateMissingBalance param.Field[bool] `json:"should_calculate_missing_balance"`
+	// Simulate transactions using gas estimation result. This requires
+	// "gas_estimation" option to be enabled.
+	SimulateWithEstimatedGas param.Field[bool] `json:"simulate_with_estimated_gas"`
+	// Override the state of the chain. This is useful for testing purposes.
+	StateOverride param.Field[map[string]UserOperationRequestStateOverrideParam] `json:"state_override"`
+}
+
+func (r UserOperationRequestParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Additional context for the scan (e.g., dapp URL/domain, integration source).
+// Used to enrich results and reduce false positives/negatives.
+type UserOperationRequestMetadataParam struct {
+	// The full URL of the DApp or website that initiated the transaction, for
+	// cross-reference. Must use the https or http scheme and contain a valid hostname.
+	// Cannot contain JSON, braces, or other embedded data structures.
+	Domain param.Field[string] `json:"domain"`
+	// Indicates that the transaction was not initiated by a dapp.
+	NonDapp param.Field[UserOperationRequestMetadataNonDapp] `json:"non_dapp"`
+}
+
+func (r UserOperationRequestMetadataParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r UserOperationRequestMetadataParam) implementsUserOperationRequestMetadataUnionParam() {}
+
+// Additional context for the scan (e.g., dapp URL/domain, integration source).
+// Used to enrich results and reduce false positives/negatives.
+//
+// Satisfied by [UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappParam],
+// [UserOperationRequestMetadataRoutersEvmModelsMetadataDappParam],
+// [UserOperationRequestMetadataParam].
+type UserOperationRequestMetadataUnionParam interface {
+	implementsUserOperationRequestMetadataUnionParam()
+}
+
+type UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappParam struct {
+	// Indicates that the transaction was not initiated by a dapp.
+	NonDapp param.Field[UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappNonDapp] `json:"non_dapp"`
+}
+
+func (r UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappParam) implementsUserOperationRequestMetadataUnionParam() {
+}
+
+// Indicates that the transaction was not initiated by a dapp.
+type UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappNonDapp bool
+
+const (
+	UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappNonDappTrue UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappNonDapp = true
+)
+
+func (r UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappNonDapp) IsKnown() bool {
+	switch r {
+	case UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappNonDappTrue:
+		return true
+	}
+	return false
+}
+
+type UserOperationRequestMetadataRoutersEvmModelsMetadataDappParam struct {
+	// The full URL of the DApp or website that initiated the transaction, for
+	// cross-reference. Must use the https or http scheme and contain a valid hostname.
+	// Cannot contain JSON, braces, or other embedded data structures.
+	Domain param.Field[string] `json:"domain,required"`
+}
+
+func (r UserOperationRequestMetadataRoutersEvmModelsMetadataDappParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r UserOperationRequestMetadataRoutersEvmModelsMetadataDappParam) implementsUserOperationRequestMetadataUnionParam() {
+}
+
+// Indicates that the transaction was not initiated by a dapp.
+type UserOperationRequestMetadataNonDapp bool
+
+const (
+	UserOperationRequestMetadataNonDappTrue UserOperationRequestMetadataNonDapp = true
+)
+
+func (r UserOperationRequestMetadataNonDapp) IsKnown() bool {
+	switch r {
+	case UserOperationRequestMetadataNonDappTrue:
+		return true
+	}
+	return false
+}
+
+// The relative block for the block validation. Can be "latest" or a block number.
+//
+// Satisfied by [shared.UnionInt], [shared.UnionString].
+type UserOperationRequestBlockUnionParam interface {
+	ImplementsUserOperationRequestBlockUnionParam()
+}
+
+// Response sections to include (e.g., validation, simulation, gas estimation,
+// events).
+type UserOperationRequestOption string
+
+const (
+	UserOperationRequestOptionValidation    UserOperationRequestOption = "validation"
+	UserOperationRequestOptionSimulation    UserOperationRequestOption = "simulation"
+	UserOperationRequestOptionGasEstimation UserOperationRequestOption = "gas_estimation"
+	UserOperationRequestOptionEvents        UserOperationRequestOption = "events"
+)
+
+func (r UserOperationRequestOption) IsKnown() bool {
+	switch r {
+	case UserOperationRequestOptionValidation, UserOperationRequestOptionSimulation, UserOperationRequestOptionGasEstimation, UserOperationRequestOptionEvents:
+		return true
+	}
+	return false
+}
+
+type UserOperationRequestStateOverrideParam struct {
+	// Fake balance to set for the account before executing the call.
+	Balance param.Field[string] `json:"balance"`
+	// Fake EVM bytecode to inject into the account before executing the call.
+	Code param.Field[string] `json:"code"`
+	// Moves precompile to given address
+	MovePrecompileToAddress param.Field[string] `json:"movePrecompileToAddress"`
+	// Fake nonce to set for the account before executing the call.
+	Nonce param.Field[string] `json:"nonce"`
+	// Fake key-value mapping to override all slots in the account storage before
+	// executing the call.
+	State param.Field[map[string]string] `json:"state"`
+	// Fake key-value mapping to override individual slots in the account storage
+	// before executing the call.
+	StateDiff param.Field[map[string]string] `json:"stateDiff"`
+}
+
+func (r UserOperationRequestStateOverrideParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type UserOperationV6Param struct {
+	// The call data value in hex string format.
+	CallData param.Field[string] `json:"call_data"`
+	// The call gas limit value in hex string format.
+	CallGasLimit param.Field[string] `json:"call_gas_limit"`
+	// The EIP-7702 authorization tuple for the user operation (optional)
+	Eip7702Auth param.Field[AuthorizationParam] `json:"eip7702_auth"`
+	// The init code value in hex string format.
+	InitCode param.Field[string] `json:"init_code"`
+	// The max fee per gas value in hex string format.
+	MaxFeePerGas param.Field[string] `json:"max_fee_per_gas"`
+	// The max priority fee per gas value in hex string format.
+	MaxPriorityFeePerGas param.Field[string] `json:"max_priority_fee_per_gas"`
+	// The nonce value in hex string format.
+	Nonce param.Field[string] `json:"nonce"`
+	// The paymaster and data value in hex string format.
+	PaymasterAndData param.Field[string] `json:"paymaster_and_data"`
+	// The pre verification gas value in hex string format.
+	PreVerificationGas param.Field[string] `json:"pre_verification_gas"`
+	// The sender address of the operation in hex string format
+	Sender param.Field[string] `json:"sender"`
+	// The signature value in hex string format.
+	Signature param.Field[string] `json:"signature"`
+	// The verification gas limit value in hex string format.
+	VerificationGasLimit param.Field[string] `json:"verification_gas_limit"`
+}
+
+func (r UserOperationV6Param) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r UserOperationV6Param) implementsUserOperationDataOperationUnionParam() {}
+
+type UserOperationV6GasEstimation struct {
+	CallGasEstimate            string                             `json:"call_gas_estimate,required"`
+	PreVerificationGasEstimate string                             `json:"pre_verification_gas_estimate,required"`
+	Status                     UserOperationV6GasEstimationStatus `json:"status,required"`
+	VerificationGasEstimate    string                             `json:"verification_gas_estimate,required"`
+	JSON                       userOperationV6GasEstimationJSON   `json:"-"`
+}
+
+// userOperationV6GasEstimationJSON contains the JSON metadata for the struct
+// [UserOperationV6GasEstimation]
+type userOperationV6GasEstimationJSON struct {
+	CallGasEstimate            apijson.Field
+	PreVerificationGasEstimate apijson.Field
+	Status                     apijson.Field
+	VerificationGasEstimate    apijson.Field
+	raw                        string
+	ExtraFields                map[string]apijson.Field
+}
+
+func (r *UserOperationV6GasEstimation) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r userOperationV6GasEstimationJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r UserOperationV6GasEstimation) implementsEvmJsonRpcScanResponseUserOperationGasEstimation() {}
+
+func (r UserOperationV6GasEstimation) implementsEvmTransactionScanResponseUserOperationGasEstimation() {
+}
+
+func (r UserOperationV6GasEstimation) implementsEvmTransactionBulkScanResponseUserOperationGasEstimation() {
+}
+
+func (r UserOperationV6GasEstimation) implementsEvmTransactionRawScanResponseUserOperationGasEstimation() {
+}
+
+func (r UserOperationV6GasEstimation) implementsEvmUserOperationScanResponseUserOperationGasEstimation() {
+}
+
+func (r UserOperationV6GasEstimation) implementsEvmPostTransactionScanResponseUserOperationGasEstimation() {
+}
+
+func (r UserOperationV6GasEstimation) implementsEvmPostTransactionBulkScanResponseUserOperationGasEstimation() {
+}
+
+type UserOperationV6GasEstimationStatus string
+
+const (
+	UserOperationV6GasEstimationStatusSuccess UserOperationV6GasEstimationStatus = "Success"
+)
+
+func (r UserOperationV6GasEstimationStatus) IsKnown() bool {
+	switch r {
+	case UserOperationV6GasEstimationStatusSuccess:
+		return true
+	}
+	return false
+}
+
+type UserOperationV7Param struct {
+	// The account gas limits value in hex string format.
+	AccountGasLimits param.Field[string] `json:"account_gas_limits"`
+	// The call data value in hex string format.
+	CallData param.Field[string] `json:"call_data"`
+	// The EIP-7702 authorization tuple for the user operation (optional)
+	Eip7702Auth param.Field[AuthorizationParam] `json:"eip7702_auth"`
+	// The gas fees value in hex string format.
+	GasFees param.Field[string] `json:"gas_fees"`
+	// The init code value in hex string format.
+	InitCode param.Field[string] `json:"init_code"`
+	// The nonce value in hex string format.
+	Nonce param.Field[string] `json:"nonce"`
+	// The paymaster and data value in hex string format.
+	PaymasterAndData param.Field[string] `json:"paymaster_and_data"`
+	// The pre verification gas value in hex string format.
+	PreVerificationGas param.Field[string] `json:"pre_verification_gas"`
+	// The sender address of the operation in hex string format
+	Sender param.Field[string] `json:"sender"`
+	// The signature value in hex string format.
+	Signature param.Field[string] `json:"signature"`
+}
+
+func (r UserOperationV7Param) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r UserOperationV7Param) implementsUserOperationDataOperationUnionParam() {}
+
+type UserOperationV7GasEstimation struct {
+	CallGasEstimate                  string                             `json:"call_gas_estimate,required"`
+	PaymasterVerificationGasEstimate string                             `json:"paymaster_verification_gas_estimate,required"`
+	PreVerificationGasEstimate       string                             `json:"pre_verification_gas_estimate,required"`
+	Status                           UserOperationV7GasEstimationStatus `json:"status,required"`
+	VerificationGasEstimate          string                             `json:"verification_gas_estimate,required"`
+	JSON                             userOperationV7GasEstimationJSON   `json:"-"`
+}
+
+// userOperationV7GasEstimationJSON contains the JSON metadata for the struct
+// [UserOperationV7GasEstimation]
+type userOperationV7GasEstimationJSON struct {
+	CallGasEstimate                  apijson.Field
+	PaymasterVerificationGasEstimate apijson.Field
+	PreVerificationGasEstimate       apijson.Field
+	Status                           apijson.Field
+	VerificationGasEstimate          apijson.Field
+	raw                              string
+	ExtraFields                      map[string]apijson.Field
+}
+
+func (r *UserOperationV7GasEstimation) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r userOperationV7GasEstimationJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r UserOperationV7GasEstimation) implementsEvmJsonRpcScanResponseUserOperationGasEstimation() {}
+
+func (r UserOperationV7GasEstimation) implementsEvmTransactionScanResponseUserOperationGasEstimation() {
+}
+
+func (r UserOperationV7GasEstimation) implementsEvmTransactionBulkScanResponseUserOperationGasEstimation() {
+}
+
+func (r UserOperationV7GasEstimation) implementsEvmTransactionRawScanResponseUserOperationGasEstimation() {
+}
+
+func (r UserOperationV7GasEstimation) implementsEvmUserOperationScanResponseUserOperationGasEstimation() {
+}
+
+func (r UserOperationV7GasEstimation) implementsEvmPostTransactionScanResponseUserOperationGasEstimation() {
+}
+
+func (r UserOperationV7GasEstimation) implementsEvmPostTransactionBulkScanResponseUserOperationGasEstimation() {
+}
+
+type UserOperationV7GasEstimationStatus string
+
+const (
+	UserOperationV7GasEstimationStatusSuccess UserOperationV7GasEstimationStatus = "Success"
+)
+
+func (r UserOperationV7GasEstimationStatus) IsKnown() bool {
+	switch r {
+	case UserOperationV7GasEstimationStatusSuccess:
 		return true
 	}
 	return false
