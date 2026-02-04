@@ -1185,7 +1185,7 @@ type TokenScanParams struct {
 	// Optional token metadata context (e.g., source/integration hints) used to enrich
 	// results.
 	Metadata param.Field[TokenScanParamsMetadata] `json:"metadata"`
-	// Token ID for ERC721 or ERC1155
+	// The ID of the specific NFT within an ERC-721 or ERC-1155 collection.
 	TokenID param.Field[int64] `json:"token_id"`
 }
 
