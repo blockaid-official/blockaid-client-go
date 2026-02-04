@@ -1185,6 +1185,8 @@ type TokenScanParams struct {
 	// Optional token metadata context (e.g., source/integration hints) used to enrich
 	// results.
 	Metadata param.Field[TokenScanParamsMetadata] `json:"metadata"`
+	// Token ID for ERC721 or ERC1155
+	TokenID param.Field[int64] `json:"token_id"`
 }
 
 func (r TokenScanParams) MarshalJSON() (data []byte, err error) {
