@@ -11310,18 +11310,15 @@ func (r *EvmTransactionScanResponseUserOperationGasEstimation) UnmarshalJSON(dat
 // AsUnion returns a [EvmTransactionScanResponseUserOperationGasEstimationUnion]
 // interface which you can cast to the specific types for more type safety.
 //
-// Possible runtime types of the union are
-// [EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation],
-// [EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation],
+// Possible runtime types of the union are [UserOperationV6GasEstimation],
+// [UserOperationV7GasEstimation],
 // [EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsTransactionScanGasEstimationError].
 func (r EvmTransactionScanResponseUserOperationGasEstimation) AsUnion() EvmTransactionScanResponseUserOperationGasEstimationUnion {
 	return r.union
 }
 
-// Union satisfied by
-// [EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation],
-// [EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation]
-// or
+// Union satisfied by [UserOperationV6GasEstimation],
+// [UserOperationV7GasEstimation] or
 // [EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsTransactionScanGasEstimationError].
 type EvmTransactionScanResponseUserOperationGasEstimationUnion interface {
 	implementsEvmTransactionScanResponseUserOperationGasEstimation()
@@ -11333,109 +11330,17 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation{}),
+			Type:       reflect.TypeOf(UserOperationV6GasEstimation{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation{}),
+			Type:       reflect.TypeOf(UserOperationV7GasEstimation{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
 			Type:       reflect.TypeOf(EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsTransactionScanGasEstimationError{}),
 		},
 	)
-}
-
-type EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation struct {
-	CallGasEstimate            string                                                                                                 `json:"call_gas_estimate,required"`
-	PreVerificationGasEstimate string                                                                                                 `json:"pre_verification_gas_estimate,required"`
-	Status                     EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationStatus `json:"status,required"`
-	VerificationGasEstimate    string                                                                                                 `json:"verification_gas_estimate,required"`
-	JSON                       evmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationJSON   `json:"-"`
-}
-
-// evmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationJSON
-// contains the JSON metadata for the struct
-// [EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation]
-type evmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationJSON struct {
-	CallGasEstimate            apijson.Field
-	PreVerificationGasEstimate apijson.Field
-	Status                     apijson.Field
-	VerificationGasEstimate    apijson.Field
-	raw                        string
-	ExtraFields                map[string]apijson.Field
-}
-
-func (r *EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r evmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation) implementsEvmTransactionScanResponseUserOperationGasEstimation() {
-}
-
-type EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationStatus string
-
-const (
-	EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationStatusSuccess EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationStatus = "Success"
-)
-
-func (r EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationStatus) IsKnown() bool {
-	switch r {
-	case EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationStatusSuccess:
-		return true
-	}
-	return false
-}
-
-type EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation struct {
-	CallGasEstimate                  string                                                                                                 `json:"call_gas_estimate,required"`
-	PaymasterVerificationGasEstimate string                                                                                                 `json:"paymaster_verification_gas_estimate,required"`
-	PreVerificationGasEstimate       string                                                                                                 `json:"pre_verification_gas_estimate,required"`
-	Status                           EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationStatus `json:"status,required"`
-	VerificationGasEstimate          string                                                                                                 `json:"verification_gas_estimate,required"`
-	JSON                             evmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationJSON   `json:"-"`
-}
-
-// evmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationJSON
-// contains the JSON metadata for the struct
-// [EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation]
-type evmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationJSON struct {
-	CallGasEstimate                  apijson.Field
-	PaymasterVerificationGasEstimate apijson.Field
-	PreVerificationGasEstimate       apijson.Field
-	Status                           apijson.Field
-	VerificationGasEstimate          apijson.Field
-	raw                              string
-	ExtraFields                      map[string]apijson.Field
-}
-
-func (r *EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r evmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation) implementsEvmTransactionScanResponseUserOperationGasEstimation() {
-}
-
-type EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationStatus string
-
-const (
-	EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationStatusSuccess EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationStatus = "Success"
-)
-
-func (r EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationStatus) IsKnown() bool {
-	switch r {
-	case EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationStatusSuccess:
-		return true
-	}
-	return false
 }
 
 type EvmTransactionScanResponseUserOperationGasEstimationRoutersEvmModelsTransactionScanGasEstimationError struct {
@@ -12048,7 +11953,7 @@ type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDat
 	// The source address of the transaction in hex string format
 	From param.Field[string] `json:"from,required"`
 	// The authorization list
-	AuthorizationList param.Field[[]EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataRoutersEvmTransactionModelsTransactionAuthorizationList] `json:"authorization_list"`
+	AuthorizationList param.Field[[]AuthorizationParam] `json:"authorization_list"`
 	// The encoded call data of the transaction in hex string format
 	Data param.Field[string] `json:"data"`
 	// The gas required for the transaction in hex string format.
@@ -12066,29 +11971,6 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 }
 
 func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataRoutersEvmTransactionModelsTransaction) implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataUnion() {
-}
-
-type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataRoutersEvmTransactionModelsTransactionAuthorizationList struct {
-	// The delegation designation address
-	Address param.Field[string] `json:"address,required"`
-	// The chain ID as hex string
-	ChainID param.Field[string] `json:"chainId"`
-	// The authority address of the delegation, should be provided when the signature
-	// (r,s,yParity) is not provided in order to simulate the transaction with the
-	// correct delegation
-	Eoa param.Field[string] `json:"eoa"`
-	// The nonce value as hex string
-	Nonce param.Field[string] `json:"nonce"`
-	// The r value as hex string
-	R param.Field[string] `json:"r"`
-	// The s value as hex string
-	S param.Field[string] `json:"s"`
-	// The yParity value as hex string
-	YParity param.Field[string] `json:"yParity"`
-}
-
-func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataRoutersEvmTransactionModelsTransactionAuthorizationList) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
 }
 
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataJsonRpc struct {
@@ -12338,7 +12220,7 @@ type EvmTransactionScanParamsData struct {
 	// The source address of the transaction in hex string format
 	From param.Field[string] `json:"from,required"`
 	// The authorization list
-	AuthorizationList param.Field[[]EvmTransactionScanParamsDataAuthorizationList] `json:"authorization_list"`
+	AuthorizationList param.Field[[]AuthorizationParam] `json:"authorization_list"`
 	// The encoded call data of the transaction in hex string format
 	Data param.Field[string] `json:"data"`
 	// The gas required for the transaction in hex string format.
@@ -12352,29 +12234,6 @@ type EvmTransactionScanParamsData struct {
 }
 
 func (r EvmTransactionScanParamsData) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type EvmTransactionScanParamsDataAuthorizationList struct {
-	// The delegation designation address
-	Address param.Field[string] `json:"address,required"`
-	// The chain ID as hex string
-	ChainID param.Field[string] `json:"chainId"`
-	// The authority address of the delegation, should be provided when the signature
-	// (r,s,yParity) is not provided in order to simulate the transaction with the
-	// correct delegation
-	Eoa param.Field[string] `json:"eoa"`
-	// The nonce value as hex string
-	Nonce param.Field[string] `json:"nonce"`
-	// The r value as hex string
-	R param.Field[string] `json:"r"`
-	// The s value as hex string
-	S param.Field[string] `json:"s"`
-	// The yParity value as hex string
-	YParity param.Field[string] `json:"yParity"`
-}
-
-func (r EvmTransactionScanParamsDataAuthorizationList) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

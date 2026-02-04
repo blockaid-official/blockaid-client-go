@@ -4,6 +4,7 @@ package shared
 
 type UnionString string
 
+func (UnionString) ImplementsUserOperationRequestBlockUnionParam()                      {}
 func (UnionString) ImplementsEvmJsonRpcScanResponseEventsParamsValueUnion()             {}
 func (UnionString) ImplementsEvmJsonRpcScanParamsBlockUnion()                           {}
 func (UnionString) ImplementsEvmTransactionScanResponseEventsParamsValueUnion()         {}
@@ -13,7 +14,6 @@ func (UnionString) ImplementsEvmTransactionBulkScanParamsBlockUnion()           
 func (UnionString) ImplementsEvmTransactionRawScanResponseEventsParamsValueUnion()      {}
 func (UnionString) ImplementsEvmTransactionRawScanParamsBlockUnion()                    {}
 func (UnionString) ImplementsEvmUserOperationScanResponseEventsParamsValueUnion()       {}
-func (UnionString) ImplementsEvmUserOperationScanParamsBlockUnion()                     {}
 func (UnionString) ImplementsEvmPostTransactionScanResponseEventsParamsValueUnion()     {}
 func (UnionString) ImplementsEvmPostTransactionScanParamsBlockUnion()                   {}
 func (UnionString) ImplementsEvmPostTransactionBulkScanResponseEventsParamsValueUnion() {}
@@ -21,10 +21,10 @@ func (UnionString) ImplementsEvmPostTransactionBulkScanParamsBlockUnion()       
 
 type UnionInt int64
 
+func (UnionInt) ImplementsUserOperationRequestBlockUnionParam()        {}
 func (UnionInt) ImplementsEvmJsonRpcScanParamsBlockUnion()             {}
 func (UnionInt) ImplementsEvmTransactionScanParamsBlockUnion()         {}
 func (UnionInt) ImplementsEvmTransactionBulkScanParamsBlockUnion()     {}
 func (UnionInt) ImplementsEvmTransactionRawScanParamsBlockUnion()      {}
-func (UnionInt) ImplementsEvmUserOperationScanParamsBlockUnion()       {}
 func (UnionInt) ImplementsEvmPostTransactionScanParamsBlockUnion()     {}
 func (UnionInt) ImplementsEvmPostTransactionBulkScanParamsBlockUnion() {}

@@ -11302,18 +11302,15 @@ func (r *EvmTransactionRawScanResponseUserOperationGasEstimation) UnmarshalJSON(
 // AsUnion returns a [EvmTransactionRawScanResponseUserOperationGasEstimationUnion]
 // interface which you can cast to the specific types for more type safety.
 //
-// Possible runtime types of the union are
-// [EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation],
-// [EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation],
+// Possible runtime types of the union are [UserOperationV6GasEstimation],
+// [UserOperationV7GasEstimation],
 // [EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsTransactionScanGasEstimationError].
 func (r EvmTransactionRawScanResponseUserOperationGasEstimation) AsUnion() EvmTransactionRawScanResponseUserOperationGasEstimationUnion {
 	return r.union
 }
 
-// Union satisfied by
-// [EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation],
-// [EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation]
-// or
+// Union satisfied by [UserOperationV6GasEstimation],
+// [UserOperationV7GasEstimation] or
 // [EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsTransactionScanGasEstimationError].
 type EvmTransactionRawScanResponseUserOperationGasEstimationUnion interface {
 	implementsEvmTransactionRawScanResponseUserOperationGasEstimation()
@@ -11325,109 +11322,17 @@ func init() {
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation{}),
+			Type:       reflect.TypeOf(UserOperationV6GasEstimation{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
-			Type:       reflect.TypeOf(EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation{}),
+			Type:       reflect.TypeOf(UserOperationV7GasEstimation{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
 			Type:       reflect.TypeOf(EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsTransactionScanGasEstimationError{}),
 		},
 	)
-}
-
-type EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation struct {
-	CallGasEstimate            string                                                                                                    `json:"call_gas_estimate,required"`
-	PreVerificationGasEstimate string                                                                                                    `json:"pre_verification_gas_estimate,required"`
-	Status                     EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationStatus `json:"status,required"`
-	VerificationGasEstimate    string                                                                                                    `json:"verification_gas_estimate,required"`
-	JSON                       evmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationJSON   `json:"-"`
-}
-
-// evmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationJSON
-// contains the JSON metadata for the struct
-// [EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation]
-type evmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationJSON struct {
-	CallGasEstimate            apijson.Field
-	PreVerificationGasEstimate apijson.Field
-	Status                     apijson.Field
-	VerificationGasEstimate    apijson.Field
-	raw                        string
-	ExtraFields                map[string]apijson.Field
-}
-
-func (r *EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r evmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimation) implementsEvmTransactionRawScanResponseUserOperationGasEstimation() {
-}
-
-type EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationStatus string
-
-const (
-	EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationStatusSuccess EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationStatus = "Success"
-)
-
-func (r EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationStatus) IsKnown() bool {
-	switch r {
-	case EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV6GasEstimationStatusSuccess:
-		return true
-	}
-	return false
-}
-
-type EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation struct {
-	CallGasEstimate                  string                                                                                                    `json:"call_gas_estimate,required"`
-	PaymasterVerificationGasEstimate string                                                                                                    `json:"paymaster_verification_gas_estimate,required"`
-	PreVerificationGasEstimate       string                                                                                                    `json:"pre_verification_gas_estimate,required"`
-	Status                           EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationStatus `json:"status,required"`
-	VerificationGasEstimate          string                                                                                                    `json:"verification_gas_estimate,required"`
-	JSON                             evmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationJSON   `json:"-"`
-}
-
-// evmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationJSON
-// contains the JSON metadata for the struct
-// [EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation]
-type evmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationJSON struct {
-	CallGasEstimate                  apijson.Field
-	PaymasterVerificationGasEstimate apijson.Field
-	PreVerificationGasEstimate       apijson.Field
-	Status                           apijson.Field
-	VerificationGasEstimate          apijson.Field
-	raw                              string
-	ExtraFields                      map[string]apijson.Field
-}
-
-func (r *EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r evmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationJSON) RawJSON() string {
-	return r.raw
-}
-
-func (r EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimation) implementsEvmTransactionRawScanResponseUserOperationGasEstimation() {
-}
-
-type EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationStatus string
-
-const (
-	EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationStatusSuccess EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationStatus = "Success"
-)
-
-func (r EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationStatus) IsKnown() bool {
-	switch r {
-	case EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsUserOperationV7GasEstimationStatusSuccess:
-		return true
-	}
-	return false
 }
 
 type EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsTransactionScanGasEstimationError struct {
