@@ -60,6 +60,7 @@ func TestTokenScanWithOptionalParams(t *testing.T) {
 		Metadata: blockaidclientgo.F(blockaidclientgo.TokenScanParamsMetadata{
 			Domain: blockaidclientgo.F("domain"),
 		}),
+		TokenID: blockaidclientgo.F(int64(0)),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
