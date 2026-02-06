@@ -584,8 +584,8 @@ type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSo
 	// token's name
 	Name string `json:"name,required"`
 	// token's symbol
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
+	Symbol   string                                                                                                     `json:"symbol,required"`
+	Decimals SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
 	Logo string                                                                                                 `json:"logo,nullable"`
 	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetType `json:"type"`
@@ -612,6 +612,20 @@ func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegatio
 
 func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetJSON) RawJSON() string {
 	return r.raw
+}
+
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetDecimals int64
+
+const (
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetDecimals0 SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetDecimals = 0
+)
+
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetDecimals) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetDecimals0:
+		return true
+	}
+	return false
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetType string
@@ -811,8 +825,8 @@ type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSo
 	// token's name
 	Name string `json:"name,required"`
 	// token's symbol
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
+	Symbol   string                                                                                                                    `json:"symbol,required"`
+	Decimals SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
 	Logo string                                                                                                                `json:"logo,nullable"`
 	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetType `json:"type"`
@@ -839,6 +853,20 @@ func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegatio
 
 func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON) RawJSON() string {
 	return r.raw
+}
+
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals int64
+
+const (
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals0 SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals = 0
+)
+
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals0:
+		return true
+	}
+	return false
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetType string
@@ -1492,8 +1520,8 @@ type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDif
 	// token's name
 	Name string `json:"name,required"`
 	// token's symbol
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
+	Symbol   string                                                                                                                     `json:"symbol,required"`
+	Decimals SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
 	Logo string                                                                                                                 `json:"logo,nullable"`
 	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetType `json:"type"`
@@ -1520,6 +1548,20 @@ func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnership
 
 func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetJSON) RawJSON() string {
 	return r.raw
+}
+
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals int64
+
+const (
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals0 SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals = 0
+)
+
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals0:
+		return true
+	}
+	return false
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetType string
@@ -2063,8 +2105,8 @@ type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSol
 	// token's name
 	Name string `json:"name,required"`
 	// token's symbol
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
+	Symbol   string                                                                                                             `json:"symbol,required"`
+	Decimals SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
 	Logo string                                                                                                         `json:"logo,nullable"`
 	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetType `json:"type"`
@@ -2091,6 +2133,20 @@ func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDif
 
 func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
+}
+
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals int64
+
+const (
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals0 SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals = 0
+)
+
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals0:
+		return true
+	}
+	return false
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetType string
@@ -2213,8 +2269,8 @@ type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSol
 	// token's name
 	Name string `json:"name,required"`
 	// token's symbol
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
+	Symbol   string                                                                                                   `json:"symbol,required"`
+	Decimals SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
 	Logo string                                                                                               `json:"logo,nullable"`
 	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetType `json:"type"`
@@ -2241,6 +2297,20 @@ func (r *SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDif
 
 func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
+}
+
+type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetDecimals int64
+
+const (
+	SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetDecimals0 SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetDecimals = 0
+)
+
+func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetDecimals) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetDecimals0:
+		return true
+	}
+	return false
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetType string
@@ -2928,8 +2998,8 @@ type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungib
 	// token's name
 	Name string `json:"name,required"`
 	// token's symbol
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
+	Symbol   string                                                                                                     `json:"symbol,required"`
+	Decimals SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
 	Logo string                                                                                                 `json:"logo,nullable"`
 	Type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetType `json:"type"`
@@ -2956,6 +3026,20 @@ func (r *SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFu
 
 func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetJSON) RawJSON() string {
 	return r.raw
+}
+
+type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals int64
+
+const (
+	SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals0 SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals = 0
+)
+
+func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals0:
+		return true
+	}
+	return false
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetType string
@@ -3980,8 +4064,8 @@ type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAsse
 	// token's name
 	Name string `json:"name,required"`
 	// token's symbol
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
+	Symbol   string                                                                                        `json:"symbol,required"`
+	Decimals SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
 	Logo string                                                                                    `json:"logo,nullable"`
 	Type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetType `json:"type"`
@@ -4008,6 +4092,20 @@ func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungible
 
 func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
+}
+
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals int64
+
+const (
+	SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals0 SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals = 0
+)
+
+func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals0:
+		return true
+	}
+	return false
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetType string
@@ -4130,8 +4228,8 @@ type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAsset
 	// token's name
 	Name string `json:"name,required"`
 	// token's symbol
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
+	Symbol   string                                                                              `json:"symbol,required"`
+	Decimals SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
 	Logo string                                                                          `json:"logo,nullable"`
 	Type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetType `json:"type"`
@@ -4158,6 +4256,20 @@ func (r *SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffA
 
 func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetJSON) RawJSON() string {
 	return r.raw
+}
+
+type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetDecimals int64
+
+const (
+	SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetDecimals0 SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetDecimals = 0
+)
+
+func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetDecimals) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetDecimals0:
+		return true
+	}
+	return false
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetType string
@@ -4357,8 +4469,8 @@ type SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAss
 	// token's name
 	Name string `json:"name,required"`
 	// token's symbol
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
+	Symbol   string                                                                                `json:"symbol,required"`
+	Decimals SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
 	Logo string                                                                            `json:"logo,nullable"`
 	Type SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetType `json:"type"`
@@ -4385,6 +4497,20 @@ func (r *SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegatio
 
 func (r solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetJSON) RawJSON() string {
 	return r.raw
+}
+
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetDecimals int64
+
+const (
+	SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetDecimals0 SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetDecimals = 0
+)
+
+func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetDecimals) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetDecimals0:
+		return true
+	}
+	return false
 }
 
 type SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetType string
@@ -4584,8 +4710,8 @@ type SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTok
 	// token's name
 	Name string `json:"name,required"`
 	// token's symbol
-	Symbol   string `json:"symbol,required"`
-	Decimals int64  `json:"decimals"`
+	Symbol   string                                                                                               `json:"symbol,required"`
+	Decimals SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
 	Logo string                                                                                           `json:"logo,nullable"`
 	Type SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetType `json:"type"`
@@ -4612,6 +4738,20 @@ func (r *SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSp
 
 func (r solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON) RawJSON() string {
 	return r.raw
+}
+
+type SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals int64
+
+const (
+	SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals0 SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals = 0
+)
+
+func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals0:
+		return true
+	}
+	return false
 }
 
 type SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetType string
