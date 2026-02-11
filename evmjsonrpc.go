@@ -11887,7 +11887,7 @@ type EvmJsonRpcScanParamsMetadata struct {
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain"`
 	// Indicates that the transaction was not initiated by a dapp.
-	NonDapp param.Field[EvmJsonRpcScanParamsMetadataNonDapp] `json:"non_dapp"`
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r EvmJsonRpcScanParamsMetadata) MarshalJSON() (data []byte, err error) {
@@ -11938,6 +11938,9 @@ type EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDapp struct {
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain,required"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDapp) MarshalJSON() (data []byte, err error) {
@@ -11945,21 +11948,6 @@ func (r EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDapp) MarshalJSON() 
 }
 
 func (r EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDapp) implementsEvmJsonRpcScanParamsMetadataUnion() {
-}
-
-// Indicates that the transaction was not initiated by a dapp.
-type EvmJsonRpcScanParamsMetadataNonDapp bool
-
-const (
-	EvmJsonRpcScanParamsMetadataNonDappTrue EvmJsonRpcScanParamsMetadataNonDapp = true
-)
-
-func (r EvmJsonRpcScanParamsMetadataNonDapp) IsKnown() bool {
-	switch r {
-	case EvmJsonRpcScanParamsMetadataNonDappTrue:
-		return true
-	}
-	return false
 }
 
 // The relative block for the block validation. Can be "latest" or a block number.
