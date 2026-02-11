@@ -32,7 +32,9 @@ func NewBitcoinTransactionRawService(opts ...option.RequestOption) (r *BitcoinTr
 	return
 }
 
-// Report Transaction
+// Submit an appeal or false-positive report for a Bitcoin transaction scan. Use
+// when you believe a scan result was incorrect (e.g. should_be_benign,
+// should_be_malicious, wrong_simulation_result).
 func (r *BitcoinTransactionRawService) Report(ctx context.Context, body BitcoinTransactionRawReportParams, opts ...option.RequestOption) (res *int64, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/bitcoin/transaction/report"
@@ -40,7 +42,9 @@ func (r *BitcoinTransactionRawService) Report(ctx context.Context, body BitcoinT
 	return
 }
 
-// Scan Transaction
+// Scan a raw Bitcoin transaction for security risks before signing. Returns a
+// validation verdict (Benign, Warning, or Malicious) and, when requested, a
+// simulation of asset changes.
 func (r *BitcoinTransactionRawService) Scan(ctx context.Context, body BitcoinTransactionRawScanParams, opts ...option.RequestOption) (res *BitcoinTransactionScanResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/bitcoin/transaction-raw/scan"

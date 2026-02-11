@@ -496,7 +496,7 @@ type UserOperationRequestMetadataParam struct {
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain"`
 	// Indicates that the transaction was not initiated by a dapp.
-	NonDapp param.Field[UserOperationRequestMetadataNonDapp] `json:"non_dapp"`
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r UserOperationRequestMetadataParam) MarshalJSON() (data []byte, err error) {
@@ -547,6 +547,9 @@ type UserOperationRequestMetadataRoutersEvmModelsMetadataDappParam struct {
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain,required"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r UserOperationRequestMetadataRoutersEvmModelsMetadataDappParam) MarshalJSON() (data []byte, err error) {
@@ -554,21 +557,6 @@ func (r UserOperationRequestMetadataRoutersEvmModelsMetadataDappParam) MarshalJS
 }
 
 func (r UserOperationRequestMetadataRoutersEvmModelsMetadataDappParam) implementsUserOperationRequestMetadataUnionParam() {
-}
-
-// Indicates that the transaction was not initiated by a dapp.
-type UserOperationRequestMetadataNonDapp bool
-
-const (
-	UserOperationRequestMetadataNonDappTrue UserOperationRequestMetadataNonDapp = true
-)
-
-func (r UserOperationRequestMetadataNonDapp) IsKnown() bool {
-	switch r {
-	case UserOperationRequestMetadataNonDappTrue:
-		return true
-	}
-	return false
 }
 
 // The relative block for the block validation. Can be "latest" or a block number.
@@ -826,7 +814,7 @@ type ValidateAddressMetadataParam struct {
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain"`
 	// Indicates that the transaction was not initiated by a dapp.
-	NonDapp param.Field[ValidateAddressMetadataNonDapp] `json:"non_dapp"`
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r ValidateAddressMetadataParam) MarshalJSON() (data []byte, err error) {
@@ -877,6 +865,9 @@ type ValidateAddressMetadataRoutersEvmModelsMetadataDappParam struct {
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain,required"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r ValidateAddressMetadataRoutersEvmModelsMetadataDappParam) MarshalJSON() (data []byte, err error) {
@@ -884,21 +875,6 @@ func (r ValidateAddressMetadataRoutersEvmModelsMetadataDappParam) MarshalJSON() 
 }
 
 func (r ValidateAddressMetadataRoutersEvmModelsMetadataDappParam) implementsValidateAddressMetadataUnionParam() {
-}
-
-// Indicates that the transaction was not initiated by a dapp.
-type ValidateAddressMetadataNonDapp bool
-
-const (
-	ValidateAddressMetadataNonDappTrue ValidateAddressMetadataNonDapp = true
-)
-
-func (r ValidateAddressMetadataNonDapp) IsKnown() bool {
-	switch r {
-	case ValidateAddressMetadataNonDappTrue:
-		return true
-	}
-	return false
 }
 
 type ValidateBulkAddressesParam struct {
@@ -923,7 +899,7 @@ type ValidateBulkAddressesMetadataParam struct {
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain"`
 	// Indicates that the transaction was not initiated by a dapp.
-	NonDapp param.Field[ValidateBulkAddressesMetadataNonDapp] `json:"non_dapp"`
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r ValidateBulkAddressesMetadataParam) MarshalJSON() (data []byte, err error) {
@@ -975,6 +951,9 @@ type ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappParam struct {
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain,required"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappParam) MarshalJSON() (data []byte, err error) {
@@ -982,21 +961,6 @@ func (r ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappParam) MarshalJ
 }
 
 func (r ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappParam) implementsValidateBulkAddressesMetadataUnionParam() {
-}
-
-// Indicates that the transaction was not initiated by a dapp.
-type ValidateBulkAddressesMetadataNonDapp bool
-
-const (
-	ValidateBulkAddressesMetadataNonDappTrue ValidateBulkAddressesMetadataNonDapp = true
-)
-
-func (r ValidateBulkAddressesMetadataNonDapp) IsKnown() bool {
-	switch r {
-	case ValidateBulkAddressesMetadataNonDappTrue:
-		return true
-	}
-	return false
 }
 
 type ValidateBulkExtendedAddressesRequestParam struct {

@@ -33,11 +33,10 @@ func NewBitcoinService(opts ...option.RequestOption) (r *BitcoinService) {
 }
 
 type BitcoinTransactionScanRequestParam struct {
-	AccountAddress param.Field[string]                             `json:"account_address,required"`
-	Chain          param.Field[BitcoinTransactionScanRequestChain] `json:"chain,required"`
-	// Metadata
-	Metadata    param.Field[BitcoinTransactionScanRequestMetadataUnionParam] `json:"metadata,required"`
-	Transaction param.Field[string]                                          `json:"transaction,required"`
+	AccountAddress param.Field[string]                                          `json:"account_address,required"`
+	Chain          param.Field[BitcoinTransactionScanRequestChain]              `json:"chain,required"`
+	Metadata       param.Field[BitcoinTransactionScanRequestMetadataUnionParam] `json:"metadata,required"`
+	Transaction    param.Field[string]                                          `json:"transaction,required"`
 	// List of options to include in the response
 	//
 	// - `Options.validation`: Include Options.validation output in the response
@@ -64,7 +63,6 @@ func (r BitcoinTransactionScanRequestChain) IsKnown() bool {
 	return false
 }
 
-// Metadata
 type BitcoinTransactionScanRequestMetadataParam struct {
 	// Metadata for wallet requests
 	Type param.Field[BitcoinTransactionScanRequestMetadataType] `json:"type"`
@@ -79,8 +77,6 @@ func (r BitcoinTransactionScanRequestMetadataParam) MarshalJSON() (data []byte, 
 func (r BitcoinTransactionScanRequestMetadataParam) implementsBitcoinTransactionScanRequestMetadataUnionParam() {
 }
 
-// Metadata
-//
 // Satisfied by
 // [BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataParam],
 // [BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataParam],
