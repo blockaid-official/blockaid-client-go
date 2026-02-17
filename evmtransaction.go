@@ -44,9 +44,7 @@ func (r *EvmTransactionService) Report(ctx context.Context, body EvmTransactionR
 	return
 }
 
-// Gets a transaction and returns a full simulation indicating what will happen in
-// the transaction together with a recommended action and some textual reasons of
-// why the transaction was flagged that way.
+// Get a risk recommendation with plain-language reasons for a transaction.
 func (r *EvmTransactionService) Scan(ctx context.Context, body EvmTransactionScanParams, opts ...option.RequestOption) (res *EvmTransactionScanResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/transaction/scan"

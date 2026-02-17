@@ -35,9 +35,7 @@ func NewEvmUserOperationService(opts ...option.RequestOption) (r *EvmUserOperati
 	return
 }
 
-// Gets a user operation request and returns a full simulation indicating what will
-// happen in the transaction together with a recommended action and some textual
-// reasons of why the transaction was flagged that way.
+// Get a risk recommendation with plain-language reasons for a user operation.
 func (r *EvmUserOperationService) Scan(ctx context.Context, body EvmUserOperationScanParams, opts ...option.RequestOption) (res *EvmUserOperationScanResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/user-operation/scan"

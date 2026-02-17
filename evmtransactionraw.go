@@ -36,9 +36,7 @@ func NewEvmTransactionRawService(opts ...option.RequestOption) (r *EvmTransactio
 	return
 }
 
-// Gets a raw transaction and returns a full simulation indicating what will happen
-// in the transaction together with a recommended action and some textual reasons
-// of why the transaction was flagged that way.
+// Get a risk recommendation with plain-language reasons for a raw transaction.
 func (r *EvmTransactionRawService) Scan(ctx context.Context, body EvmTransactionRawScanParams, opts ...option.RequestOption) (res *EvmTransactionRawScanResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/transaction-raw/scan"

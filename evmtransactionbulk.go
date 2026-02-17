@@ -36,10 +36,8 @@ func NewEvmTransactionBulkService(opts ...option.RequestOption) (r *EvmTransacti
 	return
 }
 
-// Gets a bulk of transactions and returns a simulation showcasing the outcome
-// after executing the transactions synchronously, along with a suggested course of
-// action and textual explanations highlighting the reasons for flagging the bulk
-// in that manner.
+// Get a risk recommendation with plain-language reasons for a bulk of
+// transactions.
 func (r *EvmTransactionBulkService) Scan(ctx context.Context, body EvmTransactionBulkScanParams, opts ...option.RequestOption) (res *[]EvmTransactionBulkScanResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/transaction-bulk/scan"

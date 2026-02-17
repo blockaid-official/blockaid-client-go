@@ -34,9 +34,7 @@ func NewHederaTransactionService(opts ...option.RequestOption) (r *HederaTransac
 	return
 }
 
-// Gets a transaction and returns a full simulation indicating what will happen in
-// the transaction together with a recommended action and some textual reasons of
-// why the transaction was flagged that way.
+// Get a risk recommendation with plain-language reasons for a Hedera transaction.
 func (r *HederaTransactionService) Scan(ctx context.Context, body HederaTransactionScanParams, opts ...option.RequestOption) (res *HederaTransactionScanResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/hedera/transaction/scan"
