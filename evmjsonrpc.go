@@ -36,9 +36,7 @@ func NewEvmJsonRpcService(opts ...option.RequestOption) (r *EvmJsonRpcService) {
 	return
 }
 
-// Gets a json-rpc request and returns a full simulation indicating what will
-// happen in the transaction together with a recommended action and some textual
-// reasons of why the transaction was flagged that way.
+// Get a risk recommendation with plain-language reasons for a JSON-RPC request.
 func (r *EvmJsonRpcService) Scan(ctx context.Context, body EvmJsonRpcScanParams, opts ...option.RequestOption) (res *EvmJsonRpcScanResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/json-rpc/scan"

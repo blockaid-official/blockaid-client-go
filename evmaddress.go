@@ -40,9 +40,7 @@ func (r *EvmAddressService) Report(ctx context.Context, body EvmAddressReportPar
 	return
 }
 
-// Gets an address and returns a full security assessment indicating weather or not
-// this address is malicious as well as textual reasons of why the address was
-// flagged that way.
+// Get a risk recommendation with plain-language reasons for an address.
 func (r *EvmAddressService) Scan(ctx context.Context, body EvmAddressScanParams, opts ...option.RequestOption) (res *AddressValidation, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/address/scan"
