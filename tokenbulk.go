@@ -1064,8 +1064,8 @@ func (r TokenBulkScanResponseResultsFeaturesType) IsKnown() bool {
 
 type TokenBulkScanResponseError struct {
 	// Error message describing why the scan failed for this token
-	Message string                         `json:"message,required"`
-	JSON    tokenBulkScanResponseErrorJSON `json:"-"`
+	Message TokenBulkScanResponseErrorsMessage `json:"message,required"`
+	JSON    tokenBulkScanResponseErrorJSON     `json:"-"`
 }
 
 // tokenBulkScanResponseErrorJSON contains the JSON metadata for the struct
@@ -1082,6 +1082,22 @@ func (r *TokenBulkScanResponseError) UnmarshalJSON(data []byte) (err error) {
 
 func (r tokenBulkScanResponseErrorJSON) RawJSON() string {
 	return r.raw
+}
+
+// Error message describing why the scan failed for this token
+type TokenBulkScanResponseErrorsMessage string
+
+const (
+	TokenBulkScanResponseErrorsMessagePendingScanResult TokenBulkScanResponseErrorsMessage = "PENDING_SCAN_RESULT"
+	TokenBulkScanResponseErrorsMessageNotAToken         TokenBulkScanResponseErrorsMessage = "NOT_A_TOKEN"
+)
+
+func (r TokenBulkScanResponseErrorsMessage) IsKnown() bool {
+	switch r {
+	case TokenBulkScanResponseErrorsMessagePendingScanResult, TokenBulkScanResponseErrorsMessageNotAToken:
+		return true
+	}
+	return false
 }
 
 type TokenBulkScanParams struct {
