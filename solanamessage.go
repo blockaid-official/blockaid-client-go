@@ -111,6 +111,7 @@ func (r SolanaMessageScanResponseStatus) IsKnown() bool {
 
 // Error details
 type SolanaMessageScanResponseErrorDetails struct {
+	Category SolanaMessageScanResponseErrorDetailsCategory `json:"category"`
 	// Machine readable error code
 	Code string `json:"code,nullable"`
 	// Index of the instruction in the transaction
@@ -131,6 +132,7 @@ type SolanaMessageScanResponseErrorDetails struct {
 // solanaMessageScanResponseErrorDetailsJSON contains the JSON metadata for the
 // struct [SolanaMessageScanResponseErrorDetails]
 type solanaMessageScanResponseErrorDetailsJSON struct {
+	Category         apijson.Field
 	Code             apijson.Field
 	InstructionIndex apijson.Field
 	Message          apijson.Field
@@ -200,6 +202,7 @@ func init() {
 }
 
 type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetails struct {
+	Category SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsCategory `json:"category"`
 	// Advanced message of the error
 	Message     string                                                                                                          `json:"message"`
 	Type        SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsType `json:"type"`
@@ -211,6 +214,7 @@ type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningContro
 // contains the JSON metadata for the struct
 // [SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetails]
 type solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsJSON struct {
+	Category    apijson.Field
 	Message     apijson.Field
 	Type        apijson.Field
 	raw         string
@@ -226,6 +230,20 @@ func (r solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningCon
 }
 
 func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetails) implementsSolanaMessageScanResponseErrorDetails() {
+}
+
+type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsCategory string
+
+const (
+	SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsCategoryNodeError SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsCategory = "NODE_ERROR"
+)
+
+func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsCategory) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsCategoryNodeError:
+		return true
+	}
+	return false
 }
 
 type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsType string
@@ -244,7 +262,8 @@ func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningCon
 
 type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetails struct {
 	// Index of the transaction in the bulk
-	TransactionIndex int64 `json:"transaction_index,required"`
+	TransactionIndex int64                                                                                                                       `json:"transaction_index,required"`
+	Category         SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsCategory `json:"category"`
 	// Advanced message of the error
 	Message     string                                                                                                                  `json:"message"`
 	Type        SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsType `json:"type"`
@@ -257,6 +276,7 @@ type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningContro
 // [SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetails]
 type solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsJSON struct {
 	TransactionIndex apijson.Field
+	Category         apijson.Field
 	Message          apijson.Field
 	Type             apijson.Field
 	raw              string
@@ -272,6 +292,20 @@ func (r solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningCon
 }
 
 func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetails) implementsSolanaMessageScanResponseErrorDetails() {
+}
+
+type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsCategory string
+
+const (
+	SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsCategoryRevert SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsCategory = "REVERT"
+)
+
+func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsCategory) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsCategoryRevert:
+		return true
+	}
+	return false
 }
 
 type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsType string
@@ -292,7 +326,8 @@ type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningContro
 	// Index of the instruction in the transaction
 	InstructionIndex int64 `json:"instruction_index,required"`
 	// Index of the transaction in the bulk
-	TransactionIndex int64 `json:"transaction_index,required"`
+	TransactionIndex int64                                                                                                                       `json:"transaction_index,required"`
+	Category         SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsCategory `json:"category"`
 	// Machine readable error code
 	Code string `json:"code,nullable"`
 	// Human readable error
@@ -312,6 +347,7 @@ type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningContro
 type solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsJSON struct {
 	InstructionIndex apijson.Field
 	TransactionIndex apijson.Field
+	Category         apijson.Field
 	Code             apijson.Field
 	Message          apijson.Field
 	Number           apijson.Field
@@ -332,6 +368,20 @@ func (r solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningCon
 func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetails) implementsSolanaMessageScanResponseErrorDetails() {
 }
 
+type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsCategory string
+
+const (
+	SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsCategoryRevert SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsCategory = "REVERT"
+)
+
+func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsCategory) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsCategoryRevert:
+		return true
+	}
+	return false
+}
+
 type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsType string
 
 const (
@@ -341,6 +391,21 @@ const (
 func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsType) IsKnown() bool {
 	switch r {
 	case SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsTypeInstructionError:
+		return true
+	}
+	return false
+}
+
+type SolanaMessageScanResponseErrorDetailsCategory string
+
+const (
+	SolanaMessageScanResponseErrorDetailsCategoryNodeError SolanaMessageScanResponseErrorDetailsCategory = "NODE_ERROR"
+	SolanaMessageScanResponseErrorDetailsCategoryRevert    SolanaMessageScanResponseErrorDetailsCategory = "REVERT"
+)
+
+func (r SolanaMessageScanResponseErrorDetailsCategory) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanResponseErrorDetailsCategoryNodeError, SolanaMessageScanResponseErrorDetailsCategoryRevert:
 		return true
 	}
 	return false
