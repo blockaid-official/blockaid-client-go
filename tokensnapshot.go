@@ -324,6 +324,10 @@ type TokenSnapshotDiffResponseItemsMetadata struct {
 	FreezeAuthority string `json:"freeze_authority" api:"nullable"`
 	// URL of the token image
 	ImageURL string `json:"image_url" api:"nullable"`
+	// This field can have the runtime type of
+	// [[]TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTarget],
+	// [[]TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTarget].
+	ImpersonationTargets interface{} `json:"impersonation_targets"`
 	// This field can have the runtime type of [[]string].
 	MaliciousURLs interface{} `json:"malicious_urls"`
 	// Solana token mint authority account
@@ -369,6 +373,7 @@ type tokenSnapshotDiffResponseItemsMetadataJSON struct {
 	FormattedName          apijson.Field
 	FreezeAuthority        apijson.Field
 	ImageURL               apijson.Field
+	ImpersonationTargets   apijson.Field
 	MaliciousURLs          apijson.Field
 	MintAuthority          apijson.Field
 	Name                   apijson.Field
@@ -456,6 +461,8 @@ type TokenSnapshotDiffResponseItemsMetadataSolanaMetadata struct {
 	FreezeAuthority string `json:"freeze_authority" api:"nullable"`
 	// URL of the token image
 	ImageURL string `json:"image_url" api:"nullable"`
+	// List of tokens that this token is impersonating, if detected as an impersonator
+	ImpersonationTargets []TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTarget `json:"impersonation_targets" api:"nullable"`
 	// Malicious urls associated with the token
 	MaliciousURLs []string `json:"malicious_urls" api:"nullable"`
 	// Solana token mint authority account
@@ -494,6 +501,7 @@ type tokenSnapshotDiffResponseItemsMetadataSolanaMetadataJSON struct {
 	ExternalLinks          apijson.Field
 	FreezeAuthority        apijson.Field
 	ImageURL               apijson.Field
+	ImpersonationTargets   apijson.Field
 	MaliciousURLs          apijson.Field
 	MintAuthority          apijson.Field
 	Name                   apijson.Field
@@ -597,6 +605,57 @@ func (r tokenSnapshotDiffResponseItemsMetadataSolanaMetadataExternalLinksJSON) R
 	return r.raw
 }
 
+type TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTarget struct {
+	// Address of the token being impersonated
+	Address string `json:"address" api:"required"`
+	// Blockchain network of the target token
+	Chain string `json:"chain" api:"required"`
+	// Name of the token being impersonated
+	Name string `json:"name" api:"nullable"`
+	// Source of the impersonation match
+	Source TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSource `json:"source" api:"nullable"`
+	// Symbol of the token being impersonated
+	Symbol string                                                                      `json:"symbol" api:"nullable"`
+	JSON   tokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetJSON `json:"-"`
+}
+
+// tokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetJSON
+// contains the JSON metadata for the struct
+// [TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTarget]
+type tokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetJSON struct {
+	Address     apijson.Field
+	Chain       apijson.Field
+	Name        apijson.Field
+	Source      apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTarget) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Source of the impersonation match
+type TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSource string
+
+const (
+	TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceTopToken    TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSource = "TOP_TOKEN"
+	TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceUserDefined TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSource = "USER_DEFINED"
+)
+
+func (r TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSource) IsKnown() bool {
+	switch r {
+	case TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceTopToken, TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceUserDefined:
+		return true
+	}
+	return false
+}
+
 // Contract owner balance
 type TokenSnapshotDiffResponseItemsMetadataSolanaMetadataOwnerBalance struct {
 	Amount    float64                                                              `json:"amount" api:"nullable"`
@@ -683,6 +742,8 @@ type TokenSnapshotDiffResponseItemsMetadataEvmMetadataToken struct {
 	ExternalLinks TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenExternalLinks `json:"external_links"`
 	// URL of the token image
 	ImageURL string `json:"image_url" api:"nullable"`
+	// List of tokens that this token is impersonating, if detected as an impersonator
+	ImpersonationTargets []TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTarget `json:"impersonation_targets" api:"nullable"`
 	// Malicious urls associated with the token
 	MaliciousURLs []string `json:"malicious_urls" api:"nullable"`
 	// Name of the token
@@ -714,6 +775,7 @@ type tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenJSON struct {
 	Description            apijson.Field
 	ExternalLinks          apijson.Field
 	ImageURL               apijson.Field
+	ImpersonationTargets   apijson.Field
 	MaliciousURLs          apijson.Field
 	Name                   apijson.Field
 	Owner                  apijson.Field
@@ -812,6 +874,57 @@ func (r *TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenExternalLinks) Un
 
 func (r tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenExternalLinksJSON) RawJSON() string {
 	return r.raw
+}
+
+type TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTarget struct {
+	// Address of the token being impersonated
+	Address string `json:"address" api:"required"`
+	// Blockchain network of the target token
+	Chain string `json:"chain" api:"required"`
+	// Name of the token being impersonated
+	Name string `json:"name" api:"nullable"`
+	// Source of the impersonation match
+	Source TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource `json:"source" api:"nullable"`
+	// Symbol of the token being impersonated
+	Symbol string                                                                        `json:"symbol" api:"nullable"`
+	JSON   tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON `json:"-"`
+}
+
+// tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON
+// contains the JSON metadata for the struct
+// [TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTarget]
+type tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON struct {
+	Address     apijson.Field
+	Chain       apijson.Field
+	Name        apijson.Field
+	Source      apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTarget) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Source of the impersonation match
+type TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource string
+
+const (
+	TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceTopToken    TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource = "TOP_TOKEN"
+	TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceUserDefined TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource = "USER_DEFINED"
+)
+
+func (r TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource) IsKnown() bool {
+	switch r {
+	case TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceTopToken, TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceUserDefined:
+		return true
+	}
+	return false
 }
 
 // Contract owner balance
@@ -1349,6 +1462,10 @@ type TokenSnapshotFullResponseItemsMetadata struct {
 	FreezeAuthority string `json:"freeze_authority" api:"nullable"`
 	// URL of the token image
 	ImageURL string `json:"image_url" api:"nullable"`
+	// This field can have the runtime type of
+	// [[]TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTarget],
+	// [[]TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTarget].
+	ImpersonationTargets interface{} `json:"impersonation_targets"`
 	// This field can have the runtime type of [[]string].
 	MaliciousURLs interface{} `json:"malicious_urls"`
 	// Solana token mint authority account
@@ -1394,6 +1511,7 @@ type tokenSnapshotFullResponseItemsMetadataJSON struct {
 	FormattedName          apijson.Field
 	FreezeAuthority        apijson.Field
 	ImageURL               apijson.Field
+	ImpersonationTargets   apijson.Field
 	MaliciousURLs          apijson.Field
 	MintAuthority          apijson.Field
 	Name                   apijson.Field
@@ -1481,6 +1599,8 @@ type TokenSnapshotFullResponseItemsMetadataSolanaMetadata struct {
 	FreezeAuthority string `json:"freeze_authority" api:"nullable"`
 	// URL of the token image
 	ImageURL string `json:"image_url" api:"nullable"`
+	// List of tokens that this token is impersonating, if detected as an impersonator
+	ImpersonationTargets []TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTarget `json:"impersonation_targets" api:"nullable"`
 	// Malicious urls associated with the token
 	MaliciousURLs []string `json:"malicious_urls" api:"nullable"`
 	// Solana token mint authority account
@@ -1519,6 +1639,7 @@ type tokenSnapshotFullResponseItemsMetadataSolanaMetadataJSON struct {
 	ExternalLinks          apijson.Field
 	FreezeAuthority        apijson.Field
 	ImageURL               apijson.Field
+	ImpersonationTargets   apijson.Field
 	MaliciousURLs          apijson.Field
 	MintAuthority          apijson.Field
 	Name                   apijson.Field
@@ -1622,6 +1743,57 @@ func (r tokenSnapshotFullResponseItemsMetadataSolanaMetadataExternalLinksJSON) R
 	return r.raw
 }
 
+type TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTarget struct {
+	// Address of the token being impersonated
+	Address string `json:"address" api:"required"`
+	// Blockchain network of the target token
+	Chain string `json:"chain" api:"required"`
+	// Name of the token being impersonated
+	Name string `json:"name" api:"nullable"`
+	// Source of the impersonation match
+	Source TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSource `json:"source" api:"nullable"`
+	// Symbol of the token being impersonated
+	Symbol string                                                                      `json:"symbol" api:"nullable"`
+	JSON   tokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetJSON `json:"-"`
+}
+
+// tokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetJSON
+// contains the JSON metadata for the struct
+// [TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTarget]
+type tokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetJSON struct {
+	Address     apijson.Field
+	Chain       apijson.Field
+	Name        apijson.Field
+	Source      apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTarget) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Source of the impersonation match
+type TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSource string
+
+const (
+	TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceTopToken    TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSource = "TOP_TOKEN"
+	TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceUserDefined TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSource = "USER_DEFINED"
+)
+
+func (r TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSource) IsKnown() bool {
+	switch r {
+	case TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceTopToken, TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceUserDefined:
+		return true
+	}
+	return false
+}
+
 // Contract owner balance
 type TokenSnapshotFullResponseItemsMetadataSolanaMetadataOwnerBalance struct {
 	Amount    float64                                                              `json:"amount" api:"nullable"`
@@ -1708,6 +1880,8 @@ type TokenSnapshotFullResponseItemsMetadataEvmMetadataToken struct {
 	ExternalLinks TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenExternalLinks `json:"external_links"`
 	// URL of the token image
 	ImageURL string `json:"image_url" api:"nullable"`
+	// List of tokens that this token is impersonating, if detected as an impersonator
+	ImpersonationTargets []TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTarget `json:"impersonation_targets" api:"nullable"`
 	// Malicious urls associated with the token
 	MaliciousURLs []string `json:"malicious_urls" api:"nullable"`
 	// Name of the token
@@ -1739,6 +1913,7 @@ type tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenJSON struct {
 	Description            apijson.Field
 	ExternalLinks          apijson.Field
 	ImageURL               apijson.Field
+	ImpersonationTargets   apijson.Field
 	MaliciousURLs          apijson.Field
 	Name                   apijson.Field
 	Owner                  apijson.Field
@@ -1837,6 +2012,57 @@ func (r *TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenExternalLinks) Un
 
 func (r tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenExternalLinksJSON) RawJSON() string {
 	return r.raw
+}
+
+type TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTarget struct {
+	// Address of the token being impersonated
+	Address string `json:"address" api:"required"`
+	// Blockchain network of the target token
+	Chain string `json:"chain" api:"required"`
+	// Name of the token being impersonated
+	Name string `json:"name" api:"nullable"`
+	// Source of the impersonation match
+	Source TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource `json:"source" api:"nullable"`
+	// Symbol of the token being impersonated
+	Symbol string                                                                        `json:"symbol" api:"nullable"`
+	JSON   tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON `json:"-"`
+}
+
+// tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON
+// contains the JSON metadata for the struct
+// [TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTarget]
+type tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON struct {
+	Address     apijson.Field
+	Chain       apijson.Field
+	Name        apijson.Field
+	Source      apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTarget) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Source of the impersonation match
+type TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource string
+
+const (
+	TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceTopToken    TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource = "TOP_TOKEN"
+	TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceUserDefined TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource = "USER_DEFINED"
+)
+
+func (r TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource) IsKnown() bool {
+	switch r {
+	case TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceTopToken, TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceUserDefined:
+		return true
+	}
+	return false
 }
 
 // Contract owner balance
