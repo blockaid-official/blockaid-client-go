@@ -41,11 +41,11 @@ func (r *SuiTransactionService) Scan(ctx context.Context, body SuiTransactionSca
 }
 
 type SuiTransactionScanParams struct {
-	AccountAddress param.Field[string]                        `json:"account_address,required"`
-	Chain          param.Field[SuiTransactionScanParamsChain] `json:"chain,required"`
+	AccountAddress param.Field[string]                        `json:"account_address" api:"required"`
+	Chain          param.Field[SuiTransactionScanParamsChain] `json:"chain" api:"required"`
 	// Metadata
-	Metadata    param.Field[SuiTransactionScanParamsMetadataUnion] `json:"metadata,required"`
-	Transaction param.Field[string]                                `json:"transaction,required"`
+	Metadata    param.Field[SuiTransactionScanParamsMetadataUnion] `json:"metadata" api:"required"`
+	Transaction param.Field[string]                                `json:"transaction" api:"required"`
 	// List of options to include in the response
 	//
 	// - `Options.validation`: Include Options.validation output in the response
@@ -97,9 +97,9 @@ type SuiTransactionScanParamsMetadataUnion interface {
 
 type SuiTransactionScanParamsMetadataSuiWalletRequestMetadata struct {
 	// Metadata for wallet requests
-	Type param.Field[SuiTransactionScanParamsMetadataSuiWalletRequestMetadataType] `json:"type,required"`
+	Type param.Field[SuiTransactionScanParamsMetadataSuiWalletRequestMetadataType] `json:"type" api:"required"`
 	// URL of the dApp originating the transaction
-	URL param.Field[string] `json:"url,required"`
+	URL param.Field[string] `json:"url" api:"required"`
 }
 
 func (r SuiTransactionScanParamsMetadataSuiWalletRequestMetadata) MarshalJSON() (data []byte, err error) {

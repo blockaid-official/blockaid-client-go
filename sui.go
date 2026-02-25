@@ -38,13 +38,13 @@ func NewSuiService(opts ...option.RequestOption) (r *SuiService) {
 
 type SuiAssetTransferDetailsSchema struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                           `json:"usd_price,nullable"`
+	UsdPrice float64                           `json:"usd_price" api:"nullable"`
 	JSON     suiAssetTransferDetailsSchemaJSON `json:"-"`
 }
 
@@ -163,17 +163,17 @@ func (r SuiNativeAssetDetailsSchemaType) IsKnown() bool {
 
 type SuiNFTDetailsSchema struct {
 	// The NFT ID
-	ID string `json:"id,required"`
+	ID string `json:"id" api:"required"`
 	// The NFT's description
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// NFT's display name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The NFT's collection ID
-	NFTType string `json:"nft_type,required"`
+	NFTType string `json:"nft_type" api:"required"`
 	// Type of the asset (`NFT`)
 	Type SuiNFTDetailsSchemaType `json:"type"`
 	// URL of the nft's image
-	URL  string                  `json:"url,nullable"`
+	URL  string                  `json:"url" api:"nullable"`
 	JSON suiNFTDetailsSchemaJSON `json:"-"`
 }
 
@@ -215,11 +215,11 @@ func (r SuiNFTDetailsSchemaType) IsKnown() bool {
 
 type SuiNFTDiffSchema struct {
 	// NFT ID of the transfer
-	ID string `json:"id,required"`
+	ID string `json:"id" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64              `json:"usd_price,nullable"`
+	UsdPrice float64              `json:"usd_price" api:"nullable"`
 	JSON     suiNFTDiffSchemaJSON `json:"-"`
 }
 
@@ -243,9 +243,9 @@ func (r suiNFTDiffSchemaJSON) RawJSON() string {
 
 type SuiTransactionScanResponse struct {
 	// Simulation result; Only present if simulation option is included in the request
-	Simulation SuiTransactionScanResponseSimulation `json:"simulation,nullable"`
+	Simulation SuiTransactionScanResponseSimulation `json:"simulation" api:"nullable"`
 	// Validation result; Only present if validation option is included in the request
-	Validation SuiTransactionScanResponseValidation `json:"validation,nullable"`
+	Validation SuiTransactionScanResponseValidation `json:"validation" api:"nullable"`
 	JSON       suiTransactionScanResponseJSON       `json:"-"`
 }
 
@@ -268,7 +268,7 @@ func (r suiTransactionScanResponseJSON) RawJSON() string {
 
 // Simulation result; Only present if simulation option is included in the request
 type SuiTransactionScanResponseSimulation struct {
-	Status SuiTransactionScanResponseSimulationStatus `json:"status,required"`
+	Status SuiTransactionScanResponseSimulationStatus `json:"status" api:"required"`
 	// This field can have the runtime type of
 	// [SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummary].
 	AccountSummary interface{} `json:"account_summary"`
@@ -345,8 +345,8 @@ func init() {
 type SuiTransactionScanResponseSimulationSuiSimulationResult struct {
 	// Summary of the actions and asset transfers that were made by the requested
 	// account address
-	AccountSummary SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummary `json:"account_summary,required"`
-	Status         SuiTransactionScanResponseSimulationSuiSimulationResultStatus         `json:"status,required"`
+	AccountSummary SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummary `json:"account_summary" api:"required"`
+	Status         SuiTransactionScanResponseSimulationSuiSimulationResultStatus         `json:"status" api:"required"`
 	// Details of addresses involved in the transaction
 	AddressDetails []SuiTransactionScanResponseSimulationSuiSimulationResultAddressDetail `json:"address_details"`
 	// Mapping between the address of an account to the assets diff during the
@@ -382,7 +382,7 @@ func (r SuiTransactionScanResponseSimulationSuiSimulationResult) implementsSuiTr
 // account address
 type SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummary struct {
 	// Total USD diff for the requested account address
-	TotalUsdDiff SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryTotalUsdDiff `json:"total_usd_diff,required"`
+	TotalUsdDiff SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryTotalUsdDiff `json:"total_usd_diff" api:"required"`
 	// Assets diffs of the requested account address
 	AccountAssetsDiffs []SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiff `json:"account_assets_diffs"`
 	JSON               suiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryJSON                `json:"-"`
@@ -409,9 +409,9 @@ func (r suiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryJSO
 // Total USD diff for the requested account address
 type SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryTotalUsdDiff struct {
 	// Total incoming USD transfers
-	In float64 `json:"in,required"`
+	In float64 `json:"in" api:"required"`
 	// Total outgoing USD transfers
-	Out float64 `json:"out,required"`
+	Out float64 `json:"out" api:"required"`
 	// Total USD transfers
 	Total float64                                                                               `json:"total"`
 	JSON  suiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryTotalUsdDiffJSON `json:"-"`
@@ -440,9 +440,9 @@ type SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccoun
 	// This field can have the runtime type of [SuiNativeAssetDetailsSchema],
 	// [SuiNFTDetailsSchema],
 	// [SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// This field can have the runtime type of [SuiAssetTransferDetailsSchema],
 	// [SuiNFTDiffSchema].
 	In interface{} `json:"in"`
@@ -519,13 +519,13 @@ func init() {
 }
 
 type SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiff struct {
-	Asset SuiNativeAssetDetailsSchema `json:"asset,required"`
+	Asset SuiNativeAssetDetailsSchema `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SuiAssetTransferDetailsSchema `json:"in,nullable"`
+	In SuiAssetTransferDetailsSchema `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SuiAssetTransferDetailsSchema                                                                                 `json:"out,nullable"`
+	Out  SuiAssetTransferDetailsSchema                                                                                 `json:"out" api:"nullable"`
 	JSON suiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNativeAssetDiffJSON `json:"-"`
 }
 
@@ -553,13 +553,13 @@ func (r SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAcc
 }
 
 type SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiff struct {
-	Asset SuiNFTDetailsSchema `json:"asset,required"`
+	Asset SuiNFTDetailsSchema `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SuiNFTDiffSchema `json:"in,nullable"`
+	In SuiNFTDiffSchema `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SuiNFTDiffSchema                                                                                           `json:"out,nullable"`
+	Out  SuiNFTDiffSchema                                                                                           `json:"out" api:"nullable"`
 	JSON suiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiNFTAssetDiffJSON `json:"-"`
 }
 
@@ -587,13 +587,13 @@ func (r SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAcc
 }
 
 type SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiff struct {
-	Asset SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset `json:"asset,required"`
+	Asset SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SuiAssetTransferDetailsSchema `json:"in,nullable"`
+	In SuiAssetTransferDetailsSchema `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SuiAssetTransferDetailsSchema                                                                                `json:"out,nullable"`
+	Out  SuiAssetTransferDetailsSchema                                                                                `json:"out" api:"nullable"`
 	JSON suiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffJSON `json:"-"`
 }
 
@@ -622,23 +622,23 @@ func (r SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAcc
 
 type SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAsset struct {
 	// Token's package address
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// Token's decimal precision
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// Token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// Token's symbol (abbreviation)
-	Symbol            string    `json:"symbol,required"`
-	CreationTimestamp time.Time `json:"creation_timestamp,nullable" format:"date-time"`
+	Symbol            string    `json:"symbol" api:"required"`
+	CreationTimestamp time.Time `json:"creation_timestamp" api:"nullable" format:"date-time"`
 	// Address of the token's deployer
-	Deployer string `json:"deployer,nullable"`
+	Deployer string `json:"deployer" api:"nullable"`
 	// URL of the token's logo
-	LogoURL     string `json:"logo_url,nullable"`
-	Scam        bool   `json:"scam,nullable"`
-	TotalSupply int64  `json:"total_supply,nullable"`
+	LogoURL     string `json:"logo_url" api:"nullable"`
+	Scam        bool   `json:"scam" api:"nullable"`
+	TotalSupply int64  `json:"total_supply" api:"nullable"`
 	// Type of the asset (`Coin`)
 	Type     SuiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetType `json:"type"`
-	Verified bool                                                                                                              `json:"verified,nullable"`
+	Verified bool                                                                                                              `json:"verified" api:"nullable"`
 	JSON     suiTransactionScanResponseSimulationSuiSimulationResultAccountSummaryAccountAssetsDiffsSuiCoinsAssetDiffAssetJSON `json:"-"`
 }
 
@@ -700,9 +700,9 @@ func (r SuiTransactionScanResponseSimulationSuiSimulationResultStatus) IsKnown()
 
 type SuiTransactionScanResponseSimulationSuiSimulationResultAddressDetail struct {
 	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
+	AccountAddress string `json:"account_address" api:"required"`
 	// Description of the account
-	Description string                                                                   `json:"description,nullable"`
+	Description string                                                                   `json:"description" api:"nullable"`
 	JSON        suiTransactionScanResponseSimulationSuiSimulationResultAddressDetailJSON `json:"-"`
 }
 
@@ -728,9 +728,9 @@ type SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiff struct {
 	// This field can have the runtime type of [SuiNativeAssetDetailsSchema],
 	// [SuiNFTDetailsSchema],
 	// [SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// This field can have the runtime type of [SuiAssetTransferDetailsSchema],
 	// [SuiNFTDiffSchema].
 	In interface{} `json:"in"`
@@ -807,13 +807,13 @@ func init() {
 }
 
 type SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNativeAssetDiff struct {
-	Asset SuiNativeAssetDetailsSchema `json:"asset,required"`
+	Asset SuiNativeAssetDetailsSchema `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SuiAssetTransferDetailsSchema `json:"in,nullable"`
+	In SuiAssetTransferDetailsSchema `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SuiAssetTransferDetailsSchema                                                            `json:"out,nullable"`
+	Out  SuiAssetTransferDetailsSchema                                                            `json:"out" api:"nullable"`
 	JSON suiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNativeAssetDiffJSON `json:"-"`
 }
 
@@ -841,13 +841,13 @@ func (r SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNat
 }
 
 type SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFTAssetDiff struct {
-	Asset SuiNFTDetailsSchema `json:"asset,required"`
+	Asset SuiNFTDetailsSchema `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SuiNFTDiffSchema `json:"in,nullable"`
+	In SuiNFTDiffSchema `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SuiNFTDiffSchema                                                                      `json:"out,nullable"`
+	Out  SuiNFTDiffSchema                                                                      `json:"out" api:"nullable"`
 	JSON suiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFTAssetDiffJSON `json:"-"`
 }
 
@@ -875,13 +875,13 @@ func (r SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiNFT
 }
 
 type SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiff struct {
-	Asset SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset `json:"asset,required"`
+	Asset SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SuiAssetTransferDetailsSchema `json:"in,nullable"`
+	In SuiAssetTransferDetailsSchema `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SuiAssetTransferDetailsSchema                                                           `json:"out,nullable"`
+	Out  SuiAssetTransferDetailsSchema                                                           `json:"out" api:"nullable"`
 	JSON suiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffJSON `json:"-"`
 }
 
@@ -910,23 +910,23 @@ func (r SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoi
 
 type SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAsset struct {
 	// Token's package address
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// Token's decimal precision
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// Token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// Token's symbol (abbreviation)
-	Symbol            string    `json:"symbol,required"`
-	CreationTimestamp time.Time `json:"creation_timestamp,nullable" format:"date-time"`
+	Symbol            string    `json:"symbol" api:"required"`
+	CreationTimestamp time.Time `json:"creation_timestamp" api:"nullable" format:"date-time"`
 	// Address of the token's deployer
-	Deployer string `json:"deployer,nullable"`
+	Deployer string `json:"deployer" api:"nullable"`
 	// URL of the token's logo
-	LogoURL     string `json:"logo_url,nullable"`
-	Scam        bool   `json:"scam,nullable"`
-	TotalSupply int64  `json:"total_supply,nullable"`
+	LogoURL     string `json:"logo_url" api:"nullable"`
+	Scam        bool   `json:"scam" api:"nullable"`
+	TotalSupply int64  `json:"total_supply" api:"nullable"`
 	// Type of the asset (`Coin`)
 	Type     SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetType `json:"type"`
-	Verified bool                                                                                         `json:"verified,nullable"`
+	Verified bool                                                                                         `json:"verified" api:"nullable"`
 	JSON     suiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoinsAssetDiffAssetJSON `json:"-"`
 }
 
@@ -974,8 +974,8 @@ func (r SuiTransactionScanResponseSimulationSuiSimulationResultAssetsDiffsSuiCoi
 
 type SuiTransactionScanResponseSimulationSuiSimulationErrorSchema struct {
 	// Error message
-	Error  string                                                             `json:"error,required"`
-	Status SuiTransactionScanResponseSimulationSuiSimulationErrorSchemaStatus `json:"status,required"`
+	Error  string                                                             `json:"error" api:"required"`
+	Status SuiTransactionScanResponseSimulationSuiSimulationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   suiTransactionScanResponseSimulationSuiSimulationErrorSchemaJSON   `json:"-"`
 }
 
@@ -1031,7 +1031,7 @@ func (r SuiTransactionScanResponseSimulationStatus) IsKnown() bool {
 
 // Validation result; Only present if validation option is included in the request
 type SuiTransactionScanResponseValidation struct {
-	Status SuiTransactionScanResponseValidationStatus `json:"status,required"`
+	Status SuiTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
@@ -1114,16 +1114,16 @@ func init() {
 type SuiTransactionScanResponseValidationSuiValidationResult struct {
 	// A textual classification that can be presented to the user explaining the
 	// reason.
-	Classification string `json:"classification,required"`
+	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
-	Description string                                                           `json:"description,required"`
-	Features    []SuiTransactionScanResponseValidationSuiValidationResultFeature `json:"features,required"`
+	Description string                                                           `json:"description" api:"required"`
+	Features    []SuiTransactionScanResponseValidationSuiValidationResultFeature `json:"features" api:"required"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
-	Reason string `json:"reason,required"`
+	Reason string `json:"reason" api:"required"`
 	// Verdict of the validation
-	ResultType SuiTransactionScanResponseValidationSuiValidationResultResultType `json:"result_type,required"`
-	Status     SuiTransactionScanResponseValidationSuiValidationResultStatus     `json:"status,required"`
+	ResultType SuiTransactionScanResponseValidationSuiValidationResultResultType `json:"result_type" api:"required"`
+	Status     SuiTransactionScanResponseValidationSuiValidationResultStatus     `json:"status" api:"required"`
 	JSON       suiTransactionScanResponseValidationSuiValidationResultJSON       `json:"-"`
 }
 
@@ -1154,12 +1154,12 @@ func (r SuiTransactionScanResponseValidationSuiValidationResult) implementsSuiTr
 
 type SuiTransactionScanResponseValidationSuiValidationResultFeature struct {
 	// Address the feature refers to
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// Textual description
-	Description string `json:"description,required"`
-	FeatureID   string `json:"feature_id,required"`
+	Description string `json:"description" api:"required"`
+	FeatureID   string `json:"feature_id" api:"required"`
 	// Feature Classification
-	Type SuiTransactionScanResponseValidationSuiValidationResultFeaturesType `json:"type,required"`
+	Type SuiTransactionScanResponseValidationSuiValidationResultFeaturesType `json:"type" api:"required"`
 	JSON suiTransactionScanResponseValidationSuiValidationResultFeatureJSON  `json:"-"`
 }
 
@@ -1235,8 +1235,8 @@ func (r SuiTransactionScanResponseValidationSuiValidationResultStatus) IsKnown()
 
 type SuiTransactionScanResponseValidationSuiValidationErrorSchema struct {
 	// Error message
-	Error  string                                                             `json:"error,required"`
-	Status SuiTransactionScanResponseValidationSuiValidationErrorSchemaStatus `json:"status,required"`
+	Error  string                                                             `json:"error" api:"required"`
+	Status SuiTransactionScanResponseValidationSuiValidationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   suiTransactionScanResponseValidationSuiValidationErrorSchemaJSON   `json:"-"`
 }
 

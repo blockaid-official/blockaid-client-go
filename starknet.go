@@ -35,13 +35,13 @@ func NewStarknetService(opts ...option.RequestOption) (r *StarknetService) {
 
 type StarknetErc1155Details struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URL of the asset's logo
-	LogoURL string `json:"logo_url,nullable"`
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// Type of the asset (`ERC1155`)
 	Type StarknetErc1155DetailsType `json:"type"`
 	JSON starknetErc1155DetailsJSON `json:"-"`
@@ -84,13 +84,13 @@ func (r StarknetErc1155DetailsType) IsKnown() bool {
 
 type StarknetErc1155Diff struct {
 	// Token ID of the transfer
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// Value of the transfer
-	Value int64 `json:"value,required"`
+	Value int64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                 `json:"usd_price,nullable"`
+	UsdPrice float64                 `json:"usd_price" api:"nullable"`
 	JSON     starknetErc1155DiffJSON `json:"-"`
 }
 
@@ -115,15 +115,15 @@ func (r starknetErc1155DiffJSON) RawJSON() string {
 
 type StarknetErc20Details struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URL of the asset's logo
-	LogoURL string `json:"logo_url,nullable"`
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// Type of the asset (`ERC20`)
 	Type StarknetErc20DetailsType `json:"type"`
 	JSON starknetErc20DetailsJSON `json:"-"`
@@ -167,13 +167,13 @@ func (r StarknetErc20DetailsType) IsKnown() bool {
 
 type StarknetErc20Diff struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64               `json:"usd_price,nullable"`
+	UsdPrice float64               `json:"usd_price" api:"nullable"`
 	JSON     starknetErc20DiffJSON `json:"-"`
 }
 
@@ -198,13 +198,13 @@ func (r starknetErc20DiffJSON) RawJSON() string {
 
 type StarknetErc721Details struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URL of the asset's logo
-	LogoURL string `json:"logo_url,nullable"`
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// Type of the asset (`ERC721`)
 	Type StarknetErc721DetailsType `json:"type"`
 	JSON starknetErc721DetailsJSON `json:"-"`
@@ -247,11 +247,11 @@ func (r StarknetErc721DetailsType) IsKnown() bool {
 
 type StarknetErc721Diff struct {
 	// Token ID of the transfer
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                `json:"usd_price,nullable"`
+	UsdPrice float64                `json:"usd_price" api:"nullable"`
 	JSON     starknetErc721DiffJSON `json:"-"`
 }
 
@@ -274,12 +274,12 @@ func (r starknetErc721DiffJSON) RawJSON() string {
 }
 
 type StarknetTransactionScanRequestParam struct {
-	AccountAddress param.Field[string] `json:"account_address,required"`
+	AccountAddress param.Field[string] `json:"account_address" api:"required"`
 	// The chain name or chain ID
-	Chain param.Field[StarknetTransactionScanRequestChain] `json:"chain,required"`
+	Chain param.Field[StarknetTransactionScanRequestChain] `json:"chain" api:"required"`
 	// Metadata
-	Metadata    param.Field[StarknetTransactionScanRequestMetadataUnionParam]    `json:"metadata,required"`
-	Transaction param.Field[StarknetTransactionScanRequestTransactionUnionParam] `json:"transaction,required"`
+	Metadata    param.Field[StarknetTransactionScanRequestMetadataUnionParam]    `json:"metadata" api:"required"`
+	Transaction param.Field[StarknetTransactionScanRequestTransactionUnionParam] `json:"transaction" api:"required"`
 	// Optional block number or tag context for the simulation
 	BlockNumber param.Field[string] `json:"block_number"`
 	// List of options to include in the response
@@ -336,9 +336,9 @@ type StarknetTransactionScanRequestMetadataUnionParam interface {
 
 type StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataParam struct {
 	// Metadata for wallet requests
-	Type param.Field[StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataType] `json:"type,required"`
+	Type param.Field[StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataType] `json:"type" api:"required"`
 	// URL of the dApp originating the transaction
-	URL param.Field[string] `json:"url,required"`
+	URL param.Field[string] `json:"url" api:"required"`
 }
 
 func (r StarknetTransactionScanRequestMetadataStarknetWalletRequestMetadataParam) MarshalJSON() (data []byte, err error) {
@@ -408,9 +408,9 @@ func (r StarknetTransactionScanRequestMetadataType) IsKnown() bool {
 
 type StarknetTransactionScanRequestTransactionParam struct {
 	// The nonce of the transaction.
-	Nonce param.Field[string] `json:"nonce,required"`
+	Nonce param.Field[string] `json:"nonce" api:"required"`
 	// The version of the transaction.
-	Version               param.Field[StarknetTransactionScanRequestTransactionVersion] `json:"version,required"`
+	Version               param.Field[StarknetTransactionScanRequestTransactionVersion] `json:"version" api:"required"`
 	AccountDeploymentData param.Field[interface{}]                                      `json:"account_deployment_data"`
 	Calldata              param.Field[interface{}]                                      `json:"calldata"`
 	// The id of the chain to which the transaction is sent.
@@ -448,13 +448,13 @@ type StarknetTransactionScanRequestTransactionUnionParam interface {
 
 type StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSchemaParam struct {
 	// The maximum fee that the sender is willing to pay.
-	MaxFee param.Field[string] `json:"max_fee,required"`
+	MaxFee param.Field[string] `json:"max_fee" api:"required"`
 	// The nonce of the transaction.
-	Nonce param.Field[string] `json:"nonce,required"`
+	Nonce param.Field[string] `json:"nonce" api:"required"`
 	// The address of the sender.
-	SenderAddress param.Field[string] `json:"sender_address,required"`
+	SenderAddress param.Field[string] `json:"sender_address" api:"required"`
 	// The version of the transaction.
-	Version param.Field[StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSchemaVersion] `json:"version,required"`
+	Version param.Field[StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSchemaVersion] `json:"version" api:"required"`
 	// The arguments that are passed to the validate and execute functions.
 	Calldata param.Field[[]string] `json:"calldata"`
 }
@@ -483,15 +483,15 @@ func (r StarknetTransactionScanRequestTransactionStarknetInvokeV1TransactionSche
 
 type StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaParam struct {
 	// The arguments that are passed to the validate and execute functions.
-	Calldata param.Field[[]string] `json:"calldata,required"`
+	Calldata param.Field[[]string] `json:"calldata" api:"required"`
 	// The id of the chain to which the transaction is sent.
-	ChainID param.Field[string] `json:"chain_id,required"`
+	ChainID param.Field[string] `json:"chain_id" api:"required"`
 	// The nonce of the transaction.
-	Nonce param.Field[string] `json:"nonce,required"`
+	Nonce param.Field[string] `json:"nonce" api:"required"`
 	// The address of the sender.
-	SenderAddress param.Field[string] `json:"sender_address,required"`
+	SenderAddress param.Field[string] `json:"sender_address" api:"required"`
 	// The version of the transaction.
-	Version param.Field[StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaVersion] `json:"version,required"`
+	Version param.Field[StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaVersion] `json:"version" api:"required"`
 	// For future use. Currently this value is always empty.
 	AccountDeploymentData param.Field[[]string] `json:"account_deployment_data"`
 	// The nonce data availability mode.
@@ -539,17 +539,17 @@ func (r StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSche
 
 type StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaParam struct {
 	// The hash of the contract class.
-	ClassHash param.Field[string] `json:"class_hash,required"`
+	ClassHash param.Field[string] `json:"class_hash" api:"required"`
 	// The arguments that are passed to the constructor function.
-	ConstructorCalldata param.Field[[]string] `json:"constructor_calldata,required"`
+	ConstructorCalldata param.Field[[]string] `json:"constructor_calldata" api:"required"`
 	// The salt of the contract address.
-	ContractAddressSalt param.Field[string] `json:"contract_address_salt,required"`
+	ContractAddressSalt param.Field[string] `json:"contract_address_salt" api:"required"`
 	// The maximum fee that the sender is willing to pay.
-	MaxFee param.Field[string] `json:"max_fee,required"`
+	MaxFee param.Field[string] `json:"max_fee" api:"required"`
 	// The nonce of the transaction.
-	Nonce param.Field[string] `json:"nonce,required"`
+	Nonce param.Field[string] `json:"nonce" api:"required"`
 	// The version of the transaction.
-	Version param.Field[StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaVersion] `json:"version,required"`
+	Version param.Field[StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaVersion] `json:"version" api:"required"`
 }
 
 func (r StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaParam) MarshalJSON() (data []byte, err error) {
@@ -576,17 +576,17 @@ func (r StarknetTransactionScanRequestTransactionStarknetDeployAccountV1Transact
 
 type StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaParam struct {
 	// The hash of the contract class.
-	ClassHash param.Field[string] `json:"class_hash,required"`
+	ClassHash param.Field[string] `json:"class_hash" api:"required"`
 	// The arguments that are passed to the constructor function.
-	ConstructorCalldata param.Field[[]string] `json:"constructor_calldata,required"`
+	ConstructorCalldata param.Field[[]string] `json:"constructor_calldata" api:"required"`
 	// The salt of the contract address.
-	ContractAddressSalt param.Field[string] `json:"contract_address_salt,required"`
+	ContractAddressSalt param.Field[string] `json:"contract_address_salt" api:"required"`
 	// The maximum fee that the sender is willing to pay.
-	MaxFee param.Field[string] `json:"max_fee,required"`
+	MaxFee param.Field[string] `json:"max_fee" api:"required"`
 	// The nonce of the transaction.
-	Nonce param.Field[string] `json:"nonce,required"`
+	Nonce param.Field[string] `json:"nonce" api:"required"`
 	// The version of the transaction.
-	Version param.Field[StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaVersion] `json:"version,required"`
+	Version param.Field[StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaVersion] `json:"version" api:"required"`
 }
 
 func (r StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaParam) MarshalJSON() (data []byte, err error) {
@@ -659,9 +659,9 @@ func (r StarknetTransactionScanRequestOption) IsKnown() bool {
 
 type StarknetTransactionScanResponse struct {
 	// Simulation result; Only present if simulation option is included in the request
-	Simulation StarknetTransactionScanResponseSimulation `json:"simulation,nullable"`
+	Simulation StarknetTransactionScanResponseSimulation `json:"simulation" api:"nullable"`
 	// Validation result; Only present if validation option is included in the request
-	Validation StarknetTransactionScanResponseValidation `json:"validation,nullable"`
+	Validation StarknetTransactionScanResponseValidation `json:"validation" api:"nullable"`
 	JSON       starknetTransactionScanResponseJSON       `json:"-"`
 }
 
@@ -684,7 +684,7 @@ func (r starknetTransactionScanResponseJSON) RawJSON() string {
 
 // Simulation result; Only present if simulation option is included in the request
 type StarknetTransactionScanResponseSimulation struct {
-	Status StarknetTransactionScanResponseSimulationStatus `json:"status,required"`
+	Status StarknetTransactionScanResponseSimulationStatus `json:"status" api:"required"`
 	// This field can have the runtime type of
 	// [StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummary].
 	AccountSummary interface{} `json:"account_summary"`
@@ -695,7 +695,7 @@ type StarknetTransactionScanResponseSimulation struct {
 	// [map[string][]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff].
 	AssetsDiffs interface{} `json:"assets_diffs"`
 	// Optional block number or tag context for the simulation
-	BlockNumber string `json:"block_number,nullable"`
+	BlockNumber string `json:"block_number" api:"nullable"`
 	// Error message
 	Error string `json:"error"`
 	// This field can have the runtime type of
@@ -769,15 +769,15 @@ func init() {
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchema struct {
 	// Summary of the actions and asset transfers that were made by the requested
 	// account address
-	AccountSummary StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummary `json:"account_summary,required"`
-	Status         StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaStatus         `json:"status,required"`
+	AccountSummary StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummary `json:"account_summary" api:"required"`
+	Status         StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaStatus         `json:"status" api:"required"`
 	// Details of addresses involved in the transaction
 	AddressDetails []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetail `json:"address_details"`
 	// Mapping between the address of an account to the assets diff during the
 	// transaction
 	AssetsDiffs map[string][]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff `json:"assets_diffs"`
 	// Optional block number or tag context for the simulation
-	BlockNumber string `json:"block_number,nullable"`
+	BlockNumber string `json:"block_number" api:"nullable"`
 	// Mapping between the address of an account to the exposure of the assets during
 	// the transaction
 	Exposures map[string][]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure `json:"exposures"`
@@ -813,9 +813,9 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 // account address
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummary struct {
 	// Exposures made by the requested account address
-	AccountExposures []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure `json:"account_exposures,required"`
+	AccountExposures []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure `json:"account_exposures" api:"required"`
 	// Total USD diff for the requested account address
-	TotalUsdDiff StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryTotalUsdDiff `json:"total_usd_diff,required"`
+	TotalUsdDiff StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryTotalUsdDiff `json:"total_usd_diff" api:"required"`
 	// Assets diffs of the requested account address
 	AccountAssetsDiffs []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiff `json:"account_assets_diffs"`
 	// Total USD exposure for each of the spender addresses during the transaction
@@ -846,7 +846,7 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposure struct {
 	// This field can have the runtime type of [StarknetErc20Details],
 	// [StarknetErc721Details], [StarknetErc1155Details].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// This field can have the runtime type of
 	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpender],
 	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpender],
@@ -920,7 +920,7 @@ func init() {
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20Exposure struct {
-	Asset StarknetErc20Details `json:"asset,required"`
+	Asset StarknetErc20Details `json:"asset" api:"required"`
 	// Mapping between the spender address and the exposure of the asset
 	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpender `json:"spenders"`
 	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureJSON               `json:"-"`
@@ -949,12 +949,12 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpender struct {
 	// Approval value of the ERC20 token
-	Approval string              `json:"approval,required"`
-	Exposure []StarknetErc20Diff `json:"exposure,required"`
+	Approval string              `json:"approval" api:"required"`
+	Exposure []StarknetErc20Diff `json:"exposure" api:"required"`
 	// Expiration date of the approval
-	Expiration time.Time `json:"expiration,nullable" format:"date-time"`
+	Expiration time.Time `json:"expiration" api:"nullable" format:"date-time"`
 	// Summarized description of the exposure
-	Summary string                                                                                                                                        `json:"summary,nullable"`
+	Summary string                                                                                                                                        `json:"summary" api:"nullable"`
 	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc20ExposureSpenderJSON `json:"-"`
 }
 
@@ -979,7 +979,7 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721Exposure struct {
-	Asset StarknetErc721Details `json:"asset,required"`
+	Asset StarknetErc721Details `json:"asset" api:"required"`
 	// Mapping between the spender address and the exposure of the asset
 	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpender `json:"spenders"`
 	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureJSON               `json:"-"`
@@ -1007,11 +1007,11 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpender struct {
-	Exposure []StarknetErc721Diff `json:"exposure,required"`
+	Exposure []StarknetErc721Diff `json:"exposure" api:"required"`
 	// Whether `setApprovalForAll` was invoked
-	IsApprovedForAll bool `json:"is_approved_for_all,required"`
+	IsApprovedForAll bool `json:"is_approved_for_all" api:"required"`
 	// Summarized description of the exposure
-	Summary string                                                                                                                                         `json:"summary,nullable"`
+	Summary string                                                                                                                                         `json:"summary" api:"nullable"`
 	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc721ExposureSpenderJSON `json:"-"`
 }
 
@@ -1035,7 +1035,7 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155Exposure struct {
-	Asset StarknetErc1155Details `json:"asset,required"`
+	Asset StarknetErc1155Details `json:"asset" api:"required"`
 	// Mapping between the spender address and the exposure of the asset
 	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpender `json:"spenders"`
 	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureJSON               `json:"-"`
@@ -1063,11 +1063,11 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpender struct {
-	Exposure []StarknetErc1155Diff `json:"exposure,required"`
+	Exposure []StarknetErc1155Diff `json:"exposure" api:"required"`
 	// Whether `setApprovalForAll` was invoked
-	IsApprovedForAll bool `json:"is_approved_for_all,required"`
+	IsApprovedForAll bool `json:"is_approved_for_all" api:"required"`
 	// Summarized description of the exposure
-	Summary string                                                                                                                                          `json:"summary,nullable"`
+	Summary string                                                                                                                                          `json:"summary" api:"nullable"`
 	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountExposuresStarknetErc1155ExposureSpenderJSON `json:"-"`
 }
 
@@ -1093,9 +1093,9 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 // Total USD diff for the requested account address
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryTotalUsdDiff struct {
 	// Total incoming USD transfers
-	In float64 `json:"in,required"`
+	In float64 `json:"in" api:"required"`
 	// Total outgoing USD transfers
-	Out float64 `json:"out,required"`
+	Out float64 `json:"out" api:"required"`
 	// Total USD transfers
 	Total float64                                                                                                       `json:"total"`
 	JSON  starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryTotalUsdDiffJSON `json:"-"`
@@ -1123,9 +1123,9 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiff struct {
 	// This field can have the runtime type of [StarknetErc20Details],
 	// [StarknetErc721Details], [StarknetErc1155Details].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// This field can have the runtime type of [StarknetErc20Diff],
 	// [StarknetErc721Diff], [StarknetErc1155Diff].
 	In interface{} `json:"in"`
@@ -1202,13 +1202,13 @@ func init() {
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiff struct {
-	Asset StarknetErc20Details `json:"asset,required"`
+	Asset StarknetErc20Details `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StarknetErc20Diff `json:"in,nullable"`
+	In StarknetErc20Diff `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc20Diff                                                                                                                         `json:"out,nullable"`
+	Out  StarknetErc20Diff                                                                                                                         `json:"out" api:"nullable"`
 	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc20AssetDiffJSON `json:"-"`
 }
 
@@ -1236,13 +1236,13 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiff struct {
-	Asset StarknetErc721Details `json:"asset,required"`
+	Asset StarknetErc721Details `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StarknetErc721Diff `json:"in,nullable"`
+	In StarknetErc721Diff `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc721Diff                                                                                                                         `json:"out,nullable"`
+	Out  StarknetErc721Diff                                                                                                                         `json:"out" api:"nullable"`
 	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc721AssetDiffJSON `json:"-"`
 }
 
@@ -1270,13 +1270,13 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiff struct {
-	Asset StarknetErc1155Details `json:"asset,required"`
+	Asset StarknetErc1155Details `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StarknetErc1155Diff `json:"in,nullable"`
+	In StarknetErc1155Diff `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc1155Diff                                                                                                                         `json:"out,nullable"`
+	Out  StarknetErc1155Diff                                                                                                                         `json:"out" api:"nullable"`
 	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAccountSummaryAccountAssetsDiffsStarknetErc1155AssetDiffJSON `json:"-"`
 }
 
@@ -1319,9 +1319,9 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetail struct {
 	// Encoded public key of the account
-	AccountAddress interface{} `json:"account_address,required"`
+	AccountAddress interface{} `json:"account_address" api:"required"`
 	// Description of the account
-	Description string                                                                                           `json:"description,nullable"`
+	Description string                                                                                           `json:"description" api:"nullable"`
 	JSON        starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetailJSON `json:"-"`
 }
 
@@ -1346,9 +1346,9 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff struct {
 	// This field can have the runtime type of [StarknetErc20Details],
 	// [StarknetErc721Details], [StarknetErc1155Details].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// This field can have the runtime type of [StarknetErc20Diff],
 	// [StarknetErc721Diff], [StarknetErc1155Diff].
 	In interface{} `json:"in"`
@@ -1425,13 +1425,13 @@ func init() {
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiff struct {
-	Asset StarknetErc20Details `json:"asset,required"`
+	Asset StarknetErc20Details `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StarknetErc20Diff `json:"in,nullable"`
+	In StarknetErc20Diff `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc20Diff                                                                                                    `json:"out,nullable"`
+	Out  StarknetErc20Diff                                                                                                    `json:"out" api:"nullable"`
 	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc20AssetDiffJSON `json:"-"`
 }
 
@@ -1459,13 +1459,13 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiff struct {
-	Asset StarknetErc721Details `json:"asset,required"`
+	Asset StarknetErc721Details `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StarknetErc721Diff `json:"in,nullable"`
+	In StarknetErc721Diff `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc721Diff                                                                                                    `json:"out,nullable"`
+	Out  StarknetErc721Diff                                                                                                    `json:"out" api:"nullable"`
 	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc721AssetDiffJSON `json:"-"`
 }
 
@@ -1493,13 +1493,13 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiff struct {
-	Asset StarknetErc1155Details `json:"asset,required"`
+	Asset StarknetErc1155Details `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StarknetErc1155Diff `json:"in,nullable"`
+	In StarknetErc1155Diff `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  StarknetErc1155Diff                                                                                                    `json:"out,nullable"`
+	Out  StarknetErc1155Diff                                                                                                    `json:"out" api:"nullable"`
 	JSON starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiffsStarknetErc1155AssetDiffJSON `json:"-"`
 }
 
@@ -1529,7 +1529,7 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure struct {
 	// This field can have the runtime type of [StarknetErc20Details],
 	// [StarknetErc721Details], [StarknetErc1155Details].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// This field can have the runtime type of
 	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpender],
 	// [map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpender],
@@ -1603,7 +1603,7 @@ func init() {
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20Exposure struct {
-	Asset StarknetErc20Details `json:"asset,required"`
+	Asset StarknetErc20Details `json:"asset" api:"required"`
 	// Mapping between the spender address and the exposure of the asset
 	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpender `json:"spenders"`
 	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureJSON               `json:"-"`
@@ -1632,12 +1632,12 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpender struct {
 	// Approval value of the ERC20 token
-	Approval string              `json:"approval,required"`
-	Exposure []StarknetErc20Diff `json:"exposure,required"`
+	Approval string              `json:"approval" api:"required"`
+	Exposure []StarknetErc20Diff `json:"exposure" api:"required"`
 	// Expiration date of the approval
-	Expiration time.Time `json:"expiration,nullable" format:"date-time"`
+	Expiration time.Time `json:"expiration" api:"nullable" format:"date-time"`
 	// Summarized description of the exposure
-	Summary string                                                                                                                   `json:"summary,nullable"`
+	Summary string                                                                                                                   `json:"summary" api:"nullable"`
 	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc20ExposureSpenderJSON `json:"-"`
 }
 
@@ -1662,7 +1662,7 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721Exposure struct {
-	Asset StarknetErc721Details `json:"asset,required"`
+	Asset StarknetErc721Details `json:"asset" api:"required"`
 	// Mapping between the spender address and the exposure of the asset
 	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpender `json:"spenders"`
 	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureJSON               `json:"-"`
@@ -1690,11 +1690,11 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpender struct {
-	Exposure []StarknetErc721Diff `json:"exposure,required"`
+	Exposure []StarknetErc721Diff `json:"exposure" api:"required"`
 	// Whether `setApprovalForAll` was invoked
-	IsApprovedForAll bool `json:"is_approved_for_all,required"`
+	IsApprovedForAll bool `json:"is_approved_for_all" api:"required"`
 	// Summarized description of the exposure
-	Summary string                                                                                                                    `json:"summary,nullable"`
+	Summary string                                                                                                                    `json:"summary" api:"nullable"`
 	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc721ExposureSpenderJSON `json:"-"`
 }
 
@@ -1718,7 +1718,7 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155Exposure struct {
-	Asset StarknetErc1155Details `json:"asset,required"`
+	Asset StarknetErc1155Details `json:"asset" api:"required"`
 	// Mapping between the spender address and the exposure of the asset
 	Spenders map[string]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpender `json:"spenders"`
 	JSON     starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureJSON               `json:"-"`
@@ -1746,11 +1746,11 @@ func (r StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpender struct {
-	Exposure []StarknetErc1155Diff `json:"exposure,required"`
+	Exposure []StarknetErc1155Diff `json:"exposure" api:"required"`
 	// Whether `setApprovalForAll` was invoked
-	IsApprovedForAll bool `json:"is_approved_for_all,required"`
+	IsApprovedForAll bool `json:"is_approved_for_all" api:"required"`
 	// Summarized description of the exposure
-	Summary string                                                                                                                     `json:"summary,nullable"`
+	Summary string                                                                                                                     `json:"summary" api:"nullable"`
 	JSON    starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposuresStarknetErc1155ExposureSpenderJSON `json:"-"`
 }
 
@@ -1775,8 +1775,8 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 
 type StarknetTransactionScanResponseSimulationStarknetSimulationErrorSchema struct {
 	// Error message
-	Error  string                                                                       `json:"error,required"`
-	Status StarknetTransactionScanResponseSimulationStarknetSimulationErrorSchemaStatus `json:"status,required"`
+	Error  string                                                                       `json:"error" api:"required"`
+	Status StarknetTransactionScanResponseSimulationStarknetSimulationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   starknetTransactionScanResponseSimulationStarknetSimulationErrorSchemaJSON   `json:"-"`
 }
 
@@ -1832,7 +1832,7 @@ func (r StarknetTransactionScanResponseSimulationStatus) IsKnown() bool {
 
 // Validation result; Only present if validation option is included in the request
 type StarknetTransactionScanResponseValidation struct {
-	Status StarknetTransactionScanResponseValidationStatus `json:"status,required"`
+	Status StarknetTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
@@ -1916,16 +1916,16 @@ func init() {
 type StarknetTransactionScanResponseValidationStarknetValidationResult struct {
 	// A textual classification that can be presented to the user explaining the
 	// reason.
-	Classification string `json:"classification,required"`
+	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
-	Description string                                                                     `json:"description,required"`
-	Features    []StarknetTransactionScanResponseValidationStarknetValidationResultFeature `json:"features,required"`
+	Description string                                                                     `json:"description" api:"required"`
+	Features    []StarknetTransactionScanResponseValidationStarknetValidationResultFeature `json:"features" api:"required"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
-	Reason string `json:"reason,required"`
+	Reason string `json:"reason" api:"required"`
 	// Verdict of the validation
-	ResultType StarknetTransactionScanResponseValidationStarknetValidationResultResultType `json:"result_type,required"`
-	Status     StarknetTransactionScanResponseValidationStarknetValidationResultStatus     `json:"status,required"`
+	ResultType StarknetTransactionScanResponseValidationStarknetValidationResultResultType `json:"result_type" api:"required"`
+	Status     StarknetTransactionScanResponseValidationStarknetValidationResultStatus     `json:"status" api:"required"`
 	JSON       starknetTransactionScanResponseValidationStarknetValidationResultJSON       `json:"-"`
 }
 
@@ -1956,12 +1956,12 @@ func (r StarknetTransactionScanResponseValidationStarknetValidationResult) imple
 
 type StarknetTransactionScanResponseValidationStarknetValidationResultFeature struct {
 	// Address the feature refers to
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// Textual description
-	Description string `json:"description,required"`
-	FeatureID   string `json:"feature_id,required"`
+	Description string `json:"description" api:"required"`
+	FeatureID   string `json:"feature_id" api:"required"`
 	// Feature Classification
-	Type StarknetTransactionScanResponseValidationStarknetValidationResultFeaturesType `json:"type,required"`
+	Type StarknetTransactionScanResponseValidationStarknetValidationResultFeaturesType `json:"type" api:"required"`
 	JSON starknetTransactionScanResponseValidationStarknetValidationResultFeatureJSON  `json:"-"`
 }
 
@@ -2037,8 +2037,8 @@ func (r StarknetTransactionScanResponseValidationStarknetValidationResultStatus)
 
 type StarknetTransactionScanResponseValidationStarknetValidationErrorSchema struct {
 	// Error message
-	Error  string                                                                       `json:"error,required"`
-	Status StarknetTransactionScanResponseValidationStarknetValidationErrorSchemaStatus `json:"status,required"`
+	Error  string                                                                       `json:"error" api:"required"`
+	Status StarknetTransactionScanResponseValidationStarknetValidationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   starknetTransactionScanResponseValidationStarknetValidationErrorSchemaJSON   `json:"-"`
 }
 

@@ -53,9 +53,9 @@ func (r *BitcoinTransactionRawService) Scan(ctx context.Context, body BitcoinTra
 }
 
 type BitcoinTransactionRawReportParams struct {
-	Details param.Field[string]                                       `json:"details,required"`
-	Event   param.Field[BitcoinTransactionRawReportParamsEvent]       `json:"event,required"`
-	Report  param.Field[BitcoinTransactionRawReportParamsReportUnion] `json:"report,required"`
+	Details param.Field[string]                                       `json:"details" api:"required"`
+	Event   param.Field[BitcoinTransactionRawReportParamsEvent]       `json:"event" api:"required"`
+	Report  param.Field[BitcoinTransactionRawReportParamsReportUnion] `json:"report" api:"required"`
 }
 
 func (r BitcoinTransactionRawReportParams) MarshalJSON() (data []byte, err error) {
@@ -99,7 +99,7 @@ type BitcoinTransactionRawReportParamsReportUnion interface {
 }
 
 type BitcoinTransactionRawReportParamsReportBitcoinAppealRequestID struct {
-	ID   param.Field[string]                                                            `json:"id,required"`
+	ID   param.Field[string]                                                            `json:"id" api:"required"`
 	Type param.Field[BitcoinTransactionRawReportParamsReportBitcoinAppealRequestIDType] `json:"type"`
 }
 
@@ -125,7 +125,7 @@ func (r BitcoinTransactionRawReportParamsReportBitcoinAppealRequestIDType) IsKno
 }
 
 type BitcoinTransactionRawReportParamsReportBitcoinAppealTransactionDataReport struct {
-	Params param.Field[BitcoinTransactionScanRequestParam]                                            `json:"params,required"`
+	Params param.Field[BitcoinTransactionScanRequestParam]                                            `json:"params" api:"required"`
 	Type   param.Field[BitcoinTransactionRawReportParamsReportBitcoinAppealTransactionDataReportType] `json:"type"`
 }
 
@@ -166,7 +166,7 @@ func (r BitcoinTransactionRawReportParamsReportType) IsKnown() bool {
 }
 
 type BitcoinTransactionRawScanParams struct {
-	BitcoinTransactionScanRequest BitcoinTransactionScanRequestParam `json:"BitcoinTransactionScanRequest,required"`
+	BitcoinTransactionScanRequest BitcoinTransactionScanRequestParam `json:"BitcoinTransactionScanRequest" api:"required"`
 }
 
 func (r BitcoinTransactionRawScanParams) MarshalJSON() (data []byte, err error) {

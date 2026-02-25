@@ -70,14 +70,14 @@ func (r *TokenWebhookService) GetAll(ctx context.Context, opts ...option.Request
 }
 
 type TokenWebhookNewResponse struct {
-	Active bool `json:"active,required"`
+	Active bool `json:"active" api:"required"`
 	// The chain name
-	Chain     TokenScanSupportedChain `json:"chain,required"`
-	CreatedAt time.Time               `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
-	URL       string                  `json:"url,required" format:"uri"`
+	Chain     TokenScanSupportedChain `json:"chain" api:"required"`
+	CreatedAt time.Time               `json:"created_at" api:"required" format:"date-time"`
+	UpdatedAt time.Time               `json:"updated_at" api:"required" format:"date-time"`
+	URL       string                  `json:"url" api:"required" format:"uri"`
 	// Optional shared secret key (32 characters), used to calculate the HMAC signature
-	SharedSecretKey string                      `json:"shared_secret_key,nullable"`
+	SharedSecretKey string                      `json:"shared_secret_key" api:"nullable"`
 	JSON            tokenWebhookNewResponseJSON `json:"-"`
 }
 
@@ -103,14 +103,14 @@ func (r tokenWebhookNewResponseJSON) RawJSON() string {
 }
 
 type TokenWebhookGetResponse struct {
-	Active bool `json:"active,required"`
+	Active bool `json:"active" api:"required"`
 	// The chain name
-	Chain     TokenScanSupportedChain `json:"chain,required"`
-	CreatedAt time.Time               `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
-	URL       string                  `json:"url,required" format:"uri"`
+	Chain     TokenScanSupportedChain `json:"chain" api:"required"`
+	CreatedAt time.Time               `json:"created_at" api:"required" format:"date-time"`
+	UpdatedAt time.Time               `json:"updated_at" api:"required" format:"date-time"`
+	URL       string                  `json:"url" api:"required" format:"uri"`
 	// Optional shared secret key (32 characters), used to calculate the HMAC signature
-	SharedSecretKey string                      `json:"shared_secret_key,nullable"`
+	SharedSecretKey string                      `json:"shared_secret_key" api:"nullable"`
 	JSON            tokenWebhookGetResponseJSON `json:"-"`
 }
 
@@ -136,14 +136,14 @@ func (r tokenWebhookGetResponseJSON) RawJSON() string {
 }
 
 type TokenWebhookGetAllResponse struct {
-	Active bool `json:"active,required"`
+	Active bool `json:"active" api:"required"`
 	// The chain name
-	Chain     TokenScanSupportedChain `json:"chain,required"`
-	CreatedAt time.Time               `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
-	URL       string                  `json:"url,required" format:"uri"`
+	Chain     TokenScanSupportedChain `json:"chain" api:"required"`
+	CreatedAt time.Time               `json:"created_at" api:"required" format:"date-time"`
+	UpdatedAt time.Time               `json:"updated_at" api:"required" format:"date-time"`
+	URL       string                  `json:"url" api:"required" format:"uri"`
 	// Optional shared secret key (32 characters), used to calculate the HMAC signature
-	SharedSecretKey string                         `json:"shared_secret_key,nullable"`
+	SharedSecretKey string                         `json:"shared_secret_key" api:"nullable"`
 	JSON            tokenWebhookGetAllResponseJSON `json:"-"`
 }
 
@@ -169,7 +169,7 @@ func (r tokenWebhookGetAllResponseJSON) RawJSON() string {
 }
 
 type TokenWebhookNewParams struct {
-	URL param.Field[string] `json:"url,required" format:"uri"`
+	URL param.Field[string] `json:"url" api:"required" format:"uri"`
 	// Filter for webhook updates
 	Filter param.Field[TokenWebhookNewParamsFilterUnion] `json:"filter"`
 	// Optional shared secret key (32 characters), used to calculate the HMAC signature
@@ -205,7 +205,7 @@ type TokenWebhookNewParamsFilterUnion interface {
 
 type TokenWebhookNewParamsFilterTokenAddressFilter struct {
 	// List of up to 100000 token addresses to filter webhook updates
-	TokenAddresses param.Field[[]string] `json:"token_addresses,required"`
+	TokenAddresses param.Field[[]string] `json:"token_addresses" api:"required"`
 	// Type of filter applied to the webhook updates
 	FilterType param.Field[TokenWebhookNewParamsFilterTokenAddressFilterFilterType] `json:"filter_type"`
 }
@@ -233,7 +233,7 @@ func (r TokenWebhookNewParamsFilterTokenAddressFilterFilterType) IsKnown() bool 
 
 type TokenWebhookNewParamsFilterTokenTypeFilter struct {
 	// Type of token to filter
-	TokenType param.Field[TokenWebhookNewParamsFilterTokenTypeFilterTokenType] `json:"token_type,required"`
+	TokenType param.Field[TokenWebhookNewParamsFilterTokenTypeFilterTokenType] `json:"token_type" api:"required"`
 	// Type of filter applied to the webhook updates
 	FilterType param.Field[TokenWebhookNewParamsFilterTokenTypeFilterFilterType] `json:"filter_type"`
 }

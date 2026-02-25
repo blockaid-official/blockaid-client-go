@@ -44,7 +44,7 @@ func (r *SolanaAddressService) Scan(ctx context.Context, body SolanaAddressScanP
 
 type SolanaAddressScanResponse struct {
 	// Verdict of the validation
-	ResultType SolanaAddressScanResponseResultType `json:"result_type,required"`
+	ResultType SolanaAddressScanResponseResultType `json:"result_type" api:"required"`
 	// A list of textual features about this transaction that can be presented to the
 	// user.
 	Features []SolanaAddressScanResponseFeature `json:"features"`
@@ -87,9 +87,9 @@ func (r SolanaAddressScanResponseResultType) IsKnown() bool {
 }
 
 type SolanaAddressScanResponseFeature struct {
-	Description string                                `json:"description,required"`
-	FeatureID   string                                `json:"feature_id,required"`
-	Type        SolanaAddressScanResponseFeaturesType `json:"type,required"`
+	Description string                                `json:"description" api:"required"`
+	FeatureID   string                                `json:"feature_id" api:"required"`
+	Type        SolanaAddressScanResponseFeaturesType `json:"type" api:"required"`
 	JSON        solanaAddressScanResponseFeatureJSON  `json:"-"`
 }
 
@@ -129,7 +129,7 @@ func (r SolanaAddressScanResponseFeaturesType) IsKnown() bool {
 }
 
 type SolanaAddressScanParams struct {
-	Address param.Field[string]                       `json:"address,required"`
+	Address param.Field[string]                       `json:"address" api:"required"`
 	Chain   param.Field[SolanaAddressScanParamsChain] `json:"chain"`
 }
 
