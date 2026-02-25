@@ -37,11 +37,11 @@ func NewStellarService(opts ...option.RequestOption) (r *StellarService) {
 
 type StellarAssetContractDetails struct {
 	// Address of the asset's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// Asset code
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// Asset symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// Type of the asset (`CONTRACT`)
 	Type StellarAssetContractDetailsType `json:"type"`
 	JSON stellarAssetContractDetailsJSON `json:"-"`
@@ -83,13 +83,13 @@ func (r StellarAssetContractDetailsType) IsKnown() bool {
 
 type StellarAssetTransferDetails struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                         `json:"usd_price,nullable"`
+	UsdPrice float64                         `json:"usd_price" api:"nullable"`
 	JSON     stellarAssetTransferDetailsJSON `json:"-"`
 }
 
@@ -114,13 +114,13 @@ func (r stellarAssetTransferDetailsJSON) RawJSON() string {
 
 type StellarLegacyAssetDetails struct {
 	// Asset code
-	Code string `json:"code,required"`
+	Code string `json:"code" api:"required"`
 	// Asset issuer address
-	Issuer string `json:"issuer,required"`
+	Issuer string `json:"issuer" api:"required"`
 	// Organization name
-	OrgName string `json:"org_name,required"`
+	OrgName string `json:"org_name" api:"required"`
 	// Organization URL
-	OrgURL string `json:"org_url,required"`
+	OrgURL string `json:"org_url" api:"required"`
 	// Type of the asset (`ASSET`)
 	Type StellarLegacyAssetDetailsType `json:"type"`
 	JSON stellarLegacyAssetDetailsJSON `json:"-"`
@@ -218,12 +218,12 @@ func (r StellarNativeAssetDetailsType) IsKnown() bool {
 
 type StellarSingleAssetExposure struct {
 	// Approval value of the ERC20 token
-	Approval float64                              `json:"approval,required"`
-	Exposure []StellarSingleAssetExposureExposure `json:"exposure,required"`
+	Approval float64                              `json:"approval" api:"required"`
+	Exposure []StellarSingleAssetExposureExposure `json:"exposure" api:"required"`
 	// Expiration date of the approval
-	Expiration time.Time `json:"expiration,nullable" format:"date-time"`
+	Expiration time.Time `json:"expiration" api:"nullable" format:"date-time"`
 	// Summarized description of the exposure
-	Summary string                         `json:"summary,nullable"`
+	Summary string                         `json:"summary" api:"nullable"`
 	JSON    stellarSingleAssetExposureJSON `json:"-"`
 }
 
@@ -248,13 +248,13 @@ func (r stellarSingleAssetExposureJSON) RawJSON() string {
 
 type StellarSingleAssetExposureExposure struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                `json:"usd_price,nullable"`
+	UsdPrice float64                                `json:"usd_price" api:"nullable"`
 	JSON     stellarSingleAssetExposureExposureJSON `json:"-"`
 }
 
@@ -278,12 +278,12 @@ func (r stellarSingleAssetExposureExposureJSON) RawJSON() string {
 }
 
 type StellarTransactionScanRequestParam struct {
-	AccountAddress param.Field[string] `json:"account_address,required"`
+	AccountAddress param.Field[string] `json:"account_address" api:"required"`
 	// A CAIP-2 chain ID or a Stellar network name
-	Chain param.Field[StellarTransactionScanRequestChain] `json:"chain,required"`
+	Chain param.Field[StellarTransactionScanRequestChain] `json:"chain" api:"required"`
 	// Metadata
-	Metadata    param.Field[StellarTransactionScanRequestMetadataUnionParam] `json:"metadata,required"`
-	Transaction param.Field[string]                                          `json:"transaction,required"`
+	Metadata    param.Field[StellarTransactionScanRequestMetadataUnionParam] `json:"metadata" api:"required"`
+	Transaction param.Field[string]                                          `json:"transaction" api:"required"`
 	// List of options to include in the response
 	//
 	// - `Options.validation`: Include Options.validation output in the response
@@ -340,9 +340,9 @@ type StellarTransactionScanRequestMetadataUnionParam interface {
 
 type StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam struct {
 	// Metadata for wallet requests
-	Type param.Field[StellarTransactionScanRequestMetadataStellarWalletRequestMetadataType] `json:"type,required"`
+	Type param.Field[StellarTransactionScanRequestMetadataStellarWalletRequestMetadataType] `json:"type" api:"required"`
 	// URL of the dApp originating the transaction
-	URL param.Field[string] `json:"url,required"`
+	URL param.Field[string] `json:"url" api:"required"`
 }
 
 func (r StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam) MarshalJSON() (data []byte, err error) {
@@ -427,9 +427,9 @@ func (r StellarTransactionScanRequestOption) IsKnown() bool {
 
 type StellarTransactionScanResponse struct {
 	// Simulation result; Only present if simulation option is included in the request
-	Simulation StellarTransactionScanResponseSimulation `json:"simulation,nullable"`
+	Simulation StellarTransactionScanResponseSimulation `json:"simulation" api:"nullable"`
 	// Validation result; Only present if validation option is included in the request
-	Validation StellarTransactionScanResponseValidation `json:"validation,nullable"`
+	Validation StellarTransactionScanResponseValidation `json:"validation" api:"nullable"`
 	JSON       stellarTransactionScanResponseJSON       `json:"-"`
 }
 
@@ -452,7 +452,7 @@ func (r stellarTransactionScanResponseJSON) RawJSON() string {
 
 // Simulation result; Only present if simulation option is included in the request
 type StellarTransactionScanResponseSimulation struct {
-	Status StellarTransactionScanResponseSimulationStatus `json:"status,required"`
+	Status StellarTransactionScanResponseSimulationStatus `json:"status" api:"required"`
 	// This field can have the runtime type of
 	// [StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummary].
 	AccountSummary interface{} `json:"account_summary"`
@@ -538,10 +538,10 @@ func init() {
 type StellarTransactionScanResponseSimulationStellarSimulationResult struct {
 	// Summary of the actions and asset transfers that were made by the requested
 	// account address
-	AccountSummary StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummary `json:"account_summary,required"`
+	AccountSummary StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummary `json:"account_summary" api:"required"`
 	// Ownership diffs of the account addresses
-	AssetsOwnershipDiff map[string][]StellarTransactionScanResponseSimulationStellarSimulationResultAssetsOwnershipDiff `json:"assets_ownership_diff,required"`
-	Status              StellarTransactionScanResponseSimulationStellarSimulationResultStatus                           `json:"status,required"`
+	AssetsOwnershipDiff map[string][]StellarTransactionScanResponseSimulationStellarSimulationResultAssetsOwnershipDiff `json:"assets_ownership_diff" api:"required"`
+	Status              StellarTransactionScanResponseSimulationStellarSimulationResultStatus                           `json:"status" api:"required"`
 	// Details of addresses involved in the transaction
 	AddressDetails []StellarTransactionScanResponseSimulationStellarSimulationResultAddressDetail `json:"address_details"`
 	// Mapping between the address of an account to the assets diff during the
@@ -582,11 +582,11 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResult) impleme
 // account address
 type StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummary struct {
 	// Exposures made by the requested account address
-	AccountExposures []StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountExposure `json:"account_exposures,required"`
+	AccountExposures []StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountExposure `json:"account_exposures" api:"required"`
 	// Ownership diffs of the requested account address
-	AccountOwnershipsDiff []StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountOwnershipsDiff `json:"account_ownerships_diff,required"`
+	AccountOwnershipsDiff []StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountOwnershipsDiff `json:"account_ownerships_diff" api:"required"`
 	// Total USD diff for the requested account address
-	TotalUsdDiff StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryTotalUsdDiff `json:"total_usd_diff,required"`
+	TotalUsdDiff StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryTotalUsdDiff `json:"total_usd_diff" api:"required"`
 	// Assets diffs of the requested account address
 	AccountAssetsDiffs []StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountAssetsDiff `json:"account_assets_diffs"`
 	// Total USD exposure for each of the spender addresses during the transaction
@@ -618,7 +618,7 @@ func (r stellarTransactionScanResponseSimulationStellarSimulationResultAccountSu
 type StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountExposure struct {
 	// This field can have the runtime type of [StellarLegacyAssetDetails],
 	// [StellarNativeAssetDetails].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// This field can have the runtime type of [map[string]StellarSingleAssetExposure].
 	Spenders interface{}                                                                                      `json:"spenders"`
 	JSON     stellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountExposureJSON `json:"-"`
@@ -683,7 +683,7 @@ func init() {
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountExposuresStellarLegacyAssetExposure struct {
-	Asset StellarLegacyAssetDetails `json:"asset,required"`
+	Asset StellarLegacyAssetDetails `json:"asset" api:"required"`
 	// Mapping between the spender address and the exposure of the asset
 	Spenders map[string]StellarSingleAssetExposure                                                                                       `json:"spenders"`
 	JSON     stellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountExposuresStellarLegacyAssetExposureJSON `json:"-"`
@@ -711,7 +711,7 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResultAccountSu
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountExposuresStellarNativeAssetExposure struct {
-	Asset StellarNativeAssetDetails `json:"asset,required"`
+	Asset StellarNativeAssetDetails `json:"asset" api:"required"`
 	// Mapping between the spender address and the exposure of the asset
 	Spenders map[string]StellarSingleAssetExposure                                                                                       `json:"spenders"`
 	JSON     stellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountExposuresStellarNativeAssetExposureJSON `json:"-"`
@@ -740,9 +740,9 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResultAccountSu
 
 type StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountOwnershipsDiff struct {
 	// List of public keys that can sign on behalf of the account post-transaction
-	PostSigners []string `json:"post_signers,required"`
+	PostSigners []string `json:"post_signers" api:"required"`
 	// List of public keys that can sign on behalf of the account pre-transaction
-	PreSigners []string                                                                                               `json:"pre_signers,required"`
+	PreSigners []string                                                                                               `json:"pre_signers" api:"required"`
 	Type       StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountOwnershipsDiffType `json:"type"`
 	JSON       stellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountOwnershipsDiffJSON `json:"-"`
 }
@@ -783,9 +783,9 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResultAccountSu
 // Total USD diff for the requested account address
 type StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryTotalUsdDiff struct {
 	// Total incoming USD transfers
-	In float64 `json:"in,required"`
+	In float64 `json:"in" api:"required"`
 	// Total outgoing USD transfers
-	Out float64 `json:"out,required"`
+	Out float64 `json:"out" api:"required"`
 	// Total USD transfers
 	Total float64                                                                                       `json:"total"`
 	JSON  stellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryTotalUsdDiffJSON `json:"-"`
@@ -813,13 +813,13 @@ func (r stellarTransactionScanResponseSimulationStellarSimulationResultAccountSu
 type StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountAssetsDiff struct {
 	// This field can have the runtime type of [StellarLegacyAssetDetails],
 	// [StellarNativeAssetDetails], [StellarAssetContractDetails].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetails `json:"in,nullable"`
+	In StellarAssetTransferDetails `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out   StellarAssetTransferDetails                                                                        `json:"out,nullable"`
+	Out   StellarAssetTransferDetails                                                                        `json:"out" api:"nullable"`
 	JSON  stellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountAssetsDiffJSON `json:"-"`
 	union StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountAssetsDiffsUnion
 }
@@ -890,13 +890,13 @@ func init() {
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiff struct {
-	Asset StellarLegacyAssetDetails `json:"asset,required"`
+	Asset StellarLegacyAssetDetails `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetails `json:"in,nullable"`
+	In StellarAssetTransferDetails `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  StellarAssetTransferDetails                                                                                               `json:"out,nullable"`
+	Out  StellarAssetTransferDetails                                                                                               `json:"out" api:"nullable"`
 	JSON stellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountAssetsDiffsStellarLegacyAssetDiffJSON `json:"-"`
 }
 
@@ -924,13 +924,13 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResultAccountSu
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountAssetsDiffsStellarNativeAssetDiff struct {
-	Asset StellarNativeAssetDetails `json:"asset,required"`
+	Asset StellarNativeAssetDetails `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetails `json:"in,nullable"`
+	In StellarAssetTransferDetails `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  StellarAssetTransferDetails                                                                                               `json:"out,nullable"`
+	Out  StellarAssetTransferDetails                                                                                               `json:"out" api:"nullable"`
 	JSON stellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountAssetsDiffsStellarNativeAssetDiffJSON `json:"-"`
 }
 
@@ -958,13 +958,13 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResultAccountSu
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountAssetsDiffsStellarContractAssetDiff struct {
-	Asset StellarAssetContractDetails `json:"asset,required"`
+	Asset StellarAssetContractDetails `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetails `json:"in,nullable"`
+	In StellarAssetTransferDetails `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  StellarAssetTransferDetails                                                                                                 `json:"out,nullable"`
+	Out  StellarAssetTransferDetails                                                                                                 `json:"out" api:"nullable"`
 	JSON stellarTransactionScanResponseSimulationStellarSimulationResultAccountSummaryAccountAssetsDiffsStellarContractAssetDiffJSON `json:"-"`
 }
 
@@ -993,9 +993,9 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResultAccountSu
 
 type StellarTransactionScanResponseSimulationStellarSimulationResultAssetsOwnershipDiff struct {
 	// List of public keys that can sign on behalf of the account post-transaction
-	PostSigners []string `json:"post_signers,required"`
+	PostSigners []string `json:"post_signers" api:"required"`
 	// List of public keys that can sign on behalf of the account pre-transaction
-	PreSigners []string                                                                               `json:"pre_signers,required"`
+	PreSigners []string                                                                               `json:"pre_signers" api:"required"`
 	Type       StellarTransactionScanResponseSimulationStellarSimulationResultAssetsOwnershipDiffType `json:"type"`
 	JSON       stellarTransactionScanResponseSimulationStellarSimulationResultAssetsOwnershipDiffJSON `json:"-"`
 }
@@ -1049,9 +1049,9 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResultStatus) I
 
 type StellarTransactionScanResponseSimulationStellarSimulationResultAddressDetail struct {
 	// Encoded public key of the account
-	AccountAddress interface{} `json:"account_address,required"`
+	AccountAddress interface{} `json:"account_address" api:"required"`
 	// Description of the account
-	Description string                                                                           `json:"description,nullable"`
+	Description string                                                                           `json:"description" api:"nullable"`
 	JSON        stellarTransactionScanResponseSimulationStellarSimulationResultAddressDetailJSON `json:"-"`
 }
 
@@ -1076,13 +1076,13 @@ func (r stellarTransactionScanResponseSimulationStellarSimulationResultAddressDe
 type StellarTransactionScanResponseSimulationStellarSimulationResultAssetsDiff struct {
 	// This field can have the runtime type of [StellarLegacyAssetDetails],
 	// [StellarNativeAssetDetails], [StellarAssetContractDetails].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetails `json:"in,nullable"`
+	In StellarAssetTransferDetails `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out   StellarAssetTransferDetails                                                   `json:"out,nullable"`
+	Out   StellarAssetTransferDetails                                                   `json:"out" api:"nullable"`
 	JSON  stellarTransactionScanResponseSimulationStellarSimulationResultAssetsDiffJSON `json:"-"`
 	union StellarTransactionScanResponseSimulationStellarSimulationResultAssetsDiffsUnion
 }
@@ -1153,13 +1153,13 @@ func init() {
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResultAssetsDiffsStellarLegacyAssetDiff struct {
-	Asset StellarLegacyAssetDetails `json:"asset,required"`
+	Asset StellarLegacyAssetDetails `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetails `json:"in,nullable"`
+	In StellarAssetTransferDetails `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  StellarAssetTransferDetails                                                                          `json:"out,nullable"`
+	Out  StellarAssetTransferDetails                                                                          `json:"out" api:"nullable"`
 	JSON stellarTransactionScanResponseSimulationStellarSimulationResultAssetsDiffsStellarLegacyAssetDiffJSON `json:"-"`
 }
 
@@ -1187,13 +1187,13 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResultAssetsDif
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResultAssetsDiffsStellarNativeAssetDiff struct {
-	Asset StellarNativeAssetDetails `json:"asset,required"`
+	Asset StellarNativeAssetDetails `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetails `json:"in,nullable"`
+	In StellarAssetTransferDetails `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  StellarAssetTransferDetails                                                                          `json:"out,nullable"`
+	Out  StellarAssetTransferDetails                                                                          `json:"out" api:"nullable"`
 	JSON stellarTransactionScanResponseSimulationStellarSimulationResultAssetsDiffsStellarNativeAssetDiffJSON `json:"-"`
 }
 
@@ -1221,13 +1221,13 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResultAssetsDif
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResultAssetsDiffsStellarContractAssetDiff struct {
-	Asset StellarAssetContractDetails `json:"asset,required"`
+	Asset StellarAssetContractDetails `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In StellarAssetTransferDetails `json:"in,nullable"`
+	In StellarAssetTransferDetails `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  StellarAssetTransferDetails                                                                            `json:"out,nullable"`
+	Out  StellarAssetTransferDetails                                                                            `json:"out" api:"nullable"`
 	JSON stellarTransactionScanResponseSimulationStellarSimulationResultAssetsDiffsStellarContractAssetDiffJSON `json:"-"`
 }
 
@@ -1257,7 +1257,7 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResultAssetsDif
 type StellarTransactionScanResponseSimulationStellarSimulationResultExposure struct {
 	// This field can have the runtime type of [StellarLegacyAssetDetails],
 	// [StellarNativeAssetDetails].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// This field can have the runtime type of [map[string]StellarSingleAssetExposure].
 	Spenders interface{}                                                                 `json:"spenders"`
 	JSON     stellarTransactionScanResponseSimulationStellarSimulationResultExposureJSON `json:"-"`
@@ -1322,7 +1322,7 @@ func init() {
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResultExposuresStellarLegacyAssetExposure struct {
-	Asset StellarLegacyAssetDetails `json:"asset,required"`
+	Asset StellarLegacyAssetDetails `json:"asset" api:"required"`
 	// Mapping between the spender address and the exposure of the asset
 	Spenders map[string]StellarSingleAssetExposure                                                                  `json:"spenders"`
 	JSON     stellarTransactionScanResponseSimulationStellarSimulationResultExposuresStellarLegacyAssetExposureJSON `json:"-"`
@@ -1350,7 +1350,7 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResultExposures
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationResultExposuresStellarNativeAssetExposure struct {
-	Asset StellarNativeAssetDetails `json:"asset,required"`
+	Asset StellarNativeAssetDetails `json:"asset" api:"required"`
 	// Mapping between the spender address and the exposure of the asset
 	Spenders map[string]StellarSingleAssetExposure                                                                  `json:"spenders"`
 	JSON     stellarTransactionScanResponseSimulationStellarSimulationResultExposuresStellarNativeAssetExposureJSON `json:"-"`
@@ -1379,8 +1379,8 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResultExposures
 
 type StellarTransactionScanResponseSimulationStellarSimulationErrorSchema struct {
 	// Error message
-	Error  string                                                                     `json:"error,required"`
-	Status StellarTransactionScanResponseSimulationStellarSimulationErrorSchemaStatus `json:"status,required"`
+	Error  string                                                                     `json:"error" api:"required"`
+	Status StellarTransactionScanResponseSimulationStellarSimulationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   stellarTransactionScanResponseSimulationStellarSimulationErrorSchemaJSON   `json:"-"`
 }
 
@@ -1436,7 +1436,7 @@ func (r StellarTransactionScanResponseSimulationStatus) IsKnown() bool {
 
 // Validation result; Only present if validation option is included in the request
 type StellarTransactionScanResponseValidation struct {
-	Status StellarTransactionScanResponseValidationStatus `json:"status,required"`
+	Status StellarTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
@@ -1520,16 +1520,16 @@ func init() {
 type StellarTransactionScanResponseValidationStellarValidationResult struct {
 	// A textual classification that can be presented to the user explaining the
 	// reason.
-	Classification string `json:"classification,required"`
+	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
-	Description string                                                                   `json:"description,required"`
-	Features    []StellarTransactionScanResponseValidationStellarValidationResultFeature `json:"features,required"`
+	Description string                                                                   `json:"description" api:"required"`
+	Features    []StellarTransactionScanResponseValidationStellarValidationResultFeature `json:"features" api:"required"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
-	Reason string `json:"reason,required"`
+	Reason string `json:"reason" api:"required"`
 	// Verdict of the validation
-	ResultType StellarTransactionScanResponseValidationStellarValidationResultResultType `json:"result_type,required"`
-	Status     StellarTransactionScanResponseValidationStellarValidationResultStatus     `json:"status,required"`
+	ResultType StellarTransactionScanResponseValidationStellarValidationResultResultType `json:"result_type" api:"required"`
+	Status     StellarTransactionScanResponseValidationStellarValidationResultStatus     `json:"status" api:"required"`
 	JSON       stellarTransactionScanResponseValidationStellarValidationResultJSON       `json:"-"`
 }
 
@@ -1560,12 +1560,12 @@ func (r StellarTransactionScanResponseValidationStellarValidationResult) impleme
 
 type StellarTransactionScanResponseValidationStellarValidationResultFeature struct {
 	// Address the feature refers to
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// Textual description
-	Description string `json:"description,required"`
-	FeatureID   string `json:"feature_id,required"`
+	Description string `json:"description" api:"required"`
+	FeatureID   string `json:"feature_id" api:"required"`
 	// Feature Classification
-	Type StellarTransactionScanResponseValidationStellarValidationResultFeaturesType `json:"type,required"`
+	Type StellarTransactionScanResponseValidationStellarValidationResultFeaturesType `json:"type" api:"required"`
 	JSON stellarTransactionScanResponseValidationStellarValidationResultFeatureJSON  `json:"-"`
 }
 
@@ -1640,8 +1640,8 @@ func (r StellarTransactionScanResponseValidationStellarValidationResultStatus) I
 
 type StellarTransactionScanResponseValidationStellarValidationErrorSchema struct {
 	// Error message
-	Error  string                                                                     `json:"error,required"`
-	Status StellarTransactionScanResponseValidationStellarValidationErrorSchemaStatus `json:"status,required"`
+	Error  string                                                                     `json:"error" api:"required"`
+	Status StellarTransactionScanResponseValidationStellarValidationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   stellarTransactionScanResponseValidationStellarValidationErrorSchemaJSON   `json:"-"`
 }
 

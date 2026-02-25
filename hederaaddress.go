@@ -49,7 +49,7 @@ type HederaAddressScanResponse struct {
 	// caution. <br /> - `Benign` — No known malicious or risky activity was detected
 	// for the address. <br /> - `Error` — The scan could not be completed
 	// successfully.
-	ResultType HederaAddressScanResponseResultType `json:"result_type,required"`
+	ResultType HederaAddressScanResponseResultType `json:"result_type" api:"required"`
 	// A list of human-readable textual features describing the scanned address,
 	// intended for display to the end user.
 	Features []HederaAddressScanResponseFeature `json:"features"`
@@ -101,12 +101,12 @@ func (r HederaAddressScanResponseResultType) IsKnown() bool {
 
 type HederaAddressScanResponseFeature struct {
 	// A human-readable description explaining the feature.
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// The unique identifier for the feature.
-	FeatureID string `json:"feature_id,required"`
+	FeatureID string `json:"feature_id" api:"required"`
 	// The risk classification indicated by the feature. Possible values are
 	// `Malicious`, `High-Risk`, `Warning`, `Benign`, or `Info`.
-	Type HederaAddressScanResponseFeaturesType `json:"type,required"`
+	Type HederaAddressScanResponseFeaturesType `json:"type" api:"required"`
 	JSON hederaAddressScanResponseFeatureJSON  `json:"-"`
 }
 
@@ -150,9 +150,9 @@ func (r HederaAddressScanResponseFeaturesType) IsKnown() bool {
 
 type HederaAddressScanParams struct {
 	// The address to validate.
-	Address param.Field[string] `json:"address,required"`
+	Address param.Field[string] `json:"address" api:"required"`
 	// The chain the transaction runs on.
-	Chain param.Field[HederaAddressScanParamsChain] `json:"chain,required"`
+	Chain param.Field[HederaAddressScanParamsChain] `json:"chain" api:"required"`
 }
 
 func (r HederaAddressScanParams) MarshalJSON() (data []byte, err error) {

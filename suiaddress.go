@@ -44,7 +44,7 @@ func (r *SuiAddressService) Scan(ctx context.Context, body SuiAddressScanParams,
 
 type SuiAddressScanResponse struct {
 	// Verdict of the validation
-	ResultType SuiAddressScanResponseResultType `json:"result_type,required"`
+	ResultType SuiAddressScanResponseResultType `json:"result_type" api:"required"`
 	// A list of textual features about this transaction that can be presented to the
 	// user.
 	Features []SuiAddressScanResponseFeature `json:"features"`
@@ -88,9 +88,9 @@ func (r SuiAddressScanResponseResultType) IsKnown() bool {
 }
 
 type SuiAddressScanResponseFeature struct {
-	Description string                             `json:"description,required"`
-	FeatureID   string                             `json:"feature_id,required"`
-	Type        SuiAddressScanResponseFeaturesType `json:"type,required"`
+	Description string                             `json:"description" api:"required"`
+	FeatureID   string                             `json:"feature_id" api:"required"`
+	Type        SuiAddressScanResponseFeaturesType `json:"type" api:"required"`
 	JSON        suiAddressScanResponseFeatureJSON  `json:"-"`
 }
 
@@ -130,8 +130,8 @@ func (r SuiAddressScanResponseFeaturesType) IsKnown() bool {
 }
 
 type SuiAddressScanParams struct {
-	Address param.Field[string]                    `json:"address,required"`
-	Chain   param.Field[SuiAddressScanParamsChain] `json:"chain,required"`
+	Address param.Field[string]                    `json:"address" api:"required"`
+	Chain   param.Field[SuiAddressScanParamsChain] `json:"chain" api:"required"`
 }
 
 func (r SuiAddressScanParams) MarshalJSON() (data []byte, err error) {

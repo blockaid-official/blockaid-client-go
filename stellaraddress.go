@@ -42,10 +42,10 @@ func (r *StellarAddressService) Scan(ctx context.Context, body StellarAddressSca
 }
 
 type StellarAddressScanResponse struct {
-	Address    string                              `json:"address,required"`
-	Chain      string                              `json:"chain,required"`
-	Features   []StellarAddressScanResponseFeature `json:"features,required"`
-	ResultType string                              `json:"result_type,required"`
+	Address    string                              `json:"address" api:"required"`
+	Chain      string                              `json:"chain" api:"required"`
+	Features   []StellarAddressScanResponseFeature `json:"features" api:"required"`
+	ResultType string                              `json:"result_type" api:"required"`
 	JSON       stellarAddressScanResponseJSON      `json:"-"`
 }
 
@@ -69,10 +69,10 @@ func (r stellarAddressScanResponseJSON) RawJSON() string {
 }
 
 type StellarAddressScanResponseFeature struct {
-	Address     string                                 `json:"address,required"`
-	Description string                                 `json:"description,required"`
-	FeatureID   string                                 `json:"feature_id,required"`
-	Type        StellarAddressScanResponseFeaturesType `json:"type,required"`
+	Address     string                                 `json:"address" api:"required"`
+	Description string                                 `json:"description" api:"required"`
+	FeatureID   string                                 `json:"feature_id" api:"required"`
+	Type        StellarAddressScanResponseFeaturesType `json:"type" api:"required"`
 	JSON        stellarAddressScanResponseFeatureJSON  `json:"-"`
 }
 
@@ -113,7 +113,7 @@ func (r StellarAddressScanResponseFeaturesType) IsKnown() bool {
 }
 
 type StellarAddressScanParams struct {
-	Address param.Field[string] `json:"address,required"`
+	Address param.Field[string] `json:"address" api:"required"`
 }
 
 func (r StellarAddressScanParams) MarshalJSON() (data []byte, err error) {

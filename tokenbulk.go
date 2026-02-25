@@ -44,7 +44,7 @@ func (r *TokenBulkService) Scan(ctx context.Context, body TokenBulkScanParams, o
 }
 
 type TokenBulkScanResponse struct {
-	Results map[string]TokenBulkScanResponseResult `json:"results,required"`
+	Results map[string]TokenBulkScanResponseResult `json:"results" api:"required"`
 	// Errors encountered during bulk scanning, keyed by token address
 	Errors map[string]TokenBulkScanResponseError `json:"errors"`
 	JSON   tokenBulkScanResponseJSON             `json:"-"`
@@ -69,23 +69,23 @@ func (r tokenBulkScanResponseJSON) RawJSON() string {
 
 type TokenBulkScanResponseResult struct {
 	// Token address to validate (EVM / Solana)
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// Dictionary of detected attacks found during the scan
-	AttackTypes map[string]TokenBulkScanResponseResultsAttackType `json:"attack_types,required"`
+	AttackTypes map[string]TokenBulkScanResponseResultsAttackType `json:"attack_types" api:"required"`
 	// Blockchain network
-	Chain TokenScanSupportedChain `json:"chain,required"`
+	Chain TokenScanSupportedChain `json:"chain" api:"required"`
 	// Fees associated with the token
-	Fees TokenBulkScanResponseResultsFees `json:"fees,required"`
+	Fees TokenBulkScanResponseResultsFees `json:"fees" api:"required"`
 	// financial stats of the token
-	FinancialStats TokenBulkScanResponseResultsFinancialStats `json:"financial_stats,required"`
+	FinancialStats TokenBulkScanResponseResultsFinancialStats `json:"financial_stats" api:"required"`
 	// Score between 0 to 1 (double)
-	MaliciousScore string `json:"malicious_score,required"`
+	MaliciousScore string `json:"malicious_score" api:"required"`
 	// Metadata of the token
-	Metadata TokenBulkScanResponseResultsMetadata `json:"metadata,required"`
+	Metadata TokenBulkScanResponseResultsMetadata `json:"metadata" api:"required"`
 	// General indication
-	ResultType TokenBulkScanResponseResultsResultType `json:"result_type,required"`
+	ResultType TokenBulkScanResponseResultsResultType `json:"result_type" api:"required"`
 	// Trading limits of the token
-	TradingLimits TokenBulkScanResponseResultsTradingLimits `json:"trading_limits,required"`
+	TradingLimits TokenBulkScanResponseResultsTradingLimits `json:"trading_limits" api:"required"`
 	// List of features associated with the token
 	Features []TokenBulkScanResponseResultsFeature `json:"features"`
 	JSON     tokenBulkScanResponseResultJSON       `json:"-"`
@@ -118,7 +118,7 @@ func (r tokenBulkScanResponseResultJSON) RawJSON() string {
 
 type TokenBulkScanResponseResultsAttackType struct {
 	// Score between 0 to 1 (double) that indicates the assurance this attack happened
-	Score string `json:"score,required"`
+	Score string `json:"score" api:"required"`
 	// Object contains an extra information related to the attack
 	Features interface{} `json:"features"`
 	// If score is higher or equal to this field, the token is using this attack type
@@ -147,13 +147,13 @@ func (r tokenBulkScanResponseResultsAttackTypeJSON) RawJSON() string {
 // Fees associated with the token
 type TokenBulkScanResponseResultsFees struct {
 	// Buy fee of the token
-	Buy float64 `json:"buy,nullable"`
+	Buy float64 `json:"buy" api:"nullable"`
 	// Sell fee of the token
-	Sell float64 `json:"sell,nullable"`
+	Sell float64 `json:"sell" api:"nullable"`
 	// Transfer fee of the token
-	Transfer float64 `json:"transfer,nullable"`
+	Transfer float64 `json:"transfer" api:"nullable"`
 	// The maximum value that a transfer fee will cost
-	TransferFeeMaxAmount int64                                `json:"transfer_fee_max_amount,nullable"`
+	TransferFeeMaxAmount int64                                `json:"transfer_fee_max_amount" api:"nullable"`
 	JSON                 tokenBulkScanResponseResultsFeesJSON `json:"-"`
 }
 
@@ -181,33 +181,33 @@ type TokenBulkScanResponseResultsFinancialStats struct {
 	// Percentage of token currently held by bundlers - wallets that bought in the
 	// exact same Solana slot, at any point in the token's life-cycle. Currently
 	// available for Solana only.
-	BundlersHoldingPercentage float64 `json:"bundlers_holding_percentage,nullable"`
+	BundlersHoldingPercentage float64 `json:"bundlers_holding_percentage" api:"nullable"`
 	// Token liquidity burned percentage
-	BurnedLiquidityPercentage float64 `json:"burned_liquidity_percentage,nullable"`
+	BurnedLiquidityPercentage float64 `json:"burned_liquidity_percentage" api:"nullable"`
 	// Percentage of token's supply held in known developer wallets (0.0 to 100.0)
-	DevHoldingPercentage float64 `json:"dev_holding_percentage,nullable"`
+	DevHoldingPercentage float64 `json:"dev_holding_percentage" api:"nullable"`
 	// Amount of token holders
-	HoldersCount int64 `json:"holders_count,nullable"`
+	HoldersCount int64 `json:"holders_count" api:"nullable"`
 	// Percentage of token's supply _currently_ held by sniper bots (0.0 to 100.0).
 	// Currently available for Solana only.
-	InitialSnipersHoldingPercentage float64 `json:"initial_snipers_holding_percentage,nullable"`
+	InitialSnipersHoldingPercentage float64 `json:"initial_snipers_holding_percentage" api:"nullable"`
 	// Percentage of supply that is currently held by insiders - defined as wallets
 	// exhibiting early acquisition behaviors typically associated with insider
 	// activity.
-	InsidersHoldingPercentage float64 `json:"insiders_holding_percentage,nullable"`
+	InsidersHoldingPercentage float64 `json:"insiders_holding_percentage" api:"nullable"`
 	// Token liquidity locked percentage
-	LockedLiquidityPercentage float64 `json:"locked_liquidity_percentage,nullable"`
+	LockedLiquidityPercentage float64 `json:"locked_liquidity_percentage" api:"nullable"`
 	// Percentage of token's supply _initially_ held by sniper bots (0.0 to 100.0).
 	// Currently available for Solana only.
-	SnipersHoldingPercentage float64 `json:"snipers_holding_percentage,nullable"`
+	SnipersHoldingPercentage float64 `json:"snipers_holding_percentage" api:"nullable"`
 	// token supply
-	Supply int64 `json:"supply,nullable"`
+	Supply int64 `json:"supply" api:"nullable"`
 	// Top token holders
 	TopHolders []TokenBulkScanResponseResultsFinancialStatsTopHolder `json:"top_holders"`
 	// Total reserve in USD
-	TotalReserveInUsd float64 `json:"total_reserve_in_usd,nullable"`
+	TotalReserveInUsd float64 `json:"total_reserve_in_usd" api:"nullable"`
 	// token price in USD
-	UsdPricePerUnit float64                                        `json:"usd_price_per_unit,nullable"`
+	UsdPricePerUnit float64                                        `json:"usd_price_per_unit" api:"nullable"`
 	JSON            tokenBulkScanResponseResultsFinancialStatsJSON `json:"-"`
 }
 
@@ -240,9 +240,9 @@ func (r tokenBulkScanResponseResultsFinancialStatsJSON) RawJSON() string {
 
 type TokenBulkScanResponseResultsFinancialStatsTopHolder struct {
 	// Address
-	Address string `json:"address,nullable"`
+	Address string `json:"address" api:"nullable"`
 	// Holding position out of total token liquidity
-	HoldingPercentage float64                                                 `json:"holding_percentage,nullable"`
+	HoldingPercentage float64                                                 `json:"holding_percentage" api:"nullable"`
 	JSON              tokenBulkScanResponseResultsFinancialStatsTopHolderJSON `json:"-"`
 }
 
@@ -266,58 +266,58 @@ func (r tokenBulkScanResponseResultsFinancialStatsTopHolderJSON) RawJSON() strin
 // Metadata of the token
 type TokenBulkScanResponseResultsMetadata struct {
 	// The unique ID for the Rune
-	ID string `json:"id,nullable"`
+	ID string `json:"id" api:"nullable"`
 	// This field can have the runtime type of
 	// [TokenBulkScanResponseResultsMetadataSolanaMetadataContractBalance],
 	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalance].
 	ContractBalance interface{} `json:"contract_balance"`
 	// Contract deploy date
-	CreationTimestamp string `json:"creation_timestamp,nullable"`
+	CreationTimestamp string `json:"creation_timestamp" api:"nullable"`
 	// Decimals of the token
-	Decimals int64 `json:"decimals,nullable"`
+	Decimals int64 `json:"decimals" api:"nullable"`
 	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer,nullable"`
+	Deployer string `json:"deployer" api:"nullable"`
 	// This field can have the runtime type of
 	// [TokenBulkScanResponseResultsMetadataSolanaMetadataDeployerBalance],
 	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenDeployerBalance].
 	DeployerBalance interface{} `json:"deployer_balance"`
 	// Description of the token
-	Description string `json:"description,nullable"`
+	Description string `json:"description" api:"nullable"`
 	// This field can have the runtime type of
 	// [TokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinks],
 	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks].
 	ExternalLinks interface{} `json:"external_links"`
 	// The formatted name of the rune, with spacers
-	FormattedName string `json:"formatted_name,nullable"`
+	FormattedName string `json:"formatted_name" api:"nullable"`
 	// Solana token freeze authority account
-	FreezeAuthority string `json:"freeze_authority,nullable"`
+	FreezeAuthority string `json:"freeze_authority" api:"nullable"`
 	// URL of the token image
-	ImageURL string `json:"image_url,nullable"`
+	ImageURL string `json:"image_url" api:"nullable"`
 	// This field can have the runtime type of [[]string].
 	MaliciousURLs interface{} `json:"malicious_urls"`
 	// Solana token mint authority account
-	MintAuthority string `json:"mint_authority,nullable"`
+	MintAuthority string `json:"mint_authority" api:"nullable"`
 	// Name of the token
-	Name string `json:"name,nullable"`
+	Name string `json:"name" api:"nullable"`
 	// The rune's unique sequential number.
-	Number int64 `json:"number,nullable"`
+	Number int64 `json:"number" api:"nullable"`
 	// Contract owner address
-	Owner string `json:"owner,nullable"`
+	Owner string `json:"owner" api:"nullable"`
 	// This field can have the runtime type of
 	// [TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance],
 	// [TokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalance].
 	OwnerBalance interface{} `json:"owner_balance"`
 	// Solana token permanent delegate account
-	PermanentDelegate string `json:"permanent_delegate,nullable"`
+	PermanentDelegate string `json:"permanent_delegate" api:"nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol,nullable"`
+	Symbol string `json:"symbol" api:"nullable"`
 	// Address of the token creation initiator, only set if the tokens was created by a
 	// well known token launch platform
-	TokenCreationInitiator string `json:"token_creation_initiator,nullable"`
+	TokenCreationInitiator string `json:"token_creation_initiator" api:"nullable"`
 	// Type of the token
-	Type string `json:"type,nullable"`
+	Type string `json:"type" api:"nullable"`
 	// Solana token update authority account
-	UpdateAuthority string `json:"update_authority,nullable"`
+	UpdateAuthority string `json:"update_authority" api:"nullable"`
 	// This field can have the runtime type of [[]string].
 	URLs  interface{}                              `json:"urls"`
 	JSON  tokenBulkScanResponseResultsMetadataJSON `json:"-"`
@@ -408,46 +408,46 @@ func init() {
 
 type TokenBulkScanResponseResultsMetadataSolanaMetadata struct {
 	// Contract balance
-	ContractBalance TokenBulkScanResponseResultsMetadataSolanaMetadataContractBalance `json:"contract_balance,nullable"`
+	ContractBalance TokenBulkScanResponseResultsMetadataSolanaMetadataContractBalance `json:"contract_balance" api:"nullable"`
 	// Contract deploy date
-	CreationTimestamp string `json:"creation_timestamp,nullable"`
+	CreationTimestamp string `json:"creation_timestamp" api:"nullable"`
 	// Decimals of the token
-	Decimals int64 `json:"decimals,nullable"`
+	Decimals int64 `json:"decimals" api:"nullable"`
 	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer,nullable"`
+	Deployer string `json:"deployer" api:"nullable"`
 	// Contract creator balance
-	DeployerBalance TokenBulkScanResponseResultsMetadataSolanaMetadataDeployerBalance `json:"deployer_balance,nullable"`
+	DeployerBalance TokenBulkScanResponseResultsMetadataSolanaMetadataDeployerBalance `json:"deployer_balance" api:"nullable"`
 	// Description of the token
-	Description string `json:"description,nullable"`
+	Description string `json:"description" api:"nullable"`
 	// social links of the token
 	ExternalLinks TokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinks `json:"external_links"`
 	// Solana token freeze authority account
-	FreezeAuthority string `json:"freeze_authority,nullable"`
+	FreezeAuthority string `json:"freeze_authority" api:"nullable"`
 	// URL of the token image
-	ImageURL string `json:"image_url,nullable"`
+	ImageURL string `json:"image_url" api:"nullable"`
 	// Malicious urls associated with the token
-	MaliciousURLs []string `json:"malicious_urls,nullable"`
+	MaliciousURLs []string `json:"malicious_urls" api:"nullable"`
 	// Solana token mint authority account
-	MintAuthority string `json:"mint_authority,nullable"`
+	MintAuthority string `json:"mint_authority" api:"nullable"`
 	// Name of the token
-	Name string `json:"name,nullable"`
+	Name string `json:"name" api:"nullable"`
 	// Contract owner address
-	Owner string `json:"owner,nullable"`
+	Owner string `json:"owner" api:"nullable"`
 	// Contract owner balance
-	OwnerBalance TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance `json:"owner_balance,nullable"`
+	OwnerBalance TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance `json:"owner_balance" api:"nullable"`
 	// Solana token permanent delegate account
-	PermanentDelegate string `json:"permanent_delegate,nullable"`
+	PermanentDelegate string `json:"permanent_delegate" api:"nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol,nullable"`
+	Symbol string `json:"symbol" api:"nullable"`
 	// Address of the token creation initiator, only set if the tokens was created by a
 	// well known token launch platform
-	TokenCreationInitiator string `json:"token_creation_initiator,nullable"`
+	TokenCreationInitiator string `json:"token_creation_initiator" api:"nullable"`
 	// Type of the token
-	Type string `json:"type,nullable"`
+	Type string `json:"type" api:"nullable"`
 	// Solana token update authority account
-	UpdateAuthority string `json:"update_authority,nullable"`
+	UpdateAuthority string `json:"update_authority" api:"nullable"`
 	// Urls associated with the token
-	URLs []string                                               `json:"urls,nullable"`
+	URLs []string                                               `json:"urls" api:"nullable"`
 	JSON tokenBulkScanResponseResultsMetadataSolanaMetadataJSON `json:"-"`
 }
 
@@ -491,8 +491,8 @@ func (r TokenBulkScanResponseResultsMetadataSolanaMetadata) implementsTokenBulkS
 
 // Contract balance
 type TokenBulkScanResponseResultsMetadataSolanaMetadataContractBalance struct {
-	Amount    float64                                                               `json:"amount,nullable"`
-	AmountWei string                                                                `json:"amount_wei,nullable"`
+	Amount    float64                                                               `json:"amount" api:"nullable"`
+	AmountWei string                                                                `json:"amount_wei" api:"nullable"`
 	JSON      tokenBulkScanResponseResultsMetadataSolanaMetadataContractBalanceJSON `json:"-"`
 }
 
@@ -516,8 +516,8 @@ func (r tokenBulkScanResponseResultsMetadataSolanaMetadataContractBalanceJSON) R
 
 // Contract creator balance
 type TokenBulkScanResponseResultsMetadataSolanaMetadataDeployerBalance struct {
-	Amount    float64                                                               `json:"amount,nullable"`
-	AmountWei string                                                                `json:"amount_wei,nullable"`
+	Amount    float64                                                               `json:"amount" api:"nullable"`
+	AmountWei string                                                                `json:"amount_wei" api:"nullable"`
 	JSON      tokenBulkScanResponseResultsMetadataSolanaMetadataDeployerBalanceJSON `json:"-"`
 }
 
@@ -541,9 +541,9 @@ func (r tokenBulkScanResponseResultsMetadataSolanaMetadataDeployerBalanceJSON) R
 
 // social links of the token
 type TokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinks struct {
-	Homepage          string                                                              `json:"homepage,nullable"`
-	TelegramChannelID string                                                              `json:"telegram_channel_id,nullable"`
-	TwitterPage       string                                                              `json:"twitter_page,nullable"`
+	Homepage          string                                                              `json:"homepage" api:"nullable"`
+	TelegramChannelID string                                                              `json:"telegram_channel_id" api:"nullable"`
+	TwitterPage       string                                                              `json:"twitter_page" api:"nullable"`
 	JSON              tokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinksJSON `json:"-"`
 }
 
@@ -568,8 +568,8 @@ func (r tokenBulkScanResponseResultsMetadataSolanaMetadataExternalLinksJSON) Raw
 
 // Contract owner balance
 type TokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalance struct {
-	Amount    float64                                                            `json:"amount,nullable"`
-	AmountWei string                                                             `json:"amount_wei,nullable"`
+	Amount    float64                                                            `json:"amount" api:"nullable"`
+	AmountWei string                                                             `json:"amount_wei" api:"nullable"`
 	JSON      tokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalanceJSON `json:"-"`
 }
 
@@ -593,19 +593,19 @@ func (r tokenBulkScanResponseResultsMetadataSolanaMetadataOwnerBalanceJSON) RawJ
 
 type TokenBulkScanResponseResultsMetadataBitcoinMetadataToken struct {
 	// The unique ID for the Rune
-	ID string `json:"id,nullable"`
+	ID string `json:"id" api:"nullable"`
 	// Decimals of the token
-	Decimals int64 `json:"decimals,nullable"`
+	Decimals int64 `json:"decimals" api:"nullable"`
 	// The formatted name of the rune, with spacers
-	FormattedName string `json:"formatted_name,nullable"`
+	FormattedName string `json:"formatted_name" api:"nullable"`
 	// Name of the token
-	Name string `json:"name,nullable"`
+	Name string `json:"name" api:"nullable"`
 	// The rune's unique sequential number.
-	Number int64 `json:"number,nullable"`
+	Number int64 `json:"number" api:"nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol,nullable"`
+	Symbol string `json:"symbol" api:"nullable"`
 	// Type of the token
-	Type string                                                       `json:"type,nullable"`
+	Type string                                                       `json:"type" api:"nullable"`
 	JSON tokenBulkScanResponseResultsMetadataBitcoinMetadataTokenJSON `json:"-"`
 }
 
@@ -637,38 +637,38 @@ func (r TokenBulkScanResponseResultsMetadataBitcoinMetadataToken) implementsToke
 
 type TokenBulkScanResponseResultsMetadataEvmMetadataToken struct {
 	// Contract balance
-	ContractBalance TokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalance `json:"contract_balance,nullable"`
+	ContractBalance TokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalance `json:"contract_balance" api:"nullable"`
 	// Contract deploy date
-	CreationTimestamp string `json:"creation_timestamp,nullable"`
+	CreationTimestamp string `json:"creation_timestamp" api:"nullable"`
 	// Decimals of the token
-	Decimals int64 `json:"decimals,nullable"`
+	Decimals int64 `json:"decimals" api:"nullable"`
 	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer,nullable"`
+	Deployer string `json:"deployer" api:"nullable"`
 	// Contract creator balance
-	DeployerBalance TokenBulkScanResponseResultsMetadataEvmMetadataTokenDeployerBalance `json:"deployer_balance,nullable"`
+	DeployerBalance TokenBulkScanResponseResultsMetadataEvmMetadataTokenDeployerBalance `json:"deployer_balance" api:"nullable"`
 	// Description of the token
-	Description string `json:"description,nullable"`
+	Description string `json:"description" api:"nullable"`
 	// social links of the token
 	ExternalLinks TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks `json:"external_links"`
 	// URL of the token image
-	ImageURL string `json:"image_url,nullable"`
+	ImageURL string `json:"image_url" api:"nullable"`
 	// Malicious urls associated with the token
-	MaliciousURLs []string `json:"malicious_urls,nullable"`
+	MaliciousURLs []string `json:"malicious_urls" api:"nullable"`
 	// Name of the token
-	Name string `json:"name,nullable"`
+	Name string `json:"name" api:"nullable"`
 	// Contract owner address
-	Owner string `json:"owner,nullable"`
+	Owner string `json:"owner" api:"nullable"`
 	// Contract owner balance
-	OwnerBalance TokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalance `json:"owner_balance,nullable"`
+	OwnerBalance TokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalance `json:"owner_balance" api:"nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol,nullable"`
+	Symbol string `json:"symbol" api:"nullable"`
 	// Address of the token creation initiator, only set if the tokens was created by a
 	// well known token launch platform
-	TokenCreationInitiator string `json:"token_creation_initiator,nullable"`
+	TokenCreationInitiator string `json:"token_creation_initiator" api:"nullable"`
 	// Type of the token
-	Type string `json:"type,nullable"`
+	Type string `json:"type" api:"nullable"`
 	// Urls associated with the token
-	URLs []string                                                 `json:"urls,nullable"`
+	URLs []string                                                 `json:"urls" api:"nullable"`
 	JSON tokenBulkScanResponseResultsMetadataEvmMetadataTokenJSON `json:"-"`
 }
 
@@ -708,8 +708,8 @@ func (r TokenBulkScanResponseResultsMetadataEvmMetadataToken) implementsTokenBul
 
 // Contract balance
 type TokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalance struct {
-	Amount    float64                                                                 `json:"amount,nullable"`
-	AmountWei string                                                                  `json:"amount_wei,nullable"`
+	Amount    float64                                                                 `json:"amount" api:"nullable"`
+	AmountWei string                                                                  `json:"amount_wei" api:"nullable"`
 	JSON      tokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalanceJSON `json:"-"`
 }
 
@@ -733,8 +733,8 @@ func (r tokenBulkScanResponseResultsMetadataEvmMetadataTokenContractBalanceJSON)
 
 // Contract creator balance
 type TokenBulkScanResponseResultsMetadataEvmMetadataTokenDeployerBalance struct {
-	Amount    float64                                                                 `json:"amount,nullable"`
-	AmountWei string                                                                  `json:"amount_wei,nullable"`
+	Amount    float64                                                                 `json:"amount" api:"nullable"`
+	AmountWei string                                                                  `json:"amount_wei" api:"nullable"`
 	JSON      tokenBulkScanResponseResultsMetadataEvmMetadataTokenDeployerBalanceJSON `json:"-"`
 }
 
@@ -758,9 +758,9 @@ func (r tokenBulkScanResponseResultsMetadataEvmMetadataTokenDeployerBalanceJSON)
 
 // social links of the token
 type TokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinks struct {
-	Homepage          string                                                                `json:"homepage,nullable"`
-	TelegramChannelID string                                                                `json:"telegram_channel_id,nullable"`
-	TwitterPage       string                                                                `json:"twitter_page,nullable"`
+	Homepage          string                                                                `json:"homepage" api:"nullable"`
+	TelegramChannelID string                                                                `json:"telegram_channel_id" api:"nullable"`
+	TwitterPage       string                                                                `json:"twitter_page" api:"nullable"`
 	JSON              tokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinksJSON `json:"-"`
 }
 
@@ -785,8 +785,8 @@ func (r tokenBulkScanResponseResultsMetadataEvmMetadataTokenExternalLinksJSON) R
 
 // Contract owner balance
 type TokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalance struct {
-	Amount    float64                                                              `json:"amount,nullable"`
-	AmountWei string                                                               `json:"amount_wei,nullable"`
+	Amount    float64                                                              `json:"amount" api:"nullable"`
+	AmountWei string                                                               `json:"amount_wei" api:"nullable"`
 	JSON      tokenBulkScanResponseResultsMetadataEvmMetadataTokenOwnerBalanceJSON `json:"-"`
 }
 
@@ -829,13 +829,13 @@ func (r TokenBulkScanResponseResultsResultType) IsKnown() bool {
 // Trading limits of the token
 type TokenBulkScanResponseResultsTradingLimits struct {
 	// Max amount that can be bought at once
-	MaxBuy TokenBulkScanResponseResultsTradingLimitsMaxBuy `json:"max_buy,nullable"`
+	MaxBuy TokenBulkScanResponseResultsTradingLimitsMaxBuy `json:"max_buy" api:"nullable"`
 	// Max amount that can be held by a single address
-	MaxHolding TokenBulkScanResponseResultsTradingLimitsMaxHolding `json:"max_holding,nullable"`
+	MaxHolding TokenBulkScanResponseResultsTradingLimitsMaxHolding `json:"max_holding" api:"nullable"`
 	// Max amount that can be sold at once
-	MaxSell TokenBulkScanResponseResultsTradingLimitsMaxSell `json:"max_sell,nullable"`
+	MaxSell TokenBulkScanResponseResultsTradingLimitsMaxSell `json:"max_sell" api:"nullable"`
 	// Maximum amount of the token that can be sold in a block
-	SellLimitPerBlock TokenBulkScanResponseResultsTradingLimitsSellLimitPerBlock `json:"sell_limit_per_block,nullable"`
+	SellLimitPerBlock TokenBulkScanResponseResultsTradingLimitsSellLimitPerBlock `json:"sell_limit_per_block" api:"nullable"`
 	JSON              tokenBulkScanResponseResultsTradingLimitsJSON              `json:"-"`
 }
 
@@ -860,8 +860,8 @@ func (r tokenBulkScanResponseResultsTradingLimitsJSON) RawJSON() string {
 
 // Max amount that can be bought at once
 type TokenBulkScanResponseResultsTradingLimitsMaxBuy struct {
-	Amount    float64                                             `json:"amount,nullable"`
-	AmountWei string                                              `json:"amount_wei,nullable"`
+	Amount    float64                                             `json:"amount" api:"nullable"`
+	AmountWei string                                              `json:"amount_wei" api:"nullable"`
 	JSON      tokenBulkScanResponseResultsTradingLimitsMaxBuyJSON `json:"-"`
 }
 
@@ -884,8 +884,8 @@ func (r tokenBulkScanResponseResultsTradingLimitsMaxBuyJSON) RawJSON() string {
 
 // Max amount that can be held by a single address
 type TokenBulkScanResponseResultsTradingLimitsMaxHolding struct {
-	Amount    float64                                                 `json:"amount,nullable"`
-	AmountWei string                                                  `json:"amount_wei,nullable"`
+	Amount    float64                                                 `json:"amount" api:"nullable"`
+	AmountWei string                                                  `json:"amount_wei" api:"nullable"`
 	JSON      tokenBulkScanResponseResultsTradingLimitsMaxHoldingJSON `json:"-"`
 }
 
@@ -908,8 +908,8 @@ func (r tokenBulkScanResponseResultsTradingLimitsMaxHoldingJSON) RawJSON() strin
 
 // Max amount that can be sold at once
 type TokenBulkScanResponseResultsTradingLimitsMaxSell struct {
-	Amount    float64                                              `json:"amount,nullable"`
-	AmountWei string                                               `json:"amount_wei,nullable"`
+	Amount    float64                                              `json:"amount" api:"nullable"`
+	AmountWei string                                               `json:"amount_wei" api:"nullable"`
 	JSON      tokenBulkScanResponseResultsTradingLimitsMaxSellJSON `json:"-"`
 }
 
@@ -932,8 +932,8 @@ func (r tokenBulkScanResponseResultsTradingLimitsMaxSellJSON) RawJSON() string {
 
 // Maximum amount of the token that can be sold in a block
 type TokenBulkScanResponseResultsTradingLimitsSellLimitPerBlock struct {
-	Amount    float64                                                        `json:"amount,nullable"`
-	AmountWei string                                                         `json:"amount_wei,nullable"`
+	Amount    float64                                                        `json:"amount" api:"nullable"`
+	AmountWei string                                                         `json:"amount_wei" api:"nullable"`
 	JSON      tokenBulkScanResponseResultsTradingLimitsSellLimitPerBlockJSON `json:"-"`
 }
 
@@ -957,11 +957,11 @@ func (r tokenBulkScanResponseResultsTradingLimitsSellLimitPerBlockJSON) RawJSON(
 
 type TokenBulkScanResponseResultsFeature struct {
 	// Description of the feature
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// Feature identifier
-	FeatureID TokenBulkScanResponseResultsFeaturesFeatureID `json:"feature_id,required"`
+	FeatureID TokenBulkScanResponseResultsFeaturesFeatureID `json:"feature_id" api:"required"`
 	// Type of the feature
-	Type TokenBulkScanResponseResultsFeaturesType `json:"type,required"`
+	Type TokenBulkScanResponseResultsFeaturesType `json:"type" api:"required"`
 	JSON tokenBulkScanResponseResultsFeatureJSON  `json:"-"`
 }
 
@@ -1064,7 +1064,7 @@ func (r TokenBulkScanResponseResultsFeaturesType) IsKnown() bool {
 
 type TokenBulkScanResponseError struct {
 	// Error message describing why the scan failed for this token
-	Message TokenBulkScanResponseErrorsMessage `json:"message,required"`
+	Message TokenBulkScanResponseErrorsMessage `json:"message" api:"required"`
 	JSON    tokenBulkScanResponseErrorJSON     `json:"-"`
 }
 
@@ -1102,9 +1102,9 @@ func (r TokenBulkScanResponseErrorsMessage) IsKnown() bool {
 
 type TokenBulkScanParams struct {
 	// The chain name
-	Chain param.Field[TokenScanSupportedChain] `json:"chain,required"`
+	Chain param.Field[TokenScanSupportedChain] `json:"chain" api:"required"`
 	// A list of token addresses to scan
-	Tokens param.Field[[]string] `json:"tokens,required"`
+	Tokens param.Field[[]string] `json:"tokens" api:"required"`
 	// Optional token metadata context (e.g., source/integration hints) used to enrich
 	// results.
 	Metadata param.Field[TokenBulkScanParamsMetadata] `json:"metadata"`

@@ -45,9 +45,9 @@ type ScanStatusResponse = interface{}
 
 type ScanStatusParams struct {
 	// The x-request-id header returned from the previous Blockaid api request
-	RequestID param.Field[string] `json:"request_id,required"`
+	RequestID param.Field[string] `json:"request_id" api:"required"`
 	// Status of a scan-status lookup request.
-	Status param.Field[ScanStatusParamsStatus] `json:"status,required"`
+	Status param.Field[ScanStatusParamsStatus] `json:"status" api:"required"`
 }
 
 func (r ScanStatusParams) MarshalJSON() (data []byte, err error) {

@@ -45,16 +45,16 @@ func (r *SolanaMessageService) Scan(ctx context.Context, body SolanaMessageScanP
 }
 
 type SolanaMessageScanResponse struct {
-	Encoding SolanaMessageScanResponseEncoding `json:"encoding,required"`
+	Encoding SolanaMessageScanResponseEncoding `json:"encoding" api:"required"`
 	// Unique identifier of the request
-	RequestID string                          `json:"request_id,required,nullable"`
-	Status    SolanaMessageScanResponseStatus `json:"status,required"`
+	RequestID string                          `json:"request_id" api:"required,nullable"`
+	Status    SolanaMessageScanResponseStatus `json:"status" api:"required"`
 	// Error message if the simulation failed
-	Error string `json:"error,nullable"`
+	Error string `json:"error" api:"nullable"`
 	// Error details
-	ErrorDetails SolanaMessageScanResponseErrorDetails `json:"error_details,nullable"`
+	ErrorDetails SolanaMessageScanResponseErrorDetails `json:"error_details" api:"nullable"`
 	// Result of the request
-	Result SolanaMessageScanResponseResult `json:"result,nullable"`
+	Result SolanaMessageScanResponseResult `json:"result" api:"nullable"`
 	JSON   solanaMessageScanResponseJSON   `json:"-"`
 }
 
@@ -113,15 +113,15 @@ func (r SolanaMessageScanResponseStatus) IsKnown() bool {
 type SolanaMessageScanResponseErrorDetails struct {
 	Category SolanaMessageScanResponseErrorDetailsCategory `json:"category"`
 	// Machine readable error code
-	Code string `json:"code,nullable"`
+	Code string `json:"code" api:"nullable"`
 	// Index of the instruction in the transaction
 	InstructionIndex int64 `json:"instruction_index"`
 	// Advanced message of the error
 	Message string `json:"message"`
 	// Error number
-	Number int64 `json:"number,nullable"`
+	Number int64 `json:"number" api:"nullable"`
 	// The program account that caused the error
-	ProgramAccount string `json:"program_account,nullable"`
+	ProgramAccount string `json:"program_account" api:"nullable"`
 	// Index of the transaction in the bulk
 	TransactionIndex int64                                     `json:"transaction_index"`
 	Type             SolanaMessageScanResponseErrorDetailsType `json:"type"`
@@ -206,7 +206,7 @@ type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningContro
 	// Advanced message of the error
 	Message     string                                                                                                          `json:"message"`
 	Type        SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsType `json:"type"`
-	ExtraFields map[string]interface{}                                                                                          `json:"-,extras"`
+	ExtraFields map[string]interface{}                                                                                          `json:"-" api:"extrafields"`
 	JSON        solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetailsJSON `json:"-"`
 }
 
@@ -262,12 +262,12 @@ func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningCon
 
 type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetails struct {
 	// Index of the transaction in the bulk
-	TransactionIndex int64                                                                                                                       `json:"transaction_index,required"`
+	TransactionIndex int64                                                                                                                       `json:"transaction_index" api:"required"`
 	Category         SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsCategory `json:"category"`
 	// Advanced message of the error
 	Message     string                                                                                                                  `json:"message"`
 	Type        SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsType `json:"type"`
-	ExtraFields map[string]interface{}                                                                                                  `json:"-,extras"`
+	ExtraFields map[string]interface{}                                                                                                  `json:"-" api:"extrafields"`
 	JSON        solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorTransactionErrorDetailsJSON `json:"-"`
 }
 
@@ -324,20 +324,20 @@ func (r SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningCon
 
 type SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetails struct {
 	// Index of the instruction in the transaction
-	InstructionIndex int64 `json:"instruction_index,required"`
+	InstructionIndex int64 `json:"instruction_index" api:"required"`
 	// Index of the transaction in the bulk
-	TransactionIndex int64                                                                                                                       `json:"transaction_index,required"`
+	TransactionIndex int64                                                                                                                       `json:"transaction_index" api:"required"`
 	Category         SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsCategory `json:"category"`
 	// Machine readable error code
-	Code string `json:"code,nullable"`
+	Code string `json:"code" api:"nullable"`
 	// Human readable error
 	Message string `json:"message"`
 	// Error number
-	Number int64 `json:"number,nullable"`
+	Number int64 `json:"number" api:"nullable"`
 	// The program account that caused the error
-	ProgramAccount string                                                                                                                  `json:"program_account,nullable"`
+	ProgramAccount string                                                                                                                  `json:"program_account" api:"nullable"`
 	Type           SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsType `json:"type"`
-	ExtraFields    map[string]interface{}                                                                                                  `json:"-,extras"`
+	ExtraFields    map[string]interface{}                                                                                                  `json:"-" api:"extrafields"`
 	JSON           solanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorInstructionErrorDetailsJSON `json:"-"`
 }
 
@@ -430,9 +430,9 @@ func (r SolanaMessageScanResponseErrorDetailsType) IsKnown() bool {
 // Result of the request
 type SolanaMessageScanResponseResult struct {
 	// Transaction Simulation Result
-	Simulation SolanaMessageScanResponseResultSimulation `json:"simulation,required,nullable"`
+	Simulation SolanaMessageScanResponseResultSimulation `json:"simulation" api:"required,nullable"`
 	// Transaction Validation Result
-	Validation SolanaMessageScanResponseResultValidation `json:"validation,required,nullable"`
+	Validation SolanaMessageScanResponseResultValidation `json:"validation" api:"required,nullable"`
 	JSON       solanaMessageScanResponseResultJSON       `json:"-"`
 }
 
@@ -457,9 +457,9 @@ func (r solanaMessageScanResponseResultJSON) RawJSON() string {
 type SolanaMessageScanResponseResultSimulation struct {
 	// Summary of the actions and asset transfers that were made by the requested
 	// account address
-	AccountSummary SolanaMessageScanResponseResultSimulationAccountSummary `json:"account_summary,required"`
+	AccountSummary SolanaMessageScanResponseResultSimulationAccountSummary `json:"account_summary" api:"required"`
 	// Ownership diffs of the account addresses
-	AssetsOwnershipDiff map[string][]SolanaMessageScanResponseResultSimulationAssetsOwnershipDiff `json:"assets_ownership_diff,required"`
+	AssetsOwnershipDiff map[string][]SolanaMessageScanResponseResultSimulationAssetsOwnershipDiff `json:"assets_ownership_diff" api:"required"`
 	// Details of addresses involved in the transaction
 	AccountsDetails []SolanaMessageScanResponseResultSimulationAccountsDetail `json:"accounts_details"`
 	// Mapping between the address of an account to the assets diff during the
@@ -468,7 +468,7 @@ type SolanaMessageScanResponseResultSimulation struct {
 	// Mapping between the address of an account to the exposure of the assets during
 	// the transaction
 	Delegations        map[string][]SolanaMessageScanResponseResultSimulationDelegation `json:"delegations"`
-	TransactionActions []SolanaMessageScanResponseResultSimulationTransactionActions    `json:"transaction_actions,nullable"`
+	TransactionActions []SolanaMessageScanResponseResultSimulationTransactionActions    `json:"transaction_actions" api:"nullable"`
 	JSON               solanaMessageScanResponseResultSimulationJSON                    `json:"-"`
 }
 
@@ -497,11 +497,11 @@ func (r solanaMessageScanResponseResultSimulationJSON) RawJSON() string {
 // account address
 type SolanaMessageScanResponseResultSimulationAccountSummary struct {
 	// Exposures made by the requested account address
-	AccountDelegations []SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation `json:"account_delegations,required"`
+	AccountDelegations []SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation `json:"account_delegations" api:"required"`
 	// Ownership diffs of the requested account address
-	AccountOwnershipsDiff []SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiff `json:"account_ownerships_diff,required"`
+	AccountOwnershipsDiff []SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiff `json:"account_ownerships_diff" api:"required"`
 	// Total USD diff for the requested account address
-	TotalUsdDiff SolanaMessageScanResponseResultSimulationAccountSummaryTotalUsdDiff `json:"total_usd_diff,required"`
+	TotalUsdDiff SolanaMessageScanResponseResultSimulationAccountSummaryTotalUsdDiff `json:"total_usd_diff" api:"required"`
 	// Assets diffs of the requested account address
 	AccountAssetsDiff []SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff `json:"account_assets_diff"`
 	// Total USD exposure for each of the spender addresses during the transaction
@@ -535,14 +535,14 @@ type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation st
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAsset],
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset],
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset].
-	Asset     interface{} `json:"asset,required"`
-	AssetType string      `json:"asset_type,required"`
-	Delegate  string      `json:"delegate,required"`
+	Asset     interface{} `json:"asset" api:"required"`
+	AssetType string      `json:"asset_type" api:"required"`
+	Delegate  string      `json:"delegate" api:"required"`
 	// This field can have the runtime type of
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation],
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation],
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation].
-	Delegation interface{}                                                                  `json:"delegation,required"`
+	Delegation interface{}                                                                  `json:"delegation" api:"required"`
 	JSON       solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationJSON `json:"-"`
 	union      SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsUnion
 }
@@ -613,10 +613,10 @@ func init() {
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegation struct {
-	Asset      SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAsset      `json:"asset,required"`
-	AssetType  string                                                                                                  `json:"asset_type,required"`
-	Delegate   string                                                                                                  `json:"delegate,required"`
-	Delegation SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation `json:"delegation,required"`
+	Asset      SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAsset      `json:"asset" api:"required"`
+	AssetType  string                                                                                                  `json:"asset_type" api:"required"`
+	Delegate   string                                                                                                  `json:"delegate" api:"required"`
+	Delegation SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation `json:"delegation" api:"required"`
 	JSON       solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationJSON       `json:"-"`
 }
 
@@ -645,14 +645,14 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol   string                                                                                                     `json:"symbol,required"`
+	Symbol   string                                                                                                     `json:"symbol" api:"required"`
 	Decimals SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                 `json:"logo,nullable"`
+	Logo string                                                                                                 `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationAssetJSON `json:"-"`
 }
@@ -709,13 +709,13 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegation struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                     `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                     `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaCnftDelegationDelegationJSON `json:"-"`
 }
 
@@ -740,10 +740,10 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegation struct {
-	Asset      SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset      `json:"asset,required"`
-	AssetType  string                                                                                                              `json:"asset_type,required"`
-	Delegate   string                                                                                                              `json:"delegate,required"`
-	Delegation SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation `json:"delegation,required"`
+	Asset      SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset      `json:"asset" api:"required"`
+	AssetType  string                                                                                                              `json:"asset_type" api:"required"`
+	Delegate   string                                                                                                              `json:"delegate" api:"required"`
+	Delegation SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation `json:"delegation" api:"required"`
 	JSON       solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationJSON       `json:"-"`
 }
 
@@ -772,15 +772,15 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URL of the asset's logo
-	Logo string                                                                                                             `json:"logo,nullable"`
+	Logo string                                                                                                             `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationAssetJSON `json:"-"`
 }
@@ -823,13 +823,13 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegation struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                 `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                 `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaFungibleSplTokenDelegationDelegationJSON `json:"-"`
 }
 
@@ -854,10 +854,10 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegation struct {
-	Asset      SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset      `json:"asset,required"`
-	AssetType  string                                                                                                                 `json:"asset_type,required"`
-	Delegate   string                                                                                                                 `json:"delegate,required"`
-	Delegation SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation `json:"delegation,required"`
+	Asset      SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset      `json:"asset" api:"required"`
+	AssetType  string                                                                                                                 `json:"asset_type" api:"required"`
+	Delegate   string                                                                                                                 `json:"delegate" api:"required"`
+	Delegation SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation `json:"delegation" api:"required"`
 	JSON       solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationJSON       `json:"-"`
 }
 
@@ -886,14 +886,14 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol   string                                                                                                                    `json:"symbol,required"`
+	Symbol   string                                                                                                                    `json:"symbol" api:"required"`
 	Decimals SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                                `json:"logo,nullable"`
+	Logo string                                                                                                                `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON `json:"-"`
 }
@@ -950,13 +950,13 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegation
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegation struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                    `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                    `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON `json:"-"`
 }
 
@@ -986,13 +986,13 @@ type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDif
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset],
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset],
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// The owner post the transaction
-	PostOwner string `json:"post_owner,required,nullable"`
+	PostOwner string `json:"post_owner" api:"required,nullable"`
 	// The owner prior to the transaction
-	PreOwner string `json:"pre_owner,required,nullable"`
+	PreOwner string `json:"pre_owner" api:"required,nullable"`
 	// This field can have the runtime type of
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn],
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn],
@@ -1083,17 +1083,17 @@ func init() {
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// The owner post the transaction
-	PostOwner string `json:"post_owner,required,nullable"`
+	PostOwner string `json:"post_owner" api:"required,nullable"`
 	// The owner prior to the transaction
-	PreOwner string `json:"pre_owner,required,nullable"`
+	PreOwner string `json:"pre_owner" api:"required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffJSON `json:"-"`
 }
 
@@ -1123,11 +1123,11 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAsset struct {
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// Type of the asset (`"NativeToken"`)
-	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetType `json:"type,required"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetType `json:"type" api:"required"`
 	// Logo of SOL
-	Logo string                                                                                                            `json:"logo,nullable"`
+	Logo string                                                                                                            `json:"logo" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffAssetJSON `json:"-"`
 }
 
@@ -1169,13 +1169,13 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                        `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                        `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffInJSON `json:"-"`
 }
 
@@ -1202,13 +1202,13 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                         `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                         `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNativeSolOwnershipDiffOutJSON `json:"-"`
 }
 
@@ -1233,17 +1233,17 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// The owner post the transaction
-	PostOwner string `json:"post_owner,required,nullable"`
+	PostOwner string `json:"post_owner" api:"required,nullable"`
 	// The owner prior to the transaction
-	PreOwner string `json:"pre_owner,required,nullable"`
+	PreOwner string `json:"pre_owner" api:"required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffJSON `json:"-"`
 }
 
@@ -1273,11 +1273,11 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAsset struct {
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// Type of the asset (`"StakedNative"`)
-	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetType `json:"type,required"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetType `json:"type" api:"required"`
 	// Logo of SOL
-	Logo string                                                                                                            `json:"logo,nullable"`
+	Logo string                                                                                                            `json:"logo" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffAssetJSON `json:"-"`
 }
 
@@ -1319,13 +1319,13 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                        `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                        `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffInJSON `json:"-"`
 }
 
@@ -1352,13 +1352,13 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                         `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                         `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaStakedSolOwnershipDiffOutJSON `json:"-"`
 }
 
@@ -1383,17 +1383,17 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// The owner post the transaction
-	PostOwner string `json:"post_owner,required,nullable"`
+	PostOwner string `json:"post_owner" api:"required,nullable"`
 	// The owner prior to the transaction
-	PreOwner string `json:"pre_owner,required,nullable"`
+	PreOwner string `json:"pre_owner" api:"required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffJSON `json:"-"`
 }
 
@@ -1424,15 +1424,15 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URL of the asset's logo
-	Logo string                                                                                                              `json:"logo,nullable"`
+	Logo string                                                                                                              `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffAssetJSON `json:"-"`
 }
@@ -1476,13 +1476,13 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                          `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                          `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffInJSON `json:"-"`
 }
 
@@ -1509,13 +1509,13 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                           `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                           `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaFungibleSolOwnershipDiffOutJSON `json:"-"`
 }
 
@@ -1540,17 +1540,17 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// The owner post the transaction
-	PostOwner string `json:"post_owner,required,nullable"`
+	PostOwner string `json:"post_owner" api:"required,nullable"`
 	// The owner prior to the transaction
-	PreOwner string `json:"pre_owner,required,nullable"`
+	PreOwner string `json:"pre_owner" api:"required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffJSON `json:"-"`
 }
 
@@ -1581,14 +1581,14 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol   string                                                                                                                     `json:"symbol,required"`
+	Symbol   string                                                                                                                     `json:"symbol" api:"required"`
 	Decimals SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                                 `json:"logo,nullable"`
+	Logo string                                                                                                                 `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffAssetJSON `json:"-"`
 }
@@ -1646,13 +1646,13 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                             `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                             `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffInJSON `json:"-"`
 }
 
@@ -1679,13 +1679,13 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                              `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                              `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnershipsDiffSolanaNonFungibleSolOwnershipDiffOutJSON `json:"-"`
 }
 
@@ -1712,9 +1712,9 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountOwnerships
 // Total USD diff for the requested account address
 type SolanaMessageScanResponseResultSimulationAccountSummaryTotalUsdDiff struct {
 	// Total incoming USD transfers
-	In float64 `json:"in,required"`
+	In float64 `json:"in" api:"required"`
 	// Total outgoing USD transfers
-	Out float64 `json:"out,required"`
+	Out float64 `json:"out" api:"required"`
 	// Total USD transfers
 	Total float64                                                                 `json:"total"`
 	JSON  solanaMessageScanResponseResultSimulationAccountSummaryTotalUsdDiffJSON `json:"-"`
@@ -1745,9 +1745,9 @@ type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff st
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset],
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset],
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// This field can have the runtime type of
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn],
 	// [SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn],
@@ -1836,13 +1836,13 @@ func init() {
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffJSON `json:"-"`
 }
 
@@ -1870,11 +1870,11 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAsset struct {
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// Type of the asset (`"NativeToken"`)
-	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetType `json:"type,required"`
+	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetType `json:"type" api:"required"`
 	// Logo of SOL
-	Logo string                                                                                                 `json:"logo,nullable"`
+	Logo string                                                                                                 `json:"logo" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffAssetJSON `json:"-"`
 }
 
@@ -1916,13 +1916,13 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                             `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                             `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffInJSON `json:"-"`
 }
 
@@ -1949,13 +1949,13 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                              `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                              `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaNativeAssetDiffOutJSON `json:"-"`
 }
 
@@ -1980,13 +1980,13 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffJSON `json:"-"`
 }
 
@@ -2015,15 +2015,15 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URL of the asset's logo
-	Logo string                                                                                                      `json:"logo,nullable"`
+	Logo string                                                                                                      `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffAssetJSON `json:"-"`
 }
@@ -2067,13 +2067,13 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                  `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                  `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffInJSON `json:"-"`
 }
 
@@ -2100,13 +2100,13 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                   `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                   `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplFungibleAssetDiffOutJSON `json:"-"`
 }
 
@@ -2131,13 +2131,13 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffJSON `json:"-"`
 }
 
@@ -2166,14 +2166,14 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol   string                                                                                                             `json:"symbol,required"`
+	Symbol   string                                                                                                             `json:"symbol" api:"required"`
 	Decimals SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                         `json:"logo,nullable"`
+	Logo string                                                                                                         `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON `json:"-"`
 }
@@ -2231,13 +2231,13 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                     `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                     `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffInJSON `json:"-"`
 }
 
@@ -2264,13 +2264,13 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                      `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                      `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON `json:"-"`
 }
 
@@ -2295,13 +2295,13 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 }
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffJSON `json:"-"`
 }
 
@@ -2330,14 +2330,14 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol   string                                                                                                   `json:"symbol,required"`
+	Symbol   string                                                                                                   `json:"symbol" api:"required"`
 	Decimals SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                               `json:"logo,nullable"`
+	Logo string                                                                                               `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffAssetJSON `json:"-"`
 }
@@ -2395,13 +2395,13 @@ func (r SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                           `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                           `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffInJSON `json:"-"`
 }
 
@@ -2428,13 +2428,13 @@ func (r solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiff
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                            `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                            `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAccountSummaryAccountAssetsDiffSolanaCnftAssetDiffOutJSON `json:"-"`
 }
 
@@ -2464,13 +2464,13 @@ type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiff struct {
 	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset],
 	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset],
 	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// The owner post the transaction
-	PostOwner string `json:"post_owner,required,nullable"`
+	PostOwner string `json:"post_owner" api:"required,nullable"`
 	// The owner prior to the transaction
-	PreOwner string `json:"pre_owner,required,nullable"`
+	PreOwner string `json:"pre_owner" api:"required,nullable"`
 	// This field can have the runtime type of
 	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn],
 	// [SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn],
@@ -2561,17 +2561,17 @@ func init() {
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// The owner post the transaction
-	PostOwner string `json:"post_owner,required,nullable"`
+	PostOwner string `json:"post_owner" api:"required,nullable"`
 	// The owner prior to the transaction
-	PreOwner string `json:"pre_owner,required,nullable"`
+	PreOwner string `json:"pre_owner" api:"required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffJSON `json:"-"`
 }
 
@@ -2601,11 +2601,11 @@ func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNative
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAsset struct {
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// Type of the asset (`"NativeToken"`)
-	Type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetType `json:"type,required"`
+	Type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetType `json:"type" api:"required"`
 	// Logo of SOL
-	Logo string                                                                                            `json:"logo,nullable"`
+	Logo string                                                                                            `json:"logo" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffAssetJSON `json:"-"`
 }
 
@@ -2647,13 +2647,13 @@ func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNative
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                        `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                        `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffInJSON `json:"-"`
 }
 
@@ -2680,13 +2680,13 @@ func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNative
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                         `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                         `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNativeSolOwnershipDiffOutJSON `json:"-"`
 }
 
@@ -2711,17 +2711,17 @@ func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNative
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// The owner post the transaction
-	PostOwner string `json:"post_owner,required,nullable"`
+	PostOwner string `json:"post_owner" api:"required,nullable"`
 	// The owner prior to the transaction
-	PreOwner string `json:"pre_owner,required,nullable"`
+	PreOwner string `json:"pre_owner" api:"required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffJSON `json:"-"`
 }
 
@@ -2751,11 +2751,11 @@ func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStaked
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAsset struct {
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// Type of the asset (`"StakedNative"`)
-	Type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetType `json:"type,required"`
+	Type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetType `json:"type" api:"required"`
 	// Logo of SOL
-	Logo string                                                                                            `json:"logo,nullable"`
+	Logo string                                                                                            `json:"logo" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffAssetJSON `json:"-"`
 }
 
@@ -2797,13 +2797,13 @@ func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStaked
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                        `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                        `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffInJSON `json:"-"`
 }
 
@@ -2830,13 +2830,13 @@ func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStaked
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                         `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                         `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStakedSolOwnershipDiffOutJSON `json:"-"`
 }
 
@@ -2861,17 +2861,17 @@ func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaStaked
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// The owner post the transaction
-	PostOwner string `json:"post_owner,required,nullable"`
+	PostOwner string `json:"post_owner" api:"required,nullable"`
 	// The owner prior to the transaction
-	PreOwner string `json:"pre_owner,required,nullable"`
+	PreOwner string `json:"pre_owner" api:"required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffJSON `json:"-"`
 }
 
@@ -2902,15 +2902,15 @@ func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungib
 
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URL of the asset's logo
-	Logo string                                                                                              `json:"logo,nullable"`
+	Logo string                                                                                              `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffAssetJSON `json:"-"`
 }
@@ -2954,13 +2954,13 @@ func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungib
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                          `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                          `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffInJSON `json:"-"`
 }
 
@@ -2987,13 +2987,13 @@ func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungib
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                           `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                           `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungibleSolOwnershipDiffOutJSON `json:"-"`
 }
 
@@ -3018,17 +3018,17 @@ func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaFungib
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// The owner post the transaction
-	PostOwner string `json:"post_owner,required,nullable"`
+	PostOwner string `json:"post_owner" api:"required,nullable"`
 	// The owner prior to the transaction
-	PreOwner string `json:"pre_owner,required,nullable"`
+	PreOwner string `json:"pre_owner" api:"required,nullable"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffJSON `json:"-"`
 }
 
@@ -3059,14 +3059,14 @@ func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFun
 
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol   string                                                                                                     `json:"symbol,required"`
+	Symbol   string                                                                                                     `json:"symbol" api:"required"`
 	Decimals SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                                 `json:"logo,nullable"`
+	Logo string                                                                                                 `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffAssetJSON `json:"-"`
 }
@@ -3124,13 +3124,13 @@ func (r SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFun
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                             `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                             `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffInJSON `json:"-"`
 }
 
@@ -3157,13 +3157,13 @@ func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFun
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                              `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                              `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFungibleSolOwnershipDiffOutJSON `json:"-"`
 }
 
@@ -3189,12 +3189,12 @@ func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFun
 
 type SolanaMessageScanResponseResultSimulationAccountsDetail struct {
 	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
-	WasWrittenTo   bool   `json:"was_written_to,required"`
+	AccountAddress string `json:"account_address" api:"required"`
+	WasWrittenTo   bool   `json:"was_written_to" api:"required"`
 	// Description of the account
-	Description string `json:"description,nullable"`
+	Description string `json:"description" api:"nullable"`
 	// Logo of the mint
-	Logo string `json:"logo,nullable"`
+	Logo string `json:"logo" api:"nullable"`
 	// Encoded public key of the mint
 	MintAddress string `json:"mint_address"`
 	// Name of the mint
@@ -3310,12 +3310,12 @@ func init() {
 
 type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchema struct {
 	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
+	AccountAddress string `json:"account_address" api:"required"`
 	// The address of the owning program
-	Owner        string `json:"owner,required"`
-	WasWrittenTo bool   `json:"was_written_to,required"`
+	Owner        string `json:"owner" api:"required"`
+	WasWrittenTo bool   `json:"was_written_to" api:"required"`
 	// Description of the account
-	Description string                                                                             `json:"description,nullable"`
+	Description string                                                                             `json:"description" api:"nullable"`
 	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchemaType `json:"type"`
 	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchemaJSON `json:"-"`
 }
@@ -3360,10 +3360,10 @@ func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccount
 
 type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchema struct {
 	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
-	WasWrittenTo   bool   `json:"was_written_to,required"`
+	AccountAddress string `json:"account_address" api:"required"`
+	WasWrittenTo   bool   `json:"was_written_to" api:"required"`
 	// Description of the account
-	Description string                                                                                       `json:"description,nullable"`
+	Description string                                                                                       `json:"description" api:"nullable"`
 	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchemaType `json:"type"`
 	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchemaJSON `json:"-"`
 }
@@ -3407,10 +3407,10 @@ func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAcco
 
 type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchema struct {
 	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
-	WasWrittenTo   bool   `json:"was_written_to,required"`
+	AccountAddress string `json:"account_address" api:"required"`
+	WasWrittenTo   bool   `json:"was_written_to" api:"required"`
 	// Description of the account
-	Description string                                                                                        `json:"description,nullable"`
+	Description string                                                                                        `json:"description" api:"nullable"`
 	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaType `json:"type"`
 	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaJSON `json:"-"`
 }
@@ -3455,14 +3455,14 @@ func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAcc
 
 type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchema struct {
 	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
+	AccountAddress string `json:"account_address" api:"required"`
 	// Encoded public key of the mint
-	MintAddress string `json:"mint_address,required"`
+	MintAddress string `json:"mint_address" api:"required"`
 	// Encoded public key of the owner
-	OwnerAddress string `json:"owner_address,required"`
-	WasWrittenTo bool   `json:"was_written_to,required"`
+	OwnerAddress string `json:"owner_address" api:"required"`
+	WasWrittenTo bool   `json:"was_written_to" api:"required"`
 	// Description of the account
-	Description string                                                                                      `json:"description,nullable"`
+	Description string                                                                                      `json:"description" api:"nullable"`
 	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaType `json:"type"`
 	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountDetailsSchemaJSON `json:"-"`
 }
@@ -3508,16 +3508,16 @@ func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccou
 
 type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchema struct {
 	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
+	AccountAddress string `json:"account_address" api:"required"`
 	// Logo of the mint
-	Logo string `json:"logo,required,nullable"`
+	Logo string `json:"logo" api:"required,nullable"`
 	// Name of the mint
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// Symbol of the mint
-	Symbol       string `json:"symbol,required"`
-	WasWrittenTo bool   `json:"was_written_to,required"`
+	Symbol       string `json:"symbol" api:"required"`
+	WasWrittenTo bool   `json:"was_written_to" api:"required"`
 	// Description of the account
-	Description string                                                                                             `json:"description,nullable"`
+	Description string                                                                                             `json:"description" api:"nullable"`
 	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaType `json:"type"`
 	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintAccountDetailsSchemaJSON `json:"-"`
 }
@@ -3564,18 +3564,18 @@ func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMi
 
 type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchema struct {
 	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
+	AccountAddress string `json:"account_address" api:"required"`
 	// Logo of the mint
-	Logo string `json:"logo,required,nullable"`
+	Logo string `json:"logo" api:"required,nullable"`
 	// Name of the mint
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// Symbol of the mint
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URI of the mint
-	Uri          string `json:"uri,required"`
-	WasWrittenTo bool   `json:"was_written_to,required"`
+	Uri          string `json:"uri" api:"required"`
+	WasWrittenTo bool   `json:"was_written_to" api:"required"`
 	// Description of the account
-	Description string                                                                                                `json:"description,nullable"`
+	Description string                                                                                                `json:"description" api:"nullable"`
 	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaType `json:"type"`
 	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMintAccountDetailsSchemaJSON `json:"-"`
 }
@@ -3623,18 +3623,18 @@ func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibl
 
 type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchema struct {
 	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
+	AccountAddress string `json:"account_address" api:"required"`
 	// Logo of the mint
-	Logo string `json:"logo,required,nullable"`
+	Logo string `json:"logo" api:"required,nullable"`
 	// Name of the mint
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// Symbol of the mint
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URI of the mint
-	Uri          string `json:"uri,required"`
-	WasWrittenTo bool   `json:"was_written_to,required"`
+	Uri          string `json:"uri" api:"required"`
+	WasWrittenTo bool   `json:"was_written_to" api:"required"`
 	// Description of the account
-	Description string                                                                                         `json:"description,nullable"`
+	Description string                                                                                         `json:"description" api:"nullable"`
 	Type        SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchemaType `json:"type"`
 	JSON        solanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccountDetailsSchemaJSON `json:"-"`
 }
@@ -3707,9 +3707,9 @@ type SolanaMessageScanResponseResultSimulationAssetsDiff struct {
 	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAsset],
 	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAsset],
 	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAsset].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// This field can have the runtime type of
 	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffIn],
 	// [SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffIn],
@@ -3795,13 +3795,13 @@ func init() {
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffJSON `json:"-"`
 }
 
@@ -3829,11 +3829,11 @@ func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiff
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAsset struct {
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// Type of the asset (`"NativeToken"`)
-	Type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetType `json:"type,required"`
+	Type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetType `json:"type" api:"required"`
 	// Logo of SOL
-	Logo string                                                                            `json:"logo,nullable"`
+	Logo string                                                                            `json:"logo" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffAssetJSON `json:"-"`
 }
 
@@ -3875,13 +3875,13 @@ func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiff
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                        `json:"usd_price,nullable"`
+	UsdPrice float64                                                                        `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffInJSON `json:"-"`
 }
 
@@ -3908,13 +3908,13 @@ func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiff
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                         `json:"usd_price,nullable"`
+	UsdPrice float64                                                                         `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiffOutJSON `json:"-"`
 }
 
@@ -3939,13 +3939,13 @@ func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaNativeAssetDiff
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffJSON `json:"-"`
 }
 
@@ -3974,15 +3974,15 @@ func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAsse
 
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URL of the asset's logo
-	Logo string                                                                                 `json:"logo,nullable"`
+	Logo string                                                                                 `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffAssetJSON `json:"-"`
 }
@@ -4026,13 +4026,13 @@ func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAsse
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                             `json:"usd_price,nullable"`
+	UsdPrice float64                                                                             `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffInJSON `json:"-"`
 }
 
@@ -4059,13 +4059,13 @@ func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAsse
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                              `json:"usd_price,nullable"`
+	UsdPrice float64                                                                              `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAssetDiffOutJSON `json:"-"`
 }
 
@@ -4090,13 +4090,13 @@ func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplFungibleAsse
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffJSON `json:"-"`
 }
 
@@ -4125,14 +4125,14 @@ func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleA
 
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol   string                                                                                        `json:"symbol,required"`
+	Symbol   string                                                                                        `json:"symbol" api:"required"`
 	Decimals SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                    `json:"logo,nullable"`
+	Logo string                                                                                    `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffAssetJSON `json:"-"`
 }
@@ -4190,13 +4190,13 @@ func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleA
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffInJSON `json:"-"`
 }
 
@@ -4223,13 +4223,13 @@ func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleA
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                 `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                 `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleAssetDiffOutJSON `json:"-"`
 }
 
@@ -4254,13 +4254,13 @@ func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaSplNonFungibleA
 }
 
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiff struct {
-	Asset SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAsset `json:"asset,required"`
+	Asset SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffIn `json:"in,nullable"`
+	In SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffOut  `json:"out,nullable"`
+	Out  SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffOut  `json:"out" api:"nullable"`
 	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffJSON `json:"-"`
 }
 
@@ -4289,14 +4289,14 @@ func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiff) 
 
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol   string                                                                              `json:"symbol,required"`
+	Symbol   string                                                                              `json:"symbol" api:"required"`
 	Decimals SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                          `json:"logo,nullable"`
+	Logo string                                                                          `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAssetJSON `json:"-"`
 }
@@ -4354,13 +4354,13 @@ func (r SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffAs
 // Details of the incoming transfer
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                      `json:"usd_price,nullable"`
+	UsdPrice float64                                                                      `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffInJSON `json:"-"`
 }
 
@@ -4387,13 +4387,13 @@ func (r solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffIn
 // Details of the outgoing transfer
 type SolanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                       `json:"usd_price,nullable"`
+	UsdPrice float64                                                                       `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationAssetsDiffSolanaCnftAssetDiffOutJSON `json:"-"`
 }
 
@@ -4422,14 +4422,14 @@ type SolanaMessageScanResponseResultSimulationDelegation struct {
 	// [SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAsset],
 	// [SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAsset],
 	// [SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAsset].
-	Asset     interface{} `json:"asset,required"`
-	AssetType string      `json:"asset_type,required"`
-	Delegate  string      `json:"delegate,required"`
+	Asset     interface{} `json:"asset" api:"required"`
+	AssetType string      `json:"asset_type" api:"required"`
+	Delegate  string      `json:"delegate" api:"required"`
 	// This field can have the runtime type of
 	// [SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegation],
 	// [SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegation],
 	// [SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegation].
-	Delegation interface{}                                             `json:"delegation,required"`
+	Delegation interface{}                                             `json:"delegation" api:"required"`
 	JSON       solanaMessageScanResponseResultSimulationDelegationJSON `json:"-"`
 	union      SolanaMessageScanResponseResultSimulationDelegationsUnion
 }
@@ -4498,10 +4498,10 @@ func init() {
 }
 
 type SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegation struct {
-	Asset      SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAsset      `json:"asset,required"`
-	AssetType  string                                                                             `json:"asset_type,required"`
-	Delegate   string                                                                             `json:"delegate,required"`
-	Delegation SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegation `json:"delegation,required"`
+	Asset      SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAsset      `json:"asset" api:"required"`
+	AssetType  string                                                                             `json:"asset_type" api:"required"`
+	Delegate   string                                                                             `json:"delegate" api:"required"`
+	Delegation SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegation `json:"delegation" api:"required"`
 	JSON       solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationJSON       `json:"-"`
 }
 
@@ -4530,14 +4530,14 @@ func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegation
 
 type SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol   string                                                                                `json:"symbol,required"`
+	Symbol   string                                                                                `json:"symbol" api:"required"`
 	Decimals SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                            `json:"logo,nullable"`
+	Logo string                                                                            `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationAssetJSON `json:"-"`
 }
@@ -4594,13 +4594,13 @@ func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegation
 
 type SolanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegation struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegationDelegationJSON `json:"-"`
 }
 
@@ -4625,10 +4625,10 @@ func (r solanaMessageScanResponseResultSimulationDelegationsSolanaCnftDelegation
 }
 
 type SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegation struct {
-	Asset      SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAsset      `json:"asset,required"`
-	AssetType  string                                                                                         `json:"asset_type,required"`
-	Delegate   string                                                                                         `json:"delegate,required"`
-	Delegation SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegation `json:"delegation,required"`
+	Asset      SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAsset      `json:"asset" api:"required"`
+	AssetType  string                                                                                         `json:"asset_type" api:"required"`
+	Delegate   string                                                                                         `json:"delegate" api:"required"`
+	Delegation SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegation `json:"delegation" api:"required"`
 	JSON       solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationJSON       `json:"-"`
 }
 
@@ -4657,15 +4657,15 @@ func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTok
 
 type SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URL of the asset's logo
-	Logo string                                                                                        `json:"logo,nullable"`
+	Logo string                                                                                        `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationAssetJSON `json:"-"`
 }
@@ -4708,13 +4708,13 @@ func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTok
 
 type SolanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegation struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                            `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                            `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTokenDelegationDelegationJSON `json:"-"`
 }
 
@@ -4739,10 +4739,10 @@ func (r solanaMessageScanResponseResultSimulationDelegationsSolanaFungibleSplTok
 }
 
 type SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegation struct {
-	Asset      SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAsset      `json:"asset,required"`
-	AssetType  string                                                                                            `json:"asset_type,required"`
-	Delegate   string                                                                                            `json:"delegate,required"`
-	Delegation SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegation `json:"delegation,required"`
+	Asset      SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAsset      `json:"asset" api:"required"`
+	AssetType  string                                                                                            `json:"asset_type" api:"required"`
+	Delegate   string                                                                                            `json:"delegate" api:"required"`
+	Delegation SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegation `json:"delegation" api:"required"`
 	JSON       solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationJSON       `json:"-"`
 }
 
@@ -4771,14 +4771,14 @@ func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSpl
 
 type SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAsset struct {
 	// Address of the token's contract
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// token's name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// token's symbol
-	Symbol   string                                                                                               `json:"symbol,required"`
+	Symbol   string                                                                                               `json:"symbol" api:"required"`
 	Decimals SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetDecimals `json:"decimals"`
 	// URL of the asset's logo
-	Logo string                                                                                           `json:"logo,nullable"`
+	Logo string                                                                                           `json:"logo" api:"nullable"`
 	Type SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetType `json:"type"`
 	JSON solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationAssetJSON `json:"-"`
 }
@@ -4835,13 +4835,13 @@ func (r SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSpl
 
 type SolanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegation struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value float64 `json:"value,required"`
+	Value float64 `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                               `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                               `json:"usd_price" api:"nullable"`
 	JSON     solanaMessageScanResponseResultSimulationDelegationsSolanaNonFungibleSplTokenDelegationDelegationJSON `json:"-"`
 }
 
@@ -4892,14 +4892,14 @@ func (r SolanaMessageScanResponseResultSimulationTransactionActions) IsKnown() b
 type SolanaMessageScanResponseResultValidation struct {
 	// A list of features explaining what is happening in the transaction in different
 	// levels of severity
-	ExtendedFeatures []SolanaMessageScanResponseResultValidationExtendedFeature `json:"extended_features,required"`
+	ExtendedFeatures []SolanaMessageScanResponseResultValidationExtendedFeature `json:"extended_features" api:"required"`
 	// A list of features about this transaction explaining the validation
-	Features []string `json:"features,required"`
+	Features []string `json:"features" api:"required"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
-	Reason string `json:"reason,required"`
+	Reason string `json:"reason" api:"required"`
 	// Verdict of the validation
-	ResultType SolanaMessageScanResponseResultValidationResultType `json:"result_type,required"`
+	ResultType SolanaMessageScanResponseResultValidationResultType `json:"result_type" api:"required"`
 	JSON       solanaMessageScanResponseResultValidationJSON       `json:"-"`
 }
 
@@ -4924,12 +4924,12 @@ func (r solanaMessageScanResponseResultValidationJSON) RawJSON() string {
 
 type SolanaMessageScanResponseResultValidationExtendedFeature struct {
 	// Address the feature refers to
-	Address string `json:"address,required,nullable"`
+	Address string `json:"address" api:"required,nullable"`
 	// Textual description
-	Description string `json:"description,required"`
-	FeatureID   string `json:"feature_id,required"`
+	Description string `json:"description" api:"required"`
+	FeatureID   string `json:"feature_id" api:"required"`
 	// Feature Classification
-	Type SolanaMessageScanResponseResultValidationExtendedFeaturesType `json:"type,required"`
+	Type SolanaMessageScanResponseResultValidationExtendedFeaturesType `json:"type" api:"required"`
 	JSON solanaMessageScanResponseResultValidationExtendedFeatureJSON  `json:"-"`
 }
 
@@ -4990,10 +4990,10 @@ func (r SolanaMessageScanResponseResultValidationResultType) IsKnown() bool {
 }
 
 type SolanaMessageScanParams struct {
-	AccountAddress param.Field[string]                          `json:"account_address,required"`
-	Metadata       param.Field[SolanaMessageScanParamsMetadata] `json:"metadata,required"`
+	AccountAddress param.Field[string]                          `json:"account_address" api:"required"`
+	Metadata       param.Field[SolanaMessageScanParamsMetadata] `json:"metadata" api:"required"`
 	// Transactions to scan
-	Transactions param.Field[[]string]                        `json:"transactions,required"`
+	Transactions param.Field[[]string]                        `json:"transactions" api:"required"`
 	Chain        param.Field[SolanaMessageScanParamsChain]    `json:"chain"`
 	Encoding     param.Field[SolanaMessageScanParamsEncoding] `json:"encoding"`
 	// The RPC method used by the dApp to propose the transaction

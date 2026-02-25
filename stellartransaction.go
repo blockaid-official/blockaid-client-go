@@ -51,9 +51,9 @@ func (r *StellarTransactionService) Scan(ctx context.Context, body StellarTransa
 }
 
 type StellarTransactionReportParams struct {
-	Details param.Field[string]                                    `json:"details,required"`
-	Event   param.Field[StellarTransactionReportParamsEvent]       `json:"event,required"`
-	Report  param.Field[StellarTransactionReportParamsReportUnion] `json:"report,required"`
+	Details param.Field[string]                                    `json:"details" api:"required"`
+	Event   param.Field[StellarTransactionReportParamsEvent]       `json:"event" api:"required"`
+	Report  param.Field[StellarTransactionReportParamsReportUnion] `json:"report" api:"required"`
 }
 
 func (r StellarTransactionReportParams) MarshalJSON() (data []byte, err error) {
@@ -96,7 +96,7 @@ type StellarTransactionReportParamsReportUnion interface {
 }
 
 type StellarTransactionReportParamsReportStellarAppealRequestID struct {
-	ID   param.Field[string]                                                         `json:"id,required"`
+	ID   param.Field[string]                                                         `json:"id" api:"required"`
 	Type param.Field[StellarTransactionReportParamsReportStellarAppealRequestIDType] `json:"type"`
 }
 
@@ -122,7 +122,7 @@ func (r StellarTransactionReportParamsReportStellarAppealRequestIDType) IsKnown(
 }
 
 type StellarTransactionReportParamsReportStellarAppealTransactionDataReport struct {
-	Params param.Field[StellarTransactionScanRequestParam]                                         `json:"params,required"`
+	Params param.Field[StellarTransactionScanRequestParam]                                         `json:"params" api:"required"`
 	Type   param.Field[StellarTransactionReportParamsReportStellarAppealTransactionDataReportType] `json:"type"`
 }
 
@@ -163,7 +163,7 @@ func (r StellarTransactionReportParamsReportType) IsKnown() bool {
 }
 
 type StellarTransactionScanParams struct {
-	StellarTransactionScanRequest StellarTransactionScanRequestParam `json:"StellarTransactionScanRequest,required"`
+	StellarTransactionScanRequest StellarTransactionScanRequestParam `json:"StellarTransactionScanRequest" api:"required"`
 }
 
 func (r StellarTransactionScanParams) MarshalJSON() (data []byte, err error) {

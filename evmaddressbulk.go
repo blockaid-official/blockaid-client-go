@@ -69,7 +69,7 @@ func (r EvmAddressBulkScanResponseItem) IsKnown() bool {
 }
 
 type EvmAddressBulkScanParams struct {
-	ValidateBulkAddresses ValidateBulkAddressesParam `json:"ValidateBulkAddresses,required"`
+	ValidateBulkAddresses ValidateBulkAddressesParam `json:"ValidateBulkAddresses" api:"required"`
 }
 
 func (r EvmAddressBulkScanParams) MarshalJSON() (data []byte, err error) {
@@ -77,7 +77,7 @@ func (r EvmAddressBulkScanParams) MarshalJSON() (data []byte, err error) {
 }
 
 type EvmAddressBulkScanExtendedParams struct {
-	ValidateBulkExtendedAddressesRequest ValidateBulkExtendedAddressesRequestParam `json:"ValidateBulkExtendedAddressesRequest,required"`
+	ValidateBulkExtendedAddressesRequest ValidateBulkExtendedAddressesRequestParam `json:"ValidateBulkExtendedAddressesRequest" api:"required"`
 }
 
 func (r EvmAddressBulkScanExtendedParams) MarshalJSON() (data []byte, err error) {

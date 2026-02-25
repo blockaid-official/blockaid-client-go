@@ -46,7 +46,7 @@ func (r *ChainAgnosticTransactionService) Scan(ctx context.Context, body ChainAg
 
 type ChainAgnosticTransactionScanResponse struct {
 	// Complete validation result containing all scan details and findings
-	Validation ChainAgnosticTransactionScanResponseValidation `json:"validation,required"`
+	Validation ChainAgnosticTransactionScanResponseValidation `json:"validation" api:"required"`
 	JSON       chainAgnosticTransactionScanResponseJSON       `json:"-"`
 }
 
@@ -69,13 +69,13 @@ func (r chainAgnosticTransactionScanResponseJSON) RawJSON() string {
 // Complete validation result containing all scan details and findings
 type ChainAgnosticTransactionScanResponseValidation struct {
 	// Classification of the scan result based on the detected features
-	Classification string `json:"classification,required"`
+	Classification string `json:"classification" api:"required"`
 	// Detailed description of the validation result
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// The type of validation result.
-	ResultType ChainAgnosticTransactionScanResponseValidationResultType `json:"result_type,required"`
+	ResultType ChainAgnosticTransactionScanResponseValidationResultType `json:"result_type" api:"required"`
 	// The status of the transaction scan
-	Status ChainAgnosticTransactionScanResponseValidationStatus `json:"status,required"`
+	Status ChainAgnosticTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// List of features detected during the scan
 	Features []ChainAgnosticTransactionScanResponseValidationFeature `json:"features"`
 	JSON     chainAgnosticTransactionScanResponseValidationJSON      `json:"-"`
@@ -137,11 +137,11 @@ func (r ChainAgnosticTransactionScanResponseValidationStatus) IsKnown() bool {
 
 type ChainAgnosticTransactionScanResponseValidationFeature struct {
 	// Detailed description of the detected feature
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// Unique identifier for the detected feature
-	FeatureID string `json:"feature_id,required"`
+	FeatureID string `json:"feature_id" api:"required"`
 	// The type of feature detected in the scan.
-	Type ChainAgnosticTransactionScanResponseValidationFeaturesType `json:"type,required"`
+	Type ChainAgnosticTransactionScanResponseValidationFeaturesType `json:"type" api:"required"`
 	// The blockchain address where the feature was detected
 	Address string `json:"address"`
 	// This field can have the runtime type of [[]string].
@@ -221,15 +221,15 @@ func init() {
 
 type ChainAgnosticTransactionScanResponseValidationFeaturesAddressFeature struct {
 	// The blockchain address where the feature was detected
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// List of URLs associated with this address
-	AssociatedURLs []string `json:"associated_urls,required"`
+	AssociatedURLs []string `json:"associated_urls" api:"required"`
 	// Detailed description of the detected feature
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// Unique identifier for the detected feature
-	FeatureID string `json:"feature_id,required"`
+	FeatureID string `json:"feature_id" api:"required"`
 	// The type of feature detected in the scan.
-	Type ChainAgnosticTransactionScanResponseValidationFeaturesAddressFeatureType `json:"type,required"`
+	Type ChainAgnosticTransactionScanResponseValidationFeaturesAddressFeatureType `json:"type" api:"required"`
 	// Type of entity associated with the feature
 	Entity ChainAgnosticTransactionScanResponseValidationFeaturesAddressFeatureEntity `json:"entity"`
 	JSON   chainAgnosticTransactionScanResponseValidationFeaturesAddressFeatureJSON   `json:"-"`
@@ -296,13 +296,13 @@ func (r ChainAgnosticTransactionScanResponseValidationFeaturesAddressFeatureEnti
 
 type ChainAgnosticTransactionScanResponseValidationFeaturesURLFeature struct {
 	// Detailed description of the detected feature
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// Unique identifier for the detected feature
-	FeatureID string `json:"feature_id,required"`
+	FeatureID string `json:"feature_id" api:"required"`
 	// The type of feature detected in the scan.
-	Type ChainAgnosticTransactionScanResponseValidationFeaturesURLFeatureType `json:"type,required"`
+	Type ChainAgnosticTransactionScanResponseValidationFeaturesURLFeatureType `json:"type" api:"required"`
 	// The URL where the feature was detected
-	URL string `json:"url,required"`
+	URL string `json:"url" api:"required"`
 	// Type of entity associated with the feature
 	Entity ChainAgnosticTransactionScanResponseValidationFeaturesURLFeatureEntity `json:"entity"`
 	JSON   chainAgnosticTransactionScanResponseValidationFeaturesURLFeatureJSON   `json:"-"`
@@ -368,11 +368,11 @@ func (r ChainAgnosticTransactionScanResponseValidationFeaturesURLFeatureEntity) 
 
 type ChainAgnosticTransactionScanResponseValidationFeaturesTransactionFeature struct {
 	// Detailed description of the detected feature
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// Unique identifier for the detected feature
-	FeatureID string `json:"feature_id,required"`
+	FeatureID string `json:"feature_id" api:"required"`
 	// The type of feature detected in the scan.
-	Type ChainAgnosticTransactionScanResponseValidationFeaturesTransactionFeatureType `json:"type,required"`
+	Type ChainAgnosticTransactionScanResponseValidationFeaturesTransactionFeatureType `json:"type" api:"required"`
 	// Type of entity associated with the feature
 	Entity ChainAgnosticTransactionScanResponseValidationFeaturesTransactionFeatureEntity `json:"entity"`
 	JSON   chainAgnosticTransactionScanResponseValidationFeaturesTransactionFeatureJSON   `json:"-"`
@@ -473,12 +473,12 @@ func (r ChainAgnosticTransactionScanResponseValidationFeaturesEntity) IsKnown() 
 
 type ChainAgnosticTransactionScanParams struct {
 	// Transaction data
-	Data param.Field[ChainAgnosticTransactionScanParamsData] `json:"data,required"`
+	Data param.Field[ChainAgnosticTransactionScanParamsData] `json:"data" api:"required"`
 	// Additional metadata about the request including account and connection
 	// information
-	Metadata param.Field[MetadataParam] `json:"metadata,required"`
+	Metadata param.Field[MetadataParam] `json:"metadata" api:"required"`
 	// List of options to apply during the transaction scan
-	Options param.Field[[]ChainAgnosticTransactionScanParamsOption] `json:"options,required"`
+	Options param.Field[[]ChainAgnosticTransactionScanParamsOption] `json:"options" api:"required"`
 }
 
 func (r ChainAgnosticTransactionScanParams) MarshalJSON() (data []byte, err error) {
@@ -488,13 +488,13 @@ func (r ChainAgnosticTransactionScanParams) MarshalJSON() (data []byte, err erro
 // Transaction data
 type ChainAgnosticTransactionScanParamsData struct {
 	// Amount of the transaction in the specified asset
-	Amount param.Field[float64] `json:"amount,required"`
+	Amount param.Field[float64] `json:"amount" api:"required"`
 	// Asset information
-	Asset param.Field[ChainAgnosticTransactionScanParamsDataAssetUnion] `json:"asset,required"`
+	Asset param.Field[ChainAgnosticTransactionScanParamsDataAssetUnion] `json:"asset" api:"required"`
 	// The chain name
-	Chain param.Field[ChainAgnosticTransactionScanParamsDataChain] `json:"chain,required"`
+	Chain param.Field[ChainAgnosticTransactionScanParamsDataChain] `json:"chain" api:"required"`
 	// Destination address or identifier for the transaction
-	To param.Field[string] `json:"to,required"`
+	To param.Field[string] `json:"to" api:"required"`
 	// Source address or identifier for the transaction
 	From param.Field[string] `json:"from"`
 	// Action the transaction is making
@@ -531,7 +531,7 @@ type ChainAgnosticTransactionScanParamsDataAssetUnion interface {
 
 type ChainAgnosticTransactionScanParamsDataAssetAssetAddress struct {
 	// The address of the asset
-	Address param.Field[string] `json:"address,required"`
+	Address param.Field[string] `json:"address" api:"required"`
 }
 
 func (r ChainAgnosticTransactionScanParamsDataAssetAssetAddress) MarshalJSON() (data []byte, err error) {
@@ -543,7 +543,7 @@ func (r ChainAgnosticTransactionScanParamsDataAssetAssetAddress) implementsChain
 
 type ChainAgnosticTransactionScanParamsDataAssetAssetSymbol struct {
 	// The symbol of the asset
-	Symbol param.Field[string] `json:"symbol,required"`
+	Symbol param.Field[string] `json:"symbol" api:"required"`
 }
 
 func (r ChainAgnosticTransactionScanParamsDataAssetAssetSymbol) MarshalJSON() (data []byte, err error) {
