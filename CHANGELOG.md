@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.71.0 (2026-03-02)
+
+Full Changelog: [v0.70.0...v0.71.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.70.0...v0.71.0)
+
+### Features
+
+* **api:** api update ([3a2f600](https://github.com/blockaid-official/blockaid-client-go/commit/3a2f600cf1e6a974d7d561e7367e30d6c32a494e))
+* **api:** api update ([fd0b931](https://github.com/blockaid-official/blockaid-client-go/commit/fd0b9315e1c02430f0365feb3ce43f22b0669fbd))
+* **api:** api update ([f995bb7](https://github.com/blockaid-official/blockaid-client-go/commit/f995bb70dc6c8068ddbd5af048879c9c02c64e4a))
+* **api:** api update ([7148727](https://github.com/blockaid-official/blockaid-client-go/commit/7148727352da3d614b912987271a19e34bf2d5ab))
+* **api:** api update ([8d997d0](https://github.com/blockaid-official/blockaid-client-go/commit/8d997d03e74f1209b2c181cf749857c698c748b5))
+* **api:** api update ([ddcb7c6](https://github.com/blockaid-official/blockaid-client-go/commit/ddcb7c6f853336ba88bc55890479fab3c40c269b))
+* **api:** api update ([5d05320](https://github.com/blockaid-official/blockaid-client-go/commit/5d05320cb76c9c8fceae699d9262d3d8dd396588))
+* **api:** api update ([fcb59aa](https://github.com/blockaid-official/blockaid-client-go/commit/fcb59aa0436d8af75ccd8b5ac500f69bbcc00dae))
+
+
+### Bug Fixes
+
+* allow canceling a request while it is waiting to retry ([b068f3c](https://github.com/blockaid-official/blockaid-client-go/commit/b068f3c4147d95e4ea1fcef08fffe292b2e1b1fe))
+
+
+### Chores
+
+* **internal:** move custom custom `json` tags to `api` ([320d064](https://github.com/blockaid-official/blockaid-client-go/commit/320d064cf6841bd91ed74e176220064f69d7980a))
+* update mock server docs ([0339a96](https://github.com/blockaid-official/blockaid-client-go/commit/0339a962aa6967b5d6820b973f3b9c067a1ef0ea))
+
 ## 0.70.0 (2026-02-15)
 
 Full Changelog: [v0.69.0...v0.70.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.69.0...v0.70.0)
