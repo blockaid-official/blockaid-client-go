@@ -70,12 +70,12 @@ func (r *TokenSnapshotService) Full(ctx context.Context, query TokenSnapshotFull
 
 type TokenSnapshotDiffResponse struct {
 	// Cursor to refetch the current page
-	CurrentPage string                          `json:"current_page,required"`
-	Items       []TokenSnapshotDiffResponseItem `json:"items,required"`
+	CurrentPage string                          `json:"current_page" api:"required"`
+	Items       []TokenSnapshotDiffResponseItem `json:"items" api:"required"`
 	// Cursor for the next page
-	NextPage string `json:"next_page,nullable"`
+	NextPage string `json:"next_page" api:"nullable"`
 	// Cursor for the previous page
-	PreviousPage string                        `json:"previous_page,nullable"`
+	PreviousPage string                        `json:"previous_page" api:"nullable"`
 	JSON         tokenSnapshotDiffResponseJSON `json:"-"`
 }
 
@@ -100,23 +100,23 @@ func (r tokenSnapshotDiffResponseJSON) RawJSON() string {
 
 type TokenSnapshotDiffResponseItem struct {
 	// Token address to validate (EVM / Solana)
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// Dictionary of detected attacks found during the scan
-	AttackTypes map[string]TokenSnapshotDiffResponseItemsAttackType `json:"attack_types,required"`
+	AttackTypes map[string]TokenSnapshotDiffResponseItemsAttackType `json:"attack_types" api:"required"`
 	// Blockchain network
-	Chain TokenScanSupportedChain `json:"chain,required"`
+	Chain TokenScanSupportedChain `json:"chain" api:"required"`
 	// Fees associated with the token
-	Fees TokenSnapshotDiffResponseItemsFees `json:"fees,required"`
+	Fees TokenSnapshotDiffResponseItemsFees `json:"fees" api:"required"`
 	// financial stats of the token
-	FinancialStats TokenSnapshotDiffResponseItemsFinancialStats `json:"financial_stats,required"`
+	FinancialStats FinancialStats `json:"financial_stats" api:"required"`
 	// Score between 0 to 1 (double)
-	MaliciousScore string `json:"malicious_score,required"`
+	MaliciousScore string `json:"malicious_score" api:"required"`
 	// Metadata of the token
-	Metadata TokenSnapshotDiffResponseItemsMetadata `json:"metadata,required"`
+	Metadata TokenSnapshotDiffResponseItemsMetadata `json:"metadata" api:"required"`
 	// General indication
-	ResultType TokenSnapshotDiffResponseItemsResultType `json:"result_type,required"`
+	ResultType TokenSnapshotDiffResponseItemsResultType `json:"result_type" api:"required"`
 	// Trading limits of the token
-	TradingLimits TokenSnapshotDiffResponseItemsTradingLimits `json:"trading_limits,required"`
+	TradingLimits TokenSnapshotDiffResponseItemsTradingLimits `json:"trading_limits" api:"required"`
 	// List of features associated with the token
 	Features []TokenSnapshotDiffResponseItemsFeature `json:"features"`
 	JSON     tokenSnapshotDiffResponseItemJSON       `json:"-"`
@@ -149,7 +149,7 @@ func (r tokenSnapshotDiffResponseItemJSON) RawJSON() string {
 
 type TokenSnapshotDiffResponseItemsAttackType struct {
 	// Score between 0 to 1 (double) that indicates the assurance this attack happened
-	Score string `json:"score,required"`
+	Score string `json:"score" api:"required"`
 	// Object contains an extra information related to the attack
 	Features interface{} `json:"features"`
 	// If score is higher or equal to this field, the token is using this attack type
@@ -178,13 +178,13 @@ func (r tokenSnapshotDiffResponseItemsAttackTypeJSON) RawJSON() string {
 // Fees associated with the token
 type TokenSnapshotDiffResponseItemsFees struct {
 	// Buy fee of the token
-	Buy float64 `json:"buy,nullable"`
+	Buy float64 `json:"buy" api:"nullable"`
 	// Sell fee of the token
-	Sell float64 `json:"sell,nullable"`
+	Sell float64 `json:"sell" api:"nullable"`
 	// Transfer fee of the token
-	Transfer float64 `json:"transfer,nullable"`
+	Transfer float64 `json:"transfer" api:"nullable"`
 	// The maximum value that a transfer fee will cost
-	TransferFeeMaxAmount int64                                  `json:"transfer_fee_max_amount,nullable"`
+	TransferFeeMaxAmount int64                                  `json:"transfer_fee_max_amount" api:"nullable"`
 	JSON                 tokenSnapshotDiffResponseItemsFeesJSON `json:"-"`
 }
 
@@ -207,148 +207,65 @@ func (r tokenSnapshotDiffResponseItemsFeesJSON) RawJSON() string {
 	return r.raw
 }
 
-// financial stats of the token
-type TokenSnapshotDiffResponseItemsFinancialStats struct {
-	// Percentage of token currently held by bundlers - wallets that bought in the
-	// exact same Solana slot, at any point in the token's life-cycle. Currently
-	// available for Solana only.
-	BundlersHoldingPercentage float64 `json:"bundlers_holding_percentage,nullable"`
-	// Token liquidity burned percentage
-	BurnedLiquidityPercentage float64 `json:"burned_liquidity_percentage,nullable"`
-	// Percentage of token's supply held in known developer wallets (0.0 to 100.0)
-	DevHoldingPercentage float64 `json:"dev_holding_percentage,nullable"`
-	// Amount of token holders
-	HoldersCount int64 `json:"holders_count,nullable"`
-	// Percentage of token's supply _currently_ held by sniper bots (0.0 to 100.0).
-	// Currently available for Solana only.
-	InitialSnipersHoldingPercentage float64 `json:"initial_snipers_holding_percentage,nullable"`
-	// Percentage of supply that is currently held by insiders - defined as wallets
-	// exhibiting early acquisition behaviors typically associated with insider
-	// activity.
-	InsidersHoldingPercentage float64 `json:"insiders_holding_percentage,nullable"`
-	// Token liquidity locked percentage
-	LockedLiquidityPercentage float64 `json:"locked_liquidity_percentage,nullable"`
-	// Percentage of token's supply _initially_ held by sniper bots (0.0 to 100.0).
-	// Currently available for Solana only.
-	SnipersHoldingPercentage float64 `json:"snipers_holding_percentage,nullable"`
-	// token supply
-	Supply int64 `json:"supply,nullable"`
-	// Top token holders
-	TopHolders []TokenSnapshotDiffResponseItemsFinancialStatsTopHolder `json:"top_holders"`
-	// Total reserve in USD
-	TotalReserveInUsd float64 `json:"total_reserve_in_usd,nullable"`
-	// token price in USD
-	UsdPricePerUnit float64                                          `json:"usd_price_per_unit,nullable"`
-	JSON            tokenSnapshotDiffResponseItemsFinancialStatsJSON `json:"-"`
-}
-
-// tokenSnapshotDiffResponseItemsFinancialStatsJSON contains the JSON metadata for
-// the struct [TokenSnapshotDiffResponseItemsFinancialStats]
-type tokenSnapshotDiffResponseItemsFinancialStatsJSON struct {
-	BundlersHoldingPercentage       apijson.Field
-	BurnedLiquidityPercentage       apijson.Field
-	DevHoldingPercentage            apijson.Field
-	HoldersCount                    apijson.Field
-	InitialSnipersHoldingPercentage apijson.Field
-	InsidersHoldingPercentage       apijson.Field
-	LockedLiquidityPercentage       apijson.Field
-	SnipersHoldingPercentage        apijson.Field
-	Supply                          apijson.Field
-	TopHolders                      apijson.Field
-	TotalReserveInUsd               apijson.Field
-	UsdPricePerUnit                 apijson.Field
-	raw                             string
-	ExtraFields                     map[string]apijson.Field
-}
-
-func (r *TokenSnapshotDiffResponseItemsFinancialStats) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r tokenSnapshotDiffResponseItemsFinancialStatsJSON) RawJSON() string {
-	return r.raw
-}
-
-type TokenSnapshotDiffResponseItemsFinancialStatsTopHolder struct {
-	// Address
-	Address string `json:"address,nullable"`
-	// Holding position out of total token liquidity
-	HoldingPercentage float64                                                   `json:"holding_percentage,nullable"`
-	JSON              tokenSnapshotDiffResponseItemsFinancialStatsTopHolderJSON `json:"-"`
-}
-
-// tokenSnapshotDiffResponseItemsFinancialStatsTopHolderJSON contains the JSON
-// metadata for the struct [TokenSnapshotDiffResponseItemsFinancialStatsTopHolder]
-type tokenSnapshotDiffResponseItemsFinancialStatsTopHolderJSON struct {
-	Address           apijson.Field
-	HoldingPercentage apijson.Field
-	raw               string
-	ExtraFields       map[string]apijson.Field
-}
-
-func (r *TokenSnapshotDiffResponseItemsFinancialStatsTopHolder) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r tokenSnapshotDiffResponseItemsFinancialStatsTopHolderJSON) RawJSON() string {
-	return r.raw
-}
-
 // Metadata of the token
 type TokenSnapshotDiffResponseItemsMetadata struct {
 	// The unique ID for the Rune
-	ID string `json:"id,nullable"`
+	ID string `json:"id" api:"nullable"`
 	// This field can have the runtime type of
 	// [TokenSnapshotDiffResponseItemsMetadataSolanaMetadataContractBalance],
 	// [TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenContractBalance].
 	ContractBalance interface{} `json:"contract_balance"`
 	// Contract deploy date
-	CreationTimestamp string `json:"creation_timestamp,nullable"`
+	CreationTimestamp string `json:"creation_timestamp" api:"nullable"`
 	// Decimals of the token
-	Decimals int64 `json:"decimals,nullable"`
+	Decimals int64 `json:"decimals" api:"nullable"`
 	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer,nullable"`
+	Deployer string `json:"deployer" api:"nullable"`
 	// This field can have the runtime type of
 	// [TokenSnapshotDiffResponseItemsMetadataSolanaMetadataDeployerBalance],
 	// [TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenDeployerBalance].
 	DeployerBalance interface{} `json:"deployer_balance"`
 	// Description of the token
-	Description string `json:"description,nullable"`
+	Description string `json:"description" api:"nullable"`
 	// This field can have the runtime type of
 	// [TokenSnapshotDiffResponseItemsMetadataSolanaMetadataExternalLinks],
 	// [TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenExternalLinks].
 	ExternalLinks interface{} `json:"external_links"`
 	// The formatted name of the rune, with spacers
-	FormattedName string `json:"formatted_name,nullable"`
+	FormattedName string `json:"formatted_name" api:"nullable"`
 	// Solana token freeze authority account
-	FreezeAuthority string `json:"freeze_authority,nullable"`
+	FreezeAuthority string `json:"freeze_authority" api:"nullable"`
 	// URL of the token image
-	ImageURL string `json:"image_url,nullable"`
+	ImageURL string `json:"image_url" api:"nullable"`
+	// This field can have the runtime type of
+	// [[]TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTarget],
+	// [[]TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTarget].
+	ImpersonationTargets interface{} `json:"impersonation_targets"`
 	// This field can have the runtime type of [[]string].
 	MaliciousURLs interface{} `json:"malicious_urls"`
 	// Solana token mint authority account
-	MintAuthority string `json:"mint_authority,nullable"`
+	MintAuthority string `json:"mint_authority" api:"nullable"`
 	// Name of the token
-	Name string `json:"name,nullable"`
+	Name string `json:"name" api:"nullable"`
 	// The rune's unique sequential number.
-	Number int64 `json:"number,nullable"`
+	Number int64 `json:"number" api:"nullable"`
 	// Contract owner address
-	Owner string `json:"owner,nullable"`
+	Owner string `json:"owner" api:"nullable"`
 	// This field can have the runtime type of
 	// [TokenSnapshotDiffResponseItemsMetadataSolanaMetadataOwnerBalance],
 	// [TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenOwnerBalance].
 	OwnerBalance interface{} `json:"owner_balance"`
 	// Solana token permanent delegate account
-	PermanentDelegate string `json:"permanent_delegate,nullable"`
+	PermanentDelegate string `json:"permanent_delegate" api:"nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol,nullable"`
+	Symbol string `json:"symbol" api:"nullable"`
 	// Address of the token creation initiator, only set if the tokens was created by a
 	// well known token launch platform
-	TokenCreationInitiator string `json:"token_creation_initiator,nullable"`
+	TokenCreationInitiator string `json:"token_creation_initiator" api:"nullable"`
 	// Type of the token
-	Type string `json:"type,nullable"`
+	Type string `json:"type" api:"nullable"`
 	// Solana token update authority account
-	UpdateAuthority string `json:"update_authority,nullable"`
+	UpdateAuthority string `json:"update_authority" api:"nullable"`
 	// This field can have the runtime type of [[]string].
 	URLs  interface{}                                `json:"urls"`
 	JSON  tokenSnapshotDiffResponseItemsMetadataJSON `json:"-"`
@@ -369,6 +286,7 @@ type tokenSnapshotDiffResponseItemsMetadataJSON struct {
 	FormattedName          apijson.Field
 	FreezeAuthority        apijson.Field
 	ImageURL               apijson.Field
+	ImpersonationTargets   apijson.Field
 	MaliciousURLs          apijson.Field
 	MintAuthority          apijson.Field
 	Name                   apijson.Field
@@ -439,46 +357,48 @@ func init() {
 
 type TokenSnapshotDiffResponseItemsMetadataSolanaMetadata struct {
 	// Contract balance
-	ContractBalance TokenSnapshotDiffResponseItemsMetadataSolanaMetadataContractBalance `json:"contract_balance,nullable"`
+	ContractBalance TokenSnapshotDiffResponseItemsMetadataSolanaMetadataContractBalance `json:"contract_balance" api:"nullable"`
 	// Contract deploy date
-	CreationTimestamp string `json:"creation_timestamp,nullable"`
+	CreationTimestamp string `json:"creation_timestamp" api:"nullable"`
 	// Decimals of the token
-	Decimals int64 `json:"decimals,nullable"`
+	Decimals int64 `json:"decimals" api:"nullable"`
 	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer,nullable"`
+	Deployer string `json:"deployer" api:"nullable"`
 	// Contract creator balance
-	DeployerBalance TokenSnapshotDiffResponseItemsMetadataSolanaMetadataDeployerBalance `json:"deployer_balance,nullable"`
+	DeployerBalance TokenSnapshotDiffResponseItemsMetadataSolanaMetadataDeployerBalance `json:"deployer_balance" api:"nullable"`
 	// Description of the token
-	Description string `json:"description,nullable"`
+	Description string `json:"description" api:"nullable"`
 	// social links of the token
 	ExternalLinks TokenSnapshotDiffResponseItemsMetadataSolanaMetadataExternalLinks `json:"external_links"`
 	// Solana token freeze authority account
-	FreezeAuthority string `json:"freeze_authority,nullable"`
+	FreezeAuthority string `json:"freeze_authority" api:"nullable"`
 	// URL of the token image
-	ImageURL string `json:"image_url,nullable"`
+	ImageURL string `json:"image_url" api:"nullable"`
+	// List of tokens that this token is impersonating, if detected as an impersonator
+	ImpersonationTargets []TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTarget `json:"impersonation_targets" api:"nullable"`
 	// Malicious urls associated with the token
-	MaliciousURLs []string `json:"malicious_urls,nullable"`
+	MaliciousURLs []string `json:"malicious_urls" api:"nullable"`
 	// Solana token mint authority account
-	MintAuthority string `json:"mint_authority,nullable"`
+	MintAuthority string `json:"mint_authority" api:"nullable"`
 	// Name of the token
-	Name string `json:"name,nullable"`
+	Name string `json:"name" api:"nullable"`
 	// Contract owner address
-	Owner string `json:"owner,nullable"`
+	Owner string `json:"owner" api:"nullable"`
 	// Contract owner balance
-	OwnerBalance TokenSnapshotDiffResponseItemsMetadataSolanaMetadataOwnerBalance `json:"owner_balance,nullable"`
+	OwnerBalance TokenSnapshotDiffResponseItemsMetadataSolanaMetadataOwnerBalance `json:"owner_balance" api:"nullable"`
 	// Solana token permanent delegate account
-	PermanentDelegate string `json:"permanent_delegate,nullable"`
+	PermanentDelegate string `json:"permanent_delegate" api:"nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol,nullable"`
+	Symbol string `json:"symbol" api:"nullable"`
 	// Address of the token creation initiator, only set if the tokens was created by a
 	// well known token launch platform
-	TokenCreationInitiator string `json:"token_creation_initiator,nullable"`
+	TokenCreationInitiator string `json:"token_creation_initiator" api:"nullable"`
 	// Type of the token
-	Type string `json:"type,nullable"`
+	Type string `json:"type" api:"nullable"`
 	// Solana token update authority account
-	UpdateAuthority string `json:"update_authority,nullable"`
+	UpdateAuthority string `json:"update_authority" api:"nullable"`
 	// Urls associated with the token
-	URLs []string                                                 `json:"urls,nullable"`
+	URLs []string                                                 `json:"urls" api:"nullable"`
 	JSON tokenSnapshotDiffResponseItemsMetadataSolanaMetadataJSON `json:"-"`
 }
 
@@ -494,6 +414,7 @@ type tokenSnapshotDiffResponseItemsMetadataSolanaMetadataJSON struct {
 	ExternalLinks          apijson.Field
 	FreezeAuthority        apijson.Field
 	ImageURL               apijson.Field
+	ImpersonationTargets   apijson.Field
 	MaliciousURLs          apijson.Field
 	MintAuthority          apijson.Field
 	Name                   apijson.Field
@@ -522,8 +443,8 @@ func (r TokenSnapshotDiffResponseItemsMetadataSolanaMetadata) implementsTokenSna
 
 // Contract balance
 type TokenSnapshotDiffResponseItemsMetadataSolanaMetadataContractBalance struct {
-	Amount    float64                                                                 `json:"amount,nullable"`
-	AmountWei string                                                                  `json:"amount_wei,nullable"`
+	Amount    float64                                                                 `json:"amount" api:"nullable"`
+	AmountWei string                                                                  `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotDiffResponseItemsMetadataSolanaMetadataContractBalanceJSON `json:"-"`
 }
 
@@ -547,8 +468,8 @@ func (r tokenSnapshotDiffResponseItemsMetadataSolanaMetadataContractBalanceJSON)
 
 // Contract creator balance
 type TokenSnapshotDiffResponseItemsMetadataSolanaMetadataDeployerBalance struct {
-	Amount    float64                                                                 `json:"amount,nullable"`
-	AmountWei string                                                                  `json:"amount_wei,nullable"`
+	Amount    float64                                                                 `json:"amount" api:"nullable"`
+	AmountWei string                                                                  `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotDiffResponseItemsMetadataSolanaMetadataDeployerBalanceJSON `json:"-"`
 }
 
@@ -572,9 +493,9 @@ func (r tokenSnapshotDiffResponseItemsMetadataSolanaMetadataDeployerBalanceJSON)
 
 // social links of the token
 type TokenSnapshotDiffResponseItemsMetadataSolanaMetadataExternalLinks struct {
-	Homepage          string                                                                `json:"homepage,nullable"`
-	TelegramChannelID string                                                                `json:"telegram_channel_id,nullable"`
-	TwitterPage       string                                                                `json:"twitter_page,nullable"`
+	Homepage          string                                                                `json:"homepage" api:"nullable"`
+	TelegramChannelID string                                                                `json:"telegram_channel_id" api:"nullable"`
+	TwitterPage       string                                                                `json:"twitter_page" api:"nullable"`
 	JSON              tokenSnapshotDiffResponseItemsMetadataSolanaMetadataExternalLinksJSON `json:"-"`
 }
 
@@ -597,10 +518,61 @@ func (r tokenSnapshotDiffResponseItemsMetadataSolanaMetadataExternalLinksJSON) R
 	return r.raw
 }
 
+type TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTarget struct {
+	// Address of the token being impersonated
+	Address string `json:"address" api:"required"`
+	// Blockchain network of the target token
+	Chain string `json:"chain" api:"required"`
+	// Name of the token being impersonated
+	Name string `json:"name" api:"nullable"`
+	// Source of the impersonation match
+	Source TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSource `json:"source" api:"nullable"`
+	// Symbol of the token being impersonated
+	Symbol string                                                                      `json:"symbol" api:"nullable"`
+	JSON   tokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetJSON `json:"-"`
+}
+
+// tokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetJSON
+// contains the JSON metadata for the struct
+// [TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTarget]
+type tokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetJSON struct {
+	Address     apijson.Field
+	Chain       apijson.Field
+	Name        apijson.Field
+	Source      apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTarget) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Source of the impersonation match
+type TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSource string
+
+const (
+	TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceTopToken    TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSource = "TOP_TOKEN"
+	TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceUserDefined TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSource = "USER_DEFINED"
+)
+
+func (r TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSource) IsKnown() bool {
+	switch r {
+	case TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceTopToken, TokenSnapshotDiffResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceUserDefined:
+		return true
+	}
+	return false
+}
+
 // Contract owner balance
 type TokenSnapshotDiffResponseItemsMetadataSolanaMetadataOwnerBalance struct {
-	Amount    float64                                                              `json:"amount,nullable"`
-	AmountWei string                                                               `json:"amount_wei,nullable"`
+	Amount    float64                                                              `json:"amount" api:"nullable"`
+	AmountWei string                                                               `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotDiffResponseItemsMetadataSolanaMetadataOwnerBalanceJSON `json:"-"`
 }
 
@@ -624,19 +596,19 @@ func (r tokenSnapshotDiffResponseItemsMetadataSolanaMetadataOwnerBalanceJSON) Ra
 
 type TokenSnapshotDiffResponseItemsMetadataBitcoinMetadataToken struct {
 	// The unique ID for the Rune
-	ID string `json:"id,nullable"`
+	ID string `json:"id" api:"nullable"`
 	// Decimals of the token
-	Decimals int64 `json:"decimals,nullable"`
+	Decimals int64 `json:"decimals" api:"nullable"`
 	// The formatted name of the rune, with spacers
-	FormattedName string `json:"formatted_name,nullable"`
+	FormattedName string `json:"formatted_name" api:"nullable"`
 	// Name of the token
-	Name string `json:"name,nullable"`
+	Name string `json:"name" api:"nullable"`
 	// The rune's unique sequential number.
-	Number int64 `json:"number,nullable"`
+	Number int64 `json:"number" api:"nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol,nullable"`
+	Symbol string `json:"symbol" api:"nullable"`
 	// Type of the token
-	Type string                                                         `json:"type,nullable"`
+	Type string                                                         `json:"type" api:"nullable"`
 	JSON tokenSnapshotDiffResponseItemsMetadataBitcoinMetadataTokenJSON `json:"-"`
 }
 
@@ -668,38 +640,40 @@ func (r TokenSnapshotDiffResponseItemsMetadataBitcoinMetadataToken) implementsTo
 
 type TokenSnapshotDiffResponseItemsMetadataEvmMetadataToken struct {
 	// Contract balance
-	ContractBalance TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenContractBalance `json:"contract_balance,nullable"`
+	ContractBalance TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenContractBalance `json:"contract_balance" api:"nullable"`
 	// Contract deploy date
-	CreationTimestamp string `json:"creation_timestamp,nullable"`
+	CreationTimestamp string `json:"creation_timestamp" api:"nullable"`
 	// Decimals of the token
-	Decimals int64 `json:"decimals,nullable"`
+	Decimals int64 `json:"decimals" api:"nullable"`
 	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer,nullable"`
+	Deployer string `json:"deployer" api:"nullable"`
 	// Contract creator balance
-	DeployerBalance TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenDeployerBalance `json:"deployer_balance,nullable"`
+	DeployerBalance TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenDeployerBalance `json:"deployer_balance" api:"nullable"`
 	// Description of the token
-	Description string `json:"description,nullable"`
+	Description string `json:"description" api:"nullable"`
 	// social links of the token
 	ExternalLinks TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenExternalLinks `json:"external_links"`
 	// URL of the token image
-	ImageURL string `json:"image_url,nullable"`
+	ImageURL string `json:"image_url" api:"nullable"`
+	// List of tokens that this token is impersonating, if detected as an impersonator
+	ImpersonationTargets []TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTarget `json:"impersonation_targets" api:"nullable"`
 	// Malicious urls associated with the token
-	MaliciousURLs []string `json:"malicious_urls,nullable"`
+	MaliciousURLs []string `json:"malicious_urls" api:"nullable"`
 	// Name of the token
-	Name string `json:"name,nullable"`
+	Name string `json:"name" api:"nullable"`
 	// Contract owner address
-	Owner string `json:"owner,nullable"`
+	Owner string `json:"owner" api:"nullable"`
 	// Contract owner balance
-	OwnerBalance TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenOwnerBalance `json:"owner_balance,nullable"`
+	OwnerBalance TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenOwnerBalance `json:"owner_balance" api:"nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol,nullable"`
+	Symbol string `json:"symbol" api:"nullable"`
 	// Address of the token creation initiator, only set if the tokens was created by a
 	// well known token launch platform
-	TokenCreationInitiator string `json:"token_creation_initiator,nullable"`
+	TokenCreationInitiator string `json:"token_creation_initiator" api:"nullable"`
 	// Type of the token
-	Type string `json:"type,nullable"`
+	Type string `json:"type" api:"nullable"`
 	// Urls associated with the token
-	URLs []string                                                   `json:"urls,nullable"`
+	URLs []string                                                   `json:"urls" api:"nullable"`
 	JSON tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenJSON `json:"-"`
 }
 
@@ -714,6 +688,7 @@ type tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenJSON struct {
 	Description            apijson.Field
 	ExternalLinks          apijson.Field
 	ImageURL               apijson.Field
+	ImpersonationTargets   apijson.Field
 	MaliciousURLs          apijson.Field
 	Name                   apijson.Field
 	Owner                  apijson.Field
@@ -739,8 +714,8 @@ func (r TokenSnapshotDiffResponseItemsMetadataEvmMetadataToken) implementsTokenS
 
 // Contract balance
 type TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenContractBalance struct {
-	Amount    float64                                                                   `json:"amount,nullable"`
-	AmountWei string                                                                    `json:"amount_wei,nullable"`
+	Amount    float64                                                                   `json:"amount" api:"nullable"`
+	AmountWei string                                                                    `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenContractBalanceJSON `json:"-"`
 }
 
@@ -764,8 +739,8 @@ func (r tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenContractBalanceJSO
 
 // Contract creator balance
 type TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenDeployerBalance struct {
-	Amount    float64                                                                   `json:"amount,nullable"`
-	AmountWei string                                                                    `json:"amount_wei,nullable"`
+	Amount    float64                                                                   `json:"amount" api:"nullable"`
+	AmountWei string                                                                    `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenDeployerBalanceJSON `json:"-"`
 }
 
@@ -789,9 +764,9 @@ func (r tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenDeployerBalanceJSO
 
 // social links of the token
 type TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenExternalLinks struct {
-	Homepage          string                                                                  `json:"homepage,nullable"`
-	TelegramChannelID string                                                                  `json:"telegram_channel_id,nullable"`
-	TwitterPage       string                                                                  `json:"twitter_page,nullable"`
+	Homepage          string                                                                  `json:"homepage" api:"nullable"`
+	TelegramChannelID string                                                                  `json:"telegram_channel_id" api:"nullable"`
+	TwitterPage       string                                                                  `json:"twitter_page" api:"nullable"`
 	JSON              tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenExternalLinksJSON `json:"-"`
 }
 
@@ -814,10 +789,61 @@ func (r tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenExternalLinksJSON)
 	return r.raw
 }
 
+type TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTarget struct {
+	// Address of the token being impersonated
+	Address string `json:"address" api:"required"`
+	// Blockchain network of the target token
+	Chain string `json:"chain" api:"required"`
+	// Name of the token being impersonated
+	Name string `json:"name" api:"nullable"`
+	// Source of the impersonation match
+	Source TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource `json:"source" api:"nullable"`
+	// Symbol of the token being impersonated
+	Symbol string                                                                        `json:"symbol" api:"nullable"`
+	JSON   tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON `json:"-"`
+}
+
+// tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON
+// contains the JSON metadata for the struct
+// [TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTarget]
+type tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON struct {
+	Address     apijson.Field
+	Chain       apijson.Field
+	Name        apijson.Field
+	Source      apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTarget) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Source of the impersonation match
+type TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource string
+
+const (
+	TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceTopToken    TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource = "TOP_TOKEN"
+	TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceUserDefined TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource = "USER_DEFINED"
+)
+
+func (r TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource) IsKnown() bool {
+	switch r {
+	case TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceTopToken, TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceUserDefined:
+		return true
+	}
+	return false
+}
+
 // Contract owner balance
 type TokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenOwnerBalance struct {
-	Amount    float64                                                                `json:"amount,nullable"`
-	AmountWei string                                                                 `json:"amount_wei,nullable"`
+	Amount    float64                                                                `json:"amount" api:"nullable"`
+	AmountWei string                                                                 `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotDiffResponseItemsMetadataEvmMetadataTokenOwnerBalanceJSON `json:"-"`
 }
 
@@ -860,13 +886,13 @@ func (r TokenSnapshotDiffResponseItemsResultType) IsKnown() bool {
 // Trading limits of the token
 type TokenSnapshotDiffResponseItemsTradingLimits struct {
 	// Max amount that can be bought at once
-	MaxBuy TokenSnapshotDiffResponseItemsTradingLimitsMaxBuy `json:"max_buy,nullable"`
+	MaxBuy TokenSnapshotDiffResponseItemsTradingLimitsMaxBuy `json:"max_buy" api:"nullable"`
 	// Max amount that can be held by a single address
-	MaxHolding TokenSnapshotDiffResponseItemsTradingLimitsMaxHolding `json:"max_holding,nullable"`
+	MaxHolding TokenSnapshotDiffResponseItemsTradingLimitsMaxHolding `json:"max_holding" api:"nullable"`
 	// Max amount that can be sold at once
-	MaxSell TokenSnapshotDiffResponseItemsTradingLimitsMaxSell `json:"max_sell,nullable"`
+	MaxSell TokenSnapshotDiffResponseItemsTradingLimitsMaxSell `json:"max_sell" api:"nullable"`
 	// Maximum amount of the token that can be sold in a block
-	SellLimitPerBlock TokenSnapshotDiffResponseItemsTradingLimitsSellLimitPerBlock `json:"sell_limit_per_block,nullable"`
+	SellLimitPerBlock TokenSnapshotDiffResponseItemsTradingLimitsSellLimitPerBlock `json:"sell_limit_per_block" api:"nullable"`
 	JSON              tokenSnapshotDiffResponseItemsTradingLimitsJSON              `json:"-"`
 }
 
@@ -891,8 +917,8 @@ func (r tokenSnapshotDiffResponseItemsTradingLimitsJSON) RawJSON() string {
 
 // Max amount that can be bought at once
 type TokenSnapshotDiffResponseItemsTradingLimitsMaxBuy struct {
-	Amount    float64                                               `json:"amount,nullable"`
-	AmountWei string                                                `json:"amount_wei,nullable"`
+	Amount    float64                                               `json:"amount" api:"nullable"`
+	AmountWei string                                                `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotDiffResponseItemsTradingLimitsMaxBuyJSON `json:"-"`
 }
 
@@ -915,8 +941,8 @@ func (r tokenSnapshotDiffResponseItemsTradingLimitsMaxBuyJSON) RawJSON() string 
 
 // Max amount that can be held by a single address
 type TokenSnapshotDiffResponseItemsTradingLimitsMaxHolding struct {
-	Amount    float64                                                   `json:"amount,nullable"`
-	AmountWei string                                                    `json:"amount_wei,nullable"`
+	Amount    float64                                                   `json:"amount" api:"nullable"`
+	AmountWei string                                                    `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotDiffResponseItemsTradingLimitsMaxHoldingJSON `json:"-"`
 }
 
@@ -939,8 +965,8 @@ func (r tokenSnapshotDiffResponseItemsTradingLimitsMaxHoldingJSON) RawJSON() str
 
 // Max amount that can be sold at once
 type TokenSnapshotDiffResponseItemsTradingLimitsMaxSell struct {
-	Amount    float64                                                `json:"amount,nullable"`
-	AmountWei string                                                 `json:"amount_wei,nullable"`
+	Amount    float64                                                `json:"amount" api:"nullable"`
+	AmountWei string                                                 `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotDiffResponseItemsTradingLimitsMaxSellJSON `json:"-"`
 }
 
@@ -963,8 +989,8 @@ func (r tokenSnapshotDiffResponseItemsTradingLimitsMaxSellJSON) RawJSON() string
 
 // Maximum amount of the token that can be sold in a block
 type TokenSnapshotDiffResponseItemsTradingLimitsSellLimitPerBlock struct {
-	Amount    float64                                                          `json:"amount,nullable"`
-	AmountWei string                                                           `json:"amount_wei,nullable"`
+	Amount    float64                                                          `json:"amount" api:"nullable"`
+	AmountWei string                                                           `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotDiffResponseItemsTradingLimitsSellLimitPerBlockJSON `json:"-"`
 }
 
@@ -988,11 +1014,11 @@ func (r tokenSnapshotDiffResponseItemsTradingLimitsSellLimitPerBlockJSON) RawJSO
 
 type TokenSnapshotDiffResponseItemsFeature struct {
 	// Description of the feature
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// Feature identifier
-	FeatureID TokenSnapshotDiffResponseItemsFeaturesFeatureID `json:"feature_id,required"`
+	FeatureID TokenSnapshotDiffResponseItemsFeaturesFeatureID `json:"feature_id" api:"required"`
 	// Type of the feature
-	Type TokenSnapshotDiffResponseItemsFeaturesType `json:"type,required"`
+	Type TokenSnapshotDiffResponseItemsFeaturesType `json:"type" api:"required"`
 	JSON tokenSnapshotDiffResponseItemsFeatureJSON  `json:"-"`
 }
 
@@ -1062,6 +1088,11 @@ const (
 	TokenSnapshotDiffResponseItemsFeaturesFeatureIDOwnerCanChangeBalance          TokenSnapshotDiffResponseItemsFeaturesFeatureID = "OWNER_CAN_CHANGE_BALANCE"
 	TokenSnapshotDiffResponseItemsFeaturesFeatureIDProxyContract                  TokenSnapshotDiffResponseItemsFeaturesFeatureID = "PROXY_CONTRACT"
 	TokenSnapshotDiffResponseItemsFeaturesFeatureIDSimilarMaliciousContract       TokenSnapshotDiffResponseItemsFeaturesFeatureID = "SIMILAR_MALICIOUS_CONTRACT"
+	TokenSnapshotDiffResponseItemsFeaturesFeatureIDImpersonatorSensitiveAsset     TokenSnapshotDiffResponseItemsFeaturesFeatureID = "IMPERSONATOR_SENSITIVE_ASSET"
+	TokenSnapshotDiffResponseItemsFeaturesFeatureIDImpersonatorHighConfidence     TokenSnapshotDiffResponseItemsFeaturesFeatureID = "IMPERSONATOR_HIGH_CONFIDENCE"
+	TokenSnapshotDiffResponseItemsFeaturesFeatureIDImpersonatorMediumConfidence   TokenSnapshotDiffResponseItemsFeaturesFeatureID = "IMPERSONATOR_MEDIUM_CONFIDENCE"
+	TokenSnapshotDiffResponseItemsFeaturesFeatureIDImpersonatorLowConfidence      TokenSnapshotDiffResponseItemsFeaturesFeatureID = "IMPERSONATOR_LOW_CONFIDENCE"
+	TokenSnapshotDiffResponseItemsFeaturesFeatureIDImpersonationProtected         TokenSnapshotDiffResponseItemsFeaturesFeatureID = "IMPERSONATION_PROTECTED"
 	TokenSnapshotDiffResponseItemsFeaturesFeatureIDFakeVolume                     TokenSnapshotDiffResponseItemsFeaturesFeatureID = "FAKE_VOLUME"
 	TokenSnapshotDiffResponseItemsFeaturesFeatureIDHiddenSupplyByKeyHolder        TokenSnapshotDiffResponseItemsFeaturesFeatureID = "HIDDEN_SUPPLY_BY_KEY_HOLDER"
 	TokenSnapshotDiffResponseItemsFeaturesFeatureIDFakeTradeMakerCount            TokenSnapshotDiffResponseItemsFeaturesFeatureID = "FAKE_TRADE_MAKER_COUNT"
@@ -1069,7 +1100,7 @@ const (
 
 func (r TokenSnapshotDiffResponseItemsFeaturesFeatureID) IsKnown() bool {
 	switch r {
-	case TokenSnapshotDiffResponseItemsFeaturesFeatureIDVerifiedContract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDUnverifiedContract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHighTradeVolume, TokenSnapshotDiffResponseItemsFeaturesFeatureIDMarketPlaceSalesHistory, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHighReputationToken, TokenSnapshotDiffResponseItemsFeaturesFeatureIDOnchainActivityValidator, TokenSnapshotDiffResponseItemsFeaturesFeatureIDStaticCodeSignature, TokenSnapshotDiffResponseItemsFeaturesFeatureIDKnownMalicious, TokenSnapshotDiffResponseItemsFeaturesFeatureIDIsEoa, TokenSnapshotDiffResponseItemsFeaturesFeatureIDIsContract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDErc20Contract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDTrustedContract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDBenignCreator, TokenSnapshotDiffResponseItemsFeaturesFeatureIDMetadata, TokenSnapshotDiffResponseItemsFeaturesFeatureIDAirdropPattern, TokenSnapshotDiffResponseItemsFeaturesFeatureIDImpersonator, TokenSnapshotDiffResponseItemsFeaturesFeatureIDInorganicVolume, TokenSnapshotDiffResponseItemsFeaturesFeatureIDDynamicAnalysis, TokenSnapshotDiffResponseItemsFeaturesFeatureIDConcentratedSupplyDistribution, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHoneypot, TokenSnapshotDiffResponseItemsFeaturesFeatureIDInsufficientLockedLiquidity, TokenSnapshotDiffResponseItemsFeaturesFeatureIDUnstableTokenPrice, TokenSnapshotDiffResponseItemsFeaturesFeatureIDRugpull, TokenSnapshotDiffResponseItemsFeaturesFeatureIDWashTrading, TokenSnapshotDiffResponseItemsFeaturesFeatureIDConsumerOverride, TokenSnapshotDiffResponseItemsFeaturesFeatureIDInappropriateContent, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHighTransferFee, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHighBuyFee, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHighSellFee, TokenSnapshotDiffResponseItemsFeaturesFeatureIDUnsellableToken, TokenSnapshotDiffResponseItemsFeaturesFeatureIDIsMintable, TokenSnapshotDiffResponseItemsFeaturesFeatureIDRebaseToken, TokenSnapshotDiffResponseItemsFeaturesFeatureIDLiquidStakingToken, TokenSnapshotDiffResponseItemsFeaturesFeatureIDModifiableTaxes, TokenSnapshotDiffResponseItemsFeaturesFeatureIDCanBlacklist, TokenSnapshotDiffResponseItemsFeaturesFeatureIDCanWhitelist, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHasTradingCooldown, TokenSnapshotDiffResponseItemsFeaturesFeatureIDExternalFunctions, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHiddenOwner, TokenSnapshotDiffResponseItemsFeaturesFeatureIDTransferPauseable, TokenSnapshotDiffResponseItemsFeaturesFeatureIDOwnershipRenounced, TokenSnapshotDiffResponseItemsFeaturesFeatureIDOwnerCanChangeBalance, TokenSnapshotDiffResponseItemsFeaturesFeatureIDProxyContract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDSimilarMaliciousContract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDFakeVolume, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHiddenSupplyByKeyHolder, TokenSnapshotDiffResponseItemsFeaturesFeatureIDFakeTradeMakerCount:
+	case TokenSnapshotDiffResponseItemsFeaturesFeatureIDVerifiedContract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDUnverifiedContract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHighTradeVolume, TokenSnapshotDiffResponseItemsFeaturesFeatureIDMarketPlaceSalesHistory, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHighReputationToken, TokenSnapshotDiffResponseItemsFeaturesFeatureIDOnchainActivityValidator, TokenSnapshotDiffResponseItemsFeaturesFeatureIDStaticCodeSignature, TokenSnapshotDiffResponseItemsFeaturesFeatureIDKnownMalicious, TokenSnapshotDiffResponseItemsFeaturesFeatureIDIsEoa, TokenSnapshotDiffResponseItemsFeaturesFeatureIDIsContract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDErc20Contract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDTrustedContract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDBenignCreator, TokenSnapshotDiffResponseItemsFeaturesFeatureIDMetadata, TokenSnapshotDiffResponseItemsFeaturesFeatureIDAirdropPattern, TokenSnapshotDiffResponseItemsFeaturesFeatureIDImpersonator, TokenSnapshotDiffResponseItemsFeaturesFeatureIDInorganicVolume, TokenSnapshotDiffResponseItemsFeaturesFeatureIDDynamicAnalysis, TokenSnapshotDiffResponseItemsFeaturesFeatureIDConcentratedSupplyDistribution, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHoneypot, TokenSnapshotDiffResponseItemsFeaturesFeatureIDInsufficientLockedLiquidity, TokenSnapshotDiffResponseItemsFeaturesFeatureIDUnstableTokenPrice, TokenSnapshotDiffResponseItemsFeaturesFeatureIDRugpull, TokenSnapshotDiffResponseItemsFeaturesFeatureIDWashTrading, TokenSnapshotDiffResponseItemsFeaturesFeatureIDConsumerOverride, TokenSnapshotDiffResponseItemsFeaturesFeatureIDInappropriateContent, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHighTransferFee, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHighBuyFee, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHighSellFee, TokenSnapshotDiffResponseItemsFeaturesFeatureIDUnsellableToken, TokenSnapshotDiffResponseItemsFeaturesFeatureIDIsMintable, TokenSnapshotDiffResponseItemsFeaturesFeatureIDRebaseToken, TokenSnapshotDiffResponseItemsFeaturesFeatureIDLiquidStakingToken, TokenSnapshotDiffResponseItemsFeaturesFeatureIDModifiableTaxes, TokenSnapshotDiffResponseItemsFeaturesFeatureIDCanBlacklist, TokenSnapshotDiffResponseItemsFeaturesFeatureIDCanWhitelist, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHasTradingCooldown, TokenSnapshotDiffResponseItemsFeaturesFeatureIDExternalFunctions, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHiddenOwner, TokenSnapshotDiffResponseItemsFeaturesFeatureIDTransferPauseable, TokenSnapshotDiffResponseItemsFeaturesFeatureIDOwnershipRenounced, TokenSnapshotDiffResponseItemsFeaturesFeatureIDOwnerCanChangeBalance, TokenSnapshotDiffResponseItemsFeaturesFeatureIDProxyContract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDSimilarMaliciousContract, TokenSnapshotDiffResponseItemsFeaturesFeatureIDImpersonatorSensitiveAsset, TokenSnapshotDiffResponseItemsFeaturesFeatureIDImpersonatorHighConfidence, TokenSnapshotDiffResponseItemsFeaturesFeatureIDImpersonatorMediumConfidence, TokenSnapshotDiffResponseItemsFeaturesFeatureIDImpersonatorLowConfidence, TokenSnapshotDiffResponseItemsFeaturesFeatureIDImpersonationProtected, TokenSnapshotDiffResponseItemsFeaturesFeatureIDFakeVolume, TokenSnapshotDiffResponseItemsFeaturesFeatureIDHiddenSupplyByKeyHolder, TokenSnapshotDiffResponseItemsFeaturesFeatureIDFakeTradeMakerCount:
 		return true
 	}
 	return false
@@ -1095,12 +1126,12 @@ func (r TokenSnapshotDiffResponseItemsFeaturesType) IsKnown() bool {
 
 type TokenSnapshotFullResponse struct {
 	// Cursor to refetch the current page
-	CurrentPage string                          `json:"current_page,required"`
-	Items       []TokenSnapshotFullResponseItem `json:"items,required"`
+	CurrentPage string                          `json:"current_page" api:"required"`
+	Items       []TokenSnapshotFullResponseItem `json:"items" api:"required"`
 	// Cursor for the next page
-	NextPage string `json:"next_page,nullable"`
+	NextPage string `json:"next_page" api:"nullable"`
 	// Cursor for the previous page
-	PreviousPage string                        `json:"previous_page,nullable"`
+	PreviousPage string                        `json:"previous_page" api:"nullable"`
 	JSON         tokenSnapshotFullResponseJSON `json:"-"`
 }
 
@@ -1125,23 +1156,23 @@ func (r tokenSnapshotFullResponseJSON) RawJSON() string {
 
 type TokenSnapshotFullResponseItem struct {
 	// Token address to validate (EVM / Solana)
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// Dictionary of detected attacks found during the scan
-	AttackTypes map[string]TokenSnapshotFullResponseItemsAttackType `json:"attack_types,required"`
+	AttackTypes map[string]TokenSnapshotFullResponseItemsAttackType `json:"attack_types" api:"required"`
 	// Blockchain network
-	Chain TokenScanSupportedChain `json:"chain,required"`
+	Chain TokenScanSupportedChain `json:"chain" api:"required"`
 	// Fees associated with the token
-	Fees TokenSnapshotFullResponseItemsFees `json:"fees,required"`
+	Fees TokenSnapshotFullResponseItemsFees `json:"fees" api:"required"`
 	// financial stats of the token
-	FinancialStats TokenSnapshotFullResponseItemsFinancialStats `json:"financial_stats,required"`
+	FinancialStats FinancialStats `json:"financial_stats" api:"required"`
 	// Score between 0 to 1 (double)
-	MaliciousScore string `json:"malicious_score,required"`
+	MaliciousScore string `json:"malicious_score" api:"required"`
 	// Metadata of the token
-	Metadata TokenSnapshotFullResponseItemsMetadata `json:"metadata,required"`
+	Metadata TokenSnapshotFullResponseItemsMetadata `json:"metadata" api:"required"`
 	// General indication
-	ResultType TokenSnapshotFullResponseItemsResultType `json:"result_type,required"`
+	ResultType TokenSnapshotFullResponseItemsResultType `json:"result_type" api:"required"`
 	// Trading limits of the token
-	TradingLimits TokenSnapshotFullResponseItemsTradingLimits `json:"trading_limits,required"`
+	TradingLimits TokenSnapshotFullResponseItemsTradingLimits `json:"trading_limits" api:"required"`
 	// List of features associated with the token
 	Features []TokenSnapshotFullResponseItemsFeature `json:"features"`
 	JSON     tokenSnapshotFullResponseItemJSON       `json:"-"`
@@ -1174,7 +1205,7 @@ func (r tokenSnapshotFullResponseItemJSON) RawJSON() string {
 
 type TokenSnapshotFullResponseItemsAttackType struct {
 	// Score between 0 to 1 (double) that indicates the assurance this attack happened
-	Score string `json:"score,required"`
+	Score string `json:"score" api:"required"`
 	// Object contains an extra information related to the attack
 	Features interface{} `json:"features"`
 	// If score is higher or equal to this field, the token is using this attack type
@@ -1203,13 +1234,13 @@ func (r tokenSnapshotFullResponseItemsAttackTypeJSON) RawJSON() string {
 // Fees associated with the token
 type TokenSnapshotFullResponseItemsFees struct {
 	// Buy fee of the token
-	Buy float64 `json:"buy,nullable"`
+	Buy float64 `json:"buy" api:"nullable"`
 	// Sell fee of the token
-	Sell float64 `json:"sell,nullable"`
+	Sell float64 `json:"sell" api:"nullable"`
 	// Transfer fee of the token
-	Transfer float64 `json:"transfer,nullable"`
+	Transfer float64 `json:"transfer" api:"nullable"`
 	// The maximum value that a transfer fee will cost
-	TransferFeeMaxAmount int64                                  `json:"transfer_fee_max_amount,nullable"`
+	TransferFeeMaxAmount int64                                  `json:"transfer_fee_max_amount" api:"nullable"`
 	JSON                 tokenSnapshotFullResponseItemsFeesJSON `json:"-"`
 }
 
@@ -1232,148 +1263,65 @@ func (r tokenSnapshotFullResponseItemsFeesJSON) RawJSON() string {
 	return r.raw
 }
 
-// financial stats of the token
-type TokenSnapshotFullResponseItemsFinancialStats struct {
-	// Percentage of token currently held by bundlers - wallets that bought in the
-	// exact same Solana slot, at any point in the token's life-cycle. Currently
-	// available for Solana only.
-	BundlersHoldingPercentage float64 `json:"bundlers_holding_percentage,nullable"`
-	// Token liquidity burned percentage
-	BurnedLiquidityPercentage float64 `json:"burned_liquidity_percentage,nullable"`
-	// Percentage of token's supply held in known developer wallets (0.0 to 100.0)
-	DevHoldingPercentage float64 `json:"dev_holding_percentage,nullable"`
-	// Amount of token holders
-	HoldersCount int64 `json:"holders_count,nullable"`
-	// Percentage of token's supply _currently_ held by sniper bots (0.0 to 100.0).
-	// Currently available for Solana only.
-	InitialSnipersHoldingPercentage float64 `json:"initial_snipers_holding_percentage,nullable"`
-	// Percentage of supply that is currently held by insiders - defined as wallets
-	// exhibiting early acquisition behaviors typically associated with insider
-	// activity.
-	InsidersHoldingPercentage float64 `json:"insiders_holding_percentage,nullable"`
-	// Token liquidity locked percentage
-	LockedLiquidityPercentage float64 `json:"locked_liquidity_percentage,nullable"`
-	// Percentage of token's supply _initially_ held by sniper bots (0.0 to 100.0).
-	// Currently available for Solana only.
-	SnipersHoldingPercentage float64 `json:"snipers_holding_percentage,nullable"`
-	// token supply
-	Supply int64 `json:"supply,nullable"`
-	// Top token holders
-	TopHolders []TokenSnapshotFullResponseItemsFinancialStatsTopHolder `json:"top_holders"`
-	// Total reserve in USD
-	TotalReserveInUsd float64 `json:"total_reserve_in_usd,nullable"`
-	// token price in USD
-	UsdPricePerUnit float64                                          `json:"usd_price_per_unit,nullable"`
-	JSON            tokenSnapshotFullResponseItemsFinancialStatsJSON `json:"-"`
-}
-
-// tokenSnapshotFullResponseItemsFinancialStatsJSON contains the JSON metadata for
-// the struct [TokenSnapshotFullResponseItemsFinancialStats]
-type tokenSnapshotFullResponseItemsFinancialStatsJSON struct {
-	BundlersHoldingPercentage       apijson.Field
-	BurnedLiquidityPercentage       apijson.Field
-	DevHoldingPercentage            apijson.Field
-	HoldersCount                    apijson.Field
-	InitialSnipersHoldingPercentage apijson.Field
-	InsidersHoldingPercentage       apijson.Field
-	LockedLiquidityPercentage       apijson.Field
-	SnipersHoldingPercentage        apijson.Field
-	Supply                          apijson.Field
-	TopHolders                      apijson.Field
-	TotalReserveInUsd               apijson.Field
-	UsdPricePerUnit                 apijson.Field
-	raw                             string
-	ExtraFields                     map[string]apijson.Field
-}
-
-func (r *TokenSnapshotFullResponseItemsFinancialStats) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r tokenSnapshotFullResponseItemsFinancialStatsJSON) RawJSON() string {
-	return r.raw
-}
-
-type TokenSnapshotFullResponseItemsFinancialStatsTopHolder struct {
-	// Address
-	Address string `json:"address,nullable"`
-	// Holding position out of total token liquidity
-	HoldingPercentage float64                                                   `json:"holding_percentage,nullable"`
-	JSON              tokenSnapshotFullResponseItemsFinancialStatsTopHolderJSON `json:"-"`
-}
-
-// tokenSnapshotFullResponseItemsFinancialStatsTopHolderJSON contains the JSON
-// metadata for the struct [TokenSnapshotFullResponseItemsFinancialStatsTopHolder]
-type tokenSnapshotFullResponseItemsFinancialStatsTopHolderJSON struct {
-	Address           apijson.Field
-	HoldingPercentage apijson.Field
-	raw               string
-	ExtraFields       map[string]apijson.Field
-}
-
-func (r *TokenSnapshotFullResponseItemsFinancialStatsTopHolder) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r tokenSnapshotFullResponseItemsFinancialStatsTopHolderJSON) RawJSON() string {
-	return r.raw
-}
-
 // Metadata of the token
 type TokenSnapshotFullResponseItemsMetadata struct {
 	// The unique ID for the Rune
-	ID string `json:"id,nullable"`
+	ID string `json:"id" api:"nullable"`
 	// This field can have the runtime type of
 	// [TokenSnapshotFullResponseItemsMetadataSolanaMetadataContractBalance],
 	// [TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenContractBalance].
 	ContractBalance interface{} `json:"contract_balance"`
 	// Contract deploy date
-	CreationTimestamp string `json:"creation_timestamp,nullable"`
+	CreationTimestamp string `json:"creation_timestamp" api:"nullable"`
 	// Decimals of the token
-	Decimals int64 `json:"decimals,nullable"`
+	Decimals int64 `json:"decimals" api:"nullable"`
 	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer,nullable"`
+	Deployer string `json:"deployer" api:"nullable"`
 	// This field can have the runtime type of
 	// [TokenSnapshotFullResponseItemsMetadataSolanaMetadataDeployerBalance],
 	// [TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenDeployerBalance].
 	DeployerBalance interface{} `json:"deployer_balance"`
 	// Description of the token
-	Description string `json:"description,nullable"`
+	Description string `json:"description" api:"nullable"`
 	// This field can have the runtime type of
 	// [TokenSnapshotFullResponseItemsMetadataSolanaMetadataExternalLinks],
 	// [TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenExternalLinks].
 	ExternalLinks interface{} `json:"external_links"`
 	// The formatted name of the rune, with spacers
-	FormattedName string `json:"formatted_name,nullable"`
+	FormattedName string `json:"formatted_name" api:"nullable"`
 	// Solana token freeze authority account
-	FreezeAuthority string `json:"freeze_authority,nullable"`
+	FreezeAuthority string `json:"freeze_authority" api:"nullable"`
 	// URL of the token image
-	ImageURL string `json:"image_url,nullable"`
+	ImageURL string `json:"image_url" api:"nullable"`
+	// This field can have the runtime type of
+	// [[]TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTarget],
+	// [[]TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTarget].
+	ImpersonationTargets interface{} `json:"impersonation_targets"`
 	// This field can have the runtime type of [[]string].
 	MaliciousURLs interface{} `json:"malicious_urls"`
 	// Solana token mint authority account
-	MintAuthority string `json:"mint_authority,nullable"`
+	MintAuthority string `json:"mint_authority" api:"nullable"`
 	// Name of the token
-	Name string `json:"name,nullable"`
+	Name string `json:"name" api:"nullable"`
 	// The rune's unique sequential number.
-	Number int64 `json:"number,nullable"`
+	Number int64 `json:"number" api:"nullable"`
 	// Contract owner address
-	Owner string `json:"owner,nullable"`
+	Owner string `json:"owner" api:"nullable"`
 	// This field can have the runtime type of
 	// [TokenSnapshotFullResponseItemsMetadataSolanaMetadataOwnerBalance],
 	// [TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenOwnerBalance].
 	OwnerBalance interface{} `json:"owner_balance"`
 	// Solana token permanent delegate account
-	PermanentDelegate string `json:"permanent_delegate,nullable"`
+	PermanentDelegate string `json:"permanent_delegate" api:"nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol,nullable"`
+	Symbol string `json:"symbol" api:"nullable"`
 	// Address of the token creation initiator, only set if the tokens was created by a
 	// well known token launch platform
-	TokenCreationInitiator string `json:"token_creation_initiator,nullable"`
+	TokenCreationInitiator string `json:"token_creation_initiator" api:"nullable"`
 	// Type of the token
-	Type string `json:"type,nullable"`
+	Type string `json:"type" api:"nullable"`
 	// Solana token update authority account
-	UpdateAuthority string `json:"update_authority,nullable"`
+	UpdateAuthority string `json:"update_authority" api:"nullable"`
 	// This field can have the runtime type of [[]string].
 	URLs  interface{}                                `json:"urls"`
 	JSON  tokenSnapshotFullResponseItemsMetadataJSON `json:"-"`
@@ -1394,6 +1342,7 @@ type tokenSnapshotFullResponseItemsMetadataJSON struct {
 	FormattedName          apijson.Field
 	FreezeAuthority        apijson.Field
 	ImageURL               apijson.Field
+	ImpersonationTargets   apijson.Field
 	MaliciousURLs          apijson.Field
 	MintAuthority          apijson.Field
 	Name                   apijson.Field
@@ -1464,46 +1413,48 @@ func init() {
 
 type TokenSnapshotFullResponseItemsMetadataSolanaMetadata struct {
 	// Contract balance
-	ContractBalance TokenSnapshotFullResponseItemsMetadataSolanaMetadataContractBalance `json:"contract_balance,nullable"`
+	ContractBalance TokenSnapshotFullResponseItemsMetadataSolanaMetadataContractBalance `json:"contract_balance" api:"nullable"`
 	// Contract deploy date
-	CreationTimestamp string `json:"creation_timestamp,nullable"`
+	CreationTimestamp string `json:"creation_timestamp" api:"nullable"`
 	// Decimals of the token
-	Decimals int64 `json:"decimals,nullable"`
+	Decimals int64 `json:"decimals" api:"nullable"`
 	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer,nullable"`
+	Deployer string `json:"deployer" api:"nullable"`
 	// Contract creator balance
-	DeployerBalance TokenSnapshotFullResponseItemsMetadataSolanaMetadataDeployerBalance `json:"deployer_balance,nullable"`
+	DeployerBalance TokenSnapshotFullResponseItemsMetadataSolanaMetadataDeployerBalance `json:"deployer_balance" api:"nullable"`
 	// Description of the token
-	Description string `json:"description,nullable"`
+	Description string `json:"description" api:"nullable"`
 	// social links of the token
 	ExternalLinks TokenSnapshotFullResponseItemsMetadataSolanaMetadataExternalLinks `json:"external_links"`
 	// Solana token freeze authority account
-	FreezeAuthority string `json:"freeze_authority,nullable"`
+	FreezeAuthority string `json:"freeze_authority" api:"nullable"`
 	// URL of the token image
-	ImageURL string `json:"image_url,nullable"`
+	ImageURL string `json:"image_url" api:"nullable"`
+	// List of tokens that this token is impersonating, if detected as an impersonator
+	ImpersonationTargets []TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTarget `json:"impersonation_targets" api:"nullable"`
 	// Malicious urls associated with the token
-	MaliciousURLs []string `json:"malicious_urls,nullable"`
+	MaliciousURLs []string `json:"malicious_urls" api:"nullable"`
 	// Solana token mint authority account
-	MintAuthority string `json:"mint_authority,nullable"`
+	MintAuthority string `json:"mint_authority" api:"nullable"`
 	// Name of the token
-	Name string `json:"name,nullable"`
+	Name string `json:"name" api:"nullable"`
 	// Contract owner address
-	Owner string `json:"owner,nullable"`
+	Owner string `json:"owner" api:"nullable"`
 	// Contract owner balance
-	OwnerBalance TokenSnapshotFullResponseItemsMetadataSolanaMetadataOwnerBalance `json:"owner_balance,nullable"`
+	OwnerBalance TokenSnapshotFullResponseItemsMetadataSolanaMetadataOwnerBalance `json:"owner_balance" api:"nullable"`
 	// Solana token permanent delegate account
-	PermanentDelegate string `json:"permanent_delegate,nullable"`
+	PermanentDelegate string `json:"permanent_delegate" api:"nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol,nullable"`
+	Symbol string `json:"symbol" api:"nullable"`
 	// Address of the token creation initiator, only set if the tokens was created by a
 	// well known token launch platform
-	TokenCreationInitiator string `json:"token_creation_initiator,nullable"`
+	TokenCreationInitiator string `json:"token_creation_initiator" api:"nullable"`
 	// Type of the token
-	Type string `json:"type,nullable"`
+	Type string `json:"type" api:"nullable"`
 	// Solana token update authority account
-	UpdateAuthority string `json:"update_authority,nullable"`
+	UpdateAuthority string `json:"update_authority" api:"nullable"`
 	// Urls associated with the token
-	URLs []string                                                 `json:"urls,nullable"`
+	URLs []string                                                 `json:"urls" api:"nullable"`
 	JSON tokenSnapshotFullResponseItemsMetadataSolanaMetadataJSON `json:"-"`
 }
 
@@ -1519,6 +1470,7 @@ type tokenSnapshotFullResponseItemsMetadataSolanaMetadataJSON struct {
 	ExternalLinks          apijson.Field
 	FreezeAuthority        apijson.Field
 	ImageURL               apijson.Field
+	ImpersonationTargets   apijson.Field
 	MaliciousURLs          apijson.Field
 	MintAuthority          apijson.Field
 	Name                   apijson.Field
@@ -1547,8 +1499,8 @@ func (r TokenSnapshotFullResponseItemsMetadataSolanaMetadata) implementsTokenSna
 
 // Contract balance
 type TokenSnapshotFullResponseItemsMetadataSolanaMetadataContractBalance struct {
-	Amount    float64                                                                 `json:"amount,nullable"`
-	AmountWei string                                                                  `json:"amount_wei,nullable"`
+	Amount    float64                                                                 `json:"amount" api:"nullable"`
+	AmountWei string                                                                  `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotFullResponseItemsMetadataSolanaMetadataContractBalanceJSON `json:"-"`
 }
 
@@ -1572,8 +1524,8 @@ func (r tokenSnapshotFullResponseItemsMetadataSolanaMetadataContractBalanceJSON)
 
 // Contract creator balance
 type TokenSnapshotFullResponseItemsMetadataSolanaMetadataDeployerBalance struct {
-	Amount    float64                                                                 `json:"amount,nullable"`
-	AmountWei string                                                                  `json:"amount_wei,nullable"`
+	Amount    float64                                                                 `json:"amount" api:"nullable"`
+	AmountWei string                                                                  `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotFullResponseItemsMetadataSolanaMetadataDeployerBalanceJSON `json:"-"`
 }
 
@@ -1597,9 +1549,9 @@ func (r tokenSnapshotFullResponseItemsMetadataSolanaMetadataDeployerBalanceJSON)
 
 // social links of the token
 type TokenSnapshotFullResponseItemsMetadataSolanaMetadataExternalLinks struct {
-	Homepage          string                                                                `json:"homepage,nullable"`
-	TelegramChannelID string                                                                `json:"telegram_channel_id,nullable"`
-	TwitterPage       string                                                                `json:"twitter_page,nullable"`
+	Homepage          string                                                                `json:"homepage" api:"nullable"`
+	TelegramChannelID string                                                                `json:"telegram_channel_id" api:"nullable"`
+	TwitterPage       string                                                                `json:"twitter_page" api:"nullable"`
 	JSON              tokenSnapshotFullResponseItemsMetadataSolanaMetadataExternalLinksJSON `json:"-"`
 }
 
@@ -1622,10 +1574,61 @@ func (r tokenSnapshotFullResponseItemsMetadataSolanaMetadataExternalLinksJSON) R
 	return r.raw
 }
 
+type TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTarget struct {
+	// Address of the token being impersonated
+	Address string `json:"address" api:"required"`
+	// Blockchain network of the target token
+	Chain string `json:"chain" api:"required"`
+	// Name of the token being impersonated
+	Name string `json:"name" api:"nullable"`
+	// Source of the impersonation match
+	Source TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSource `json:"source" api:"nullable"`
+	// Symbol of the token being impersonated
+	Symbol string                                                                      `json:"symbol" api:"nullable"`
+	JSON   tokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetJSON `json:"-"`
+}
+
+// tokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetJSON
+// contains the JSON metadata for the struct
+// [TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTarget]
+type tokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetJSON struct {
+	Address     apijson.Field
+	Chain       apijson.Field
+	Name        apijson.Field
+	Source      apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTarget) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Source of the impersonation match
+type TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSource string
+
+const (
+	TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceTopToken    TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSource = "TOP_TOKEN"
+	TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceUserDefined TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSource = "USER_DEFINED"
+)
+
+func (r TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSource) IsKnown() bool {
+	switch r {
+	case TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceTopToken, TokenSnapshotFullResponseItemsMetadataSolanaMetadataImpersonationTargetsSourceUserDefined:
+		return true
+	}
+	return false
+}
+
 // Contract owner balance
 type TokenSnapshotFullResponseItemsMetadataSolanaMetadataOwnerBalance struct {
-	Amount    float64                                                              `json:"amount,nullable"`
-	AmountWei string                                                               `json:"amount_wei,nullable"`
+	Amount    float64                                                              `json:"amount" api:"nullable"`
+	AmountWei string                                                               `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotFullResponseItemsMetadataSolanaMetadataOwnerBalanceJSON `json:"-"`
 }
 
@@ -1649,19 +1652,19 @@ func (r tokenSnapshotFullResponseItemsMetadataSolanaMetadataOwnerBalanceJSON) Ra
 
 type TokenSnapshotFullResponseItemsMetadataBitcoinMetadataToken struct {
 	// The unique ID for the Rune
-	ID string `json:"id,nullable"`
+	ID string `json:"id" api:"nullable"`
 	// Decimals of the token
-	Decimals int64 `json:"decimals,nullable"`
+	Decimals int64 `json:"decimals" api:"nullable"`
 	// The formatted name of the rune, with spacers
-	FormattedName string `json:"formatted_name,nullable"`
+	FormattedName string `json:"formatted_name" api:"nullable"`
 	// Name of the token
-	Name string `json:"name,nullable"`
+	Name string `json:"name" api:"nullable"`
 	// The rune's unique sequential number.
-	Number int64 `json:"number,nullable"`
+	Number int64 `json:"number" api:"nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol,nullable"`
+	Symbol string `json:"symbol" api:"nullable"`
 	// Type of the token
-	Type string                                                         `json:"type,nullable"`
+	Type string                                                         `json:"type" api:"nullable"`
 	JSON tokenSnapshotFullResponseItemsMetadataBitcoinMetadataTokenJSON `json:"-"`
 }
 
@@ -1693,38 +1696,40 @@ func (r TokenSnapshotFullResponseItemsMetadataBitcoinMetadataToken) implementsTo
 
 type TokenSnapshotFullResponseItemsMetadataEvmMetadataToken struct {
 	// Contract balance
-	ContractBalance TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenContractBalance `json:"contract_balance,nullable"`
+	ContractBalance TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenContractBalance `json:"contract_balance" api:"nullable"`
 	// Contract deploy date
-	CreationTimestamp string `json:"creation_timestamp,nullable"`
+	CreationTimestamp string `json:"creation_timestamp" api:"nullable"`
 	// Decimals of the token
-	Decimals int64 `json:"decimals,nullable"`
+	Decimals int64 `json:"decimals" api:"nullable"`
 	// Address of the deployer of the fungible token
-	Deployer string `json:"deployer,nullable"`
+	Deployer string `json:"deployer" api:"nullable"`
 	// Contract creator balance
-	DeployerBalance TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenDeployerBalance `json:"deployer_balance,nullable"`
+	DeployerBalance TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenDeployerBalance `json:"deployer_balance" api:"nullable"`
 	// Description of the token
-	Description string `json:"description,nullable"`
+	Description string `json:"description" api:"nullable"`
 	// social links of the token
 	ExternalLinks TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenExternalLinks `json:"external_links"`
 	// URL of the token image
-	ImageURL string `json:"image_url,nullable"`
+	ImageURL string `json:"image_url" api:"nullable"`
+	// List of tokens that this token is impersonating, if detected as an impersonator
+	ImpersonationTargets []TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTarget `json:"impersonation_targets" api:"nullable"`
 	// Malicious urls associated with the token
-	MaliciousURLs []string `json:"malicious_urls,nullable"`
+	MaliciousURLs []string `json:"malicious_urls" api:"nullable"`
 	// Name of the token
-	Name string `json:"name,nullable"`
+	Name string `json:"name" api:"nullable"`
 	// Contract owner address
-	Owner string `json:"owner,nullable"`
+	Owner string `json:"owner" api:"nullable"`
 	// Contract owner balance
-	OwnerBalance TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenOwnerBalance `json:"owner_balance,nullable"`
+	OwnerBalance TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenOwnerBalance `json:"owner_balance" api:"nullable"`
 	// Symbol of the token
-	Symbol string `json:"symbol,nullable"`
+	Symbol string `json:"symbol" api:"nullable"`
 	// Address of the token creation initiator, only set if the tokens was created by a
 	// well known token launch platform
-	TokenCreationInitiator string `json:"token_creation_initiator,nullable"`
+	TokenCreationInitiator string `json:"token_creation_initiator" api:"nullable"`
 	// Type of the token
-	Type string `json:"type,nullable"`
+	Type string `json:"type" api:"nullable"`
 	// Urls associated with the token
-	URLs []string                                                   `json:"urls,nullable"`
+	URLs []string                                                   `json:"urls" api:"nullable"`
 	JSON tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenJSON `json:"-"`
 }
 
@@ -1739,6 +1744,7 @@ type tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenJSON struct {
 	Description            apijson.Field
 	ExternalLinks          apijson.Field
 	ImageURL               apijson.Field
+	ImpersonationTargets   apijson.Field
 	MaliciousURLs          apijson.Field
 	Name                   apijson.Field
 	Owner                  apijson.Field
@@ -1764,8 +1770,8 @@ func (r TokenSnapshotFullResponseItemsMetadataEvmMetadataToken) implementsTokenS
 
 // Contract balance
 type TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenContractBalance struct {
-	Amount    float64                                                                   `json:"amount,nullable"`
-	AmountWei string                                                                    `json:"amount_wei,nullable"`
+	Amount    float64                                                                   `json:"amount" api:"nullable"`
+	AmountWei string                                                                    `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenContractBalanceJSON `json:"-"`
 }
 
@@ -1789,8 +1795,8 @@ func (r tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenContractBalanceJSO
 
 // Contract creator balance
 type TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenDeployerBalance struct {
-	Amount    float64                                                                   `json:"amount,nullable"`
-	AmountWei string                                                                    `json:"amount_wei,nullable"`
+	Amount    float64                                                                   `json:"amount" api:"nullable"`
+	AmountWei string                                                                    `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenDeployerBalanceJSON `json:"-"`
 }
 
@@ -1814,9 +1820,9 @@ func (r tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenDeployerBalanceJSO
 
 // social links of the token
 type TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenExternalLinks struct {
-	Homepage          string                                                                  `json:"homepage,nullable"`
-	TelegramChannelID string                                                                  `json:"telegram_channel_id,nullable"`
-	TwitterPage       string                                                                  `json:"twitter_page,nullable"`
+	Homepage          string                                                                  `json:"homepage" api:"nullable"`
+	TelegramChannelID string                                                                  `json:"telegram_channel_id" api:"nullable"`
+	TwitterPage       string                                                                  `json:"twitter_page" api:"nullable"`
 	JSON              tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenExternalLinksJSON `json:"-"`
 }
 
@@ -1839,10 +1845,61 @@ func (r tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenExternalLinksJSON)
 	return r.raw
 }
 
+type TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTarget struct {
+	// Address of the token being impersonated
+	Address string `json:"address" api:"required"`
+	// Blockchain network of the target token
+	Chain string `json:"chain" api:"required"`
+	// Name of the token being impersonated
+	Name string `json:"name" api:"nullable"`
+	// Source of the impersonation match
+	Source TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource `json:"source" api:"nullable"`
+	// Symbol of the token being impersonated
+	Symbol string                                                                        `json:"symbol" api:"nullable"`
+	JSON   tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON `json:"-"`
+}
+
+// tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON
+// contains the JSON metadata for the struct
+// [TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTarget]
+type tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON struct {
+	Address     apijson.Field
+	Chain       apijson.Field
+	Name        apijson.Field
+	Source      apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTarget) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetJSON) RawJSON() string {
+	return r.raw
+}
+
+// Source of the impersonation match
+type TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource string
+
+const (
+	TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceTopToken    TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource = "TOP_TOKEN"
+	TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceUserDefined TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource = "USER_DEFINED"
+)
+
+func (r TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSource) IsKnown() bool {
+	switch r {
+	case TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceTopToken, TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenImpersonationTargetsSourceUserDefined:
+		return true
+	}
+	return false
+}
+
 // Contract owner balance
 type TokenSnapshotFullResponseItemsMetadataEvmMetadataTokenOwnerBalance struct {
-	Amount    float64                                                                `json:"amount,nullable"`
-	AmountWei string                                                                 `json:"amount_wei,nullable"`
+	Amount    float64                                                                `json:"amount" api:"nullable"`
+	AmountWei string                                                                 `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotFullResponseItemsMetadataEvmMetadataTokenOwnerBalanceJSON `json:"-"`
 }
 
@@ -1885,13 +1942,13 @@ func (r TokenSnapshotFullResponseItemsResultType) IsKnown() bool {
 // Trading limits of the token
 type TokenSnapshotFullResponseItemsTradingLimits struct {
 	// Max amount that can be bought at once
-	MaxBuy TokenSnapshotFullResponseItemsTradingLimitsMaxBuy `json:"max_buy,nullable"`
+	MaxBuy TokenSnapshotFullResponseItemsTradingLimitsMaxBuy `json:"max_buy" api:"nullable"`
 	// Max amount that can be held by a single address
-	MaxHolding TokenSnapshotFullResponseItemsTradingLimitsMaxHolding `json:"max_holding,nullable"`
+	MaxHolding TokenSnapshotFullResponseItemsTradingLimitsMaxHolding `json:"max_holding" api:"nullable"`
 	// Max amount that can be sold at once
-	MaxSell TokenSnapshotFullResponseItemsTradingLimitsMaxSell `json:"max_sell,nullable"`
+	MaxSell TokenSnapshotFullResponseItemsTradingLimitsMaxSell `json:"max_sell" api:"nullable"`
 	// Maximum amount of the token that can be sold in a block
-	SellLimitPerBlock TokenSnapshotFullResponseItemsTradingLimitsSellLimitPerBlock `json:"sell_limit_per_block,nullable"`
+	SellLimitPerBlock TokenSnapshotFullResponseItemsTradingLimitsSellLimitPerBlock `json:"sell_limit_per_block" api:"nullable"`
 	JSON              tokenSnapshotFullResponseItemsTradingLimitsJSON              `json:"-"`
 }
 
@@ -1916,8 +1973,8 @@ func (r tokenSnapshotFullResponseItemsTradingLimitsJSON) RawJSON() string {
 
 // Max amount that can be bought at once
 type TokenSnapshotFullResponseItemsTradingLimitsMaxBuy struct {
-	Amount    float64                                               `json:"amount,nullable"`
-	AmountWei string                                                `json:"amount_wei,nullable"`
+	Amount    float64                                               `json:"amount" api:"nullable"`
+	AmountWei string                                                `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotFullResponseItemsTradingLimitsMaxBuyJSON `json:"-"`
 }
 
@@ -1940,8 +1997,8 @@ func (r tokenSnapshotFullResponseItemsTradingLimitsMaxBuyJSON) RawJSON() string 
 
 // Max amount that can be held by a single address
 type TokenSnapshotFullResponseItemsTradingLimitsMaxHolding struct {
-	Amount    float64                                                   `json:"amount,nullable"`
-	AmountWei string                                                    `json:"amount_wei,nullable"`
+	Amount    float64                                                   `json:"amount" api:"nullable"`
+	AmountWei string                                                    `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotFullResponseItemsTradingLimitsMaxHoldingJSON `json:"-"`
 }
 
@@ -1964,8 +2021,8 @@ func (r tokenSnapshotFullResponseItemsTradingLimitsMaxHoldingJSON) RawJSON() str
 
 // Max amount that can be sold at once
 type TokenSnapshotFullResponseItemsTradingLimitsMaxSell struct {
-	Amount    float64                                                `json:"amount,nullable"`
-	AmountWei string                                                 `json:"amount_wei,nullable"`
+	Amount    float64                                                `json:"amount" api:"nullable"`
+	AmountWei string                                                 `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotFullResponseItemsTradingLimitsMaxSellJSON `json:"-"`
 }
 
@@ -1988,8 +2045,8 @@ func (r tokenSnapshotFullResponseItemsTradingLimitsMaxSellJSON) RawJSON() string
 
 // Maximum amount of the token that can be sold in a block
 type TokenSnapshotFullResponseItemsTradingLimitsSellLimitPerBlock struct {
-	Amount    float64                                                          `json:"amount,nullable"`
-	AmountWei string                                                           `json:"amount_wei,nullable"`
+	Amount    float64                                                          `json:"amount" api:"nullable"`
+	AmountWei string                                                           `json:"amount_wei" api:"nullable"`
 	JSON      tokenSnapshotFullResponseItemsTradingLimitsSellLimitPerBlockJSON `json:"-"`
 }
 
@@ -2013,11 +2070,11 @@ func (r tokenSnapshotFullResponseItemsTradingLimitsSellLimitPerBlockJSON) RawJSO
 
 type TokenSnapshotFullResponseItemsFeature struct {
 	// Description of the feature
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// Feature identifier
-	FeatureID TokenSnapshotFullResponseItemsFeaturesFeatureID `json:"feature_id,required"`
+	FeatureID TokenSnapshotFullResponseItemsFeaturesFeatureID `json:"feature_id" api:"required"`
 	// Type of the feature
-	Type TokenSnapshotFullResponseItemsFeaturesType `json:"type,required"`
+	Type TokenSnapshotFullResponseItemsFeaturesType `json:"type" api:"required"`
 	JSON tokenSnapshotFullResponseItemsFeatureJSON  `json:"-"`
 }
 
@@ -2087,6 +2144,11 @@ const (
 	TokenSnapshotFullResponseItemsFeaturesFeatureIDOwnerCanChangeBalance          TokenSnapshotFullResponseItemsFeaturesFeatureID = "OWNER_CAN_CHANGE_BALANCE"
 	TokenSnapshotFullResponseItemsFeaturesFeatureIDProxyContract                  TokenSnapshotFullResponseItemsFeaturesFeatureID = "PROXY_CONTRACT"
 	TokenSnapshotFullResponseItemsFeaturesFeatureIDSimilarMaliciousContract       TokenSnapshotFullResponseItemsFeaturesFeatureID = "SIMILAR_MALICIOUS_CONTRACT"
+	TokenSnapshotFullResponseItemsFeaturesFeatureIDImpersonatorSensitiveAsset     TokenSnapshotFullResponseItemsFeaturesFeatureID = "IMPERSONATOR_SENSITIVE_ASSET"
+	TokenSnapshotFullResponseItemsFeaturesFeatureIDImpersonatorHighConfidence     TokenSnapshotFullResponseItemsFeaturesFeatureID = "IMPERSONATOR_HIGH_CONFIDENCE"
+	TokenSnapshotFullResponseItemsFeaturesFeatureIDImpersonatorMediumConfidence   TokenSnapshotFullResponseItemsFeaturesFeatureID = "IMPERSONATOR_MEDIUM_CONFIDENCE"
+	TokenSnapshotFullResponseItemsFeaturesFeatureIDImpersonatorLowConfidence      TokenSnapshotFullResponseItemsFeaturesFeatureID = "IMPERSONATOR_LOW_CONFIDENCE"
+	TokenSnapshotFullResponseItemsFeaturesFeatureIDImpersonationProtected         TokenSnapshotFullResponseItemsFeaturesFeatureID = "IMPERSONATION_PROTECTED"
 	TokenSnapshotFullResponseItemsFeaturesFeatureIDFakeVolume                     TokenSnapshotFullResponseItemsFeaturesFeatureID = "FAKE_VOLUME"
 	TokenSnapshotFullResponseItemsFeaturesFeatureIDHiddenSupplyByKeyHolder        TokenSnapshotFullResponseItemsFeaturesFeatureID = "HIDDEN_SUPPLY_BY_KEY_HOLDER"
 	TokenSnapshotFullResponseItemsFeaturesFeatureIDFakeTradeMakerCount            TokenSnapshotFullResponseItemsFeaturesFeatureID = "FAKE_TRADE_MAKER_COUNT"
@@ -2094,7 +2156,7 @@ const (
 
 func (r TokenSnapshotFullResponseItemsFeaturesFeatureID) IsKnown() bool {
 	switch r {
-	case TokenSnapshotFullResponseItemsFeaturesFeatureIDVerifiedContract, TokenSnapshotFullResponseItemsFeaturesFeatureIDUnverifiedContract, TokenSnapshotFullResponseItemsFeaturesFeatureIDHighTradeVolume, TokenSnapshotFullResponseItemsFeaturesFeatureIDMarketPlaceSalesHistory, TokenSnapshotFullResponseItemsFeaturesFeatureIDHighReputationToken, TokenSnapshotFullResponseItemsFeaturesFeatureIDOnchainActivityValidator, TokenSnapshotFullResponseItemsFeaturesFeatureIDStaticCodeSignature, TokenSnapshotFullResponseItemsFeaturesFeatureIDKnownMalicious, TokenSnapshotFullResponseItemsFeaturesFeatureIDIsEoa, TokenSnapshotFullResponseItemsFeaturesFeatureIDIsContract, TokenSnapshotFullResponseItemsFeaturesFeatureIDErc20Contract, TokenSnapshotFullResponseItemsFeaturesFeatureIDTrustedContract, TokenSnapshotFullResponseItemsFeaturesFeatureIDBenignCreator, TokenSnapshotFullResponseItemsFeaturesFeatureIDMetadata, TokenSnapshotFullResponseItemsFeaturesFeatureIDAirdropPattern, TokenSnapshotFullResponseItemsFeaturesFeatureIDImpersonator, TokenSnapshotFullResponseItemsFeaturesFeatureIDInorganicVolume, TokenSnapshotFullResponseItemsFeaturesFeatureIDDynamicAnalysis, TokenSnapshotFullResponseItemsFeaturesFeatureIDConcentratedSupplyDistribution, TokenSnapshotFullResponseItemsFeaturesFeatureIDHoneypot, TokenSnapshotFullResponseItemsFeaturesFeatureIDInsufficientLockedLiquidity, TokenSnapshotFullResponseItemsFeaturesFeatureIDUnstableTokenPrice, TokenSnapshotFullResponseItemsFeaturesFeatureIDRugpull, TokenSnapshotFullResponseItemsFeaturesFeatureIDWashTrading, TokenSnapshotFullResponseItemsFeaturesFeatureIDConsumerOverride, TokenSnapshotFullResponseItemsFeaturesFeatureIDInappropriateContent, TokenSnapshotFullResponseItemsFeaturesFeatureIDHighTransferFee, TokenSnapshotFullResponseItemsFeaturesFeatureIDHighBuyFee, TokenSnapshotFullResponseItemsFeaturesFeatureIDHighSellFee, TokenSnapshotFullResponseItemsFeaturesFeatureIDUnsellableToken, TokenSnapshotFullResponseItemsFeaturesFeatureIDIsMintable, TokenSnapshotFullResponseItemsFeaturesFeatureIDRebaseToken, TokenSnapshotFullResponseItemsFeaturesFeatureIDLiquidStakingToken, TokenSnapshotFullResponseItemsFeaturesFeatureIDModifiableTaxes, TokenSnapshotFullResponseItemsFeaturesFeatureIDCanBlacklist, TokenSnapshotFullResponseItemsFeaturesFeatureIDCanWhitelist, TokenSnapshotFullResponseItemsFeaturesFeatureIDHasTradingCooldown, TokenSnapshotFullResponseItemsFeaturesFeatureIDExternalFunctions, TokenSnapshotFullResponseItemsFeaturesFeatureIDHiddenOwner, TokenSnapshotFullResponseItemsFeaturesFeatureIDTransferPauseable, TokenSnapshotFullResponseItemsFeaturesFeatureIDOwnershipRenounced, TokenSnapshotFullResponseItemsFeaturesFeatureIDOwnerCanChangeBalance, TokenSnapshotFullResponseItemsFeaturesFeatureIDProxyContract, TokenSnapshotFullResponseItemsFeaturesFeatureIDSimilarMaliciousContract, TokenSnapshotFullResponseItemsFeaturesFeatureIDFakeVolume, TokenSnapshotFullResponseItemsFeaturesFeatureIDHiddenSupplyByKeyHolder, TokenSnapshotFullResponseItemsFeaturesFeatureIDFakeTradeMakerCount:
+	case TokenSnapshotFullResponseItemsFeaturesFeatureIDVerifiedContract, TokenSnapshotFullResponseItemsFeaturesFeatureIDUnverifiedContract, TokenSnapshotFullResponseItemsFeaturesFeatureIDHighTradeVolume, TokenSnapshotFullResponseItemsFeaturesFeatureIDMarketPlaceSalesHistory, TokenSnapshotFullResponseItemsFeaturesFeatureIDHighReputationToken, TokenSnapshotFullResponseItemsFeaturesFeatureIDOnchainActivityValidator, TokenSnapshotFullResponseItemsFeaturesFeatureIDStaticCodeSignature, TokenSnapshotFullResponseItemsFeaturesFeatureIDKnownMalicious, TokenSnapshotFullResponseItemsFeaturesFeatureIDIsEoa, TokenSnapshotFullResponseItemsFeaturesFeatureIDIsContract, TokenSnapshotFullResponseItemsFeaturesFeatureIDErc20Contract, TokenSnapshotFullResponseItemsFeaturesFeatureIDTrustedContract, TokenSnapshotFullResponseItemsFeaturesFeatureIDBenignCreator, TokenSnapshotFullResponseItemsFeaturesFeatureIDMetadata, TokenSnapshotFullResponseItemsFeaturesFeatureIDAirdropPattern, TokenSnapshotFullResponseItemsFeaturesFeatureIDImpersonator, TokenSnapshotFullResponseItemsFeaturesFeatureIDInorganicVolume, TokenSnapshotFullResponseItemsFeaturesFeatureIDDynamicAnalysis, TokenSnapshotFullResponseItemsFeaturesFeatureIDConcentratedSupplyDistribution, TokenSnapshotFullResponseItemsFeaturesFeatureIDHoneypot, TokenSnapshotFullResponseItemsFeaturesFeatureIDInsufficientLockedLiquidity, TokenSnapshotFullResponseItemsFeaturesFeatureIDUnstableTokenPrice, TokenSnapshotFullResponseItemsFeaturesFeatureIDRugpull, TokenSnapshotFullResponseItemsFeaturesFeatureIDWashTrading, TokenSnapshotFullResponseItemsFeaturesFeatureIDConsumerOverride, TokenSnapshotFullResponseItemsFeaturesFeatureIDInappropriateContent, TokenSnapshotFullResponseItemsFeaturesFeatureIDHighTransferFee, TokenSnapshotFullResponseItemsFeaturesFeatureIDHighBuyFee, TokenSnapshotFullResponseItemsFeaturesFeatureIDHighSellFee, TokenSnapshotFullResponseItemsFeaturesFeatureIDUnsellableToken, TokenSnapshotFullResponseItemsFeaturesFeatureIDIsMintable, TokenSnapshotFullResponseItemsFeaturesFeatureIDRebaseToken, TokenSnapshotFullResponseItemsFeaturesFeatureIDLiquidStakingToken, TokenSnapshotFullResponseItemsFeaturesFeatureIDModifiableTaxes, TokenSnapshotFullResponseItemsFeaturesFeatureIDCanBlacklist, TokenSnapshotFullResponseItemsFeaturesFeatureIDCanWhitelist, TokenSnapshotFullResponseItemsFeaturesFeatureIDHasTradingCooldown, TokenSnapshotFullResponseItemsFeaturesFeatureIDExternalFunctions, TokenSnapshotFullResponseItemsFeaturesFeatureIDHiddenOwner, TokenSnapshotFullResponseItemsFeaturesFeatureIDTransferPauseable, TokenSnapshotFullResponseItemsFeaturesFeatureIDOwnershipRenounced, TokenSnapshotFullResponseItemsFeaturesFeatureIDOwnerCanChangeBalance, TokenSnapshotFullResponseItemsFeaturesFeatureIDProxyContract, TokenSnapshotFullResponseItemsFeaturesFeatureIDSimilarMaliciousContract, TokenSnapshotFullResponseItemsFeaturesFeatureIDImpersonatorSensitiveAsset, TokenSnapshotFullResponseItemsFeaturesFeatureIDImpersonatorHighConfidence, TokenSnapshotFullResponseItemsFeaturesFeatureIDImpersonatorMediumConfidence, TokenSnapshotFullResponseItemsFeaturesFeatureIDImpersonatorLowConfidence, TokenSnapshotFullResponseItemsFeaturesFeatureIDImpersonationProtected, TokenSnapshotFullResponseItemsFeaturesFeatureIDFakeVolume, TokenSnapshotFullResponseItemsFeaturesFeatureIDHiddenSupplyByKeyHolder, TokenSnapshotFullResponseItemsFeaturesFeatureIDFakeTradeMakerCount:
 		return true
 	}
 	return false
@@ -2120,7 +2182,7 @@ func (r TokenSnapshotFullResponseItemsFeaturesType) IsKnown() bool {
 
 type TokenSnapshotDiffParams struct {
 	// The chain name
-	Chain param.Field[TokenScanSupportedChain] `query:"chain,required"`
+	Chain param.Field[TokenScanSupportedChain] `query:"chain" api:"required"`
 	// Cursor to start from, if not provided, the first page will be returned
 	Cursor param.Field[string] `query:"cursor"`
 	// Number of tokens to return in a page
@@ -2140,7 +2202,7 @@ func (r TokenSnapshotDiffParams) URLQuery() (v url.Values) {
 
 type TokenSnapshotFullParams struct {
 	// The chain name
-	Chain param.Field[TokenScanSupportedChain] `query:"chain,required"`
+	Chain param.Field[TokenScanSupportedChain] `query:"chain" api:"required"`
 	// Cursor to start from, if not provided, the first page will be returned
 	Cursor param.Field[string] `query:"cursor"`
 	// Number of tokens to return in a page

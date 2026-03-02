@@ -52,19 +52,19 @@ func (r *SiteService) Scan(ctx context.Context, body SiteScanParams, opts ...opt
 }
 
 type SiteScanHitResponse struct {
-	AttackTypes       map[string]SiteScanHitResponseAttackType `json:"attack_types,required"`
-	ContractRead      SiteScanHitResponseContractRead          `json:"contract_read,required"`
-	ContractWrite     SiteScanHitResponseContractWrite         `json:"contract_write,required"`
-	IsMalicious       bool                                     `json:"is_malicious,required"`
-	IsReachable       bool                                     `json:"is_reachable,required"`
-	IsWeb3Site        bool                                     `json:"is_web3_site,required"`
-	JsonRpcOperations []string                                 `json:"json_rpc_operations,required"`
-	MaliciousScore    float64                                  `json:"malicious_score,required"`
-	NetworkOperations []string                                 `json:"network_operations,required"`
-	ScanEndTime       time.Time                                `json:"scan_end_time,required" format:"date-time"`
-	ScanStartTime     time.Time                                `json:"scan_start_time,required" format:"date-time"`
-	Status            SiteScanHitResponseStatus                `json:"status,required"`
-	URL               string                                   `json:"url,required"`
+	AttackTypes       map[string]SiteScanHitResponseAttackType `json:"attack_types" api:"required"`
+	ContractRead      SiteScanHitResponseContractRead          `json:"contract_read" api:"required"`
+	ContractWrite     SiteScanHitResponseContractWrite         `json:"contract_write" api:"required"`
+	IsMalicious       bool                                     `json:"is_malicious" api:"required"`
+	IsReachable       bool                                     `json:"is_reachable" api:"required"`
+	IsWeb3Site        bool                                     `json:"is_web3_site" api:"required"`
+	JsonRpcOperations []string                                 `json:"json_rpc_operations" api:"required"`
+	MaliciousScore    float64                                  `json:"malicious_score" api:"required"`
+	NetworkOperations []string                                 `json:"network_operations" api:"required"`
+	ScanEndTime       time.Time                                `json:"scan_end_time" api:"required" format:"date-time"`
+	ScanStartTime     time.Time                                `json:"scan_start_time" api:"required" format:"date-time"`
+	Status            SiteScanHitResponseStatus                `json:"status" api:"required"`
+	URL               string                                   `json:"url" api:"required"`
 	JSON              siteScanHitResponseJSON                  `json:"-"`
 }
 
@@ -99,8 +99,8 @@ func (r siteScanHitResponseJSON) RawJSON() string {
 func (r SiteScanHitResponse) implementsSiteScanResponse() {}
 
 type SiteScanHitResponseAttackType struct {
-	Score     float64                           `json:"score,required"`
-	Threshold float64                           `json:"threshold,required"`
+	Score     float64                           `json:"score" api:"required"`
+	Threshold float64                           `json:"threshold" api:"required"`
 	JSON      siteScanHitResponseAttackTypeJSON `json:"-"`
 }
 
@@ -122,8 +122,8 @@ func (r siteScanHitResponseAttackTypeJSON) RawJSON() string {
 }
 
 type SiteScanHitResponseContractRead struct {
-	ContractAddresses []string                            `json:"contract_addresses,required"`
-	Functions         map[string][]string                 `json:"functions,required"`
+	ContractAddresses []string                            `json:"contract_addresses" api:"required"`
+	Functions         map[string][]string                 `json:"functions" api:"required"`
 	JSON              siteScanHitResponseContractReadJSON `json:"-"`
 }
 
@@ -145,8 +145,8 @@ func (r siteScanHitResponseContractReadJSON) RawJSON() string {
 }
 
 type SiteScanHitResponseContractWrite struct {
-	ContractAddresses []string                             `json:"contract_addresses,required"`
-	Functions         map[string][]string                  `json:"functions,required"`
+	ContractAddresses []string                             `json:"contract_addresses" api:"required"`
+	Functions         map[string][]string                  `json:"functions" api:"required"`
 	JSON              siteScanHitResponseContractWriteJSON `json:"-"`
 }
 
@@ -182,7 +182,7 @@ func (r SiteScanHitResponseStatus) IsKnown() bool {
 }
 
 type SiteScanMissResponse struct {
-	Status SiteScanMissResponseStatus `json:"status,required"`
+	Status SiteScanMissResponseStatus `json:"status" api:"required"`
 	JSON   siteScanMissResponseJSON   `json:"-"`
 }
 
@@ -221,7 +221,7 @@ func (r SiteScanMissResponseStatus) IsKnown() bool {
 type SiteReportResponse = interface{}
 
 type SiteScanResponse struct {
-	Status SiteScanResponseStatus `json:"status,required"`
+	Status SiteScanResponseStatus `json:"status" api:"required"`
 	// This field can have the runtime type of
 	// [map[string]SiteScanHitResponseAttackType].
 	AttackTypes interface{} `json:"attack_types"`
@@ -323,12 +323,12 @@ func (r SiteScanResponseStatus) IsKnown() bool {
 
 type SiteReportParams struct {
 	// Details about the report.
-	Details param.Field[string] `json:"details,required"`
+	Details param.Field[string] `json:"details" api:"required"`
 	// The event type of the report. Could be `FALSE_POSITIVE` or `FALSE_NEGATIVE`.
-	Event param.Field[SiteReportParamsEvent] `json:"event,required"`
+	Event param.Field[SiteReportParamsEvent] `json:"event" api:"required"`
 	// Parameters identifying the site to report, provided either as site details (url)
 	// or as a request ID from a previous scan.
-	Report param.Field[SiteReportParamsReportUnion] `json:"report,required"`
+	Report param.Field[SiteReportParamsReportUnion] `json:"report" api:"required"`
 }
 
 func (r SiteReportParams) MarshalJSON() (data []byte, err error) {
@@ -354,7 +354,7 @@ func (r SiteReportParamsEvent) IsKnown() bool {
 // Parameters identifying the site to report, provided either as site details (url)
 // or as a request ID from a previous scan.
 type SiteReportParamsReport struct {
-	Type   param.Field[SiteReportParamsReportType] `json:"type,required"`
+	Type   param.Field[SiteReportParamsReportType] `json:"type" api:"required"`
 	Params param.Field[interface{}]                `json:"params"`
 	// The request ID of a previous request. This can be found in the value of the
 	// `x-request-id` field in the headers of the response of the previous request. For
@@ -378,8 +378,8 @@ type SiteReportParamsReportUnion interface {
 }
 
 type SiteReportParamsReportParamReportSiteReportParams struct {
-	Params param.Field[SiteReportParamsReportParamReportSiteReportParamsParams] `json:"params,required"`
-	Type   param.Field[SiteReportParamsReportParamReportSiteReportParamsType]   `json:"type,required"`
+	Params param.Field[SiteReportParamsReportParamReportSiteReportParamsParams] `json:"params" api:"required"`
+	Type   param.Field[SiteReportParamsReportParamReportSiteReportParamsType]   `json:"type" api:"required"`
 }
 
 func (r SiteReportParamsReportParamReportSiteReportParams) MarshalJSON() (data []byte, err error) {
@@ -390,7 +390,7 @@ func (r SiteReportParamsReportParamReportSiteReportParams) implementsSiteReportP
 
 type SiteReportParamsReportParamReportSiteReportParamsParams struct {
 	// The url of the site to report on.
-	URL param.Field[string] `json:"url,required"`
+	URL param.Field[string] `json:"url" api:"required"`
 }
 
 func (r SiteReportParamsReportParamReportSiteReportParamsParams) MarshalJSON() (data []byte, err error) {
@@ -415,10 +415,10 @@ type SiteReportParamsReportRequestIDReport struct {
 	// The request ID of a previous request. This can be found in the value of the
 	// `x-request-id` field in the headers of the response of the previous request. For
 	// instance: `6c3cf6c1-a80d-4927-91b9-03d841ea61fe`.
-	RequestID param.Field[string] `json:"request_id,required"`
+	RequestID param.Field[string] `json:"request_id" api:"required"`
 	// The type identifier indicating that a request ID from a previous scan is being
 	// used.
-	Type param.Field[SiteReportParamsReportRequestIDReportType] `json:"type,required"`
+	Type param.Field[SiteReportParamsReportRequestIDReportType] `json:"type" api:"required"`
 }
 
 func (r SiteReportParamsReportRequestIDReport) MarshalJSON() (data []byte, err error) {
@@ -459,7 +459,7 @@ func (r SiteReportParamsReportType) IsKnown() bool {
 }
 
 type SiteScanParams struct {
-	URL      param.Field[string]                      `json:"url,required"`
+	URL      param.Field[string]                      `json:"url" api:"required"`
 	Metadata param.Field[SiteScanParamsMetadataUnion] `json:"metadata"`
 }
 
@@ -468,7 +468,7 @@ func (r SiteScanParams) MarshalJSON() (data []byte, err error) {
 }
 
 type SiteScanParamsMetadata struct {
-	Type                     param.Field[SiteScanParamsMetadataType] `json:"type,required"`
+	Type                     param.Field[SiteScanParamsMetadataType] `json:"type" api:"required"`
 	AccountAddress           param.Field[string]                     `json:"account_address"`
 	AccountAddresses         param.Field[interface{}]                `json:"account_addresses"`
 	WalletconnectDescription param.Field[string]                     `json:"walletconnect_description"`
@@ -489,7 +489,7 @@ type SiteScanParamsMetadataUnion interface {
 }
 
 type SiteScanParamsMetadataCatalogRequestMetadata struct {
-	Type param.Field[SiteScanParamsMetadataCatalogRequestMetadataType] `json:"type,required"`
+	Type param.Field[SiteScanParamsMetadataCatalogRequestMetadataType] `json:"type" api:"required"`
 }
 
 func (r SiteScanParamsMetadataCatalogRequestMetadata) MarshalJSON() (data []byte, err error) {
@@ -513,8 +513,8 @@ func (r SiteScanParamsMetadataCatalogRequestMetadataType) IsKnown() bool {
 }
 
 type SiteScanParamsMetadataWalletRequestMetadata struct {
-	AccountAddress           param.Field[string]                                          `json:"account_address,required"`
-	Type                     param.Field[SiteScanParamsMetadataWalletRequestMetadataType] `json:"type,required"`
+	AccountAddress           param.Field[string]                                          `json:"account_address" api:"required"`
+	Type                     param.Field[SiteScanParamsMetadataWalletRequestMetadataType] `json:"type" api:"required"`
 	WalletconnectDescription param.Field[string]                                          `json:"walletconnect_description"`
 	WalletconnectName        param.Field[string]                                          `json:"walletconnect_name"`
 }
@@ -543,8 +543,8 @@ type SiteScanParamsMetadataMultipleWalletRequestMetadata struct {
 	// List of all account addresses in different chains based on the CAIPs standard
 	// (https://github.com/ChainAgnostic/CAIPs). Ethereum mainnet example:
 	// eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb
-	AccountAddresses         param.Field[[]string]                                                `json:"account_addresses,required"`
-	Type                     param.Field[SiteScanParamsMetadataMultipleWalletRequestMetadataType] `json:"type,required"`
+	AccountAddresses         param.Field[[]string]                                                `json:"account_addresses" api:"required"`
+	Type                     param.Field[SiteScanParamsMetadataMultipleWalletRequestMetadataType] `json:"type" api:"required"`
 	WalletconnectDescription param.Field[string]                                                  `json:"walletconnect_description"`
 	WalletconnectName        param.Field[string]                                                  `json:"walletconnect_name"`
 }

@@ -34,9 +34,7 @@ func NewHederaTransactionService(opts ...option.RequestOption) (r *HederaTransac
 	return
 }
 
-// Gets a transaction and returns a full simulation indicating what will happen in
-// the transaction together with a recommended action and some textual reasons of
-// why the transaction was flagged that way.
+// Get a risk recommendation with plain-language reasons for a Hedera transaction.
 func (r *HederaTransactionService) Scan(ctx context.Context, body HederaTransactionScanParams, opts ...option.RequestOption) (res *HederaTransactionScanResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/hedera/transaction/scan"
@@ -47,9 +45,9 @@ func (r *HederaTransactionService) Scan(ctx context.Context, body HederaTransact
 // Transaction scan response schema.
 type HederaTransactionScanResponse struct {
 	// Simulation result; Only present if simulation option is included in the request
-	Simulation HederaTransactionScanResponseSimulation `json:"simulation,nullable"`
+	Simulation HederaTransactionScanResponseSimulation `json:"simulation" api:"nullable"`
 	// Validation result; Only present if validation option is included in the request
-	Validation HederaTransactionScanResponseValidation `json:"validation,nullable"`
+	Validation HederaTransactionScanResponseValidation `json:"validation" api:"nullable"`
 	JSON       hederaTransactionScanResponseJSON       `json:"-"`
 }
 
@@ -72,7 +70,7 @@ func (r hederaTransactionScanResponseJSON) RawJSON() string {
 
 // Simulation result; Only present if simulation option is included in the request
 type HederaTransactionScanResponseSimulation struct {
-	Status HederaTransactionScanResponseSimulationStatus `json:"status,required"`
+	Status HederaTransactionScanResponseSimulationStatus `json:"status" api:"required"`
 	// This field can have the runtime type of
 	// [HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummary].
 	AccountSummary interface{} `json:"account_summary"`
@@ -158,8 +156,8 @@ func init() {
 type HederaTransactionScanResponseSimulationHederaSimulationResponse struct {
 	// Summary of the actions and asset transfers that were made by the requested
 	// account address
-	AccountSummary HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummary `json:"account_summary,required"`
-	Status         HederaTransactionScanResponseSimulationHederaSimulationResponseStatus         `json:"status,required"`
+	AccountSummary HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummary `json:"account_summary" api:"required"`
+	Status         HederaTransactionScanResponseSimulationHederaSimulationResponseStatus         `json:"status" api:"required"`
 	// Details of addresses involved in the transaction
 	AddressDetails []HederaTransactionScanResponseSimulationHederaSimulationResponseAddressDetail `json:"address_details"`
 	// Mapping between the address of an account to the assets diff during the
@@ -168,7 +166,7 @@ type HederaTransactionScanResponseSimulationHederaSimulationResponse struct {
 	// Mapping between the address of an account to the exposure of the assets during
 	// the transaction
 	Exposures          map[string][]HederaTransactionScanResponseSimulationHederaSimulationResponseExposure `json:"exposures"`
-	TransactionActions []HederaTransactionScanResponseSimulationHederaSimulationResponseTransactionActions  `json:"transaction_actions,nullable"`
+	TransactionActions []HederaTransactionScanResponseSimulationHederaSimulationResponseTransactionActions  `json:"transaction_actions" api:"nullable"`
 	JSON               hederaTransactionScanResponseSimulationHederaSimulationResponseJSON                  `json:"-"`
 }
 
@@ -201,9 +199,9 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponse) impleme
 // account address
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummary struct {
 	// Exposures made by the requested account address
-	AccountExposures []HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposure `json:"account_exposures,required"`
+	AccountExposures []HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposure `json:"account_exposures" api:"required"`
 	// Total USD diff for the requested account address
-	TotalUsdDiff HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryTotalUsdDiff `json:"total_usd_diff,required"`
+	TotalUsdDiff HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryTotalUsdDiff `json:"total_usd_diff" api:"required"`
 	// Assets diffs of the requested account address
 	AccountAssetsDiffs []HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiff `json:"account_assets_diffs"`
 	// Total USD exposure for each of the spender addresses during the transaction
@@ -232,7 +230,7 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 }
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposure struct {
-	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresAsset `json:"asset,required"`
+	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresAsset `json:"asset" api:"required"`
 	// Mapping between the spender address and the exposure of the asset
 	Spenders map[string]HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresSpender `json:"spenders"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposureJSON                `json:"-"`
@@ -264,7 +262,7 @@ type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSumma
 	// The token description
 	Description string `json:"description"`
 	// URL of the asset's logo
-	LogoURL string `json:"logo_url,nullable"`
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// The token name
 	Name string `json:"name"`
 	// The NFT's collection ID (token ID)
@@ -389,17 +387,17 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresAssetHederaTokenDetailsSchema struct {
 	// The token ID
-	ID string `json:"id,required"`
+	ID string `json:"id" api:"required"`
 	// Decimals of the asset
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// The token description
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// The token name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The token's symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URL of the asset's logo
-	LogoURL string `json:"logo_url,nullable"`
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// Type of the asset (`TOKEN`)
 	Type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresAssetHederaTokenDetailsSchemaType `json:"type"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresAssetHederaTokenDetailsSchemaJSON `json:"-"`
@@ -448,15 +446,15 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresAssetHederaNFTDetailsSchema struct {
 	// The NFT ID
-	ID string `json:"id,required"`
+	ID string `json:"id" api:"required"`
 	// The NFT's description
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// NFT's display name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The NFT's collection ID (token ID)
-	NFTType string `json:"nft_type,required"`
+	NFTType string `json:"nft_type" api:"required"`
 	// URL of the NFT's image
-	LogoURL string `json:"logo_url,nullable"`
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// Type of the asset (`NFT`)
 	Type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresAssetHederaNFTDetailsSchemaType `json:"type"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresAssetHederaNFTDetailsSchemaJSON `json:"-"`
@@ -520,9 +518,9 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 }
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresSpender struct {
-	Exposure []HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresSpendersExposure `json:"exposure,required"`
+	Exposure []HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresSpendersExposure `json:"exposure" api:"required"`
 	// Summarized description of the exposure
-	Summary string                                                                                                   `json:"summary,nullable"`
+	Summary string                                                                                                   `json:"summary" api:"nullable"`
 	JSON    hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresSpenderJSON `json:"-"`
 }
 
@@ -546,13 +544,13 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresSpendersExposure struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                           `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                           `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposuresSpendersExposureJSON `json:"-"`
 }
 
@@ -579,9 +577,9 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 // Total USD diff for the requested account address
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryTotalUsdDiff struct {
 	// Total incoming USD transfers
-	In float64 `json:"in,required"`
+	In float64 `json:"in" api:"required"`
 	// Total outgoing USD transfers
-	Out float64 `json:"out,required"`
+	Out float64 `json:"out" api:"required"`
 	// Total USD transfers
 	Total float64                                                                                       `json:"total"`
 	JSON  hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryTotalUsdDiffJSON `json:"-"`
@@ -611,9 +609,9 @@ type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSumma
 	// [HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaAsset],
 	// [HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaAsset],
 	// [HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaAsset].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// This field can have the runtime type of
 	// [HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaIn],
 	// [HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaIn],
@@ -694,13 +692,13 @@ func init() {
 }
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchema struct {
-	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaAsset `json:"asset,required"`
+	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaIn `json:"in,nullable"`
+	In HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaOut  `json:"out,nullable"`
+	Out  HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaOut  `json:"out" api:"nullable"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaJSON `json:"-"`
 }
 
@@ -768,13 +766,13 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 // Details of the incoming transfer
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                                `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                                                `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaInJSON `json:"-"`
 }
 
@@ -801,13 +799,13 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 // Details of the outgoing transfer
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                                 `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                                                 `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaOutJSON `json:"-"`
 }
 
@@ -832,13 +830,13 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 }
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchema struct {
-	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaAsset `json:"asset,required"`
+	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaIn `json:"in,nullable"`
+	In HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaOut  `json:"out,nullable"`
+	Out  HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaOut  `json:"out" api:"nullable"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaJSON `json:"-"`
 }
 
@@ -867,17 +865,17 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaAsset struct {
 	// The token ID
-	ID string `json:"id,required"`
+	ID string `json:"id" api:"required"`
 	// Decimals of the asset
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// The token description
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// The token name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The token's symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URL of the asset's logo
-	LogoURL string `json:"logo_url,nullable"`
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// Type of the asset (`TOKEN`)
 	Type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaAssetType `json:"type"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaAssetJSON `json:"-"`
@@ -924,13 +922,13 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 // Details of the incoming transfer
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                          `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                                          `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaInJSON `json:"-"`
 }
 
@@ -957,13 +955,13 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 // Details of the outgoing transfer
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                           `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                                           `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaOutJSON `json:"-"`
 }
 
@@ -988,13 +986,13 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 }
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchema struct {
-	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaAsset `json:"asset,required"`
+	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaIn `json:"in,nullable"`
+	In HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaOut  `json:"out,nullable"`
+	Out  HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaOut  `json:"out" api:"nullable"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaJSON `json:"-"`
 }
 
@@ -1023,15 +1021,15 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaAsset struct {
 	// The NFT ID
-	ID string `json:"id,required"`
+	ID string `json:"id" api:"required"`
 	// The NFT's description
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// NFT's display name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The NFT's collection ID (token ID)
-	NFTType string `json:"nft_type,required"`
+	NFTType string `json:"nft_type" api:"required"`
 	// URL of the NFT's image
-	LogoURL string `json:"logo_url,nullable"`
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// Type of the asset (`NFT`)
 	Type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaAssetType `json:"type"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaAssetJSON `json:"-"`
@@ -1077,11 +1075,11 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 // Details of the incoming transfer
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaIn struct {
 	// Token ID of the transfer
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                               `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                               `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaInJSON `json:"-"`
 }
 
@@ -1107,11 +1105,11 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 // Details of the outgoing transfer
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaOut struct {
 	// Token ID of the transfer
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                                `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                                `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiffsNFTDetailsSchemaErc721DiffSchemaOutJSON `json:"-"`
 }
 
@@ -1150,9 +1148,9 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseStatus) I
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAddressDetail struct {
 	// Encoded public key of the account
-	AccountAddress string `json:"account_address,required"`
+	AccountAddress string `json:"account_address" api:"required"`
 	// Description of the account
-	Description string                                                                           `json:"description,nullable"`
+	Description string                                                                           `json:"description" api:"nullable"`
 	JSON        hederaTransactionScanResponseSimulationHederaSimulationResponseAddressDetailJSON `json:"-"`
 }
 
@@ -1179,9 +1177,9 @@ type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiff s
 	// [HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaAsset],
 	// [HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaAsset],
 	// [HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaAsset].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// This field can have the runtime type of
 	// [HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaIn],
 	// [HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaIn],
@@ -1262,13 +1260,13 @@ func init() {
 }
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchema struct {
-	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaAsset `json:"asset,required"`
+	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaIn `json:"in,nullable"`
+	In HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaOut  `json:"out,nullable"`
+	Out  HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaOut  `json:"out" api:"nullable"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaJSON `json:"-"`
 }
 
@@ -1336,13 +1334,13 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDif
 // Details of the incoming transfer
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                           `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                           `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaInJSON `json:"-"`
 }
 
@@ -1369,13 +1367,13 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDif
 // Details of the outgoing transfer
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                            `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                            `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountNativeAssetTransferDiffDetailsSchemaOutJSON `json:"-"`
 }
 
@@ -1400,13 +1398,13 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDif
 }
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchema struct {
-	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaAsset `json:"asset,required"`
+	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaIn `json:"in,nullable"`
+	In HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaOut  `json:"out,nullable"`
+	Out  HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaOut  `json:"out" api:"nullable"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaJSON `json:"-"`
 }
 
@@ -1435,17 +1433,17 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDif
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaAsset struct {
 	// The token ID
-	ID string `json:"id,required"`
+	ID string `json:"id" api:"required"`
 	// Decimals of the asset
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// The token description
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// The token name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The token's symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URL of the asset's logo
-	LogoURL string `json:"logo_url,nullable"`
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// Type of the asset (`TOKEN`)
 	Type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaAssetType `json:"type"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaAssetJSON `json:"-"`
@@ -1492,13 +1490,13 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDif
 // Details of the incoming transfer
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaIn struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                     `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                     `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaInJSON `json:"-"`
 }
 
@@ -1525,13 +1523,13 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDif
 // Details of the outgoing transfer
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaOut struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                                      `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                                      `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsHederaAccountTokenTransferDiffDetailsSchemaOutJSON `json:"-"`
 }
 
@@ -1556,13 +1554,13 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDif
 }
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchema struct {
-	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaAsset `json:"asset,required"`
+	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaAsset `json:"asset" api:"required"`
 	// The type of the assets in this diff
-	AssetType string `json:"asset_type,required"`
+	AssetType string `json:"asset_type" api:"required"`
 	// Details of the incoming transfer
-	In HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaIn `json:"in,nullable"`
+	In HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaIn `json:"in" api:"nullable"`
 	// Details of the outgoing transfer
-	Out  HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaOut  `json:"out,nullable"`
+	Out  HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaOut  `json:"out" api:"nullable"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaJSON `json:"-"`
 }
 
@@ -1591,15 +1589,15 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDif
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaAsset struct {
 	// The NFT ID
-	ID string `json:"id,required"`
+	ID string `json:"id" api:"required"`
 	// The NFT's description
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// NFT's display name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The NFT's collection ID (token ID)
-	NFTType string `json:"nft_type,required"`
+	NFTType string `json:"nft_type" api:"required"`
 	// URL of the NFT's image
-	LogoURL string `json:"logo_url,nullable"`
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// Type of the asset (`NFT`)
 	Type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaAssetType `json:"type"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaAssetJSON `json:"-"`
@@ -1645,11 +1643,11 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDif
 // Details of the incoming transfer
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaIn struct {
 	// Token ID of the transfer
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                          `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                          `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaInJSON `json:"-"`
 }
 
@@ -1675,11 +1673,11 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDif
 // Details of the outgoing transfer
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaOut struct {
 	// Token ID of the transfer
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                                           `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                                           `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiffsNFTDetailsSchemaErc721DiffSchemaOutJSON `json:"-"`
 }
 
@@ -1703,7 +1701,7 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDif
 }
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseExposure struct {
-	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseExposuresAsset `json:"asset,required"`
+	Asset HederaTransactionScanResponseSimulationHederaSimulationResponseExposuresAsset `json:"asset" api:"required"`
 	// Mapping between the spender address and the exposure of the asset
 	Spenders map[string]HederaTransactionScanResponseSimulationHederaSimulationResponseExposuresSpender `json:"spenders"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseExposureJSON                `json:"-"`
@@ -1735,7 +1733,7 @@ type HederaTransactionScanResponseSimulationHederaSimulationResponseExposuresAss
 	// The token description
 	Description string `json:"description"`
 	// URL of the asset's logo
-	LogoURL string `json:"logo_url,nullable"`
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// The token name
 	Name string `json:"name"`
 	// The NFT's collection ID (token ID)
@@ -1860,17 +1858,17 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseExposures
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseExposuresAssetHederaTokenDetailsSchema struct {
 	// The token ID
-	ID string `json:"id,required"`
+	ID string `json:"id" api:"required"`
 	// Decimals of the asset
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// The token description
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// The token name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The token's symbol
-	Symbol string `json:"symbol,required"`
+	Symbol string `json:"symbol" api:"required"`
 	// URL of the asset's logo
-	LogoURL string `json:"logo_url,nullable"`
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// Type of the asset (`TOKEN`)
 	Type HederaTransactionScanResponseSimulationHederaSimulationResponseExposuresAssetHederaTokenDetailsSchemaType `json:"type"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseExposuresAssetHederaTokenDetailsSchemaJSON `json:"-"`
@@ -1919,15 +1917,15 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseExposures
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseExposuresAssetHederaNFTDetailsSchema struct {
 	// The NFT ID
-	ID string `json:"id,required"`
+	ID string `json:"id" api:"required"`
 	// The NFT's description
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// NFT's display name
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The NFT's collection ID (token ID)
-	NFTType string `json:"nft_type,required"`
+	NFTType string `json:"nft_type" api:"required"`
 	// URL of the NFT's image
-	LogoURL string `json:"logo_url,nullable"`
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// Type of the asset (`NFT`)
 	Type HederaTransactionScanResponseSimulationHederaSimulationResponseExposuresAssetHederaNFTDetailsSchemaType `json:"type"`
 	JSON hederaTransactionScanResponseSimulationHederaSimulationResponseExposuresAssetHederaNFTDetailsSchemaJSON `json:"-"`
@@ -1991,9 +1989,9 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseExposures
 }
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseExposuresSpender struct {
-	Exposure []HederaTransactionScanResponseSimulationHederaSimulationResponseExposuresSpendersExposure `json:"exposure,required"`
+	Exposure []HederaTransactionScanResponseSimulationHederaSimulationResponseExposuresSpendersExposure `json:"exposure" api:"required"`
 	// Summarized description of the exposure
-	Summary string                                                                              `json:"summary,nullable"`
+	Summary string                                                                              `json:"summary" api:"nullable"`
 	JSON    hederaTransactionScanResponseSimulationHederaSimulationResponseExposuresSpenderJSON `json:"-"`
 }
 
@@ -2017,13 +2015,13 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseExposures
 
 type HederaTransactionScanResponseSimulationHederaSimulationResponseExposuresSpendersExposure struct {
 	// Raw value of the transfer
-	RawValue int64 `json:"raw_value,required"`
+	RawValue int64 `json:"raw_value" api:"required"`
 	// Value of the transfer
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// Summarized description of the transfer
-	Summary string `json:"summary,nullable"`
+	Summary string `json:"summary" api:"nullable"`
 	// USD price of the asset
-	UsdPrice float64                                                                                      `json:"usd_price,nullable"`
+	UsdPrice float64                                                                                      `json:"usd_price" api:"nullable"`
 	JSON     hederaTransactionScanResponseSimulationHederaSimulationResponseExposuresSpendersExposureJSON `json:"-"`
 }
 
@@ -2072,8 +2070,8 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseTransacti
 
 type HederaTransactionScanResponseSimulationHederaSimulationErrorSchema struct {
 	// Error message
-	Error  string                                                                   `json:"error,required"`
-	Status HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaStatus `json:"status,required"`
+	Error  string                                                                   `json:"error" api:"required"`
+	Status HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaJSON   `json:"-"`
 }
 
@@ -2129,7 +2127,7 @@ func (r HederaTransactionScanResponseSimulationStatus) IsKnown() bool {
 
 // Validation result; Only present if validation option is included in the request
 type HederaTransactionScanResponseValidation struct {
-	Status HederaTransactionScanResponseValidationStatus `json:"status,required"`
+	Status HederaTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
@@ -2213,16 +2211,16 @@ func init() {
 type HederaTransactionScanResponseValidationHederaValidationResult struct {
 	// A textual classification that can be presented to the user explaining the
 	// reason.
-	Classification string `json:"classification,required"`
+	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
-	Description string                                                                 `json:"description,required"`
-	Features    []HederaTransactionScanResponseValidationHederaValidationResultFeature `json:"features,required"`
+	Description string                                                                 `json:"description" api:"required"`
+	Features    []HederaTransactionScanResponseValidationHederaValidationResultFeature `json:"features" api:"required"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type
-	Reason string `json:"reason,required"`
+	Reason string `json:"reason" api:"required"`
 	// Verdict of the validation
-	ResultType HederaTransactionScanResponseValidationHederaValidationResultResultType `json:"result_type,required"`
-	Status     HederaTransactionScanResponseValidationHederaValidationResultStatus     `json:"status,required"`
+	ResultType HederaTransactionScanResponseValidationHederaValidationResultResultType `json:"result_type" api:"required"`
+	Status     HederaTransactionScanResponseValidationHederaValidationResultStatus     `json:"status" api:"required"`
 	JSON       hederaTransactionScanResponseValidationHederaValidationResultJSON       `json:"-"`
 }
 
@@ -2253,13 +2251,13 @@ func (r HederaTransactionScanResponseValidationHederaValidationResult) implement
 
 type HederaTransactionScanResponseValidationHederaValidationResultFeature struct {
 	// Address the feature relates to.
-	Address string `json:"address,required,nullable"`
+	Address string `json:"address" api:"required,nullable"`
 	// Textual description of the feature.
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// The ID of the feature associated with this transaction.
-	FeatureID string `json:"feature_id,required"`
+	FeatureID string `json:"feature_id" api:"required"`
 	// The security classification of the feature (Benign, Warning, Malicious or Info).
-	Type HederaTransactionScanResponseValidationHederaValidationResultFeaturesType `json:"type,required"`
+	Type HederaTransactionScanResponseValidationHederaValidationResultFeaturesType `json:"type" api:"required"`
 	JSON hederaTransactionScanResponseValidationHederaValidationResultFeatureJSON  `json:"-"`
 }
 
@@ -2335,8 +2333,8 @@ func (r HederaTransactionScanResponseValidationHederaValidationResultStatus) IsK
 
 type HederaTransactionScanResponseValidationHederaValidationErrorSchema struct {
 	// Error message
-	Error  string                                                                   `json:"error,required"`
-	Status HederaTransactionScanResponseValidationHederaValidationErrorSchemaStatus `json:"status,required"`
+	Error  string                                                                   `json:"error" api:"required"`
+	Status HederaTransactionScanResponseValidationHederaValidationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   hederaTransactionScanResponseValidationHederaValidationErrorSchemaJSON   `json:"-"`
 }
 
@@ -2411,12 +2409,12 @@ func (r HederaTransactionScanResponseValidationResultType) IsKnown() bool {
 type HederaTransactionScanParams struct {
 	// The address to relate the transaction to. Account address determines in which
 	// perspective the transaction is simulated and validated.
-	AccountAddress param.Field[interface{}] `json:"account_address,required"`
+	AccountAddress param.Field[interface{}] `json:"account_address" api:"required"`
 	// The chain the transaction runs on.
-	Chain param.Field[HederaTransactionScanParamsChain] `json:"chain,required"`
+	Chain param.Field[HederaTransactionScanParamsChain] `json:"chain" api:"required"`
 	// Additional information regarding the wallet involved in the transaction.
-	Metadata    param.Field[HederaTransactionScanParamsMetadataUnion] `json:"metadata,required"`
-	Transaction param.Field[string]                                   `json:"transaction,required"`
+	Metadata    param.Field[HederaTransactionScanParamsMetadataUnion] `json:"metadata" api:"required"`
+	Transaction param.Field[string]                                   `json:"transaction" api:"required"`
 	// Select which component will be included in the response.
 	//
 	//   - `simulation` - Include the results of the transaction simulation in your
@@ -2470,9 +2468,9 @@ type HederaTransactionScanParamsMetadataUnion interface {
 
 type HederaTransactionScanParamsMetadataHederaWalletRequestMetadata struct {
 	// Metadata for wallet requests
-	Type param.Field[HederaTransactionScanParamsMetadataHederaWalletRequestMetadataType] `json:"type,required"`
+	Type param.Field[HederaTransactionScanParamsMetadataHederaWalletRequestMetadataType] `json:"type" api:"required"`
 	// URL of the dApp the transaction originated from.
-	URL param.Field[string] `json:"url,required"`
+	URL param.Field[string] `json:"url" api:"required"`
 }
 
 func (r HederaTransactionScanParamsMetadataHederaWalletRequestMetadata) MarshalJSON() (data []byte, err error) {

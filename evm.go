@@ -51,7 +51,7 @@ func NewEvmService(opts ...option.RequestOption) (r *EvmService) {
 
 type AddressValidation struct {
 	// Overall validation outcome for the scan.
-	ResultType AddressValidationResultType `json:"result_type,required"`
+	ResultType AddressValidationResultType `json:"result_type" api:"required"`
 	// An error message returned when `result_type` is `Error`.
 	Error string `json:"error"`
 	// A list of features explaining the scan result (each feature includes a type,
@@ -126,11 +126,11 @@ func (r AddressValidationFeaturesArray) implementsAddressValidationFeaturesUnion
 
 type AddressValidationFeaturesArrayItem struct {
 	// Description of the feature
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// Feature identifier
-	FeatureID AddressValidationFeaturesArrayFeatureID `json:"feature_id,required"`
+	FeatureID AddressValidationFeaturesArrayFeatureID `json:"feature_id" api:"required"`
 	// Type of the feature
-	Type AddressValidationFeaturesArrayType     `json:"type,required"`
+	Type AddressValidationFeaturesArrayType     `json:"type" api:"required"`
 	JSON addressValidationFeaturesArrayItemJSON `json:"-"`
 }
 
@@ -200,6 +200,11 @@ const (
 	AddressValidationFeaturesArrayFeatureIDOwnerCanChangeBalance          AddressValidationFeaturesArrayFeatureID = "OWNER_CAN_CHANGE_BALANCE"
 	AddressValidationFeaturesArrayFeatureIDProxyContract                  AddressValidationFeaturesArrayFeatureID = "PROXY_CONTRACT"
 	AddressValidationFeaturesArrayFeatureIDSimilarMaliciousContract       AddressValidationFeaturesArrayFeatureID = "SIMILAR_MALICIOUS_CONTRACT"
+	AddressValidationFeaturesArrayFeatureIDImpersonatorSensitiveAsset     AddressValidationFeaturesArrayFeatureID = "IMPERSONATOR_SENSITIVE_ASSET"
+	AddressValidationFeaturesArrayFeatureIDImpersonatorHighConfidence     AddressValidationFeaturesArrayFeatureID = "IMPERSONATOR_HIGH_CONFIDENCE"
+	AddressValidationFeaturesArrayFeatureIDImpersonatorMediumConfidence   AddressValidationFeaturesArrayFeatureID = "IMPERSONATOR_MEDIUM_CONFIDENCE"
+	AddressValidationFeaturesArrayFeatureIDImpersonatorLowConfidence      AddressValidationFeaturesArrayFeatureID = "IMPERSONATOR_LOW_CONFIDENCE"
+	AddressValidationFeaturesArrayFeatureIDImpersonationProtected         AddressValidationFeaturesArrayFeatureID = "IMPERSONATION_PROTECTED"
 	AddressValidationFeaturesArrayFeatureIDFakeVolume                     AddressValidationFeaturesArrayFeatureID = "FAKE_VOLUME"
 	AddressValidationFeaturesArrayFeatureIDHiddenSupplyByKeyHolder        AddressValidationFeaturesArrayFeatureID = "HIDDEN_SUPPLY_BY_KEY_HOLDER"
 	AddressValidationFeaturesArrayFeatureIDFakeTradeMakerCount            AddressValidationFeaturesArrayFeatureID = "FAKE_TRADE_MAKER_COUNT"
@@ -207,7 +212,7 @@ const (
 
 func (r AddressValidationFeaturesArrayFeatureID) IsKnown() bool {
 	switch r {
-	case AddressValidationFeaturesArrayFeatureIDVerifiedContract, AddressValidationFeaturesArrayFeatureIDUnverifiedContract, AddressValidationFeaturesArrayFeatureIDHighTradeVolume, AddressValidationFeaturesArrayFeatureIDMarketPlaceSalesHistory, AddressValidationFeaturesArrayFeatureIDHighReputationToken, AddressValidationFeaturesArrayFeatureIDOnchainActivityValidator, AddressValidationFeaturesArrayFeatureIDStaticCodeSignature, AddressValidationFeaturesArrayFeatureIDKnownMalicious, AddressValidationFeaturesArrayFeatureIDIsEoa, AddressValidationFeaturesArrayFeatureIDIsContract, AddressValidationFeaturesArrayFeatureIDErc20Contract, AddressValidationFeaturesArrayFeatureIDTrustedContract, AddressValidationFeaturesArrayFeatureIDBenignCreator, AddressValidationFeaturesArrayFeatureIDMetadata, AddressValidationFeaturesArrayFeatureIDAirdropPattern, AddressValidationFeaturesArrayFeatureIDImpersonator, AddressValidationFeaturesArrayFeatureIDInorganicVolume, AddressValidationFeaturesArrayFeatureIDDynamicAnalysis, AddressValidationFeaturesArrayFeatureIDConcentratedSupplyDistribution, AddressValidationFeaturesArrayFeatureIDHoneypot, AddressValidationFeaturesArrayFeatureIDInsufficientLockedLiquidity, AddressValidationFeaturesArrayFeatureIDUnstableTokenPrice, AddressValidationFeaturesArrayFeatureIDRugpull, AddressValidationFeaturesArrayFeatureIDWashTrading, AddressValidationFeaturesArrayFeatureIDConsumerOverride, AddressValidationFeaturesArrayFeatureIDInappropriateContent, AddressValidationFeaturesArrayFeatureIDHighTransferFee, AddressValidationFeaturesArrayFeatureIDHighBuyFee, AddressValidationFeaturesArrayFeatureIDHighSellFee, AddressValidationFeaturesArrayFeatureIDUnsellableToken, AddressValidationFeaturesArrayFeatureIDIsMintable, AddressValidationFeaturesArrayFeatureIDRebaseToken, AddressValidationFeaturesArrayFeatureIDLiquidStakingToken, AddressValidationFeaturesArrayFeatureIDModifiableTaxes, AddressValidationFeaturesArrayFeatureIDCanBlacklist, AddressValidationFeaturesArrayFeatureIDCanWhitelist, AddressValidationFeaturesArrayFeatureIDHasTradingCooldown, AddressValidationFeaturesArrayFeatureIDExternalFunctions, AddressValidationFeaturesArrayFeatureIDHiddenOwner, AddressValidationFeaturesArrayFeatureIDTransferPauseable, AddressValidationFeaturesArrayFeatureIDOwnershipRenounced, AddressValidationFeaturesArrayFeatureIDOwnerCanChangeBalance, AddressValidationFeaturesArrayFeatureIDProxyContract, AddressValidationFeaturesArrayFeatureIDSimilarMaliciousContract, AddressValidationFeaturesArrayFeatureIDFakeVolume, AddressValidationFeaturesArrayFeatureIDHiddenSupplyByKeyHolder, AddressValidationFeaturesArrayFeatureIDFakeTradeMakerCount:
+	case AddressValidationFeaturesArrayFeatureIDVerifiedContract, AddressValidationFeaturesArrayFeatureIDUnverifiedContract, AddressValidationFeaturesArrayFeatureIDHighTradeVolume, AddressValidationFeaturesArrayFeatureIDMarketPlaceSalesHistory, AddressValidationFeaturesArrayFeatureIDHighReputationToken, AddressValidationFeaturesArrayFeatureIDOnchainActivityValidator, AddressValidationFeaturesArrayFeatureIDStaticCodeSignature, AddressValidationFeaturesArrayFeatureIDKnownMalicious, AddressValidationFeaturesArrayFeatureIDIsEoa, AddressValidationFeaturesArrayFeatureIDIsContract, AddressValidationFeaturesArrayFeatureIDErc20Contract, AddressValidationFeaturesArrayFeatureIDTrustedContract, AddressValidationFeaturesArrayFeatureIDBenignCreator, AddressValidationFeaturesArrayFeatureIDMetadata, AddressValidationFeaturesArrayFeatureIDAirdropPattern, AddressValidationFeaturesArrayFeatureIDImpersonator, AddressValidationFeaturesArrayFeatureIDInorganicVolume, AddressValidationFeaturesArrayFeatureIDDynamicAnalysis, AddressValidationFeaturesArrayFeatureIDConcentratedSupplyDistribution, AddressValidationFeaturesArrayFeatureIDHoneypot, AddressValidationFeaturesArrayFeatureIDInsufficientLockedLiquidity, AddressValidationFeaturesArrayFeatureIDUnstableTokenPrice, AddressValidationFeaturesArrayFeatureIDRugpull, AddressValidationFeaturesArrayFeatureIDWashTrading, AddressValidationFeaturesArrayFeatureIDConsumerOverride, AddressValidationFeaturesArrayFeatureIDInappropriateContent, AddressValidationFeaturesArrayFeatureIDHighTransferFee, AddressValidationFeaturesArrayFeatureIDHighBuyFee, AddressValidationFeaturesArrayFeatureIDHighSellFee, AddressValidationFeaturesArrayFeatureIDUnsellableToken, AddressValidationFeaturesArrayFeatureIDIsMintable, AddressValidationFeaturesArrayFeatureIDRebaseToken, AddressValidationFeaturesArrayFeatureIDLiquidStakingToken, AddressValidationFeaturesArrayFeatureIDModifiableTaxes, AddressValidationFeaturesArrayFeatureIDCanBlacklist, AddressValidationFeaturesArrayFeatureIDCanWhitelist, AddressValidationFeaturesArrayFeatureIDHasTradingCooldown, AddressValidationFeaturesArrayFeatureIDExternalFunctions, AddressValidationFeaturesArrayFeatureIDHiddenOwner, AddressValidationFeaturesArrayFeatureIDTransferPauseable, AddressValidationFeaturesArrayFeatureIDOwnershipRenounced, AddressValidationFeaturesArrayFeatureIDOwnerCanChangeBalance, AddressValidationFeaturesArrayFeatureIDProxyContract, AddressValidationFeaturesArrayFeatureIDSimilarMaliciousContract, AddressValidationFeaturesArrayFeatureIDImpersonatorSensitiveAsset, AddressValidationFeaturesArrayFeatureIDImpersonatorHighConfidence, AddressValidationFeaturesArrayFeatureIDImpersonatorMediumConfidence, AddressValidationFeaturesArrayFeatureIDImpersonatorLowConfidence, AddressValidationFeaturesArrayFeatureIDImpersonationProtected, AddressValidationFeaturesArrayFeatureIDFakeVolume, AddressValidationFeaturesArrayFeatureIDHiddenSupplyByKeyHolder, AddressValidationFeaturesArrayFeatureIDFakeTradeMakerCount:
 		return true
 	}
 	return false
@@ -233,7 +238,7 @@ func (r AddressValidationFeaturesArrayType) IsKnown() bool {
 
 type AuthorizationParam struct {
 	// The delegation designation address
-	Address param.Field[string] `json:"address,required"`
+	Address param.Field[string] `json:"address" api:"required"`
 	// The chain ID as hex string
 	ChainID param.Field[string] `json:"chainId"`
 	// The authority address of the delegation, should be provided when the signature
@@ -268,7 +273,7 @@ func (r MetadataParam) MarshalJSON() (data []byte, err error) {
 // Account information associated with the request
 type MetadataParamAccount struct {
 	// Unique identifier for the account.
-	AccountID param.Field[string] `json:"account_id,required"`
+	AccountID param.Field[string] `json:"account_id" api:"required"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
 	// Age of the user in years
@@ -284,7 +289,7 @@ func (r MetadataParamAccount) MarshalJSON() (data []byte, err error) {
 // Connection metadata including user agent and IP information
 type MetadataParamConnection struct {
 	// IP address of the customer making the request.
-	IPAddress param.Field[string] `json:"ip_address,required" format:"ipvanyaddress"`
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
 	// User agent string from the client's browser or application.
 	UserAgent param.Field[string] `json:"user_agent"`
 }
@@ -384,6 +389,7 @@ const (
 	TransactionScanSupportedChainSei                   TransactionScanSupportedChain = "sei"
 	TransactionScanSupportedChainFlowEvm               TransactionScanSupportedChain = "flow-evm"
 	TransactionScanSupportedChainHyperevm              TransactionScanSupportedChain = "hyperevm"
+	TransactionScanSupportedChainMegaeth               TransactionScanSupportedChain = "megaeth"
 	TransactionScanSupportedChainKatana                TransactionScanSupportedChain = "katana"
 	TransactionScanSupportedChainPlume                 TransactionScanSupportedChain = "plume"
 	TransactionScanSupportedChainXlayer                TransactionScanSupportedChain = "xlayer"
@@ -395,7 +401,7 @@ const (
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainLordchain, TransactionScanSupportedChainLordchainTestnet, TransactionScanSupportedChainMetacade, TransactionScanSupportedChainMetacadeTestnet, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainZeroNetwork, TransactionScanSupportedChainBerachain, TransactionScanSupportedChainBerachainBartio, TransactionScanSupportedChainInk, TransactionScanSupportedChainInkSepolia, TransactionScanSupportedChainAbstract, TransactionScanSupportedChainAbstractTestnet, TransactionScanSupportedChainSoneium, TransactionScanSupportedChainUnichain, TransactionScanSupportedChainSei, TransactionScanSupportedChainFlowEvm, TransactionScanSupportedChainHyperevm, TransactionScanSupportedChainKatana, TransactionScanSupportedChainPlume, TransactionScanSupportedChainXlayer, TransactionScanSupportedChainMonad, TransactionScanSupportedChainMonadTestnet, TransactionScanSupportedChainTempoTestnet, TransactionScanSupportedChainKiteAI:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainLordchain, TransactionScanSupportedChainLordchainTestnet, TransactionScanSupportedChainMetacade, TransactionScanSupportedChainMetacadeTestnet, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainImmutableZkevm, TransactionScanSupportedChainImmutableZkevmTestnet, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainZeroNetwork, TransactionScanSupportedChainBerachain, TransactionScanSupportedChainBerachainBartio, TransactionScanSupportedChainInk, TransactionScanSupportedChainInkSepolia, TransactionScanSupportedChainAbstract, TransactionScanSupportedChainAbstractTestnet, TransactionScanSupportedChainSoneium, TransactionScanSupportedChainUnichain, TransactionScanSupportedChainSei, TransactionScanSupportedChainFlowEvm, TransactionScanSupportedChainHyperevm, TransactionScanSupportedChainMegaeth, TransactionScanSupportedChainKatana, TransactionScanSupportedChainPlume, TransactionScanSupportedChainXlayer, TransactionScanSupportedChainMonad, TransactionScanSupportedChainMonadTestnet, TransactionScanSupportedChainTempoTestnet, TransactionScanSupportedChainKiteAI:
 		return true
 	}
 	return false
@@ -403,7 +409,7 @@ func (r TransactionScanSupportedChain) IsKnown() bool {
 
 type UserOperationDataParam struct {
 	// The operation parameters of the user operation request
-	Operation param.Field[UserOperationDataOperationUnionParam] `json:"operation,required"`
+	Operation param.Field[UserOperationDataOperationUnionParam] `json:"operation" api:"required"`
 	// The address of the entrypoint receiving the request in hex string format
 	Entrypoint param.Field[string] `json:"entrypoint"`
 }
@@ -460,12 +466,12 @@ type UserOperationDataOperationUnionParam interface {
 
 type UserOperationRequestParam struct {
 	// The chain name or chain ID
-	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain" api:"required"`
 	// The user operation request that was received by the wallet
-	Data param.Field[UserOperationDataParam] `json:"data,required"`
+	Data param.Field[UserOperationDataParam] `json:"data" api:"required"`
 	// Additional context for the scan (e.g., dapp URL/domain, integration source).
 	// Used to enrich results and reduce false positives/negatives.
-	Metadata param.Field[UserOperationRequestMetadataUnionParam] `json:"metadata,required"`
+	Metadata param.Field[UserOperationRequestMetadataUnionParam] `json:"metadata" api:"required"`
 	// The address of the account (wallet) sending the request in hex string format
 	AccountAddress param.Field[string] `json:"account_address"`
 	// The relative block for the block validation. Can be "latest" or a block number.
@@ -547,7 +553,7 @@ type UserOperationRequestMetadataRoutersEvmModelsMetadataDappParam struct {
 	// The full URL of the DApp or website that initiated the transaction, for
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain" api:"required"`
 	// Indicates that the transaction was not initiated by a dapp. Use false when the
 	// transaction is from a dapp.
 	NonDapp param.Field[bool] `json:"non_dapp"`
@@ -641,10 +647,10 @@ func (r UserOperationV6Param) MarshalJSON() (data []byte, err error) {
 func (r UserOperationV6Param) implementsUserOperationDataOperationUnionParam() {}
 
 type UserOperationV6GasEstimation struct {
-	CallGasEstimate            string                             `json:"call_gas_estimate,required"`
-	PreVerificationGasEstimate string                             `json:"pre_verification_gas_estimate,required"`
-	Status                     UserOperationV6GasEstimationStatus `json:"status,required"`
-	VerificationGasEstimate    string                             `json:"verification_gas_estimate,required"`
+	CallGasEstimate            string                             `json:"call_gas_estimate" api:"required"`
+	PreVerificationGasEstimate string                             `json:"pre_verification_gas_estimate" api:"required"`
+	Status                     UserOperationV6GasEstimationStatus `json:"status" api:"required"`
+	VerificationGasEstimate    string                             `json:"verification_gas_estimate" api:"required"`
 	JSON                       userOperationV6GasEstimationJSON   `json:"-"`
 }
 
@@ -731,11 +737,11 @@ func (r UserOperationV7Param) MarshalJSON() (data []byte, err error) {
 func (r UserOperationV7Param) implementsUserOperationDataOperationUnionParam() {}
 
 type UserOperationV7GasEstimation struct {
-	CallGasEstimate                  string                             `json:"call_gas_estimate,required"`
-	PaymasterVerificationGasEstimate string                             `json:"paymaster_verification_gas_estimate,required"`
-	PreVerificationGasEstimate       string                             `json:"pre_verification_gas_estimate,required"`
-	Status                           UserOperationV7GasEstimationStatus `json:"status,required"`
-	VerificationGasEstimate          string                             `json:"verification_gas_estimate,required"`
+	CallGasEstimate                  string                             `json:"call_gas_estimate" api:"required"`
+	PaymasterVerificationGasEstimate string                             `json:"paymaster_verification_gas_estimate" api:"required"`
+	PreVerificationGasEstimate       string                             `json:"pre_verification_gas_estimate" api:"required"`
+	Status                           UserOperationV7GasEstimationStatus `json:"status" api:"required"`
+	VerificationGasEstimate          string                             `json:"verification_gas_estimate" api:"required"`
 	JSON                             userOperationV7GasEstimationJSON   `json:"-"`
 }
 
@@ -795,12 +801,12 @@ func (r UserOperationV7GasEstimationStatus) IsKnown() bool {
 
 type ValidateAddressParam struct {
 	// The address to validate.
-	Address param.Field[string] `json:"address,required"`
+	Address param.Field[string] `json:"address" api:"required"`
 	// The chain name
-	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain" api:"required"`
 	// Additional context for the scan (e.g., dapp URL/domain, integration source).
 	// Used to enrich results and reduce false positives/negatives.
-	Metadata param.Field[ValidateAddressMetadataUnionParam] `json:"metadata,required"`
+	Metadata param.Field[ValidateAddressMetadataUnionParam] `json:"metadata" api:"required"`
 }
 
 func (r ValidateAddressParam) MarshalJSON() (data []byte, err error) {
@@ -865,7 +871,7 @@ type ValidateAddressMetadataRoutersEvmModelsMetadataDappParam struct {
 	// The full URL of the DApp or website that initiated the transaction, for
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain" api:"required"`
 	// Indicates that the transaction was not initiated by a dapp. Use false when the
 	// transaction is from a dapp.
 	NonDapp param.Field[bool] `json:"non_dapp"`
@@ -880,12 +886,12 @@ func (r ValidateAddressMetadataRoutersEvmModelsMetadataDappParam) implementsVali
 
 type ValidateBulkAddressesParam struct {
 	// List of addresses to validate.
-	Addresses param.Field[[]string] `json:"addresses,required"`
+	Addresses param.Field[[]string] `json:"addresses" api:"required"`
 	// The chain name
-	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain" api:"required"`
 	// Additional context for the scan (e.g., dapp URL/domain, integration source).
 	// Used to enrich results and reduce false positives/negatives.
-	Metadata param.Field[ValidateBulkAddressesMetadataUnionParam] `json:"metadata,required"`
+	Metadata param.Field[ValidateBulkAddressesMetadataUnionParam] `json:"metadata" api:"required"`
 }
 
 func (r ValidateBulkAddressesParam) MarshalJSON() (data []byte, err error) {
@@ -951,7 +957,7 @@ type ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappParam struct {
 	// The full URL of the DApp or website that initiated the transaction, for
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain" api:"required"`
 	// Indicates that the transaction was not initiated by a dapp. Use false when the
 	// transaction is from a dapp.
 	NonDapp param.Field[bool] `json:"non_dapp"`
@@ -966,12 +972,12 @@ func (r ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappParam) implemen
 
 type ValidateBulkExtendedAddressesRequestParam struct {
 	// List of addresses to validate.
-	Addresses param.Field[[]string] `json:"addresses,required"`
+	Addresses param.Field[[]string] `json:"addresses" api:"required"`
 	// The chain name
-	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain" api:"required"`
 	// Additional context for the scan (e.g., integration source, user/account
 	// details). Used to enrich results and reduce false positives/negatives.
-	Metadata param.Field[ValidateBulkExtendedAddressesRequestMetadataParam] `json:"metadata,required"`
+	Metadata param.Field[ValidateBulkExtendedAddressesRequestMetadataParam] `json:"metadata" api:"required"`
 }
 
 func (r ValidateBulkExtendedAddressesRequestParam) MarshalJSON() (data []byte, err error) {
@@ -981,8 +987,8 @@ func (r ValidateBulkExtendedAddressesRequestParam) MarshalJSON() (data []byte, e
 // Additional context for the scan (e.g., integration source, user/account
 // details). Used to enrich results and reduce false positives/negatives.
 type ValidateBulkExtendedAddressesRequestMetadataParam struct {
-	Account    param.Field[ValidateBulkExtendedAddressesRequestMetadataAccountParam]    `json:"account,required"`
-	Connection param.Field[ValidateBulkExtendedAddressesRequestMetadataConnectionParam] `json:"connection,required"`
+	Account    param.Field[ValidateBulkExtendedAddressesRequestMetadataAccountParam]    `json:"account" api:"required"`
+	Connection param.Field[ValidateBulkExtendedAddressesRequestMetadataConnectionParam] `json:"connection" api:"required"`
 }
 
 func (r ValidateBulkExtendedAddressesRequestMetadataParam) MarshalJSON() (data []byte, err error) {
@@ -990,8 +996,8 @@ func (r ValidateBulkExtendedAddressesRequestMetadataParam) MarshalJSON() (data [
 }
 
 type ValidateBulkExtendedAddressesRequestMetadataAccountParam struct {
-	AccountID       param.Field[string]    `json:"account_id,required"`
-	UserCountryCode param.Field[string]    `json:"user_country_code,required"`
+	AccountID       param.Field[string]    `json:"account_id" api:"required"`
+	UserCountryCode param.Field[string]    `json:"user_country_code" api:"required"`
 	AgeInYears      param.Field[int64]     `json:"age_in_years"`
 	Created         param.Field[time.Time] `json:"created" format:"date-time"`
 }
@@ -1001,8 +1007,8 @@ func (r ValidateBulkExtendedAddressesRequestMetadataAccountParam) MarshalJSON() 
 }
 
 type ValidateBulkExtendedAddressesRequestMetadataConnectionParam struct {
-	IPAddress param.Field[string] `json:"ip_address,required"`
-	UserAgent param.Field[string] `json:"user_agent,required"`
+	IPAddress param.Field[string] `json:"ip_address" api:"required"`
+	UserAgent param.Field[string] `json:"user_agent" api:"required"`
 }
 
 func (r ValidateBulkExtendedAddressesRequestMetadataConnectionParam) MarshalJSON() (data []byte, err error) {
@@ -1010,7 +1016,7 @@ func (r ValidateBulkExtendedAddressesRequestMetadataConnectionParam) MarshalJSON
 }
 
 type ValidateBulkExtendedAddressesResponse struct {
-	Results []ValidateBulkExtendedAddressesResponseResult `json:"results,required"`
+	Results []ValidateBulkExtendedAddressesResponseResult `json:"results" api:"required"`
 	JSON    validateBulkExtendedAddressesResponseJSON     `json:"-"`
 }
 
@@ -1032,11 +1038,11 @@ func (r validateBulkExtendedAddressesResponseJSON) RawJSON() string {
 
 type ValidateBulkExtendedAddressesResponseResult struct {
 	// Address to validate.
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// Label of the address.
-	Label string `json:"label,required"`
+	Label string `json:"label" api:"required"`
 	// Validation result.
-	Validation ValidateBulkExtendedAddressesResponseResultsValidation `json:"validation,required"`
+	Validation ValidateBulkExtendedAddressesResponseResultsValidation `json:"validation" api:"required"`
 	JSON       validateBulkExtendedAddressesResponseResultJSON        `json:"-"`
 }
 
@@ -1061,7 +1067,7 @@ func (r validateBulkExtendedAddressesResponseResultJSON) RawJSON() string {
 // Validation result.
 type ValidateBulkExtendedAddressesResponseResultsValidation struct {
 	// Overall validation outcome for the scan.
-	ResultType ValidateBulkExtendedAddressesResponseResultsValidationResultType `json:"result_type,required"`
+	ResultType ValidateBulkExtendedAddressesResponseResultsValidationResultType `json:"result_type" api:"required"`
 	// A list of textual features about this address that can be presented to the user.
 	Features []ValidateBulkExtendedAddressesResponseResultsValidationFeature `json:"features"`
 	JSON     validateBulkExtendedAddressesResponseResultsValidationJSON      `json:"-"`
@@ -1104,11 +1110,11 @@ func (r ValidateBulkExtendedAddressesResponseResultsValidationResultType) IsKnow
 
 type ValidateBulkExtendedAddressesResponseResultsValidationFeature struct {
 	// Description of the feature
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// Feature identifier
-	FeatureID ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID `json:"feature_id,required"`
+	FeatureID ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID `json:"feature_id" api:"required"`
 	// Type of the feature
-	Type ValidateBulkExtendedAddressesResponseResultsValidationFeaturesType `json:"type,required"`
+	Type ValidateBulkExtendedAddressesResponseResultsValidationFeaturesType `json:"type" api:"required"`
 	JSON validateBulkExtendedAddressesResponseResultsValidationFeatureJSON  `json:"-"`
 }
 
@@ -1179,6 +1185,11 @@ const (
 	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOwnerCanChangeBalance          ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "OWNER_CAN_CHANGE_BALANCE"
 	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDProxyContract                  ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "PROXY_CONTRACT"
 	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSimilarMaliciousContract       ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "SIMILAR_MALICIOUS_CONTRACT"
+	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorSensitiveAsset     ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "IMPERSONATOR_SENSITIVE_ASSET"
+	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorHighConfidence     ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "IMPERSONATOR_HIGH_CONFIDENCE"
+	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorMediumConfidence   ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "IMPERSONATOR_MEDIUM_CONFIDENCE"
+	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorLowConfidence      ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "IMPERSONATOR_LOW_CONFIDENCE"
+	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonationProtected         ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "IMPERSONATION_PROTECTED"
 	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeVolume                     ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "FAKE_VOLUME"
 	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHiddenSupplyByKeyHolder        ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "HIDDEN_SUPPLY_BY_KEY_HOLDER"
 	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeTradeMakerCount            ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "FAKE_TRADE_MAKER_COUNT"
@@ -1186,7 +1197,7 @@ const (
 
 func (r ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID) IsKnown() bool {
 	switch r {
-	case ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDVerifiedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnverifiedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighTradeVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMarketPlaceSalesHistory, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighReputationToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOnchainActivityValidator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDStaticCodeSignature, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDKnownMalicious, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsEoa, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDErc20Contract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTrustedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDBenignCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMetadata, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDAirdropPattern, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInorganicVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDDynamicAnalysis, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConcentratedSupplyDistribution, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHoneypot, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInsufficientLockedLiquidity, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnstableTokenPrice, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDRugpull, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDWashTrading, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConsumerOverride, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInappropriateContent, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighTransferFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighBuyFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighSellFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnsellableToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsMintable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDRebaseToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDLiquidStakingToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDModifiableTaxes, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCanBlacklist, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCanWhitelist, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHasTradingCooldown, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDExternalFunctions, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHiddenOwner, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferPauseable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOwnershipRenounced, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOwnerCanChangeBalance, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDProxyContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSimilarMaliciousContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHiddenSupplyByKeyHolder, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeTradeMakerCount:
+	case ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDVerifiedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnverifiedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighTradeVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMarketPlaceSalesHistory, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighReputationToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOnchainActivityValidator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDStaticCodeSignature, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDKnownMalicious, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsEoa, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDErc20Contract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTrustedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDBenignCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMetadata, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDAirdropPattern, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInorganicVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDDynamicAnalysis, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConcentratedSupplyDistribution, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHoneypot, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInsufficientLockedLiquidity, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnstableTokenPrice, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDRugpull, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDWashTrading, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConsumerOverride, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInappropriateContent, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighTransferFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighBuyFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighSellFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnsellableToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsMintable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDRebaseToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDLiquidStakingToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDModifiableTaxes, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCanBlacklist, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCanWhitelist, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHasTradingCooldown, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDExternalFunctions, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHiddenOwner, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferPauseable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOwnershipRenounced, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOwnerCanChangeBalance, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDProxyContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSimilarMaliciousContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorSensitiveAsset, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorHighConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorMediumConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorLowConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonationProtected, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHiddenSupplyByKeyHolder, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeTradeMakerCount:
 		return true
 	}
 	return false

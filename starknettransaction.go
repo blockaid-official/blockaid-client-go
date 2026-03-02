@@ -49,9 +49,9 @@ func (r *StarknetTransactionService) Scan(ctx context.Context, body StarknetTran
 }
 
 type StarknetTransactionReportParams struct {
-	Details param.Field[string]                                     `json:"details,required"`
-	Event   param.Field[StarknetTransactionReportParamsEvent]       `json:"event,required"`
-	Report  param.Field[StarknetTransactionReportParamsReportUnion] `json:"report,required"`
+	Details param.Field[string]                                     `json:"details" api:"required"`
+	Event   param.Field[StarknetTransactionReportParamsEvent]       `json:"event" api:"required"`
+	Report  param.Field[StarknetTransactionReportParamsReportUnion] `json:"report" api:"required"`
 }
 
 func (r StarknetTransactionReportParams) MarshalJSON() (data []byte, err error) {
@@ -95,7 +95,7 @@ type StarknetTransactionReportParamsReportUnion interface {
 }
 
 type StarknetTransactionReportParamsReportStarknetAppealRequestID struct {
-	ID   param.Field[string]                                                           `json:"id,required"`
+	ID   param.Field[string]                                                           `json:"id" api:"required"`
 	Type param.Field[StarknetTransactionReportParamsReportStarknetAppealRequestIDType] `json:"type"`
 }
 
@@ -121,7 +121,7 @@ func (r StarknetTransactionReportParamsReportStarknetAppealRequestIDType) IsKnow
 }
 
 type StarknetTransactionReportParamsReportStarknetAppealTransactionDataReport struct {
-	Params param.Field[StarknetTransactionScanRequestParam]                                          `json:"params,required"`
+	Params param.Field[StarknetTransactionScanRequestParam]                                          `json:"params" api:"required"`
 	Type   param.Field[StarknetTransactionReportParamsReportStarknetAppealTransactionDataReportType] `json:"type"`
 }
 
@@ -162,7 +162,7 @@ func (r StarknetTransactionReportParamsReportType) IsKnown() bool {
 }
 
 type StarknetTransactionScanParams struct {
-	StarknetTransactionScanRequest StarknetTransactionScanRequestParam `json:"StarknetTransactionScanRequest,required"`
+	StarknetTransactionScanRequest StarknetTransactionScanRequestParam `json:"StarknetTransactionScanRequest" api:"required"`
 }
 
 func (r StarknetTransactionScanParams) MarshalJSON() (data []byte, err error) {

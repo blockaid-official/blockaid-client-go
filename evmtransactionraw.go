@@ -36,9 +36,7 @@ func NewEvmTransactionRawService(opts ...option.RequestOption) (r *EvmTransactio
 	return
 }
 
-// Gets a raw transaction and returns a full simulation indicating what will happen
-// in the transaction together with a recommended action and some textual reasons
-// of why the transaction was flagged that way.
+// Get a risk recommendation with plain-language reasons for a raw transaction.
 func (r *EvmTransactionRawService) Scan(ctx context.Context, body EvmTransactionRawScanParams, opts ...option.RequestOption) (res *EvmTransactionRawScanResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/transaction-raw/scan"
@@ -47,8 +45,8 @@ func (r *EvmTransactionRawService) Scan(ctx context.Context, body EvmTransaction
 }
 
 type EvmTransactionRawScanResponse struct {
-	Block                      string                                                  `json:"block,required"`
-	Chain                      string                                                  `json:"chain,required"`
+	Block                      string                                                  `json:"block" api:"required"`
+	Chain                      string                                                  `json:"chain" api:"required"`
 	AccountAddress             string                                                  `json:"account_address"`
 	Events                     []EvmTransactionRawScanResponseEvent                    `json:"events"`
 	Features                   interface{}                                             `json:"features"`
@@ -84,9 +82,9 @@ func (r evmTransactionRawScanResponseJSON) RawJSON() string {
 }
 
 type EvmTransactionRawScanResponseEvent struct {
-	Data           string                                     `json:"data,required"`
-	EmitterAddress string                                     `json:"emitter_address,required"`
-	Topics         []string                                   `json:"topics,required"`
+	Data           string                                     `json:"data" api:"required"`
+	EmitterAddress string                                     `json:"emitter_address" api:"required"`
+	Topics         []string                                   `json:"topics" api:"required"`
 	EmitterName    string                                     `json:"emitter_name"`
 	Name           string                                     `json:"name"`
 	Params         []EvmTransactionRawScanResponseEventsParam `json:"params"`
@@ -115,8 +113,8 @@ func (r evmTransactionRawScanResponseEventJSON) RawJSON() string {
 }
 
 type EvmTransactionRawScanResponseEventsParam struct {
-	Type         string                                              `json:"type,required"`
-	Value        EvmTransactionRawScanResponseEventsParamsValueUnion `json:"value,required"`
+	Type         string                                              `json:"type" api:"required"`
+	Value        EvmTransactionRawScanResponseEventsParamsValueUnion `json:"value" api:"required"`
 	InternalType string                                              `json:"internalType"`
 	Name         string                                              `json:"name"`
 	JSON         evmTransactionRawScanResponseEventsParamJSON        `json:"-"`
@@ -168,7 +166,7 @@ func (r EvmTransactionRawScanResponseEventsParamsValueArray) ImplementsEvmTransa
 }
 
 type EvmTransactionRawScanResponseGasEstimation struct {
-	Status   EvmTransactionRawScanResponseGasEstimationStatus `json:"status,required"`
+	Status   EvmTransactionRawScanResponseGasEstimationStatus `json:"status" api:"required"`
 	Error    string                                           `json:"error"`
 	Estimate string                                           `json:"estimate"`
 	Used     string                                           `json:"used"`
@@ -234,9 +232,9 @@ func init() {
 }
 
 type EvmTransactionRawScanResponseGasEstimationRoutersEvmModelsTransactionScanGasEstimation struct {
-	Estimate string                                                                                       `json:"estimate,required"`
-	Status   EvmTransactionRawScanResponseGasEstimationRoutersEvmModelsTransactionScanGasEstimationStatus `json:"status,required"`
-	Used     string                                                                                       `json:"used,required"`
+	Estimate string                                                                                       `json:"estimate" api:"required"`
+	Status   EvmTransactionRawScanResponseGasEstimationRoutersEvmModelsTransactionScanGasEstimationStatus `json:"status" api:"required"`
+	Used     string                                                                                       `json:"used" api:"required"`
 	JSON     evmTransactionRawScanResponseGasEstimationRoutersEvmModelsTransactionScanGasEstimationJSON   `json:"-"`
 }
 
@@ -277,8 +275,8 @@ func (r EvmTransactionRawScanResponseGasEstimationRoutersEvmModelsTransactionSca
 }
 
 type EvmTransactionRawScanResponseGasEstimationRoutersEvmModelsTransactionScanGasEstimationError struct {
-	Error  string                                                                                            `json:"error,required"`
-	Status EvmTransactionRawScanResponseGasEstimationRoutersEvmModelsTransactionScanGasEstimationErrorStatus `json:"status,required"`
+	Error  string                                                                                            `json:"error" api:"required"`
+	Status EvmTransactionRawScanResponseGasEstimationRoutersEvmModelsTransactionScanGasEstimationErrorStatus `json:"status" api:"required"`
 	JSON   evmTransactionRawScanResponseGasEstimationRoutersEvmModelsTransactionScanGasEstimationErrorJSON   `json:"-"`
 }
 
@@ -334,7 +332,7 @@ func (r EvmTransactionRawScanResponseGasEstimationStatus) IsKnown() bool {
 
 type EvmTransactionRawScanResponseSimulation struct {
 	// A string indicating if the simulation was successful or not.
-	Status EvmTransactionRawScanResponseSimulationStatus `json:"status,required"`
+	Status EvmTransactionRawScanResponseSimulationStatus `json:"status" api:"required"`
 	// This field can have the runtime type of
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummary].
 	AccountSummary interface{} `json:"account_summary"`
@@ -453,29 +451,29 @@ type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulat
 	// Account summary for the account address. account address is determined implicit
 	// by the `from` field in the transaction request, or explicit by the
 	// account_address field in the request.
-	AccountSummary EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummary `json:"account_summary,required"`
+	AccountSummary EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummary `json:"account_summary" api:"required"`
 	// a dictionary including additional information about each relevant address in the
 	// transaction.
-	AddressDetails map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAddressDetail `json:"address_details,required"`
+	AddressDetails map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAddressDetail `json:"address_details" api:"required"`
 	// dictionary describes the assets differences as a result of this transaction for
 	// every involved address
-	AssetsDiffs map[string][]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiff `json:"assets_diffs,required"`
+	AssetsDiffs map[string][]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiff `json:"assets_diffs" api:"required"`
 	// dictionary describes the exposure differences as a result of this transaction
 	// for every involved address (as a result of any approval / setApproval / permit
 	// function)
-	Exposures map[string][]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposure `json:"exposures,required"`
+	Exposures map[string][]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposure `json:"exposures" api:"required"`
 	// Session keys created in this transaction per address
-	SessionKey map[string][]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKey `json:"session_key,required"`
+	SessionKey map[string][]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKey `json:"session_key" api:"required"`
 	// A string indicating if the simulation was successful or not.
-	Status EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationStatus `json:"status,required"`
+	Status EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationStatus `json:"status" api:"required"`
 	// dictionary represents the usd value each address gained / lost during this
 	// transaction
-	TotalUsdDiff map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationTotalUsdDiff `json:"total_usd_diff,required"`
+	TotalUsdDiff map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationTotalUsdDiff `json:"total_usd_diff" api:"required"`
 	// a dictionary representing the usd value each address is exposed to, split by
 	// spenders
-	TotalUsdExposure map[string]map[string]string `json:"total_usd_exposure,required"`
+	TotalUsdExposure map[string]map[string]string `json:"total_usd_exposure" api:"required"`
 	// Describes the nature of the transaction and what happened as part of it
-	TransactionActions []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions `json:"transaction_actions,required"`
+	TransactionActions []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions `json:"transaction_actions" api:"required"`
 	// Describes the state differences as a result of this transaction for every
 	// involved address
 	ContractManagement map[string][]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagement `json:"contract_management"`
@@ -525,15 +523,15 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // account_address field in the request.
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummary struct {
 	// All assets diffs related to the account address
-	AssetsDiffs []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiff `json:"assets_diffs,required"`
+	AssetsDiffs []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiff `json:"assets_diffs" api:"required"`
 	// All assets exposures related to the account address
-	Exposures []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposure `json:"exposures,required"`
+	Exposures []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposure `json:"exposures" api:"required"`
 	// Total usd diff related to the account address
-	TotalUsdDiff EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTotalUsdDiff `json:"total_usd_diff,required"`
+	TotalUsdDiff EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTotalUsdDiff `json:"total_usd_diff" api:"required"`
 	// Total usd exposure related to the account address
-	TotalUsdExposure map[string]string `json:"total_usd_exposure,required"`
+	TotalUsdExposure map[string]string `json:"total_usd_exposure" api:"required"`
 	// All assets traces related to the account address
-	Traces []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTrace `json:"traces,required"`
+	Traces []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTrace `json:"traces" api:"required"`
 	JSON   evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryJSON    `json:"-"`
 }
 
@@ -564,21 +562,21 @@ type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulat
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAsset],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAsset],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffAsset].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsAssetType `json:"asset_type" api:"required"`
 	// This field can have the runtime type of
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffIn],
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffIn],
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffIn],
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffIn].
-	In interface{} `json:"in,required"`
+	In interface{} `json:"in" api:"required"`
 	// This field can have the runtime type of
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffOut],
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffOut],
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffOut],
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffOut].
-	Out interface{} `json:"out,required"`
+	Out interface{} `json:"out" api:"required"`
 	// This field can have the runtime type of
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffBalanceChanges],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffBalanceChanges],
@@ -663,13 +661,13 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiff struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffAssetType `json:"asset_type" api:"required"`
 	// amount of the asset that was transferred to the address in this transaction
-	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffIn `json:"in,required"`
+	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffIn `json:"in" api:"required"`
 	// amount of the asset that was transferred from the address in this transaction
-	Out []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffOut `json:"out,required"`
+	Out []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffOut `json:"out" api:"required"`
 	// shows the balance before making the transaction and after
 	BalanceChanges EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffBalanceChanges `json:"balance_changes"`
 	JSON           evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffJSON           `json:"-"`
@@ -702,9 +700,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffAssetType `json:"type" api:"required"`
 	// asset's decimals
 	Decimals int64 `json:"decimals"`
 	// url of the token logo
@@ -782,11 +780,11 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsErc20TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -838,9 +836,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -907,7 +905,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffIn struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -939,7 +937,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffOut struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -972,9 +970,9 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // shows the balance before making the transaction and after
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffBalanceChanges struct {
 	// balance of the account after making the transaction
-	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffBalanceChangesAfter `json:"after,required"`
+	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffBalanceChangesAfter `json:"after" api:"required"`
 	// balance of the account before making the transaction
-	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffBalanceChangesBefore `json:"before,required"`
+	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffBalanceChangesBefore `json:"before" api:"required"`
 	JSON   evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffBalanceChangesJSON   `json:"-"`
 }
 
@@ -999,7 +997,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // balance of the account after making the transaction
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffBalanceChangesAfter struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -1032,7 +1030,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // balance of the account before making the transaction
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc20AddressAssetBalanceChangeDiffBalanceChangesBefore struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -1064,13 +1062,13 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiff struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAssetType `json:"asset_type" api:"required"`
 	// amount of the asset that was transferred to the address in this transaction
-	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffIn `json:"in,required"`
+	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffIn `json:"in" api:"required"`
 	// amount of the asset that was transferred from the address in this transaction
-	Out []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffOut `json:"out,required"`
+	Out []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffOut `json:"out" api:"required"`
 	// shows the balance before making the transaction and after
 	BalanceChanges EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffBalanceChanges `json:"balance_changes"`
 	JSON           evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffJSON           `json:"-"`
@@ -1103,9 +1101,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAssetType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -1180,9 +1178,9 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsErc721TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -1233,9 +1231,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -1303,9 +1301,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffIn struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -1339,9 +1337,9 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffOut struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -1375,9 +1373,9 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // shows the balance before making the transaction and after
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffBalanceChanges struct {
 	// balance of the account after making the transaction
-	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffBalanceChangesAfter `json:"after,required"`
+	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffBalanceChangesAfter `json:"after" api:"required"`
 	// balance of the account before making the transaction
-	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffBalanceChangesBefore `json:"before,required"`
+	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffBalanceChangesBefore `json:"before" api:"required"`
 	JSON   evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffBalanceChangesJSON   `json:"-"`
 }
 
@@ -1403,9 +1401,9 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffBalanceChangesAfter struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -1440,9 +1438,9 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc721AddressAssetBalanceChangeDiffBalanceChangesBefore struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -1475,13 +1473,13 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiff struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAssetType `json:"asset_type" api:"required"`
 	// amount of the asset that was transferred to the address in this transaction
-	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffIn `json:"in,required"`
+	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffIn `json:"in" api:"required"`
 	// amount of the asset that was transferred from the address in this transaction
-	Out []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffOut `json:"out,required"`
+	Out []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffOut `json:"out" api:"required"`
 	// shows the balance before making the transaction and after
 	BalanceChanges EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffBalanceChanges `json:"balance_changes"`
 	JSON           evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffJSON           `json:"-"`
@@ -1514,9 +1512,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAssetType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -1591,9 +1589,9 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsErc1155TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -1644,9 +1642,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -1714,11 +1712,11 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffIn struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -1753,11 +1751,11 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffOut struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -1792,9 +1790,9 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // shows the balance before making the transaction and after
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffBalanceChanges struct {
 	// balance of the account after making the transaction
-	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffBalanceChangesAfter `json:"after,required"`
+	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffBalanceChangesAfter `json:"after" api:"required"`
 	// balance of the account before making the transaction
-	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffBalanceChangesBefore `json:"before,required"`
+	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffBalanceChangesBefore `json:"before" api:"required"`
 	JSON   evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffBalanceChangesJSON   `json:"-"`
 }
 
@@ -1820,11 +1818,11 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffBalanceChangesAfter struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -1860,11 +1858,11 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseErc1155AddressAssetBalanceChangeDiffBalanceChangesBefore struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -1898,13 +1896,13 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiff struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffAssetType `json:"asset_type" api:"required"`
 	// amount of the asset that was transferred to the address in this transaction
-	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffIn `json:"in,required"`
+	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffIn `json:"in" api:"required"`
 	// amount of the asset that was transferred from the address in this transaction
-	Out []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffOut `json:"out,required"`
+	Out []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffOut `json:"out" api:"required"`
 	// shows the balance before making the transaction and after
 	BalanceChanges EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffBalanceChanges `json:"balance_changes"`
 	JSON           evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffJSON           `json:"-"`
@@ -1936,12 +1934,12 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffAsset struct {
-	ChainID   int64  `json:"chain_id,required"`
-	ChainName string `json:"chain_name,required"`
-	Decimals  int64  `json:"decimals,required"`
-	LogoURL   string `json:"logo_url,required"`
+	ChainID   int64  `json:"chain_id" api:"required"`
+	ChainName string `json:"chain_name" api:"required"`
+	Decimals  int64  `json:"decimals" api:"required"`
+	LogoURL   string `json:"logo_url" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffAssetType `json:"type" api:"required"`
 	// string represents the name of the asset
 	Name string `json:"name"`
 	// asset's symbol name
@@ -1989,7 +1987,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffIn struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -2021,7 +2019,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffOut struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -2054,9 +2052,9 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // shows the balance before making the transaction and after
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffBalanceChanges struct {
 	// balance of the account after making the transaction
-	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffBalanceChangesAfter `json:"after,required"`
+	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffBalanceChangesAfter `json:"after" api:"required"`
 	// balance of the account before making the transaction
-	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffBalanceChangesBefore `json:"before,required"`
+	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffBalanceChangesBefore `json:"before" api:"required"`
 	JSON   evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffBalanceChangesJSON   `json:"-"`
 }
 
@@ -2081,7 +2079,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // balance of the account after making the transaction
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffBalanceChangesAfter struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -2114,7 +2112,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // balance of the account before making the transaction
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryAssetsDiffsRoutersEvmResponseNativeAddressAssetBalanceChangeDiffBalanceChangesBefore struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -2167,14 +2165,14 @@ type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulat
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAsset],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAsset],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAsset].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresAssetType `json:"asset_type" api:"required"`
 	// This field can have the runtime type of
 	// [map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureSpender],
 	// [map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureSpender],
 	// [map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureSpender].
-	Spenders interface{}                                                                                              `json:"spenders,required"`
+	Spenders interface{}                                                                                              `json:"spenders" api:"required"`
 	JSON     evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposureJSON `json:"-"`
 	union    EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresUnion
 }
@@ -2245,12 +2243,12 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposure struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAssetType `json:"asset_type" api:"required"`
 	// dictionary of spender addresses where the exposure has changed during this
 	// transaction for the current address and asset
-	Spenders map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureSpender `json:"spenders,required"`
+	Spenders map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureSpender `json:"spenders" api:"required"`
 	JSON     evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureJSON               `json:"-"`
 }
 
@@ -2279,9 +2277,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAssetType `json:"type" api:"required"`
 	// asset's decimals
 	Decimals int64 `json:"decimals"`
 	// url of the token logo
@@ -2359,11 +2357,11 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAssetRoutersEvmTokenDetailsErc20TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -2415,9 +2413,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -2485,8 +2483,8 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureSpender struct {
 	// the amount that was asked in the approval request for this spender from the
 	// current address and asset
-	Approval string                                                                                                                                                        `json:"approval,required"`
-	Exposure []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureSpendersExposure `json:"exposure,required"`
+	Approval string                                                                                                                                                        `json:"approval" api:"required"`
+	Exposure []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureSpendersExposure `json:"exposure" api:"required"`
 	// the usd price of the approval amount
 	ApprovalUsdPrice string `json:"approval_usd_price"`
 	// the expiration time of the permit2 protocol
@@ -2614,11 +2612,11 @@ func init() {
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureSpendersExposureRoutersEvmResponseErc1155Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -2656,9 +2654,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureSpendersExposureRoutersEvmResponseErc721Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -2694,7 +2692,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureSpendersExposureRoutersEvmResponseErc20Diff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -2729,7 +2727,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc20AddressExposureSpendersExposureRoutersEvmResponseNativeDiff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -2764,12 +2762,12 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposure struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAssetType `json:"asset_type" api:"required"`
 	// dictionary of spender addresses where the exposure has changed during this
 	// transaction for the current address and asset
-	Spenders map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureSpender `json:"spenders,required"`
+	Spenders map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureSpender `json:"spenders" api:"required"`
 	JSON     evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureJSON               `json:"-"`
 }
 
@@ -2798,9 +2796,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAssetType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -2875,9 +2873,9 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAssetRoutersEvmTokenDetailsErc721TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -2928,9 +2926,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -2996,10 +2994,10 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureSpender struct {
-	Exposure []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureSpendersExposure `json:"exposure,required"`
+	Exposure []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureSpendersExposure `json:"exposure" api:"required"`
 	// boolean indicates whether an is_approved_for_all function was used (missing in
 	// case of ERC20 / ERC1155)
-	IsApprovedForAll bool `json:"is_approved_for_all,required"`
+	IsApprovedForAll bool `json:"is_approved_for_all" api:"required"`
 	// user friendly description of the approval
 	Summary string                                                                                                                                                  `json:"summary"`
 	JSON    evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureSpenderJSON `json:"-"`
@@ -3121,11 +3119,11 @@ func init() {
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureSpendersExposureRoutersEvmResponseErc1155Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -3163,9 +3161,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureSpendersExposureRoutersEvmResponseErc721Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -3201,7 +3199,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureSpendersExposureRoutersEvmResponseErc20Diff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -3236,7 +3234,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc721AddressExposureSpendersExposureRoutersEvmResponseNativeDiff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -3271,12 +3269,12 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposure struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAssetType `json:"asset_type" api:"required"`
 	// dictionary of spender addresses where the exposure has changed during this
 	// transaction for the current address and asset
-	Spenders map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureSpender `json:"spenders,required"`
+	Spenders map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureSpender `json:"spenders" api:"required"`
 	JSON     evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureJSON               `json:"-"`
 }
 
@@ -3305,9 +3303,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAssetType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -3382,9 +3380,9 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAssetRoutersEvmTokenDetailsErc1155TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -3435,9 +3433,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -3503,10 +3501,10 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureSpender struct {
-	Exposure []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureSpendersExposure `json:"exposure,required"`
+	Exposure []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureSpendersExposure `json:"exposure" api:"required"`
 	// boolean indicates whether an is_approved_for_all function was used (missing in
 	// case of ERC20 / ERC1155)
-	IsApprovedForAll bool `json:"is_approved_for_all,required"`
+	IsApprovedForAll bool `json:"is_approved_for_all" api:"required"`
 	// user friendly description of the approval
 	Summary string                                                                                                                                                   `json:"summary"`
 	JSON    evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureSpenderJSON `json:"-"`
@@ -3628,11 +3626,11 @@ func init() {
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureSpendersExposureRoutersEvmResponseErc1155Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -3670,9 +3668,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureSpendersExposureRoutersEvmResponseErc721Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -3708,7 +3706,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureSpendersExposureRoutersEvmResponseErc20Diff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -3743,7 +3741,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryExposuresRoutersEvmResponseErc1155AddressExposureSpendersExposureRoutersEvmResponseNativeDiff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -3795,9 +3793,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 // Total usd diff related to the account address
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTotalUsdDiff struct {
-	In    string                                                                                                       `json:"in,required"`
-	Out   string                                                                                                       `json:"out,required"`
-	Total string                                                                                                       `json:"total,required"`
+	In    string                                                                                                       `json:"in" api:"required"`
+	Out   string                                                                                                       `json:"out" api:"required"`
+	Total string                                                                                                       `json:"total" api:"required"`
 	JSON  evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTotalUsdDiffJSON `json:"-"`
 }
 
@@ -3829,11 +3827,11 @@ type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulat
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceAsset],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceAsset],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceAsset].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// type of the trace
-	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceType `json:"trace_type,required"`
+	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceType `json:"trace_type" api:"required"`
 	// The type of the model
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesType `json:"type" api:"required"`
 	// This field can have the runtime type of
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceDiff],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceDiff],
@@ -3959,17 +3957,17 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTrace struct {
 	// Description of the asset in the trace
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceAsset `json:"asset" api:"required"`
 	// The difference in value for the asset in the trace
-	Diff EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceDiff `json:"diff,required"`
+	Diff EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceDiff `json:"diff" api:"required"`
 	// The address where the assets are moved from
-	FromAddress string `json:"from_address,required"`
+	FromAddress string `json:"from_address" api:"required"`
 	// The address where the assets are moved to
-	ToAddress string `json:"to_address,required"`
+	ToAddress string `json:"to_address" api:"required"`
 	// type of the trace
-	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceTraceType `json:"trace_type,required"`
+	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceTraceType `json:"trace_type" api:"required"`
 	// The type of the model
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceType `json:"type" api:"required"`
 	// List of labels that describe the trace
 	Labels []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceLabels `json:"labels"`
 	JSON   evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceJSON     `json:"-"`
@@ -4004,9 +4002,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // Description of the asset in the trace
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceAssetType `json:"type" api:"required"`
 	// asset's decimals
 	Decimals int64 `json:"decimals"`
 	// url of the token logo
@@ -4084,11 +4082,11 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceAssetRoutersEvmTokenDetailsErc20TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -4140,9 +4138,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -4210,7 +4208,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // The difference in value for the asset in the trace
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceDiff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -4287,17 +4285,17 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTrace struct {
 	// Description of the asset in the trace
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceAsset `json:"asset" api:"required"`
 	// The difference in value for the asset in the trace
-	Diff EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceDiff `json:"diff,required"`
+	Diff EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceDiff `json:"diff" api:"required"`
 	// The address where the assets are moved from
-	FromAddress string `json:"from_address,required"`
+	FromAddress string `json:"from_address" api:"required"`
 	// The address where the assets are moved to
-	ToAddress string `json:"to_address,required"`
+	ToAddress string `json:"to_address" api:"required"`
 	// type of the trace
-	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceTraceType `json:"trace_type,required"`
+	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceTraceType `json:"trace_type" api:"required"`
 	// The type of the model
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceType `json:"type" api:"required"`
 	// List of labels that describe the trace
 	Labels []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceLabels `json:"labels"`
 	JSON   evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceJSON     `json:"-"`
@@ -4332,9 +4330,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // Description of the asset in the trace
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceAssetType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -4409,9 +4407,9 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceAssetRoutersEvmTokenDetailsErc721TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -4462,9 +4460,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -4533,9 +4531,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceDiff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -4613,17 +4611,17 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTrace struct {
 	// Description of the asset in the trace
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceAsset `json:"asset" api:"required"`
 	// The difference in value for the asset in the trace
-	Diff EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceDiff `json:"diff,required"`
+	Diff EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceDiff `json:"diff" api:"required"`
 	// The address where the assets are moved from
-	FromAddress string `json:"from_address,required"`
+	FromAddress string `json:"from_address" api:"required"`
 	// The address where the assets are moved to
-	ToAddress string `json:"to_address,required"`
+	ToAddress string `json:"to_address" api:"required"`
 	// type of the trace
-	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceTraceType `json:"trace_type,required"`
+	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceTraceType `json:"trace_type" api:"required"`
 	// The type of the model
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceType `json:"type" api:"required"`
 	// List of labels that describe the trace
 	Labels []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceLabels `json:"labels"`
 	JSON   evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceJSON     `json:"-"`
@@ -4658,9 +4656,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // Description of the asset in the trace
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceAssetType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -4735,9 +4733,9 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceAssetRoutersEvmTokenDetailsErc1155TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -4788,9 +4786,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -4859,11 +4857,11 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceDiff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -4942,17 +4940,17 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTrace struct {
 	// Description of the asset in the trace
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceAsset `json:"asset" api:"required"`
 	// The difference in value for the asset in the trace
-	Diff EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceDiff `json:"diff,required"`
+	Diff EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceDiff `json:"diff" api:"required"`
 	// The address where the assets are moved from
-	FromAddress string `json:"from_address,required"`
+	FromAddress string `json:"from_address" api:"required"`
 	// The address where the assets are moved to
-	ToAddress string `json:"to_address,required"`
+	ToAddress string `json:"to_address" api:"required"`
 	// type of the trace
-	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceTraceType `json:"trace_type,required"`
+	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceTraceType `json:"trace_type" api:"required"`
 	// The type of the model
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceType `json:"type" api:"required"`
 	// List of labels that describe the trace
 	Labels []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceLabels `json:"labels"`
 	JSON   evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceJSON     `json:"-"`
@@ -4986,12 +4984,12 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 // Description of the asset in the trace
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceAsset struct {
-	ChainID   int64  `json:"chain_id,required"`
-	ChainName string `json:"chain_name,required"`
-	Decimals  int64  `json:"decimals,required"`
-	LogoURL   string `json:"logo_url,required"`
+	ChainID   int64  `json:"chain_id" api:"required"`
+	ChainName string `json:"chain_name" api:"required"`
+	Decimals  int64  `json:"decimals" api:"required"`
+	LogoURL   string `json:"logo_url" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceAssetType `json:"type" api:"required"`
 	// string represents the name of the asset
 	Name string `json:"name"`
 	// asset's symbol name
@@ -5040,7 +5038,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // The difference in value for the asset in the trace
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceDiff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -5117,16 +5115,16 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTrace struct {
 	// Description of the asset in the trace
-	Asset   EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceAsset   `json:"asset,required"`
-	Exposed EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceExposed `json:"exposed,required"`
+	Asset   EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceAsset   `json:"asset" api:"required"`
+	Exposed EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceExposed `json:"exposed" api:"required"`
 	// The owner of the assets
-	Owner string `json:"owner,required"`
+	Owner string `json:"owner" api:"required"`
 	// The spender of the assets
-	Spender string `json:"spender,required"`
+	Spender string `json:"spender" api:"required"`
 	// type of the trace
-	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceTraceType `json:"trace_type,required"`
+	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceTraceType `json:"trace_type" api:"required"`
 	// The type of the model
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceType `json:"type" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceJSON `json:"-"`
 }
 
@@ -5158,9 +5156,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // Description of the asset in the trace
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceAssetType `json:"type" api:"required"`
 	// asset's decimals
 	Decimals int64 `json:"decimals"`
 	// url of the token logo
@@ -5238,11 +5236,11 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceAssetRoutersEvmTokenDetailsErc20TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -5294,9 +5292,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -5362,7 +5360,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceExposed struct {
-	RawValue string                                                                                                                                            `json:"raw_value,required"`
+	RawValue string                                                                                                                                            `json:"raw_value" api:"required"`
 	UsdPrice float64                                                                                                                                           `json:"usd_price"`
 	Value    float64                                                                                                                                           `json:"value"`
 	JSON     evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceExposedJSON `json:"-"`
@@ -5419,15 +5417,15 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTrace struct {
 	// Description of the asset in the trace
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceAsset `json:"asset" api:"required"`
 	// The owner of the assets
-	Owner string `json:"owner,required"`
+	Owner string `json:"owner" api:"required"`
 	// The spender of the assets
-	Spender string `json:"spender,required"`
+	Spender string `json:"spender" api:"required"`
 	// type of the trace
-	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceTraceType `json:"trace_type,required"`
+	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceTraceType `json:"trace_type" api:"required"`
 	// The type of the model
-	Type    EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceType    `json:"type,required"`
+	Type    EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceType    `json:"type" api:"required"`
 	Exposed EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceExposed `json:"exposed"`
 	JSON    evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceJSON    `json:"-"`
 }
@@ -5460,9 +5458,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // Description of the asset in the trace
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceAssetType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -5537,9 +5535,9 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceAssetRoutersEvmTokenDetailsErc721TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -5590,9 +5588,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -5688,8 +5686,8 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceExposed struct {
-	Amount   int64                                                                                                                                              `json:"amount,required"`
-	TokenID  string                                                                                                                                             `json:"token_id,required"`
+	Amount   int64                                                                                                                                              `json:"amount" api:"required"`
+	TokenID  string                                                                                                                                             `json:"token_id" api:"required"`
 	IsMint   bool                                                                                                                                               `json:"is_mint"`
 	LogoURL  string                                                                                                                                             `json:"logo_url"`
 	UsdPrice float64                                                                                                                                            `json:"usd_price"`
@@ -5719,15 +5717,15 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTrace struct {
 	// Description of the asset in the trace
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceAsset `json:"asset" api:"required"`
 	// The owner of the assets
-	Owner string `json:"owner,required"`
+	Owner string `json:"owner" api:"required"`
 	// The spender of the assets
-	Spender string `json:"spender,required"`
+	Spender string `json:"spender" api:"required"`
 	// type of the trace
-	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceTraceType `json:"trace_type,required"`
+	TraceType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceTraceType `json:"trace_type" api:"required"`
 	// The type of the model
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceType `json:"type" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceJSON `json:"-"`
 }
 
@@ -5758,9 +5756,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // Description of the asset in the trace
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceAssetType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -5835,9 +5833,9 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceAssetRoutersEvmTokenDetailsErc1155TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -5888,9 +5886,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -6057,21 +6055,21 @@ type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulat
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAsset],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAsset],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffAsset].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsAssetType `json:"asset_type" api:"required"`
 	// This field can have the runtime type of
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffIn],
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffIn],
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffIn],
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffIn].
-	In interface{} `json:"in,required"`
+	In interface{} `json:"in" api:"required"`
 	// This field can have the runtime type of
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffOut],
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffOut],
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffOut],
 	// [[]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffOut].
-	Out   interface{}                                                                                  `json:"out,required"`
+	Out   interface{}                                                                                  `json:"out" api:"required"`
 	JSON  evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffJSON `json:"-"`
 	union EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsUnion
 }
@@ -6149,13 +6147,13 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiff struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffAssetType `json:"asset_type" api:"required"`
 	// amount of the asset that was transferred to the address in this transaction
-	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffIn `json:"in,required"`
+	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffIn `json:"in" api:"required"`
 	// amount of the asset that was transferred from the address in this transaction
-	Out  []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffOut `json:"out,required"`
+	Out  []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffOut `json:"out" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffJSON  `json:"-"`
 }
 
@@ -6185,9 +6183,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffAssetType `json:"type" api:"required"`
 	// asset's decimals
 	Decimals int64 `json:"decimals"`
 	// url of the token logo
@@ -6265,11 +6263,11 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffAssetRoutersEvmTokenDetailsErc20TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -6321,9 +6319,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -6390,7 +6388,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffIn struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -6422,7 +6420,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc20AddressAssetDiffOut struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -6454,13 +6452,13 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiff struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAssetType `json:"asset_type" api:"required"`
 	// amount of the asset that was transferred to the address in this transaction
-	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffIn `json:"in,required"`
+	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffIn `json:"in" api:"required"`
 	// amount of the asset that was transferred from the address in this transaction
-	Out  []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffOut `json:"out,required"`
+	Out  []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffOut `json:"out" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffJSON  `json:"-"`
 }
 
@@ -6490,9 +6488,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAssetType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -6567,9 +6565,9 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAssetRoutersEvmTokenDetailsErc721TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -6620,9 +6618,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -6690,9 +6688,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffIn struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -6726,9 +6724,9 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc721AddressAssetDiffOut struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -6761,13 +6759,13 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiff struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAssetType `json:"asset_type" api:"required"`
 	// amount of the asset that was transferred to the address in this transaction
-	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffIn `json:"in,required"`
+	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffIn `json:"in" api:"required"`
 	// amount of the asset that was transferred from the address in this transaction
-	Out  []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffOut `json:"out,required"`
+	Out  []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffOut `json:"out" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffJSON  `json:"-"`
 }
 
@@ -6797,9 +6795,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAssetType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -6874,9 +6872,9 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAssetRoutersEvmTokenDetailsErc1155TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -6927,9 +6925,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -6997,11 +6995,11 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffIn struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -7036,11 +7034,11 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseErc1155AddressAssetDiffOut struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -7074,13 +7072,13 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiff struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffAssetType `json:"asset_type" api:"required"`
 	// amount of the asset that was transferred to the address in this transaction
-	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffIn `json:"in,required"`
+	In []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffIn `json:"in" api:"required"`
 	// amount of the asset that was transferred from the address in this transaction
-	Out  []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffOut `json:"out,required"`
+	Out  []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffOut `json:"out" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffJSON  `json:"-"`
 }
 
@@ -7109,12 +7107,12 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffAsset struct {
-	ChainID   int64  `json:"chain_id,required"`
-	ChainName string `json:"chain_name,required"`
-	Decimals  int64  `json:"decimals,required"`
-	LogoURL   string `json:"logo_url,required"`
+	ChainID   int64  `json:"chain_id" api:"required"`
+	ChainName string `json:"chain_name" api:"required"`
+	Decimals  int64  `json:"decimals" api:"required"`
+	LogoURL   string `json:"logo_url" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffAssetType `json:"type" api:"required"`
 	// string represents the name of the asset
 	Name string `json:"name"`
 	// asset's symbol name
@@ -7162,7 +7160,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffIn struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -7194,7 +7192,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationAssetsDiffsRoutersEvmResponseNativeAddressAssetDiffOut struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -7247,14 +7245,14 @@ type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulat
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAsset],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAsset],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAsset].
-	Asset interface{} `json:"asset,required"`
+	Asset interface{} `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresAssetType `json:"asset_type" api:"required"`
 	// This field can have the runtime type of
 	// [map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureSpender],
 	// [map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureSpender],
 	// [map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureSpender].
-	Spenders interface{}                                                                                `json:"spenders,required"`
+	Spenders interface{}                                                                                `json:"spenders" api:"required"`
 	JSON     evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposureJSON `json:"-"`
 	union    EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresUnion
 }
@@ -7325,12 +7323,12 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposure struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAssetType `json:"asset_type" api:"required"`
 	// dictionary of spender addresses where the exposure has changed during this
 	// transaction for the current address and asset
-	Spenders map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureSpender `json:"spenders,required"`
+	Spenders map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureSpender `json:"spenders" api:"required"`
 	JSON     evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureJSON               `json:"-"`
 }
 
@@ -7359,9 +7357,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAssetType `json:"type" api:"required"`
 	// asset's decimals
 	Decimals int64 `json:"decimals"`
 	// url of the token logo
@@ -7439,11 +7437,11 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAssetRoutersEvmTokenDetailsErc20TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -7495,9 +7493,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -7565,8 +7563,8 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureSpender struct {
 	// the amount that was asked in the approval request for this spender from the
 	// current address and asset
-	Approval string                                                                                                                                          `json:"approval,required"`
-	Exposure []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureSpendersExposure `json:"exposure,required"`
+	Approval string                                                                                                                                          `json:"approval" api:"required"`
+	Exposure []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureSpendersExposure `json:"exposure" api:"required"`
 	// the usd price of the approval amount
 	ApprovalUsdPrice string `json:"approval_usd_price"`
 	// the expiration time of the permit2 protocol
@@ -7694,11 +7692,11 @@ func init() {
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureSpendersExposureRoutersEvmResponseErc1155Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -7736,9 +7734,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureSpendersExposureRoutersEvmResponseErc721Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -7774,7 +7772,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureSpendersExposureRoutersEvmResponseErc20Diff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -7809,7 +7807,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc20AddressExposureSpendersExposureRoutersEvmResponseNativeDiff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -7844,12 +7842,12 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposure struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAssetType `json:"asset_type" api:"required"`
 	// dictionary of spender addresses where the exposure has changed during this
 	// transaction for the current address and asset
-	Spenders map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureSpender `json:"spenders,required"`
+	Spenders map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureSpender `json:"spenders" api:"required"`
 	JSON     evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureJSON               `json:"-"`
 }
 
@@ -7878,9 +7876,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAssetType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -7955,9 +7953,9 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAssetRoutersEvmTokenDetailsErc721TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -8008,9 +8006,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -8076,10 +8074,10 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureSpender struct {
-	Exposure []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureSpendersExposure `json:"exposure,required"`
+	Exposure []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureSpendersExposure `json:"exposure" api:"required"`
 	// boolean indicates whether an is_approved_for_all function was used (missing in
 	// case of ERC20 / ERC1155)
-	IsApprovedForAll bool `json:"is_approved_for_all,required"`
+	IsApprovedForAll bool `json:"is_approved_for_all" api:"required"`
 	// user friendly description of the approval
 	Summary string                                                                                                                                    `json:"summary"`
 	JSON    evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureSpenderJSON `json:"-"`
@@ -8201,11 +8199,11 @@ func init() {
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureSpendersExposureRoutersEvmResponseErc1155Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -8243,9 +8241,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureSpendersExposureRoutersEvmResponseErc721Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -8281,7 +8279,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureSpendersExposureRoutersEvmResponseErc20Diff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -8316,7 +8314,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc721AddressExposureSpendersExposureRoutersEvmResponseNativeDiff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -8351,12 +8349,12 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposure struct {
 	// description of the asset for the current diff
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAsset `json:"asset" api:"required"`
 	// type of the asset for the current diff
-	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAssetType `json:"asset_type,required"`
+	AssetType EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAssetType `json:"asset_type" api:"required"`
 	// dictionary of spender addresses where the exposure has changed during this
 	// transaction for the current address and asset
-	Spenders map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureSpender `json:"spenders,required"`
+	Spenders map[string]EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureSpender `json:"spenders" api:"required"`
 	JSON     evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureJSON               `json:"-"`
 }
 
@@ -8385,9 +8383,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // description of the asset for the current diff
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAsset struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAssetType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -8462,9 +8460,9 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAssetRoutersEvmTokenDetailsErc1155TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -8515,9 +8513,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -8583,10 +8581,10 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureSpender struct {
-	Exposure []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureSpendersExposure `json:"exposure,required"`
+	Exposure []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureSpendersExposure `json:"exposure" api:"required"`
 	// boolean indicates whether an is_approved_for_all function was used (missing in
 	// case of ERC20 / ERC1155)
-	IsApprovedForAll bool `json:"is_approved_for_all,required"`
+	IsApprovedForAll bool `json:"is_approved_for_all" api:"required"`
 	// user friendly description of the approval
 	Summary string                                                                                                                                     `json:"summary"`
 	JSON    evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureSpenderJSON `json:"-"`
@@ -8708,11 +8706,11 @@ func init() {
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureSpendersExposureRoutersEvmResponseErc1155Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// value before divided by decimal, that was transferred from this address
-	Value string `json:"value,required"`
+	Value string `json:"value" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -8750,9 +8748,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureSpendersExposureRoutersEvmResponseErc721Diff struct {
 	// Indicates whether the token ID represents an arbitrary token from a collection,
 	// unpredictable while running the simulation
-	ArbitraryCollectionToken bool `json:"arbitrary_collection_token,required"`
+	ArbitraryCollectionToken bool `json:"arbitrary_collection_token" api:"required"`
 	// id of the token
-	TokenID string `json:"token_id,required"`
+	TokenID string `json:"token_id" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// user friendly description of the asset transfer
@@ -8788,7 +8786,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureSpendersExposureRoutersEvmResponseErc20Diff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -8823,7 +8821,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationExposuresRoutersEvmResponseErc1155AddressExposureSpendersExposureRoutersEvmResponseNativeDiff struct {
 	// value before divided by decimal, that was transferred from this address
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// user friendly description of the asset transfer
 	Summary string `json:"summary"`
 	// usd equal of the asset that was transferred from this address
@@ -8874,9 +8872,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKey struct {
-	Key      string                                                                                           `json:"key,required"`
-	Policies []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPolicy `json:"policies,required"`
-	Signer   string                                                                                           `json:"signer,required"`
+	Key      string                                                                                           `json:"key" api:"required"`
+	Policies []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPolicy `json:"policies" api:"required"`
+	Signer   string                                                                                           `json:"signer" api:"required"`
 	JSON     evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyJSON     `json:"-"`
 }
 
@@ -8994,7 +8992,7 @@ func init() {
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysTransferPolicy struct {
-	AssetDetails EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysTransferPolicyAssetDetails `json:"asset_details,required"`
+	AssetDetails EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysTransferPolicyAssetDetails `json:"asset_details" api:"required"`
 	Recipient    string                                                                                                                                          `json:"recipient"`
 	Type         EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysTransferPolicyType         `json:"type"`
 	ValueLimit   string                                                                                                                                          `json:"value_limit"`
@@ -9025,9 +9023,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysTransferPolicyAssetDetails struct {
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysTransferPolicyAssetDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysTransferPolicyAssetDetailsType `json:"type" api:"required"`
 	// address of the token
 	Address   string `json:"address"`
 	ChainID   int64  `json:"chain_id"`
@@ -9105,12 +9103,12 @@ func init() {
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysTransferPolicyAssetDetailsRoutersEvmTokenDetailsNativeAssetDetails struct {
-	ChainID   int64  `json:"chain_id,required"`
-	ChainName string `json:"chain_name,required"`
-	Decimals  int64  `json:"decimals,required"`
-	LogoURL   string `json:"logo_url,required"`
+	ChainID   int64  `json:"chain_id" api:"required"`
+	ChainName string `json:"chain_name" api:"required"`
+	Decimals  int64  `json:"decimals" api:"required"`
+	LogoURL   string `json:"logo_url" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysTransferPolicyAssetDetailsRoutersEvmTokenDetailsNativeAssetDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysTransferPolicyAssetDetailsRoutersEvmTokenDetailsNativeAssetDetailsType `json:"type" api:"required"`
 	// string represents the name of the asset
 	Name string `json:"name"`
 	// asset's symbol name
@@ -9161,11 +9159,11 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysTransferPolicyAssetDetailsRoutersEvmTokenDetailsErc20TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysTransferPolicyAssetDetailsRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysTransferPolicyAssetDetailsRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -9246,7 +9244,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysCallPolicy struct {
-	ToAddress  string                                                                                                                               `json:"to_address,required"`
+	ToAddress  string                                                                                                                               `json:"to_address" api:"required"`
 	Args       []EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysCallPolicyArg `json:"args"`
 	Method     string                                                                                                                               `json:"method"`
 	Type       EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysCallPolicyType  `json:"type"`
@@ -9281,9 +9279,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysCallPolicyArg struct {
 	// Comparison operator used to evaluate an argument/value against a policy
 	// constraint.
-	Condition EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysCallPolicyArgsCondition `json:"condition,required"`
-	Index     int64                                                                                                                                        `json:"index,required"`
-	Value     string                                                                                                                                       `json:"value,required"`
+	Condition EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysCallPolicyArgsCondition `json:"condition" api:"required"`
+	Index     int64                                                                                                                                        `json:"index" api:"required"`
+	Value     string                                                                                                                                       `json:"value" api:"required"`
 	JSON      evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysCallPolicyArgJSON       `json:"-"`
 }
 
@@ -9343,7 +9341,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysGasPolicy struct {
-	ValueLimit string                                                                                                                             `json:"value_limit,required"`
+	ValueLimit string                                                                                                                             `json:"value_limit" api:"required"`
 	Type       EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysGasPolicyType `json:"type"`
 	JSON       evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKeyPoliciesRoutersEvmSessionKeysGasPolicyJSON `json:"-"`
 }
@@ -9459,9 +9457,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationTotalUsdDiff struct {
-	In    string                                                                                         `json:"in,required"`
-	Out   string                                                                                         `json:"out,required"`
-	Total string                                                                                         `json:"total,required"`
+	In    string                                                                                         `json:"in" api:"required"`
+	Out   string                                                                                         `json:"out" api:"required"`
+	Total string                                                                                         `json:"total" api:"required"`
 	JSON  evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationTotalUsdDiffJSON `json:"-"`
 }
 
@@ -9509,7 +9507,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagement struct {
 	// The type of the state change
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementType `json:"type" api:"required"`
 	// This field can have the runtime type of
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseProxyUpgradeManagementAfter],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseOwnershipChangeManagementAfter],
@@ -9608,11 +9606,11 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseProxyUpgradeManagement struct {
 	// The state after the transaction
-	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseProxyUpgradeManagementAfter `json:"after,required"`
+	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseProxyUpgradeManagementAfter `json:"after" api:"required"`
 	// The state before the transaction
-	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseProxyUpgradeManagementBefore `json:"before,required"`
+	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseProxyUpgradeManagementBefore `json:"before" api:"required"`
 	// The type of the state change
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseProxyUpgradeManagementType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseProxyUpgradeManagementType `json:"type" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseProxyUpgradeManagementJSON `json:"-"`
 }
 
@@ -9640,7 +9638,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 // The state after the transaction
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseProxyUpgradeManagementAfter struct {
-	Address string                                                                                                                                            `json:"address,required"`
+	Address string                                                                                                                                            `json:"address" api:"required"`
 	JSON    evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseProxyUpgradeManagementAfterJSON `json:"-"`
 }
 
@@ -9663,7 +9661,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 // The state before the transaction
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseProxyUpgradeManagementBefore struct {
-	Address string                                                                                                                                             `json:"address,required"`
+	Address string                                                                                                                                             `json:"address" api:"required"`
 	JSON    evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseProxyUpgradeManagementBeforeJSON `json:"-"`
 }
 
@@ -9701,11 +9699,11 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseOwnershipChangeManagement struct {
 	// The state after the transaction
-	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseOwnershipChangeManagementAfter `json:"after,required"`
+	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseOwnershipChangeManagementAfter `json:"after" api:"required"`
 	// The state before the transaction
-	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseOwnershipChangeManagementBefore `json:"before,required"`
+	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseOwnershipChangeManagementBefore `json:"before" api:"required"`
 	// The type of the state change
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseOwnershipChangeManagementType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseOwnershipChangeManagementType `json:"type" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseOwnershipChangeManagementJSON `json:"-"`
 }
 
@@ -9733,7 +9731,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 // The state after the transaction
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseOwnershipChangeManagementAfter struct {
-	Owners []string                                                                                                                                             `json:"owners,required"`
+	Owners []string                                                                                                                                             `json:"owners" api:"required"`
 	JSON   evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseOwnershipChangeManagementAfterJSON `json:"-"`
 }
 
@@ -9756,7 +9754,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 // The state before the transaction
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseOwnershipChangeManagementBefore struct {
-	Owners []string                                                                                                                                              `json:"owners,required"`
+	Owners []string                                                                                                                                              `json:"owners" api:"required"`
 	JSON   evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseOwnershipChangeManagementBeforeJSON `json:"-"`
 }
 
@@ -9794,11 +9792,11 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseModulesChangeManagement struct {
 	// The state after the transaction
-	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseModulesChangeManagementAfter `json:"after,required"`
+	After EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseModulesChangeManagementAfter `json:"after" api:"required"`
 	// The state before the transaction
-	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseModulesChangeManagementBefore `json:"before,required"`
+	Before EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseModulesChangeManagementBefore `json:"before" api:"required"`
 	// The type of the state change
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseModulesChangeManagementType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseModulesChangeManagementType `json:"type" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseModulesChangeManagementJSON `json:"-"`
 }
 
@@ -9826,7 +9824,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 // The state after the transaction
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseModulesChangeManagementAfter struct {
-	Modules []string                                                                                                                                           `json:"modules,required"`
+	Modules []string                                                                                                                                           `json:"modules" api:"required"`
 	JSON    evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseModulesChangeManagementAfterJSON `json:"-"`
 }
 
@@ -9849,7 +9847,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 // The state before the transaction
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseModulesChangeManagementBefore struct {
-	Modules []string                                                                                                                                            `json:"modules,required"`
+	Modules []string                                                                                                                                            `json:"modules" api:"required"`
 	JSON    evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseModulesChangeManagementBeforeJSON `json:"-"`
 }
 
@@ -9887,9 +9885,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseSetCodeAccountManagement struct {
 	// The delegated address
-	DelegatedAddress string `json:"delegated_address,required"`
+	DelegatedAddress string `json:"delegated_address" api:"required"`
 	// The type of the state change
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseSetCodeAccountManagementType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseSetCodeAccountManagementType `json:"type" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseSetCodeAccountManagementJSON `json:"-"`
 }
 
@@ -9931,9 +9929,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseContractCreation struct {
 	// The direct creator address of the new contract
-	Deployer string `json:"deployer,required"`
+	Deployer string `json:"deployer" api:"required"`
 	// The type of the state change
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseContractCreationType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseContractCreationType `json:"type" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagementRoutersEvmResponseContractCreationJSON `json:"-"`
 }
 
@@ -9994,13 +9992,13 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalance struct {
 	// The asset that is missing balance
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesAsset `json:"asset" api:"required"`
 	// The account address's current balance of the asset
-	CurrentBalance EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesCurrentBalance `json:"current_balance,required"`
+	CurrentBalance EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesCurrentBalance `json:"current_balance" api:"required"`
 	// The account address's missing balance of the asset
-	MissingBalance EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesMissingBalance `json:"missing_balance,required"`
+	MissingBalance EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesMissingBalance `json:"missing_balance" api:"required"`
 	// The required balance of the asset for this action
-	RequiredBalance EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesRequiredBalance `json:"required_balance,required"`
+	RequiredBalance EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesRequiredBalance `json:"required_balance" api:"required"`
 	JSON            evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalanceJSON             `json:"-"`
 }
 
@@ -10027,9 +10025,9 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // The asset that is missing balance
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesAsset struct {
 	// asset's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesAssetType `json:"type" api:"required"`
 	// address of the token
 	Address   string `json:"address"`
 	ChainID   int64  `json:"chain_id"`
@@ -10111,11 +10109,11 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesAssetRoutersEvmTokenDetailsErc20TokenDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -10166,12 +10164,12 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 }
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesAssetRoutersEvmTokenDetailsNativeAssetDetails struct {
-	ChainID   int64  `json:"chain_id,required"`
-	ChainName string `json:"chain_name,required"`
-	Decimals  int64  `json:"decimals,required"`
-	LogoURL   string `json:"logo_url,required"`
+	ChainID   int64  `json:"chain_id" api:"required"`
+	ChainName string `json:"chain_name" api:"required"`
+	Decimals  int64  `json:"decimals" api:"required"`
+	LogoURL   string `json:"logo_url" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesAssetRoutersEvmTokenDetailsNativeAssetDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesAssetRoutersEvmTokenDetailsNativeAssetDetailsType `json:"type" api:"required"`
 	// string represents the name of the asset
 	Name string `json:"name"`
 	// asset's symbol name
@@ -10239,7 +10237,7 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // The account address's current balance of the asset
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesCurrentBalance struct {
 	// The raw value of the balance in hex string format
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// The value of the balance in decimal string format
 	Value string                                                                                                          `json:"value"`
 	JSON  evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesCurrentBalanceJSON `json:"-"`
@@ -10266,7 +10264,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // The account address's missing balance of the asset
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesMissingBalance struct {
 	// The raw value of the balance in hex string format
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// The value of the balance in decimal string format
 	Value string                                                                                                          `json:"value"`
 	JSON  evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesMissingBalanceJSON `json:"-"`
@@ -10293,7 +10291,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // The required balance of the asset for this action
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesRequiredBalance struct {
 	// The raw value of the balance in hex string format
-	RawValue string `json:"raw_value,required"`
+	RawValue string `json:"raw_value" api:"required"`
 	// The value of the balance in decimal string format
 	Value string                                                                                                           `json:"value"`
 	JSON  evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalancesRequiredBalanceJSON `json:"-"`
@@ -10371,7 +10369,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // The calldata to be sent.
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationParamsCalldata struct {
 	// The function selector of the function called in the transaction
-	FunctionSelector string `json:"function_selector,required"`
+	FunctionSelector string `json:"function_selector" api:"required"`
 	// The function declaration of the function called in the transaction
 	FunctionDeclaration string `json:"function_declaration"`
 	// The function signature of the function called in the transaction
@@ -10401,7 +10399,7 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // The user operation call data to be sent.
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationParamsUserOperationCalldata struct {
 	// The function selector of the function called in the transaction
-	FunctionSelector string `json:"function_selector,required"`
+	FunctionSelector string `json:"function_selector" api:"required"`
 	// The function declaration of the function called in the transaction
 	FunctionDeclaration string `json:"function_declaration"`
 	// The function signature of the function called in the transaction
@@ -10430,11 +10428,11 @@ func (r evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationError struct {
 	// A string explaining why the transaction failed
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// An error message if the simulation failed.
-	Error string `json:"error,required"`
+	Error string `json:"error" api:"required"`
 	// A string indicating if the simulation was successful or not.
-	Status EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorStatus `json:"status,required"`
+	Status EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorStatus `json:"status" api:"required"`
 	// Error details if the simulation failed.
 	ErrorDetails EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetails `json:"error_details"`
 	JSON         evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorJSON         `json:"-"`
@@ -10481,14 +10479,15 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // Error details if the simulation failed.
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetails struct {
 	// The type of the model
-	Code string `json:"code,required"`
+	Code string `json:"code" api:"required"`
 	// The address of the account
 	AccountAddress string `json:"account_address"`
 	// The address that is invalid
 	Address string `json:"address"`
 	// This field can have the runtime type of
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAsset].
-	Asset interface{} `json:"asset"`
+	Asset    interface{} `json:"asset"`
+	Category string      `json:"category"`
 	// The current balance of the account
 	CurrentBalance string `json:"current_balance"`
 	// The domain name that is unsupported
@@ -10509,6 +10508,7 @@ type evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulat
 	AccountAddress  apijson.Field
 	Address         apijson.Field
 	Asset           apijson.Field
+	Category        apijson.Field
 	CurrentBalance  apijson.Field
 	DomainName      apijson.Field
 	MessageType     apijson.Field
@@ -10580,11 +10580,12 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetails struct {
 	// The address of the account
-	AccountAddress string `json:"account_address,required"`
+	AccountAddress string `json:"account_address" api:"required"`
 	// The asset that the account does not have enough balance for
-	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAsset `json:"asset,required"`
+	Asset EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAsset `json:"asset" api:"required"`
 	// The type of the model
-	Code EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsCode `json:"code,required"`
+	Code     EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsCode     `json:"code" api:"required"`
+	Category EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsCategory `json:"category"`
 	// The current balance of the account
 	CurrentBalance string `json:"current_balance"`
 	// The required balance of the account
@@ -10599,6 +10600,7 @@ type evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulat
 	AccountAddress  apijson.Field
 	Asset           apijson.Field
 	Code            apijson.Field
+	Category        apijson.Field
 	CurrentBalance  apijson.Field
 	RequiredBalance apijson.Field
 	raw             string
@@ -10623,9 +10625,9 @@ type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulat
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc20AssetDetails],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc721AssetDetails],
 	// [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc1155AssetDetails].
-	Details interface{} `json:"details,required"`
+	Details interface{} `json:"details" api:"required"`
 	// The type of the model
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetType `json:"type" api:"required"`
 	// Token Id
 	TokenID int64                                                                                                                                                          `json:"token_id"`
 	JSON    evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetJSON `json:"-"`
@@ -10706,9 +10708,9 @@ func init() {
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseNativeAsset struct {
 	// Details
-	Details EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseNativeAssetDetails `json:"details,required"`
+	Details EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseNativeAssetDetails `json:"details" api:"required"`
 	// The type of the model
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseNativeAssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseNativeAssetType `json:"type" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseNativeAssetJSON `json:"-"`
 }
 
@@ -10735,12 +10737,12 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 // Details
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseNativeAssetDetails struct {
-	ChainID   int64  `json:"chain_id,required"`
-	ChainName string `json:"chain_name,required"`
-	Decimals  int64  `json:"decimals,required"`
-	LogoURL   string `json:"logo_url,required"`
+	ChainID   int64  `json:"chain_id" api:"required"`
+	ChainName string `json:"chain_name" api:"required"`
+	Decimals  int64  `json:"decimals" api:"required"`
+	LogoURL   string `json:"logo_url" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseNativeAssetDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseNativeAssetDetailsType `json:"type" api:"required"`
 	// string represents the name of the asset
 	Name string `json:"name"`
 	// asset's symbol name
@@ -10803,9 +10805,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc20Asset struct {
 	// Details
-	Details EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc20AssetDetails `json:"details,required"`
+	Details EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc20AssetDetails `json:"details" api:"required"`
 	// The type of the model
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc20AssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc20AssetType `json:"type" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc20AssetJSON `json:"-"`
 }
 
@@ -10833,11 +10835,11 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // Details
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc20AssetDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset's decimals
-	Decimals int64 `json:"decimals,required"`
+	Decimals int64 `json:"decimals" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc20AssetDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc20AssetDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -10901,11 +10903,11 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc721Asset struct {
 	// Details
-	Details EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc721AssetDetails `json:"details,required"`
+	Details EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc721AssetDetails `json:"details" api:"required"`
 	// Token Id
-	TokenID int64 `json:"token_id,required"`
+	TokenID int64 `json:"token_id" api:"required"`
 	// The type of the model
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc721AssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc721AssetType `json:"type" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc721AssetJSON `json:"-"`
 }
 
@@ -10934,9 +10936,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // Details
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc721AssetDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc721AssetDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc721AssetDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -10999,11 +11001,11 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc1155Asset struct {
 	// Details
-	Details EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc1155AssetDetails `json:"details,required"`
+	Details EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc1155AssetDetails `json:"details" api:"required"`
 	// Token Id
-	TokenID int64 `json:"token_id,required"`
+	TokenID int64 `json:"token_id" api:"required"`
 	// The type of the model
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc1155AssetType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc1155AssetType `json:"type" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc1155AssetJSON `json:"-"`
 }
 
@@ -11032,9 +11034,9 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 // Details
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc1155AssetDetails struct {
 	// address of the token
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// asset type.
-	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc1155AssetDetailsType `json:"type,required"`
+	Type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsAssetRoutersEvmResponseErc1155AssetDetailsType `json:"type" api:"required"`
 	// url of the token logo
 	LogoURL string `json:"logo_url"`
 	// string represents the name of the asset
@@ -11128,12 +11130,27 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 	return false
 }
 
+type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsCategory string
+
+const (
+	EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsCategoryRevert EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsCategory = "REVERT"
+)
+
+func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsCategory) IsKnown() bool {
+	switch r {
+	case EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetailsCategoryRevert:
+		return true
+	}
+	return false
+}
+
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInvalidAddressErrorDetails struct {
 	// The address that is invalid
-	Address string `json:"address,required"`
+	Address string `json:"address" api:"required"`
 	// The type of the model
-	Code EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInvalidAddressErrorDetailsCode `json:"code,required"`
-	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInvalidAddressErrorDetailsJSON `json:"-"`
+	Code     EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInvalidAddressErrorDetailsCode     `json:"code" api:"required"`
+	Category EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInvalidAddressErrorDetailsCategory `json:"category"`
+	JSON     evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInvalidAddressErrorDetailsJSON     `json:"-"`
 }
 
 // evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInvalidAddressErrorDetailsJSON
@@ -11142,6 +11159,7 @@ type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulat
 type evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInvalidAddressErrorDetailsJSON struct {
 	Address     apijson.Field
 	Code        apijson.Field
+	Category    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -11172,9 +11190,24 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 	return false
 }
 
+type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInvalidAddressErrorDetailsCategory string
+
+const (
+	EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInvalidAddressErrorDetailsCategoryInvalidInput EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInvalidAddressErrorDetailsCategory = "INVALID_INPUT"
+)
+
+func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInvalidAddressErrorDetailsCategory) IsKnown() bool {
+	switch r {
+	case EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInvalidAddressErrorDetailsCategoryInvalidInput:
+		return true
+	}
+	return false
+}
+
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGenericErrorDetails struct {
+	Category string `json:"category" api:"required"`
 	// The error code
-	Code string                                                                                                                                   `json:"code,required"`
+	Code string                                                                                                                                   `json:"code" api:"required"`
 	JSON evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGenericErrorDetailsJSON `json:"-"`
 }
 
@@ -11182,6 +11215,7 @@ type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulat
 // contains the JSON metadata for the struct
 // [EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGenericErrorDetails]
 type evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGenericErrorDetailsJSON struct {
+	Category    apijson.Field
 	Code        apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -11200,12 +11234,13 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 
 type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseUnsupportedEip712MessageErrorDetails struct {
 	// The type of the model
-	Code EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseUnsupportedEip712MessageErrorDetailsCode `json:"code,required"`
+	Code EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseUnsupportedEip712MessageErrorDetailsCode `json:"code" api:"required"`
 	// The domain name that is unsupported
-	DomainName string `json:"domain_name,required"`
+	DomainName string `json:"domain_name" api:"required"`
 	// The message type that is unsupported
-	MessageType string                                                                                                                                                    `json:"message_type,required"`
-	JSON        evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseUnsupportedEip712MessageErrorDetailsJSON `json:"-"`
+	MessageType string                                                                                                                                                        `json:"message_type" api:"required"`
+	Category    EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseUnsupportedEip712MessageErrorDetailsCategory `json:"category"`
+	JSON        evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseUnsupportedEip712MessageErrorDetailsJSON     `json:"-"`
 }
 
 // evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseUnsupportedEip712MessageErrorDetailsJSON
@@ -11215,6 +11250,7 @@ type evmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulat
 	Code        apijson.Field
 	DomainName  apijson.Field
 	MessageType apijson.Field
+	Category    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -11245,6 +11281,20 @@ func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimu
 	return false
 }
 
+type EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseUnsupportedEip712MessageErrorDetailsCategory string
+
+const (
+	EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseUnsupportedEip712MessageErrorDetailsCategoryInvalidInput EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseUnsupportedEip712MessageErrorDetailsCategory = "INVALID_INPUT"
+)
+
+func (r EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseUnsupportedEip712MessageErrorDetailsCategory) IsKnown() bool {
+	switch r {
+	case EvmTransactionRawScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseUnsupportedEip712MessageErrorDetailsCategoryInvalidInput:
+		return true
+	}
+	return false
+}
+
 // A string indicating if the simulation was successful or not.
 type EvmTransactionRawScanResponseSimulationStatus string
 
@@ -11262,7 +11312,7 @@ func (r EvmTransactionRawScanResponseSimulationStatus) IsKnown() bool {
 }
 
 type EvmTransactionRawScanResponseUserOperationGasEstimation struct {
-	Status                           EvmTransactionRawScanResponseUserOperationGasEstimationStatus `json:"status,required"`
+	Status                           EvmTransactionRawScanResponseUserOperationGasEstimationStatus `json:"status" api:"required"`
 	CallGasEstimate                  string                                                        `json:"call_gas_estimate"`
 	Error                            string                                                        `json:"error"`
 	PaymasterVerificationGasEstimate string                                                        `json:"paymaster_verification_gas_estimate"`
@@ -11336,8 +11386,8 @@ func init() {
 }
 
 type EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsTransactionScanGasEstimationError struct {
-	Error  string                                                                                                         `json:"error,required"`
-	Status EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsTransactionScanGasEstimationErrorStatus `json:"status,required"`
+	Error  string                                                                                                         `json:"error" api:"required"`
+	Status EvmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsTransactionScanGasEstimationErrorStatus `json:"status" api:"required"`
 	JSON   evmTransactionRawScanResponseUserOperationGasEstimationRoutersEvmModelsTransactionScanGasEstimationErrorJSON   `json:"-"`
 }
 
@@ -11395,11 +11445,11 @@ type EvmTransactionRawScanResponseValidation struct {
 	// This field can have the runtime type of
 	// [[]EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationFeature],
 	// [[]EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorFeature].
-	Features interface{} `json:"features,required"`
+	Features interface{} `json:"features" api:"required"`
 	// Result type returned when validation succeeds.
-	ResultType EvmTransactionRawScanResponseValidationResultType `json:"result_type,required"`
+	ResultType EvmTransactionRawScanResponseValidationResultType `json:"result_type" api:"required"`
 	// A string indicating if the simulation was successful or not.
-	Status EvmTransactionRawScanResponseValidationStatus `json:"status,required"`
+	Status EvmTransactionRawScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
@@ -11477,11 +11527,11 @@ func init() {
 
 type EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidation struct {
 	// A list of features about this transaction explaining the validation.
-	Features []EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationFeature `json:"features,required"`
+	Features []EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationFeature `json:"features" api:"required"`
 	// Result type returned when validation succeeds.
-	ResultType EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationResultType `json:"result_type,required"`
+	ResultType EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationResultType `json:"result_type" api:"required"`
 	// A string indicating if the simulation was successful or not.
-	Status EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationStatus `json:"status,required"`
+	Status EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
@@ -11521,11 +11571,11 @@ func (r EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionVali
 
 type EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationFeature struct {
 	// Textual description
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// Feature name
-	FeatureID string `json:"feature_id,required"`
+	FeatureID string `json:"feature_id" api:"required"`
 	// Security result of a transaction scan feature.
-	Type EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationFeaturesType `json:"type,required"`
+	Type EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationFeaturesType `json:"type" api:"required"`
 	// Address the feature refers to
 	Address string `json:"address"`
 	// Metadata related to the feature
@@ -11607,21 +11657,21 @@ func (r EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionVali
 type EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationError struct {
 	// A textual classification that can be presented to the user explaining the
 	// reason.
-	Classification EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorClassification `json:"classification,required"`
+	Classification EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorClassification `json:"classification" api:"required"`
 	// A textual description that can be presented to the user about what this
 	// transaction is doing.
-	Description EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorDescription `json:"description,required"`
+	Description EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorDescription `json:"description" api:"required"`
 	// An error message if the validation failed.
-	Error string `json:"error,required"`
+	Error string `json:"error" api:"required"`
 	// A list of features about this transaction explaining the validation.
-	Features []EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorFeature `json:"features,required"`
+	Features []EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorFeature `json:"features" api:"required"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type.
-	Reason EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorReason `json:"reason,required"`
+	Reason EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorReason `json:"reason" api:"required"`
 	// A string indicating if the transaction is safe to sign or not.
-	ResultType EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorResultType `json:"result_type,required"`
+	ResultType EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorResultType `json:"result_type" api:"required"`
 	// A string indicating if the simulation was successful or not.
-	Status EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorStatus `json:"status,required"`
+	Status EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorStatus `json:"status" api:"required"`
 	JSON   evmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorJSON   `json:"-"`
 }
 
@@ -11685,11 +11735,11 @@ func (r EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionVali
 
 type EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorFeature struct {
 	// Textual description
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// Feature name
-	FeatureID string `json:"feature_id,required"`
+	FeatureID string `json:"feature_id" api:"required"`
 	// Security result of a transaction scan feature.
-	Type EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorFeaturesType `json:"type,required"`
+	Type EvmTransactionRawScanResponseValidationRoutersEvmResponseTransactionValidationErrorFeaturesType `json:"type" api:"required"`
 	// Address the feature refers to
 	Address string `json:"address"`
 	// Metadata related to the feature
@@ -11818,14 +11868,14 @@ func (r EvmTransactionRawScanResponseValidationStatus) IsKnown() bool {
 type EvmTransactionRawScanParams struct {
 	// The address to relate the transaction to. Account address determines in which
 	// perspective the transaction is simulated and validated.
-	AccountAddress param.Field[string] `json:"account_address,required"`
+	AccountAddress param.Field[string] `json:"account_address" api:"required"`
 	// The chain name or chain ID
-	Chain param.Field[TransactionScanSupportedChain] `json:"chain,required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain" api:"required"`
 	// Hex string of the raw transaction data
-	Data param.Field[string] `json:"data,required"`
+	Data param.Field[string] `json:"data" api:"required"`
 	// Additional context for the scan (e.g., dapp URL/domain, integration source).
 	// Used to enrich results and reduce false positives/negatives.
-	Metadata param.Field[EvmTransactionRawScanParamsMetadataUnion] `json:"metadata,required"`
+	Metadata param.Field[EvmTransactionRawScanParamsMetadataUnion] `json:"metadata" api:"required"`
 	// The relative block for the block validation. Can be "latest" or a block number.
 	Block param.Field[EvmTransactionRawScanParamsBlockUnion] `json:"block"`
 	// List of one or more of options for the desired output. "simulation" - include
@@ -11903,7 +11953,7 @@ type EvmTransactionRawScanParamsMetadataRoutersEvmModelsMetadataDapp struct {
 	// The full URL of the DApp or website that initiated the transaction, for
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain" api:"required"`
 	// Indicates that the transaction was not initiated by a dapp. Use false when the
 	// transaction is from a dapp.
 	NonDapp param.Field[bool] `json:"non_dapp"`

@@ -40,9 +40,7 @@ func (r *EvmAddressService) Report(ctx context.Context, body EvmAddressReportPar
 	return
 }
 
-// Gets an address and returns a full security assessment indicating weather or not
-// this address is malicious as well as textual reasons of why the address was
-// flagged that way.
+// Get a risk recommendation with plain-language reasons for an address.
 func (r *EvmAddressService) Scan(ctx context.Context, body EvmAddressScanParams, opts ...option.RequestOption) (res *AddressValidation, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/address/scan"
@@ -54,12 +52,12 @@ type EvmAddressReportResponse = interface{}
 
 type EvmAddressReportParams struct {
 	// Details about the report.
-	Details param.Field[string] `json:"details,required"`
+	Details param.Field[string] `json:"details" api:"required"`
 	// The event type of the report. Could be `FALSE_POSITIVE` or `FALSE_NEGATIVE`.
-	Event param.Field[EvmAddressReportParamsEvent] `json:"event,required"`
+	Event param.Field[EvmAddressReportParamsEvent] `json:"event" api:"required"`
 	// Parameters identifying the address to report, provided either as address details
 	// (address, domain, and chain) or as a request ID from a previous scan.
-	Report param.Field[EvmAddressReportParamsReportUnion] `json:"report,required"`
+	Report param.Field[EvmAddressReportParamsReportUnion] `json:"report" api:"required"`
 }
 
 func (r EvmAddressReportParams) MarshalJSON() (data []byte, err error) {
@@ -85,7 +83,7 @@ func (r EvmAddressReportParamsEvent) IsKnown() bool {
 // Parameters identifying the address to report, provided either as address details
 // (address, domain, and chain) or as a request ID from a previous scan.
 type EvmAddressReportParamsReport struct {
-	Type   param.Field[EvmAddressReportParamsReportType] `json:"type,required"`
+	Type   param.Field[EvmAddressReportParamsReportType] `json:"type" api:"required"`
 	Params param.Field[interface{}]                      `json:"params"`
 	// The request ID of a previous request. This can be found in the value of the
 	// `x-request-id` field in the headers of the response of the previous request. For
@@ -109,8 +107,8 @@ type EvmAddressReportParamsReportUnion interface {
 }
 
 type EvmAddressReportParamsReportParamReportEvmAddressReportParams struct {
-	Params param.Field[EvmAddressReportParamsReportParamReportEvmAddressReportParamsParams] `json:"params,required"`
-	Type   param.Field[EvmAddressReportParamsReportParamReportEvmAddressReportParamsType]   `json:"type,required"`
+	Params param.Field[EvmAddressReportParamsReportParamReportEvmAddressReportParamsParams] `json:"params" api:"required"`
+	Type   param.Field[EvmAddressReportParamsReportParamReportEvmAddressReportParamsType]   `json:"type" api:"required"`
 }
 
 func (r EvmAddressReportParamsReportParamReportEvmAddressReportParams) MarshalJSON() (data []byte, err error) {
@@ -122,11 +120,11 @@ func (r EvmAddressReportParamsReportParamReportEvmAddressReportParams) implement
 
 type EvmAddressReportParamsReportParamReportEvmAddressReportParamsParams struct {
 	// The address to report on.
-	Address param.Field[string] `json:"address,required"`
+	Address param.Field[string] `json:"address" api:"required"`
 	// The chain name
-	Chain param.Field[EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain] `json:"chain,required"`
+	Chain param.Field[EvmAddressReportParamsReportParamReportEvmAddressReportParamsParamsChain] `json:"chain" api:"required"`
 	// The domain related to this address.
-	Domain param.Field[string] `json:"domain,required"`
+	Domain param.Field[string] `json:"domain" api:"required"`
 }
 
 func (r EvmAddressReportParamsReportParamReportEvmAddressReportParamsParams) MarshalJSON() (data []byte, err error) {
@@ -213,10 +211,10 @@ type EvmAddressReportParamsReportRequestIDReport struct {
 	// The request ID of a previous request. This can be found in the value of the
 	// `x-request-id` field in the headers of the response of the previous request. For
 	// instance: `6c3cf6c1-a80d-4927-91b9-03d841ea61fe`.
-	RequestID param.Field[string] `json:"request_id,required"`
+	RequestID param.Field[string] `json:"request_id" api:"required"`
 	// The type identifier indicating that a request ID from a previous scan is being
 	// used.
-	Type param.Field[EvmAddressReportParamsReportRequestIDReportType] `json:"type,required"`
+	Type param.Field[EvmAddressReportParamsReportRequestIDReportType] `json:"type" api:"required"`
 }
 
 func (r EvmAddressReportParamsReportRequestIDReport) MarshalJSON() (data []byte, err error) {
@@ -257,7 +255,7 @@ func (r EvmAddressReportParamsReportType) IsKnown() bool {
 }
 
 type EvmAddressScanParams struct {
-	ValidateAddress ValidateAddressParam `json:"ValidateAddress,required"`
+	ValidateAddress ValidateAddressParam `json:"ValidateAddress" api:"required"`
 }
 
 func (r EvmAddressScanParams) MarshalJSON() (data []byte, err error) {
