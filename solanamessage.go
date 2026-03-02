@@ -4890,6 +4890,11 @@ func (r SolanaMessageScanResponseResultSimulationTransactionActions) IsKnown() b
 
 // Transaction Validation Result
 type SolanaMessageScanResponseResultValidation struct {
+	// A textual classification that can be presented to the user explaining the
+	// reason.
+	Classification string `json:"classification" api:"required"`
+	// A textual description about the validation result
+	Description string `json:"description" api:"required"`
 	// A list of features explaining what is happening in the transaction in different
 	// levels of severity
 	ExtendedFeatures []SolanaMessageScanResponseResultValidationExtendedFeature `json:"extended_features" api:"required"`
@@ -4906,6 +4911,8 @@ type SolanaMessageScanResponseResultValidation struct {
 // solanaMessageScanResponseResultValidationJSON contains the JSON metadata for the
 // struct [SolanaMessageScanResponseResultValidation]
 type solanaMessageScanResponseResultValidationJSON struct {
+	Classification   apijson.Field
+	Description      apijson.Field
 	ExtendedFeatures apijson.Field
 	Features         apijson.Field
 	Reason           apijson.Field
