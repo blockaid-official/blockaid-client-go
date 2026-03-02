@@ -77,7 +77,7 @@ type TokenBulkScanResponseResult struct {
 	// Fees associated with the token
 	Fees TokenBulkScanResponseResultsFees `json:"fees" api:"required"`
 	// financial stats of the token
-	FinancialStats TokenBulkScanResponseResultsFinancialStats `json:"financial_stats" api:"required"`
+	FinancialStats FinancialStats `json:"financial_stats" api:"required"`
 	// Score between 0 to 1 (double)
 	MaliciousScore string `json:"malicious_score" api:"required"`
 	// Metadata of the token
@@ -173,93 +173,6 @@ func (r *TokenBulkScanResponseResultsFees) UnmarshalJSON(data []byte) (err error
 }
 
 func (r tokenBulkScanResponseResultsFeesJSON) RawJSON() string {
-	return r.raw
-}
-
-// financial stats of the token
-type TokenBulkScanResponseResultsFinancialStats struct {
-	// Percentage of token currently held by bundlers - wallets that bought in the
-	// exact same Solana slot, at any point in the token's life-cycle. Currently
-	// available for Solana only.
-	BundlersHoldingPercentage float64 `json:"bundlers_holding_percentage" api:"nullable"`
-	// Token liquidity burned percentage
-	BurnedLiquidityPercentage float64 `json:"burned_liquidity_percentage" api:"nullable"`
-	// Percentage of token's supply held in known developer wallets (0.0 to 100.0)
-	DevHoldingPercentage float64 `json:"dev_holding_percentage" api:"nullable"`
-	// Amount of token holders
-	HoldersCount int64 `json:"holders_count" api:"nullable"`
-	// Percentage of token's supply _currently_ held by sniper bots (0.0 to 100.0).
-	// Currently available for Solana only.
-	InitialSnipersHoldingPercentage float64 `json:"initial_snipers_holding_percentage" api:"nullable"`
-	// Percentage of supply that is currently held by insiders - defined as wallets
-	// exhibiting early acquisition behaviors typically associated with insider
-	// activity.
-	InsidersHoldingPercentage float64 `json:"insiders_holding_percentage" api:"nullable"`
-	// Token liquidity locked percentage
-	LockedLiquidityPercentage float64 `json:"locked_liquidity_percentage" api:"nullable"`
-	// Percentage of token's supply _initially_ held by sniper bots (0.0 to 100.0).
-	// Currently available for Solana only.
-	SnipersHoldingPercentage float64 `json:"snipers_holding_percentage" api:"nullable"`
-	// token supply
-	Supply int64 `json:"supply" api:"nullable"`
-	// Top token holders
-	TopHolders []TokenBulkScanResponseResultsFinancialStatsTopHolder `json:"top_holders"`
-	// Total reserve in USD
-	TotalReserveInUsd float64 `json:"total_reserve_in_usd" api:"nullable"`
-	// token price in USD
-	UsdPricePerUnit float64                                        `json:"usd_price_per_unit" api:"nullable"`
-	JSON            tokenBulkScanResponseResultsFinancialStatsJSON `json:"-"`
-}
-
-// tokenBulkScanResponseResultsFinancialStatsJSON contains the JSON metadata for
-// the struct [TokenBulkScanResponseResultsFinancialStats]
-type tokenBulkScanResponseResultsFinancialStatsJSON struct {
-	BundlersHoldingPercentage       apijson.Field
-	BurnedLiquidityPercentage       apijson.Field
-	DevHoldingPercentage            apijson.Field
-	HoldersCount                    apijson.Field
-	InitialSnipersHoldingPercentage apijson.Field
-	InsidersHoldingPercentage       apijson.Field
-	LockedLiquidityPercentage       apijson.Field
-	SnipersHoldingPercentage        apijson.Field
-	Supply                          apijson.Field
-	TopHolders                      apijson.Field
-	TotalReserveInUsd               apijson.Field
-	UsdPricePerUnit                 apijson.Field
-	raw                             string
-	ExtraFields                     map[string]apijson.Field
-}
-
-func (r *TokenBulkScanResponseResultsFinancialStats) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r tokenBulkScanResponseResultsFinancialStatsJSON) RawJSON() string {
-	return r.raw
-}
-
-type TokenBulkScanResponseResultsFinancialStatsTopHolder struct {
-	// Address
-	Address string `json:"address" api:"nullable"`
-	// Holding position out of total token liquidity
-	HoldingPercentage float64                                                 `json:"holding_percentage" api:"nullable"`
-	JSON              tokenBulkScanResponseResultsFinancialStatsTopHolderJSON `json:"-"`
-}
-
-// tokenBulkScanResponseResultsFinancialStatsTopHolderJSON contains the JSON
-// metadata for the struct [TokenBulkScanResponseResultsFinancialStatsTopHolder]
-type tokenBulkScanResponseResultsFinancialStatsTopHolderJSON struct {
-	Address           apijson.Field
-	HoldingPercentage apijson.Field
-	raw               string
-	ExtraFields       map[string]apijson.Field
-}
-
-func (r *TokenBulkScanResponseResultsFinancialStatsTopHolder) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r tokenBulkScanResponseResultsFinancialStatsTopHolderJSON) RawJSON() string {
 	return r.raw
 }
 

@@ -108,7 +108,7 @@ type TokenSnapshotDiffResponseItem struct {
 	// Fees associated with the token
 	Fees TokenSnapshotDiffResponseItemsFees `json:"fees" api:"required"`
 	// financial stats of the token
-	FinancialStats TokenSnapshotDiffResponseItemsFinancialStats `json:"financial_stats" api:"required"`
+	FinancialStats FinancialStats `json:"financial_stats" api:"required"`
 	// Score between 0 to 1 (double)
 	MaliciousScore string `json:"malicious_score" api:"required"`
 	// Metadata of the token
@@ -204,93 +204,6 @@ func (r *TokenSnapshotDiffResponseItemsFees) UnmarshalJSON(data []byte) (err err
 }
 
 func (r tokenSnapshotDiffResponseItemsFeesJSON) RawJSON() string {
-	return r.raw
-}
-
-// financial stats of the token
-type TokenSnapshotDiffResponseItemsFinancialStats struct {
-	// Percentage of token currently held by bundlers - wallets that bought in the
-	// exact same Solana slot, at any point in the token's life-cycle. Currently
-	// available for Solana only.
-	BundlersHoldingPercentage float64 `json:"bundlers_holding_percentage" api:"nullable"`
-	// Token liquidity burned percentage
-	BurnedLiquidityPercentage float64 `json:"burned_liquidity_percentage" api:"nullable"`
-	// Percentage of token's supply held in known developer wallets (0.0 to 100.0)
-	DevHoldingPercentage float64 `json:"dev_holding_percentage" api:"nullable"`
-	// Amount of token holders
-	HoldersCount int64 `json:"holders_count" api:"nullable"`
-	// Percentage of token's supply _currently_ held by sniper bots (0.0 to 100.0).
-	// Currently available for Solana only.
-	InitialSnipersHoldingPercentage float64 `json:"initial_snipers_holding_percentage" api:"nullable"`
-	// Percentage of supply that is currently held by insiders - defined as wallets
-	// exhibiting early acquisition behaviors typically associated with insider
-	// activity.
-	InsidersHoldingPercentage float64 `json:"insiders_holding_percentage" api:"nullable"`
-	// Token liquidity locked percentage
-	LockedLiquidityPercentage float64 `json:"locked_liquidity_percentage" api:"nullable"`
-	// Percentage of token's supply _initially_ held by sniper bots (0.0 to 100.0).
-	// Currently available for Solana only.
-	SnipersHoldingPercentage float64 `json:"snipers_holding_percentage" api:"nullable"`
-	// token supply
-	Supply int64 `json:"supply" api:"nullable"`
-	// Top token holders
-	TopHolders []TokenSnapshotDiffResponseItemsFinancialStatsTopHolder `json:"top_holders"`
-	// Total reserve in USD
-	TotalReserveInUsd float64 `json:"total_reserve_in_usd" api:"nullable"`
-	// token price in USD
-	UsdPricePerUnit float64                                          `json:"usd_price_per_unit" api:"nullable"`
-	JSON            tokenSnapshotDiffResponseItemsFinancialStatsJSON `json:"-"`
-}
-
-// tokenSnapshotDiffResponseItemsFinancialStatsJSON contains the JSON metadata for
-// the struct [TokenSnapshotDiffResponseItemsFinancialStats]
-type tokenSnapshotDiffResponseItemsFinancialStatsJSON struct {
-	BundlersHoldingPercentage       apijson.Field
-	BurnedLiquidityPercentage       apijson.Field
-	DevHoldingPercentage            apijson.Field
-	HoldersCount                    apijson.Field
-	InitialSnipersHoldingPercentage apijson.Field
-	InsidersHoldingPercentage       apijson.Field
-	LockedLiquidityPercentage       apijson.Field
-	SnipersHoldingPercentage        apijson.Field
-	Supply                          apijson.Field
-	TopHolders                      apijson.Field
-	TotalReserveInUsd               apijson.Field
-	UsdPricePerUnit                 apijson.Field
-	raw                             string
-	ExtraFields                     map[string]apijson.Field
-}
-
-func (r *TokenSnapshotDiffResponseItemsFinancialStats) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r tokenSnapshotDiffResponseItemsFinancialStatsJSON) RawJSON() string {
-	return r.raw
-}
-
-type TokenSnapshotDiffResponseItemsFinancialStatsTopHolder struct {
-	// Address
-	Address string `json:"address" api:"nullable"`
-	// Holding position out of total token liquidity
-	HoldingPercentage float64                                                   `json:"holding_percentage" api:"nullable"`
-	JSON              tokenSnapshotDiffResponseItemsFinancialStatsTopHolderJSON `json:"-"`
-}
-
-// tokenSnapshotDiffResponseItemsFinancialStatsTopHolderJSON contains the JSON
-// metadata for the struct [TokenSnapshotDiffResponseItemsFinancialStatsTopHolder]
-type tokenSnapshotDiffResponseItemsFinancialStatsTopHolderJSON struct {
-	Address           apijson.Field
-	HoldingPercentage apijson.Field
-	raw               string
-	ExtraFields       map[string]apijson.Field
-}
-
-func (r *TokenSnapshotDiffResponseItemsFinancialStatsTopHolder) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r tokenSnapshotDiffResponseItemsFinancialStatsTopHolderJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -1246,7 +1159,7 @@ type TokenSnapshotFullResponseItem struct {
 	// Fees associated with the token
 	Fees TokenSnapshotFullResponseItemsFees `json:"fees" api:"required"`
 	// financial stats of the token
-	FinancialStats TokenSnapshotFullResponseItemsFinancialStats `json:"financial_stats" api:"required"`
+	FinancialStats FinancialStats `json:"financial_stats" api:"required"`
 	// Score between 0 to 1 (double)
 	MaliciousScore string `json:"malicious_score" api:"required"`
 	// Metadata of the token
@@ -1342,93 +1255,6 @@ func (r *TokenSnapshotFullResponseItemsFees) UnmarshalJSON(data []byte) (err err
 }
 
 func (r tokenSnapshotFullResponseItemsFeesJSON) RawJSON() string {
-	return r.raw
-}
-
-// financial stats of the token
-type TokenSnapshotFullResponseItemsFinancialStats struct {
-	// Percentage of token currently held by bundlers - wallets that bought in the
-	// exact same Solana slot, at any point in the token's life-cycle. Currently
-	// available for Solana only.
-	BundlersHoldingPercentage float64 `json:"bundlers_holding_percentage" api:"nullable"`
-	// Token liquidity burned percentage
-	BurnedLiquidityPercentage float64 `json:"burned_liquidity_percentage" api:"nullable"`
-	// Percentage of token's supply held in known developer wallets (0.0 to 100.0)
-	DevHoldingPercentage float64 `json:"dev_holding_percentage" api:"nullable"`
-	// Amount of token holders
-	HoldersCount int64 `json:"holders_count" api:"nullable"`
-	// Percentage of token's supply _currently_ held by sniper bots (0.0 to 100.0).
-	// Currently available for Solana only.
-	InitialSnipersHoldingPercentage float64 `json:"initial_snipers_holding_percentage" api:"nullable"`
-	// Percentage of supply that is currently held by insiders - defined as wallets
-	// exhibiting early acquisition behaviors typically associated with insider
-	// activity.
-	InsidersHoldingPercentage float64 `json:"insiders_holding_percentage" api:"nullable"`
-	// Token liquidity locked percentage
-	LockedLiquidityPercentage float64 `json:"locked_liquidity_percentage" api:"nullable"`
-	// Percentage of token's supply _initially_ held by sniper bots (0.0 to 100.0).
-	// Currently available for Solana only.
-	SnipersHoldingPercentage float64 `json:"snipers_holding_percentage" api:"nullable"`
-	// token supply
-	Supply int64 `json:"supply" api:"nullable"`
-	// Top token holders
-	TopHolders []TokenSnapshotFullResponseItemsFinancialStatsTopHolder `json:"top_holders"`
-	// Total reserve in USD
-	TotalReserveInUsd float64 `json:"total_reserve_in_usd" api:"nullable"`
-	// token price in USD
-	UsdPricePerUnit float64                                          `json:"usd_price_per_unit" api:"nullable"`
-	JSON            tokenSnapshotFullResponseItemsFinancialStatsJSON `json:"-"`
-}
-
-// tokenSnapshotFullResponseItemsFinancialStatsJSON contains the JSON metadata for
-// the struct [TokenSnapshotFullResponseItemsFinancialStats]
-type tokenSnapshotFullResponseItemsFinancialStatsJSON struct {
-	BundlersHoldingPercentage       apijson.Field
-	BurnedLiquidityPercentage       apijson.Field
-	DevHoldingPercentage            apijson.Field
-	HoldersCount                    apijson.Field
-	InitialSnipersHoldingPercentage apijson.Field
-	InsidersHoldingPercentage       apijson.Field
-	LockedLiquidityPercentage       apijson.Field
-	SnipersHoldingPercentage        apijson.Field
-	Supply                          apijson.Field
-	TopHolders                      apijson.Field
-	TotalReserveInUsd               apijson.Field
-	UsdPricePerUnit                 apijson.Field
-	raw                             string
-	ExtraFields                     map[string]apijson.Field
-}
-
-func (r *TokenSnapshotFullResponseItemsFinancialStats) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r tokenSnapshotFullResponseItemsFinancialStatsJSON) RawJSON() string {
-	return r.raw
-}
-
-type TokenSnapshotFullResponseItemsFinancialStatsTopHolder struct {
-	// Address
-	Address string `json:"address" api:"nullable"`
-	// Holding position out of total token liquidity
-	HoldingPercentage float64                                                   `json:"holding_percentage" api:"nullable"`
-	JSON              tokenSnapshotFullResponseItemsFinancialStatsTopHolderJSON `json:"-"`
-}
-
-// tokenSnapshotFullResponseItemsFinancialStatsTopHolderJSON contains the JSON
-// metadata for the struct [TokenSnapshotFullResponseItemsFinancialStatsTopHolder]
-type tokenSnapshotFullResponseItemsFinancialStatsTopHolderJSON struct {
-	Address           apijson.Field
-	HoldingPercentage apijson.Field
-	raw               string
-	ExtraFields       map[string]apijson.Field
-}
-
-func (r *TokenSnapshotFullResponseItemsFinancialStatsTopHolder) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r tokenSnapshotFullResponseItemsFinancialStatsTopHolderJSON) RawJSON() string {
 	return r.raw
 }
 
