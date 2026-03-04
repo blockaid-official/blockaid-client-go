@@ -408,11 +408,12 @@ func (r StarknetTransactionScanRequestMetadataType) IsKnown() bool {
 
 type StarknetTransactionScanRequestTransactionParam struct {
 	// The nonce of the transaction.
-	Nonce param.Field[string] `json:"nonce" api:"required"`
-	// The version of the transaction.
-	Version               param.Field[StarknetTransactionScanRequestTransactionVersion] `json:"version" api:"required"`
-	AccountDeploymentData param.Field[interface{}]                                      `json:"account_deployment_data"`
-	Calldata              param.Field[interface{}]                                      `json:"calldata"`
+	Nonce                 param.Field[string]      `json:"nonce" api:"required"`
+	AccountDeploymentData param.Field[interface{}] `json:"account_deployment_data"`
+	Calldata              param.Field[interface{}] `json:"calldata"`
+	// The address allowed to execute, or 0 for ANY_CALLER
+	Caller param.Field[string]      `json:"caller"`
+	Calls  param.Field[interface{}] `json:"calls"`
 	// The id of the chain to which the transaction is sent.
 	ChainID param.Field[string] `json:"chain_id"`
 	// The hash of the contract class.
@@ -420,6 +421,10 @@ type StarknetTransactionScanRequestTransactionParam struct {
 	ConstructorCalldata param.Field[interface{}] `json:"constructor_calldata"`
 	// The salt of the contract address.
 	ContractAddressSalt param.Field[string] `json:"contract_address_salt"`
+	// Unix timestamp. The message cannot be executed before this time.
+	ExecuteAfter param.Field[string] `json:"execute_after"`
+	// Unix timestamp. The message cannot be executed after this time.
+	ExecuteBefore param.Field[string] `json:"execute_before"`
 	// The maximum fee that the sender is willing to pay.
 	MaxFee param.Field[string] `json:"max_fee"`
 	// The nonce data availability mode.
@@ -427,6 +432,8 @@ type StarknetTransactionScanRequestTransactionParam struct {
 	PaymasterData             param.Field[interface{}]                                                        `json:"paymaster_data"`
 	// The address of the sender.
 	SenderAddress param.Field[string] `json:"sender_address"`
+	// The version of the transaction.
+	Version param.Field[StarknetTransactionScanRequestTransactionVersion] `json:"version"`
 }
 
 func (r StarknetTransactionScanRequestTransactionParam) MarshalJSON() (data []byte, err error) {
@@ -441,6 +448,7 @@ func (r StarknetTransactionScanRequestTransactionParam) implementsStarknetTransa
 // [StarknetTransactionScanRequestTransactionStarknetInvokeV3TransactionSchemaParam],
 // [StarknetTransactionScanRequestTransactionStarknetDeployAccountV1TransactionSchemaParam],
 // [StarknetTransactionScanRequestTransactionStarknetDeployAccountV3TransactionSchemaParam],
+// [StarknetTransactionScanRequestTransactionStarknetOutsideExecutionSchemaParam],
 // [StarknetTransactionScanRequestTransactionParam].
 type StarknetTransactionScanRequestTransactionUnionParam interface {
 	implementsStarknetTransactionScanRequestTransactionUnionParam()
@@ -611,20 +619,37 @@ func (r StarknetTransactionScanRequestTransactionStarknetDeployAccountV3Transact
 	return false
 }
 
-// The version of the transaction.
-type StarknetTransactionScanRequestTransactionVersion int64
+type StarknetTransactionScanRequestTransactionStarknetOutsideExecutionSchemaParam struct {
+	// The address allowed to execute, or 0 for ANY_CALLER
+	Caller param.Field[string] `json:"caller" api:"required"`
+	// The calls to execute on the user's account.
+	Calls param.Field[[]StarknetTransactionScanRequestTransactionStarknetOutsideExecutionSchemaCallParam] `json:"calls" api:"required"`
+	// Unix timestamp. The message cannot be executed before this time.
+	ExecuteAfter param.Field[string] `json:"execute_after" api:"required"`
+	// Unix timestamp. The message cannot be executed after this time.
+	ExecuteBefore param.Field[string] `json:"execute_before" api:"required"`
+	// Replay-protection nonce, scoped to the outside execution context
+	Nonce param.Field[string] `json:"nonce" api:"required"`
+}
 
-const (
-	StarknetTransactionScanRequestTransactionVersion1 StarknetTransactionScanRequestTransactionVersion = 1
-	StarknetTransactionScanRequestTransactionVersion3 StarknetTransactionScanRequestTransactionVersion = 3
-)
+func (r StarknetTransactionScanRequestTransactionStarknetOutsideExecutionSchemaParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
 
-func (r StarknetTransactionScanRequestTransactionVersion) IsKnown() bool {
-	switch r {
-	case StarknetTransactionScanRequestTransactionVersion1, StarknetTransactionScanRequestTransactionVersion3:
-		return true
-	}
-	return false
+func (r StarknetTransactionScanRequestTransactionStarknetOutsideExecutionSchemaParam) implementsStarknetTransactionScanRequestTransactionUnionParam() {
+}
+
+type StarknetTransactionScanRequestTransactionStarknetOutsideExecutionSchemaCallParam struct {
+	// The selector of the function to call.
+	Selector param.Field[string] `json:"selector" api:"required"`
+	// The address of the contract to call.
+	To param.Field[string] `json:"to" api:"required"`
+	// The calldata to pass to the function.
+	Calldata param.Field[[]string] `json:"calldata"`
+}
+
+func (r StarknetTransactionScanRequestTransactionStarknetOutsideExecutionSchemaCallParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // The nonce data availability mode.
@@ -637,6 +662,22 @@ const (
 func (r StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode) IsKnown() bool {
 	switch r {
 	case StarknetTransactionScanRequestTransactionNonceDataAvailabilityMode0:
+		return true
+	}
+	return false
+}
+
+// The version of the transaction.
+type StarknetTransactionScanRequestTransactionVersion int64
+
+const (
+	StarknetTransactionScanRequestTransactionVersion1 StarknetTransactionScanRequestTransactionVersion = 1
+	StarknetTransactionScanRequestTransactionVersion3 StarknetTransactionScanRequestTransactionVersion = 3
+)
+
+func (r StarknetTransactionScanRequestTransactionVersion) IsKnown() bool {
+	switch r {
+	case StarknetTransactionScanRequestTransactionVersion1, StarknetTransactionScanRequestTransactionVersion3:
 		return true
 	}
 	return false
