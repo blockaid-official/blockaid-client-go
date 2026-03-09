@@ -33,15 +33,27 @@ func NewBitcoinService(opts ...option.RequestOption) (r *BitcoinService) {
 }
 
 type BitcoinTransactionScanRequestParam struct {
-	AccountAddress param.Field[string]                                          `json:"account_address" api:"required"`
-	Chain          param.Field[BitcoinTransactionScanRequestChain]              `json:"chain" api:"required"`
-	Metadata       param.Field[BitcoinTransactionScanRequestMetadataUnionParam] `json:"metadata" api:"required"`
-	Transaction    param.Field[string]                                          `json:"transaction" api:"required"`
-	// List of options to include in the response
+	// The Bitcoin address that owns the UTXOs being spent.
+	AccountAddress param.Field[string]                             `json:"account_address" api:"required"`
+	Chain          param.Field[BitcoinTransactionScanRequestChain] `json:"chain" api:"required"`
+	// Context of where the transaction was initiated: use wallet metadata when the
+	// user is signing in a wallet for an external site; use in-app metadata when the
+	// transaction is created within your own app.
 	//
-	// - `Options.validation`: Include Options.validation output in the response
+	// Choosing the correct type improves risk analysis and reporting.
+	Metadata param.Field[BitcoinTransactionScanRequestMetadataUnionParam] `json:"metadata" api:"required"`
+	// The raw unsigned transaction in hexadecimal, as produced by the wallet or your
+	// app. This is the same payload the user would sign.
+	Transaction param.Field[string] `json:"transaction" api:"required"`
+	// Which parts of the response you need:
 	//
-	// - `Options.simulation`: Include Options.simulation output in the response
+	//   - **validation** — Security verdict (Benign/Warning/Malicious) and risk
+	//     explanation. Use when deciding whether to block or warn.
+	//   - **simulation** — Predicted summary of balance and asset changes (e.g. "You
+	//     will send 0.01 BTC to bc1q..."). Use when showing the user what the
+	//     transaction does.
+	//
+	// You can request one or both; default is both.
 	Options param.Field[[]BitcoinTransactionScanRequestOption] `json:"options"`
 }
 
@@ -63,10 +75,18 @@ func (r BitcoinTransactionScanRequestChain) IsKnown() bool {
 	return false
 }
 
+// Context of where the transaction was initiated: use wallet metadata when the
+// user is signing in a wallet for an external site; use in-app metadata when the
+// transaction is created within your own app.
+//
+// Choosing the correct type improves risk analysis and reporting.
 type BitcoinTransactionScanRequestMetadataParam struct {
-	// Metadata for wallet requests
+	// Identifies the request as a wallet signing a transaction on behalf of an
+	// external dApp. The type improves threat context and helps attribute risk to
+	// specific origins.
 	Type param.Field[BitcoinTransactionScanRequestMetadataType] `json:"type"`
-	// URL of the dApp originating the transaction
+	// The full URL of the dApp or page where the user initiated the transaction (e.g.
+	// https://app.example.com/swap).
 	URL param.Field[string] `json:"url"`
 }
 
@@ -77,6 +97,12 @@ func (r BitcoinTransactionScanRequestMetadataParam) MarshalJSON() (data []byte, 
 func (r BitcoinTransactionScanRequestMetadataParam) implementsBitcoinTransactionScanRequestMetadataUnionParam() {
 }
 
+// Context of where the transaction was initiated: use wallet metadata when the
+// user is signing in a wallet for an external site; use in-app metadata when the
+// transaction is created within your own app.
+//
+// Choosing the correct type improves risk analysis and reporting.
+//
 // Satisfied by
 // [BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataParam],
 // [BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataParam],
@@ -86,9 +112,12 @@ type BitcoinTransactionScanRequestMetadataUnionParam interface {
 }
 
 type BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataParam struct {
-	// Metadata for wallet requests
+	// Identifies the request as a wallet signing a transaction on behalf of an
+	// external dApp. The type improves threat context and helps attribute risk to
+	// specific origins.
 	Type param.Field[BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataType] `json:"type" api:"required"`
-	// URL of the dApp originating the transaction
+	// The full URL of the dApp or page where the user initiated the transaction (e.g.
+	// https://app.example.com/swap).
 	URL param.Field[string] `json:"url" api:"required"`
 }
 
@@ -99,7 +128,9 @@ func (r BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataParam) 
 func (r BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataParam) implementsBitcoinTransactionScanRequestMetadataUnionParam() {
 }
 
-// Metadata for wallet requests
+// Identifies the request as a wallet signing a transaction on behalf of an
+// external dApp. The type improves threat context and helps attribute risk to
+// specific origins.
 type BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataType string
 
 const (
@@ -115,7 +146,8 @@ func (r BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataType) I
 }
 
 type BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataParam struct {
-	// Metadata for in-app requests
+	// Identifies the request as coming from your own app (e.g. in-app send, swap, or
+	// internal flow).
 	Type param.Field[BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataType] `json:"type"`
 }
 
@@ -126,7 +158,8 @@ func (r BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataParam) M
 func (r BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataParam) implementsBitcoinTransactionScanRequestMetadataUnionParam() {
 }
 
-// Metadata for in-app requests
+// Identifies the request as coming from your own app (e.g. in-app send, swap, or
+// internal flow).
 type BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataType string
 
 const (
@@ -141,7 +174,9 @@ func (r BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataType) Is
 	return false
 }
 
-// Metadata for wallet requests
+// Identifies the request as a wallet signing a transaction on behalf of an
+// external dApp. The type improves threat context and helps attribute risk to
+// specific origins.
 type BitcoinTransactionScanRequestMetadataType string
 
 const (
