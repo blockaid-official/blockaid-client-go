@@ -311,13 +311,13 @@ func init() {
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResult struct {
 	// Summary of the actions and asset transfers that were made by the requested
-	// account address
+	// account address.
 	AccountSummary BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummary `json:"account_summary" api:"required"`
 	Status         BitcoinTransactionScanResponseSimulationBitcoinSimulationResultStatus         `json:"status" api:"required"`
-	// Details of addresses involved in the transaction
+	// Details of addresses involved in the transaction.
 	AddressDetails []BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAddressDetail `json:"address_details"`
-	// Mapping between the address of an account to the assets diff during the
-	// transaction
+	// Per-account list of asset balance changes (native, inscriptions, runes) for the
+	// simulated transaction.
 	AssetsDiffs map[string][]BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff `json:"assets_diffs"`
 	JSON        bitcoinTransactionScanResponseSimulationBitcoinSimulationResultJSON                    `json:"-"`
 }
@@ -346,11 +346,12 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResult) impleme
 }
 
 // Summary of the actions and asset transfers that were made by the requested
-// account address
+// account address.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummary struct {
-	// Total USD diff for the requested account address
+	// Net change in USD value (incoming minus outgoing) for the requested account.
 	TotalUsdDiff BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryTotalUsdDiff `json:"total_usd_diff" api:"required"`
-	// Assets diffs of the requested account address
+	// Per-asset balance changes (native BTC, inscriptions, runes) for the requested
+	// account.
 	AccountAssetsDiffs []BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiff `json:"account_assets_diffs"`
 	JSON               bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryJSON                `json:"-"`
 }
@@ -373,13 +374,13 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 	return r.raw
 }
 
-// Total USD diff for the requested account address
+// Net change in USD value (incoming minus outgoing) for the requested account.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryTotalUsdDiff struct {
-	// Total incoming USD transfers
+	// Total incoming USD transfers.
 	In float64 `json:"in" api:"required"`
-	// Total outgoing USD transfers
+	// Total outgoing USD transfers.
 	Out float64 `json:"out" api:"required"`
-	// Total USD transfers
+	// Total USD transfers.
 	Total float64                                                                                       `json:"total"`
 	JSON  bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryTotalUsdDiffJSON `json:"-"`
 }
@@ -409,7 +410,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSumma
 	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffAsset],
 	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffAsset].
 	Asset interface{} `json:"asset" api:"required"`
-	// The type of the assets in this diff
+	// Asset category for this balance change (e.g. NATIVE, RUNE, INSCRIPTION).
 	AssetType string `json:"asset_type" api:"required"`
 	// This field can have the runtime type of
 	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffIn],
@@ -492,11 +493,11 @@ func init() {
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiff struct {
 	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffAsset `json:"asset" api:"required"`
-	// The type of the assets in this diff
+	// Asset category for this balance change (e.g. NATIVE, RUNE, INSCRIPTION).
 	AssetType string `json:"asset_type" api:"required"`
-	// Details of the incoming transfer
+	// Details of the incoming transfer.
 	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffIn `json:"in" api:"nullable"`
-	// Details of the outgoing transfer
+	// Details of the outgoing transfer.
 	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffOut  `json:"out" api:"nullable"`
 	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffJSON `json:"-"`
 }
@@ -525,15 +526,15 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 }
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffAsset struct {
-	// URL of the asset's logo
+	// URL of the asset's logo.
 	LogoURL string `json:"logo_url" api:"required,nullable"`
-	// Decimals of the asset
+	// Number of decimal places used to represent fractional units (e.g. 8 for BTC).
 	Decimals BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffAssetDecimals `json:"decimals"`
-	// Name of the asset
+	// Name of the asset.
 	Name BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffAssetName `json:"name"`
-	// Symbol of the asset
+	// Symbol of the asset.
 	Symbol BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffAssetSymbol `json:"symbol"`
-	// Type of the asset (`NATIVE`)
+	// Type of the asset (`NATIVE`).
 	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffAssetType `json:"type"`
 	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffAssetJSON `json:"-"`
 }
@@ -559,7 +560,7 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 	return r.raw
 }
 
-// Decimals of the asset
+// Number of decimal places used to represent fractional units (e.g. 8 for BTC).
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffAssetDecimals int64
 
 const (
@@ -574,7 +575,7 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 	return false
 }
 
-// Name of the asset
+// Name of the asset.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffAssetName string
 
 const (
@@ -589,7 +590,7 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 	return false
 }
 
-// Symbol of the asset
+// Symbol of the asset.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffAssetSymbol string
 
 const (
@@ -604,7 +605,7 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 	return false
 }
 
-// Type of the asset (`NATIVE`)
+// Type of the asset (`NATIVE`).
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffAssetType string
 
 const (
@@ -619,15 +620,15 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 	return false
 }
 
-// Details of the incoming transfer
+// Details of the incoming transfer.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffIn struct {
-	// Raw value of the transfer
+	// Raw value of the transfer.
 	RawValue int64 `json:"raw_value" api:"required"`
-	// Value of the transfer
+	// Value of the transfer.
 	Value string `json:"value" api:"required"`
-	// Summarized description of the transfer
+	// Summarized description of the transfer.
 	Summary string `json:"summary" api:"nullable"`
-	// USD price of the asset
+	// USD price of the asset.
 	UsdPrice float64                                                                                                                     `json:"usd_price" api:"nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffInJSON `json:"-"`
 }
@@ -652,15 +653,15 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 	return r.raw
 }
 
-// Details of the outgoing transfer
+// Details of the outgoing transfer.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffOut struct {
-	// Raw value of the transfer
+	// Raw value of the transfer.
 	RawValue int64 `json:"raw_value" api:"required"`
-	// Value of the transfer
+	// Value of the transfer.
 	Value string `json:"value" api:"required"`
-	// Summarized description of the transfer
+	// Summarized description of the transfer.
 	Summary string `json:"summary" api:"nullable"`
-	// USD price of the asset
+	// USD price of the asset.
 	UsdPrice float64                                                                                                                      `json:"usd_price" api:"nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinNativeAssetDiffOutJSON `json:"-"`
 }
@@ -687,11 +688,11 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiff struct {
 	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffAsset `json:"asset" api:"required"`
-	// The type of the assets in this diff
+	// Asset category for this balance change (e.g. NATIVE, RUNE, INSCRIPTION).
 	AssetType string `json:"asset_type" api:"required"`
-	// Details of the incoming transfer
+	// Details of the incoming transfer.
 	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffIn `json:"in" api:"nullable"`
-	// Details of the outgoing transfer
+	// Details of the outgoing transfer.
 	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffOut  `json:"out" api:"nullable"`
 	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffJSON `json:"-"`
 }
@@ -720,15 +721,15 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 }
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffAsset struct {
-	// The Inscription ID
+	// The Inscription ID.
 	ID string `json:"id" api:"required"`
-	// Inscription's display name
+	// Inscription's display name.
 	Name string `json:"name" api:"required"`
-	// The Inscription sat
+	// The Inscription sat.
 	Sat int64 `json:"sat" api:"required"`
-	// URL of the asset's logo
+	// URL of the asset's logo.
 	LogoURL string `json:"logo_url" api:"nullable"`
-	// Type of the asset (`INSCRIPTION`)
+	// Type of the asset (`INSCRIPTION`).
 	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffAssetType `json:"type"`
 	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffAssetJSON `json:"-"`
 }
@@ -754,7 +755,7 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 	return r.raw
 }
 
-// Type of the asset (`INSCRIPTION`)
+// Type of the asset (`INSCRIPTION`).
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffAssetType string
 
 const (
@@ -769,13 +770,13 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 	return false
 }
 
-// Details of the incoming transfer
+// Details of the incoming transfer.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffIn struct {
-	// Inscription ID of the transfer
+	// Inscription ID of the transfer.
 	InscriptionID string `json:"inscription_id" api:"required"`
-	// Summarized description of the transfer
+	// Summarized description of the transfer.
 	Summary string `json:"summary" api:"nullable"`
-	// USD price of the asset
+	// USD price of the asset.
 	UsdPrice float64                                                                                                                          `json:"usd_price" api:"nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffInJSON `json:"-"`
 }
@@ -799,13 +800,13 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 	return r.raw
 }
 
-// Details of the outgoing transfer
+// Details of the outgoing transfer.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffOut struct {
-	// Inscription ID of the transfer
+	// Inscription ID of the transfer.
 	InscriptionID string `json:"inscription_id" api:"required"`
-	// Summarized description of the transfer
+	// Summarized description of the transfer.
 	Summary string `json:"summary" api:"nullable"`
-	// USD price of the asset
+	// USD price of the asset.
 	UsdPrice float64                                                                                                                           `json:"usd_price" api:"nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinInscriptionAssetDiffOutJSON `json:"-"`
 }
@@ -831,11 +832,11 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiff struct {
 	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffAsset `json:"asset" api:"required"`
-	// The type of the assets in this diff
+	// Asset category for this balance change (e.g. NATIVE, RUNE, INSCRIPTION).
 	AssetType string `json:"asset_type" api:"required"`
-	// Details of the incoming transfer
+	// Details of the incoming transfer.
 	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffIn `json:"in" api:"nullable"`
-	// Details of the outgoing transfer
+	// Details of the outgoing transfer.
 	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffOut  `json:"out" api:"nullable"`
 	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffJSON `json:"-"`
 }
@@ -864,19 +865,19 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 }
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffAsset struct {
-	// The Rune ID
+	// The Rune ID.
 	ID string `json:"id" api:"required"`
-	// Decimals of the asset
+	// Number of decimal places used to represent fractional units.
 	Decimals int64 `json:"decimals" api:"required"`
-	// The Rune name
+	// The Rune name.
 	Name string `json:"name" api:"required"`
-	// The Rune spaced name
+	// The Rune spaced name.
 	SpacedName string `json:"spaced_name" api:"required"`
-	// The Rune's symbol
+	// The Rune's symbol.
 	Symbol string `json:"symbol" api:"required"`
-	// URL of the asset's logo
+	// URL of the asset's logo.
 	LogoURL string `json:"logo_url" api:"nullable"`
-	// Type of the asset (`RUNE`)
+	// Type of the asset (`RUNE`).
 	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffAssetType `json:"type"`
 	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffAssetJSON `json:"-"`
 }
@@ -904,7 +905,7 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 	return r.raw
 }
 
-// Type of the asset (`RUNE`)
+// Type of the asset (`RUNE`).
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffAssetType string
 
 const (
@@ -919,15 +920,15 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 	return false
 }
 
-// Details of the incoming transfer
+// Details of the incoming transfer.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffIn struct {
-	// Raw value of the transfer
+	// Raw value of the transfer.
 	RawValue int64 `json:"raw_value" api:"required"`
-	// Value of the transfer
+	// Value of the transfer.
 	Value string `json:"value" api:"required"`
-	// Summarized description of the transfer
+	// Summarized description of the transfer.
 	Summary string `json:"summary" api:"nullable"`
-	// USD price of the asset
+	// USD price of the asset.
 	UsdPrice float64                                                                                                                    `json:"usd_price" api:"nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffInJSON `json:"-"`
 }
@@ -952,15 +953,15 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSu
 	return r.raw
 }
 
-// Details of the outgoing transfer
+// Details of the outgoing transfer.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffOut struct {
-	// Raw value of the transfer
+	// Raw value of the transfer.
 	RawValue int64 `json:"raw_value" api:"required"`
-	// Value of the transfer
+	// Value of the transfer.
 	Value string `json:"value" api:"required"`
-	// Summarized description of the transfer
+	// Summarized description of the transfer.
 	Summary string `json:"summary" api:"nullable"`
-	// USD price of the asset
+	// USD price of the asset.
 	UsdPrice float64                                                                                                                     `json:"usd_price" api:"nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAccountSummaryAccountAssetsDiffsBitcoinRunesAssetDiffOutJSON `json:"-"`
 }
@@ -1031,7 +1032,7 @@ type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff s
 	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffAsset],
 	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAsset].
 	Asset interface{} `json:"asset" api:"required"`
-	// The type of the assets in this diff
+	// Asset category for this balance change (e.g. NATIVE, RUNE, INSCRIPTION).
 	AssetType string `json:"asset_type" api:"required"`
 	// This field can have the runtime type of
 	// [BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffIn],
@@ -1114,11 +1115,11 @@ func init() {
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiff struct {
 	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAsset `json:"asset" api:"required"`
-	// The type of the assets in this diff
+	// Asset category for this balance change (e.g. NATIVE, RUNE, INSCRIPTION).
 	AssetType string `json:"asset_type" api:"required"`
-	// Details of the incoming transfer
+	// Details of the incoming transfer.
 	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffIn `json:"in" api:"nullable"`
-	// Details of the outgoing transfer
+	// Details of the outgoing transfer.
 	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOut  `json:"out" api:"nullable"`
 	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffJSON `json:"-"`
 }
@@ -1147,15 +1148,15 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 }
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAsset struct {
-	// URL of the asset's logo
+	// URL of the asset's logo.
 	LogoURL string `json:"logo_url" api:"required,nullable"`
-	// Decimals of the asset
+	// Number of decimal places used to represent fractional units (e.g. 8 for BTC).
 	Decimals BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetDecimals `json:"decimals"`
-	// Name of the asset
+	// Name of the asset.
 	Name BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetName `json:"name"`
-	// Symbol of the asset
+	// Symbol of the asset.
 	Symbol BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetSymbol `json:"symbol"`
-	// Type of the asset (`NATIVE`)
+	// Type of the asset (`NATIVE`).
 	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetType `json:"type"`
 	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetJSON `json:"-"`
 }
@@ -1181,7 +1182,7 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 	return r.raw
 }
 
-// Decimals of the asset
+// Number of decimal places used to represent fractional units (e.g. 8 for BTC).
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetDecimals int64
 
 const (
@@ -1196,7 +1197,7 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 	return false
 }
 
-// Name of the asset
+// Name of the asset.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetName string
 
 const (
@@ -1211,7 +1212,7 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 	return false
 }
 
-// Symbol of the asset
+// Symbol of the asset.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetSymbol string
 
 const (
@@ -1226,7 +1227,7 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 	return false
 }
 
-// Type of the asset (`NATIVE`)
+// Type of the asset (`NATIVE`).
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffAssetType string
 
 const (
@@ -1241,15 +1242,15 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 	return false
 }
 
-// Details of the incoming transfer
+// Details of the incoming transfer.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffIn struct {
-	// Raw value of the transfer
+	// Raw value of the transfer.
 	RawValue int64 `json:"raw_value" api:"required"`
-	// Value of the transfer
+	// Value of the transfer.
 	Value string `json:"value" api:"required"`
-	// Summarized description of the transfer
+	// Summarized description of the transfer.
 	Summary string `json:"summary" api:"nullable"`
-	// USD price of the asset
+	// USD price of the asset.
 	UsdPrice float64                                                                                                `json:"usd_price" api:"nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffInJSON `json:"-"`
 }
@@ -1274,15 +1275,15 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 	return r.raw
 }
 
-// Details of the outgoing transfer
+// Details of the outgoing transfer.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOut struct {
-	// Raw value of the transfer
+	// Raw value of the transfer.
 	RawValue int64 `json:"raw_value" api:"required"`
-	// Value of the transfer
+	// Value of the transfer.
 	Value string `json:"value" api:"required"`
-	// Summarized description of the transfer
+	// Summarized description of the transfer.
 	Summary string `json:"summary" api:"nullable"`
-	// USD price of the asset
+	// USD price of the asset.
 	UsdPrice float64                                                                                                 `json:"usd_price" api:"nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinNativeAssetDiffOutJSON `json:"-"`
 }
@@ -1309,11 +1310,11 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiff struct {
 	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffAsset `json:"asset" api:"required"`
-	// The type of the assets in this diff
+	// Asset category for this balance change (e.g. NATIVE, RUNE, INSCRIPTION).
 	AssetType string `json:"asset_type" api:"required"`
-	// Details of the incoming transfer
+	// Details of the incoming transfer.
 	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffIn `json:"in" api:"nullable"`
-	// Details of the outgoing transfer
+	// Details of the outgoing transfer.
 	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffOut  `json:"out" api:"nullable"`
 	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffJSON `json:"-"`
 }
@@ -1342,15 +1343,15 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 }
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffAsset struct {
-	// The Inscription ID
+	// The Inscription ID.
 	ID string `json:"id" api:"required"`
-	// Inscription's display name
+	// Inscription's display name.
 	Name string `json:"name" api:"required"`
-	// The Inscription sat
+	// The Inscription sat.
 	Sat int64 `json:"sat" api:"required"`
-	// URL of the asset's logo
+	// URL of the asset's logo.
 	LogoURL string `json:"logo_url" api:"nullable"`
-	// Type of the asset (`INSCRIPTION`)
+	// Type of the asset (`INSCRIPTION`).
 	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffAssetType `json:"type"`
 	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffAssetJSON `json:"-"`
 }
@@ -1376,7 +1377,7 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 	return r.raw
 }
 
-// Type of the asset (`INSCRIPTION`)
+// Type of the asset (`INSCRIPTION`).
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffAssetType string
 
 const (
@@ -1391,13 +1392,13 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 	return false
 }
 
-// Details of the incoming transfer
+// Details of the incoming transfer.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffIn struct {
-	// Inscription ID of the transfer
+	// Inscription ID of the transfer.
 	InscriptionID string `json:"inscription_id" api:"required"`
-	// Summarized description of the transfer
+	// Summarized description of the transfer.
 	Summary string `json:"summary" api:"nullable"`
-	// USD price of the asset
+	// USD price of the asset.
 	UsdPrice float64                                                                                                     `json:"usd_price" api:"nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffInJSON `json:"-"`
 }
@@ -1421,13 +1422,13 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 	return r.raw
 }
 
-// Details of the outgoing transfer
+// Details of the outgoing transfer.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffOut struct {
-	// Inscription ID of the transfer
+	// Inscription ID of the transfer.
 	InscriptionID string `json:"inscription_id" api:"required"`
-	// Summarized description of the transfer
+	// Summarized description of the transfer.
 	Summary string `json:"summary" api:"nullable"`
-	// USD price of the asset
+	// USD price of the asset.
 	UsdPrice float64                                                                                                      `json:"usd_price" api:"nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinInscriptionAssetDiffOutJSON `json:"-"`
 }
@@ -1453,11 +1454,11 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiff struct {
 	Asset BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAsset `json:"asset" api:"required"`
-	// The type of the assets in this diff
+	// Asset category for this balance change (e.g. NATIVE, RUNE, INSCRIPTION).
 	AssetType string `json:"asset_type" api:"required"`
-	// Details of the incoming transfer
+	// Details of the incoming transfer.
 	In BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffIn `json:"in" api:"nullable"`
-	// Details of the outgoing transfer
+	// Details of the outgoing transfer.
 	Out  BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOut  `json:"out" api:"nullable"`
 	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffJSON `json:"-"`
 }
@@ -1486,19 +1487,19 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 }
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAsset struct {
-	// The Rune ID
+	// The Rune ID.
 	ID string `json:"id" api:"required"`
-	// Decimals of the asset
+	// Number of decimal places used to represent fractional units.
 	Decimals int64 `json:"decimals" api:"required"`
-	// The Rune name
+	// The Rune name.
 	Name string `json:"name" api:"required"`
-	// The Rune spaced name
+	// The Rune spaced name.
 	SpacedName string `json:"spaced_name" api:"required"`
-	// The Rune's symbol
+	// The Rune's symbol.
 	Symbol string `json:"symbol" api:"required"`
-	// URL of the asset's logo
+	// URL of the asset's logo.
 	LogoURL string `json:"logo_url" api:"nullable"`
-	// Type of the asset (`RUNE`)
+	// Type of the asset (`RUNE`).
 	Type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAssetType `json:"type"`
 	JSON bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAssetJSON `json:"-"`
 }
@@ -1526,7 +1527,7 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 	return r.raw
 }
 
-// Type of the asset (`RUNE`)
+// Type of the asset (`RUNE`).
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffAssetType string
 
 const (
@@ -1541,15 +1542,15 @@ func (r BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 	return false
 }
 
-// Details of the incoming transfer
+// Details of the incoming transfer.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffIn struct {
-	// Raw value of the transfer
+	// Raw value of the transfer.
 	RawValue int64 `json:"raw_value" api:"required"`
-	// Value of the transfer
+	// Value of the transfer.
 	Value string `json:"value" api:"required"`
-	// Summarized description of the transfer
+	// Summarized description of the transfer.
 	Summary string `json:"summary" api:"nullable"`
-	// USD price of the asset
+	// USD price of the asset.
 	UsdPrice float64                                                                                               `json:"usd_price" api:"nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffInJSON `json:"-"`
 }
@@ -1574,15 +1575,15 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 	return r.raw
 }
 
-// Details of the outgoing transfer
+// Details of the outgoing transfer.
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOut struct {
-	// Raw value of the transfer
+	// Raw value of the transfer.
 	RawValue int64 `json:"raw_value" api:"required"`
-	// Value of the transfer
+	// Value of the transfer.
 	Value string `json:"value" api:"required"`
-	// Summarized description of the transfer
+	// Summarized description of the transfer.
 	Summary string `json:"summary" api:"nullable"`
-	// USD price of the asset
+	// USD price of the asset.
 	UsdPrice float64                                                                                                `json:"usd_price" api:"nullable"`
 	JSON     bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiffsBitcoinRunesAssetDiffOutJSON `json:"-"`
 }
@@ -1670,17 +1671,17 @@ type BitcoinTransactionScanResponseValidation struct {
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification"`
-	// A textual description about the validation result
+	// A textual description about the validation result.
 	Description string `json:"description"`
 	// Error message
 	Error string `json:"error"`
 	// This field can have the runtime type of
 	// [[]BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature].
 	Features interface{} `json:"features"`
-	// A textual description about the reasons the transaction was flagged with
-	// result_type
+	// Human-readable explanation of why the transaction received the given
+	// `result_type` verdict.
 	Reason string `json:"reason"`
-	// Verdict of the validation
+	// Verdict of the validation.
 	ResultType BitcoinTransactionScanResponseValidationResultType `json:"result_type"`
 	JSON       bitcoinTransactionScanResponseValidationJSON       `json:"-"`
 	union      BitcoinTransactionScanResponseValidationUnion
@@ -1751,13 +1752,15 @@ type BitcoinTransactionScanResponseValidationBitcoinValidationResult struct {
 	// A textual classification that can be presented to the user explaining the
 	// reason.
 	Classification string `json:"classification" api:"required"`
-	// A textual description about the validation result
-	Description string                                                                   `json:"description" api:"required"`
-	Features    []BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature `json:"features" api:"required"`
-	// A textual description about the reasons the transaction was flagged with
-	// result_type
+	// A textual description about the validation result.
+	Description string `json:"description" api:"required"`
+	// List of validation findings (addresses and classifications) that contributed to
+	// the verdict.
+	Features []BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature `json:"features" api:"required"`
+	// Human-readable explanation of why the transaction received the given
+	// `result_type` verdict.
 	Reason string `json:"reason" api:"required"`
-	// Verdict of the validation
+	// Verdict of the validation.
 	ResultType BitcoinTransactionScanResponseValidationBitcoinValidationResultResultType `json:"result_type" api:"required"`
 	Status     BitcoinTransactionScanResponseValidationBitcoinValidationResultStatus     `json:"status" api:"required"`
 	JSON       bitcoinTransactionScanResponseValidationBitcoinValidationResultJSON       `json:"-"`
@@ -1789,12 +1792,13 @@ func (r BitcoinTransactionScanResponseValidationBitcoinValidationResult) impleme
 }
 
 type BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature struct {
-	// Address the feature refers to
+	// Bitcoin address that this finding is associated with.
 	Address string `json:"address" api:"required"`
-	// Textual description
+	// Human-readable explanation of this finding.
 	Description string `json:"description" api:"required"`
-	FeatureID   string `json:"feature_id" api:"required"`
-	// Feature Classification
+	// Unique identifier for this type of finding.
+	FeatureID string `json:"feature_id" api:"required"`
+	// Severity or category of this finding (e.g. Benign, Warning, Malicious, Info).
 	Type BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesType `json:"type" api:"required"`
 	JSON bitcoinTransactionScanResponseValidationBitcoinValidationResultFeatureJSON  `json:"-"`
 }
@@ -1819,7 +1823,7 @@ func (r bitcoinTransactionScanResponseValidationBitcoinValidationResultFeatureJS
 	return r.raw
 }
 
-// Feature Classification
+// Severity or category of this finding (e.g. Benign, Warning, Malicious, Info).
 type BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesType string
 
 const (
@@ -1837,7 +1841,7 @@ func (r BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesT
 	return false
 }
 
-// Verdict of the validation
+// Verdict of the validation.
 type BitcoinTransactionScanResponseValidationBitcoinValidationResultResultType string
 
 const (
@@ -1925,7 +1929,7 @@ func (r BitcoinTransactionScanResponseValidationStatus) IsKnown() bool {
 	return false
 }
 
-// Verdict of the validation
+// Verdict of the validation.
 type BitcoinTransactionScanResponseValidationResultType string
 
 const (

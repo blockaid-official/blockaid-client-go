@@ -53,15 +53,20 @@ func (r *BitcoinTransactionRawService) Scan(ctx context.Context, body BitcoinTra
 }
 
 type BitcoinTransactionRawReportParams struct {
-	Details param.Field[string]                                       `json:"details" api:"required"`
-	Event   param.Field[BitcoinTransactionRawReportParamsEvent]       `json:"event" api:"required"`
-	Report  param.Field[BitcoinTransactionRawReportParamsReportUnion] `json:"report" api:"required"`
+	// Free-text explanation or context for the report.
+	Details param.Field[string] `json:"details" api:"required"`
+	// Type of appeal: what you believe was wrong with the scan result.
+	Event param.Field[BitcoinTransactionRawReportParamsEvent] `json:"event" api:"required"`
+	// Either a prior scan request ID or the full transaction parameters being
+	// reported.
+	Report param.Field[BitcoinTransactionRawReportParamsReportUnion] `json:"report" api:"required"`
 }
 
 func (r BitcoinTransactionRawReportParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// Type of appeal: what you believe was wrong with the scan result.
 type BitcoinTransactionRawReportParamsEvent string
 
 const (
@@ -78,10 +83,15 @@ func (r BitcoinTransactionRawReportParamsEvent) IsKnown() bool {
 	return false
 }
 
+// Either a prior scan request ID or the full transaction parameters being
+// reported.
 type BitcoinTransactionRawReportParamsReport struct {
-	ID     param.Field[string]                                      `json:"id"`
-	Params param.Field[BitcoinTransactionScanRequestParam]          `json:"params"`
-	Type   param.Field[BitcoinTransactionRawReportParamsReportType] `json:"type"`
+	// Request ID from a previous transaction scan response.
+	ID param.Field[string] `json:"id"`
+	// Full transaction scan request (same shape as the scan endpoint).
+	Params param.Field[BitcoinTransactionScanRequestParam] `json:"params"`
+	// Discriminator; use "request_id" when referencing a prior scan.
+	Type param.Field[BitcoinTransactionRawReportParamsReportType] `json:"type"`
 }
 
 func (r BitcoinTransactionRawReportParamsReport) MarshalJSON() (data []byte, err error) {
@@ -91,6 +101,9 @@ func (r BitcoinTransactionRawReportParamsReport) MarshalJSON() (data []byte, err
 func (r BitcoinTransactionRawReportParamsReport) implementsBitcoinTransactionRawReportParamsReportUnion() {
 }
 
+// Either a prior scan request ID or the full transaction parameters being
+// reported.
+//
 // Satisfied by [BitcoinTransactionRawReportParamsReportBitcoinAppealRequestID],
 // [BitcoinTransactionRawReportParamsReportBitcoinAppealTransactionDataReport],
 // [BitcoinTransactionRawReportParamsReport].
@@ -99,7 +112,9 @@ type BitcoinTransactionRawReportParamsReportUnion interface {
 }
 
 type BitcoinTransactionRawReportParamsReportBitcoinAppealRequestID struct {
-	ID   param.Field[string]                                                            `json:"id" api:"required"`
+	// Request ID from a previous transaction scan response.
+	ID param.Field[string] `json:"id" api:"required"`
+	// Discriminator; use "request_id" when referencing a prior scan.
 	Type param.Field[BitcoinTransactionRawReportParamsReportBitcoinAppealRequestIDType] `json:"type"`
 }
 
@@ -110,6 +125,7 @@ func (r BitcoinTransactionRawReportParamsReportBitcoinAppealRequestID) MarshalJS
 func (r BitcoinTransactionRawReportParamsReportBitcoinAppealRequestID) implementsBitcoinTransactionRawReportParamsReportUnion() {
 }
 
+// Discriminator; use "request_id" when referencing a prior scan.
 type BitcoinTransactionRawReportParamsReportBitcoinAppealRequestIDType string
 
 const (
@@ -125,8 +141,10 @@ func (r BitcoinTransactionRawReportParamsReportBitcoinAppealRequestIDType) IsKno
 }
 
 type BitcoinTransactionRawReportParamsReportBitcoinAppealTransactionDataReport struct {
-	Params param.Field[BitcoinTransactionScanRequestParam]                                            `json:"params" api:"required"`
-	Type   param.Field[BitcoinTransactionRawReportParamsReportBitcoinAppealTransactionDataReportType] `json:"type"`
+	// Full transaction scan request (same shape as the scan endpoint).
+	Params param.Field[BitcoinTransactionScanRequestParam] `json:"params" api:"required"`
+	// Discriminator; use "params" when supplying full transaction data.
+	Type param.Field[BitcoinTransactionRawReportParamsReportBitcoinAppealTransactionDataReportType] `json:"type"`
 }
 
 func (r BitcoinTransactionRawReportParamsReportBitcoinAppealTransactionDataReport) MarshalJSON() (data []byte, err error) {
@@ -136,6 +154,7 @@ func (r BitcoinTransactionRawReportParamsReportBitcoinAppealTransactionDataRepor
 func (r BitcoinTransactionRawReportParamsReportBitcoinAppealTransactionDataReport) implementsBitcoinTransactionRawReportParamsReportUnion() {
 }
 
+// Discriminator; use "params" when supplying full transaction data.
 type BitcoinTransactionRawReportParamsReportBitcoinAppealTransactionDataReportType string
 
 const (
@@ -150,6 +169,7 @@ func (r BitcoinTransactionRawReportParamsReportBitcoinAppealTransactionDataRepor
 	return false
 }
 
+// Discriminator; use "request_id" when referencing a prior scan.
 type BitcoinTransactionRawReportParamsReportType string
 
 const (
