@@ -38,7 +38,7 @@ func (r *ScanService) Status(ctx context.Context, body ScanStatusParams, opts ..
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/scan/status/"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type ScanStatusResponse = interface{}

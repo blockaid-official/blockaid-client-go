@@ -37,7 +37,7 @@ func (r *StarknetTransactionService) Report(ctx context.Context, body StarknetTr
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/starknet/transaction/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Scan Transactions
@@ -45,7 +45,7 @@ func (r *StarknetTransactionService) Scan(ctx context.Context, body StarknetTran
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/starknet/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type StarknetTransactionReportParams struct {

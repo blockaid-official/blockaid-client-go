@@ -39,7 +39,7 @@ func (r *HederaTransactionService) Scan(ctx context.Context, body HederaTransact
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/hedera/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Transaction scan response schema.

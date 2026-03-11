@@ -36,7 +36,7 @@ func (r *EvmAddressBulkService) Scan(ctx context.Context, body EvmAddressBulkSca
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/address-bulk/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Gets a list of addresses and returns a security assessment with the feature
@@ -45,7 +45,7 @@ func (r *EvmAddressBulkService) ScanExtended(ctx context.Context, body EvmAddres
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/address-bulk/scan-extended"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type EvmAddressBulkScanResponse map[string]EvmAddressBulkScanResponseItem

@@ -40,7 +40,7 @@ func (r *TokenWebhookService) New(ctx context.Context, chain TokenScanSupportedC
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("v0/token/hooks/%v", chain)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Deletes the webhook subscription for a chain and stops further token scan
@@ -50,7 +50,7 @@ func (r *TokenWebhookService) Delete(ctx context.Context, chain TokenScanSupport
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := fmt.Sprintf("v0/token/hooks/%v", chain)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return
+	return err
 }
 
 // Get information about an existing webhook for a given chain
@@ -58,7 +58,7 @@ func (r *TokenWebhookService) Get(ctx context.Context, chain TokenScanSupportedC
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("v0/token/hooks/%v", chain)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // List all active webhook subscriptions across all chains
@@ -66,7 +66,7 @@ func (r *TokenWebhookService) GetAll(ctx context.Context, opts ...option.Request
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/token/hooks/"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 type TokenWebhookNewResponse struct {

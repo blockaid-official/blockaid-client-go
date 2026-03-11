@@ -39,7 +39,7 @@ func (r *SolanaAddressService) Scan(ctx context.Context, body SolanaAddressScanP
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/solana/address/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type SolanaAddressScanResponse struct {

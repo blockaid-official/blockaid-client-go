@@ -37,7 +37,7 @@ func (r *SuiTransactionService) Scan(ctx context.Context, body SuiTransactionSca
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/sui/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type SuiTransactionScanParams struct {

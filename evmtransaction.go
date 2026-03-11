@@ -41,7 +41,7 @@ func (r *EvmTransactionService) Report(ctx context.Context, body EvmTransactionR
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/transaction/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a risk recommendation with plain-language reasons for a transaction.
@@ -49,7 +49,7 @@ func (r *EvmTransactionService) Scan(ctx context.Context, body EvmTransactionSca
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type EvmTransactionReportResponse = interface{}
