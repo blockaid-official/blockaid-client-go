@@ -38,7 +38,7 @@ func TestUserAgentHeader(t *testing.T) {
 			},
 		}),
 	)
-	client.Evm.JsonRpc.Scan(context.Background(), blockaidclientgo.EvmJsonRpcScanParams{
+	_, _ = client.Evm.JsonRpc.Scan(context.Background(), blockaidclientgo.EvmJsonRpcScanParams{
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainEthereum),
 		Data: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsData{
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
