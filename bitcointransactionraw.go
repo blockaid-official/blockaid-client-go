@@ -39,7 +39,7 @@ func (r *BitcoinTransactionRawService) Report(ctx context.Context, body BitcoinT
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/bitcoin/transaction/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Scan a raw Bitcoin transaction for security risks before signing. Returns a
@@ -49,7 +49,7 @@ func (r *BitcoinTransactionRawService) Scan(ctx context.Context, body BitcoinTra
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/bitcoin/transaction-raw/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type BitcoinTransactionRawReportParams struct {

@@ -42,7 +42,7 @@ func (r *EvmTransactionBulkService) Scan(ctx context.Context, body EvmTransactio
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/transaction-bulk/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type EvmTransactionBulkScanResponse struct {

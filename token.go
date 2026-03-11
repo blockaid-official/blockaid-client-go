@@ -39,7 +39,7 @@ func (r *TokenService) Report(ctx context.Context, body TokenReportParams, opts 
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/token/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Gets a token address and scan the token to identify any indication of malicious
@@ -48,7 +48,7 @@ func (r *TokenService) Scan(ctx context.Context, body TokenScanParams, opts ...o
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/token/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type FinancialStats struct {

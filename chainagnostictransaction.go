@@ -41,7 +41,7 @@ func (r *ChainAgnosticTransactionService) Scan(ctx context.Context, body ChainAg
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type ChainAgnosticTransactionScanResponse struct {

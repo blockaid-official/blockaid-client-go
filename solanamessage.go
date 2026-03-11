@@ -41,7 +41,7 @@ func (r *SolanaMessageService) Scan(ctx context.Context, body SolanaMessageScanP
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/solana/message/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type SolanaMessageScanResponse struct {

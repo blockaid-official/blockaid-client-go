@@ -41,7 +41,7 @@ func (r *EvmJsonRpcService) Scan(ctx context.Context, body EvmJsonRpcScanParams,
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/json-rpc/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type EvmJsonRpcScanResponse struct {

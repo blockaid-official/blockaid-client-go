@@ -39,7 +39,7 @@ func (r *SuiAddressService) Scan(ctx context.Context, body SuiAddressScanParams,
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/sui/address/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type SuiAddressScanResponse struct {

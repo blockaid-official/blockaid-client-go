@@ -49,7 +49,7 @@ func (r *TokenSnapshotService) Diff(ctx context.Context, query TokenSnapshotDiff
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/token/snapshot/diff"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	return res, err
 }
 
 // This endpoint provides a state snapshot of all token scans, allowing you to
@@ -65,7 +65,7 @@ func (r *TokenSnapshotService) Full(ctx context.Context, query TokenSnapshotFull
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/token/snapshot/full"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	return res, err
 }
 
 type TokenSnapshotDiffResponse struct {

@@ -40,7 +40,7 @@ func (r *TokenBulkService) Scan(ctx context.Context, body TokenBulkScanParams, o
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/token-bulk/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type TokenBulkScanResponse struct {
