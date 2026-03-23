@@ -41,7 +41,7 @@ func (r *SolanaMessageService) Scan(ctx context.Context, body SolanaMessageScanP
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/solana/message/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type SolanaMessageScanResponse struct {
@@ -5003,6 +5003,12 @@ type SolanaMessageScanParams struct {
 	Transactions param.Field[[]string]                        `json:"transactions" api:"required"`
 	Chain        param.Field[SolanaMessageScanParamsChain]    `json:"chain"`
 	Encoding     param.Field[SolanaMessageScanParamsEncoding] `json:"encoding"`
+	// The execution mode for the transaction(s). Use `jito_bundle` when the
+	// transactions are intended to be submitted as a Jito bundle. In bundle mode,
+	// simulation uses pre/post account state diffs instead of instruction-level
+	// parsing, and validation allows the `account_address` to appear in any (not
+	// necessarily all) of the bundle's transactions.
+	ExecutionMode param.Field[SolanaMessageScanParamsExecutionMode] `json:"execution_mode"`
 	// The RPC method used by the dApp to propose the transaction
 	Method param.Field[string] `json:"method"`
 	// List of options to include in the response
@@ -5058,6 +5064,26 @@ const (
 func (r SolanaMessageScanParamsEncoding) IsKnown() bool {
 	switch r {
 	case SolanaMessageScanParamsEncodingBase58, SolanaMessageScanParamsEncodingBase64:
+		return true
+	}
+	return false
+}
+
+// The execution mode for the transaction(s). Use `jito_bundle` when the
+// transactions are intended to be submitted as a Jito bundle. In bundle mode,
+// simulation uses pre/post account state diffs instead of instruction-level
+// parsing, and validation allows the `account_address` to appear in any (not
+// necessarily all) of the bundle's transactions.
+type SolanaMessageScanParamsExecutionMode string
+
+const (
+	SolanaMessageScanParamsExecutionModeStandard   SolanaMessageScanParamsExecutionMode = "standard"
+	SolanaMessageScanParamsExecutionModeJitoBundle SolanaMessageScanParamsExecutionMode = "jito_bundle"
+)
+
+func (r SolanaMessageScanParamsExecutionMode) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanParamsExecutionModeStandard, SolanaMessageScanParamsExecutionModeJitoBundle:
 		return true
 	}
 	return false

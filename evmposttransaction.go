@@ -41,7 +41,7 @@ func (r *EvmPostTransactionService) Report(ctx context.Context, body EvmPostTran
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/post-transaction/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Scan a transaction that was already executed on chain, returns validation with
@@ -50,7 +50,7 @@ func (r *EvmPostTransactionService) Scan(ctx context.Context, body EvmPostTransa
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/post-transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type EvmPostTransactionReportResponse = interface{}

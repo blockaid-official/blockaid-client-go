@@ -37,7 +37,7 @@ func (r *EvmAddressService) Report(ctx context.Context, body EvmAddressReportPar
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/address/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a risk recommendation with plain-language reasons for an address.
@@ -45,7 +45,7 @@ func (r *EvmAddressService) Scan(ctx context.Context, body EvmAddressScanParams,
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/address/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type EvmAddressReportResponse = interface{}

@@ -40,7 +40,7 @@ func (r *EvmUserOperationService) Scan(ctx context.Context, body EvmUserOperatio
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/user-operation/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type EvmUserOperationScanResponse struct {

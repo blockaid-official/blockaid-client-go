@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.72.0 (2026-03-21)
+
+Full Changelog: [v0.71.0...v0.72.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.71.0...v0.72.0)
+
+### Features
+
+* **api:** api update ([ca9871d](https://github.com/blockaid-official/blockaid-client-go/commit/ca9871d45d38efe7885b7e6bd23280cdbf6898d2))
+* **api:** api update ([7d34249](https://github.com/blockaid-official/blockaid-client-go/commit/7d342492e70a158aec9a5c63cce6618b6ab3edeb))
+* **api:** api update ([10c78a7](https://github.com/blockaid-official/blockaid-client-go/commit/10c78a731e8acc7fd85ab66cfde3829672eed851))
+* **api:** api update ([3455456](https://github.com/blockaid-official/blockaid-client-go/commit/34554563695309abb39d2e47ab62f59d52a79762))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([79293be](https://github.com/blockaid-official/blockaid-client-go/commit/79293be23de27d05412b5ed4198bab80742a5716))
+* **internal:** codegen related update ([293450b](https://github.com/blockaid-official/blockaid-client-go/commit/293450bbe9eb607fb93861b590300a6b085a9f3f))
+* **internal:** codegen related update ([aa87fe4](https://github.com/blockaid-official/blockaid-client-go/commit/aa87fe4830f6dfbfe588fef0514a9cb052cc65f1))
+* **internal:** minor cleanup ([c2ff2f5](https://github.com/blockaid-official/blockaid-client-go/commit/c2ff2f5c110b14eeac0174fa4f20acb7668e8d6a))
+* **internal:** tweak CI branches ([0424b50](https://github.com/blockaid-official/blockaid-client-go/commit/0424b50d864cac0bd0f0b4af30ba41d0d85f4534))
+* **internal:** use explicit returns ([77e3c8a](https://github.com/blockaid-official/blockaid-client-go/commit/77e3c8ae141486335f60ad56f655b82b1be6a7ba))
+* **internal:** use explicit returns in more places ([d7b0720](https://github.com/blockaid-official/blockaid-client-go/commit/d7b0720286c1bac068c2fd88044c7606b19a6038))
+* **test:** do not count install time for mock server timeout ([d87722c](https://github.com/blockaid-official/blockaid-client-go/commit/d87722c356b4d5d72674bf61f61c4de988a43064))
+* **tests:** bump steady to v0.19.4 ([799a07d](https://github.com/blockaid-official/blockaid-client-go/commit/799a07d15b5d272c0633c3d1827ad18502fb83ac))
+* **tests:** bump steady to v0.19.5 ([e191118](https://github.com/blockaid-official/blockaid-client-go/commit/e191118a70389b22fd365a2c6c5ad63bd277fb79))
+
+
+### Refactors
+
+* **tests:** switch from prism to steady ([24667e7](https://github.com/blockaid-official/blockaid-client-go/commit/24667e75c8ab2ea9603224a31aa9e0b75e8fc60c))
+
 ## 0.71.0 (2026-03-02)
 
 Full Changelog: [v0.70.0...v0.71.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.70.0...v0.71.0)

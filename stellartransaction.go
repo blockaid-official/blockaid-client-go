@@ -37,7 +37,7 @@ func (r *StellarTransactionService) Report(ctx context.Context, body StellarTran
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/stellar/transaction/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Gets a transaction and returns a full simulation indicating what will happen in
@@ -47,7 +47,7 @@ func (r *StellarTransactionService) Scan(ctx context.Context, body StellarTransa
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/stellar/transaction/scan"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type StellarTransactionReportParams struct {
