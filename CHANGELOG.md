@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.73.0 (2026-04-20)
+
+Full Changelog: [v0.72.0...v0.73.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.72.0...v0.73.0)
+
+### Features
+
+* **api:** api update ([4148782](https://github.com/blockaid-official/blockaid-client-go/commit/41487823d3d28364990c845ab9fe33642322ce93))
+* **api:** api update ([264c981](https://github.com/blockaid-official/blockaid-client-go/commit/264c9812029668e9cb1e37c96b64ccf7c20a9c8b))
+* **api:** api update ([4dbedcd](https://github.com/blockaid-official/blockaid-client-go/commit/4dbedcdefa88d9a24cef1a940ab79a927e71478c))
+* **internal:** support comma format in multipart form encoding ([5fbbab5](https://github.com/blockaid-official/blockaid-client-go/commit/5fbbab56d2f938ff6b302b957ba37007fd9fc37b))
+
+
+### Bug Fixes
+
+* prevent duplicate ? in query params ([87496aa](https://github.com/blockaid-official/blockaid-client-go/commit/87496aae4d8fc33b1aa49ab36256413295882714))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([16ed6a9](https://github.com/blockaid-official/blockaid-client-go/commit/16ed6a9b164bfeae0743d1bfcfd93909a731244a))
+* **ci:** support opting out of skipping builds on metadata-only commits ([195b12c](https://github.com/blockaid-official/blockaid-client-go/commit/195b12ce6375b9b956569cea396f674a48adb1e0))
+* **internal:** update gitignore ([b749307](https://github.com/blockaid-official/blockaid-client-go/commit/b7493074a003e96fc2a5a03285a38417dbcf7dc6))
+* remove unnecessary error check for url parsing ([441e9f5](https://github.com/blockaid-official/blockaid-client-go/commit/441e9f5b66dc22179c7fd3c1a69a15e6928604f5))
+* **tests:** bump steady to v0.19.6 ([e3c1272](https://github.com/blockaid-official/blockaid-client-go/commit/e3c1272d706471a7ceccf7bdc70f45dfe354b85d))
+* **tests:** bump steady to v0.19.7 ([059a3be](https://github.com/blockaid-official/blockaid-client-go/commit/059a3be06039846c6dad15392c37cc2ccc4756a1))
+* **tests:** bump steady to v0.20.1 ([134590a](https://github.com/blockaid-official/blockaid-client-go/commit/134590a279334ac36aab765013dfb26eaa91a50c))
+* **tests:** bump steady to v0.20.2 ([52a2aa7](https://github.com/blockaid-official/blockaid-client-go/commit/52a2aa7f7f93b941a716b5b37c6c902646a06cce))
+* **tests:** bump steady to v0.22.1 ([ca3631e](https://github.com/blockaid-official/blockaid-client-go/commit/ca3631e29039cac76e6f36d55ffab83801ec2b6d))
+
 ## 0.72.0 (2026-03-21)
 
 Full Changelog: [v0.71.0...v0.72.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.71.0...v0.72.0)
