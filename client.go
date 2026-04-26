@@ -39,7 +39,7 @@ type Client struct {
 // BLOCKAID_CLIENT_ID_KEY, BLOCKAID_BASE_URL). This should be used to initialize
 // new clients.
 func DefaultClientOptions() []option.RequestOption {
-	defaults := []option.RequestOption{option.WithEnvironmentProduction()}
+	defaults := []option.RequestOption{option.WithHTTPClient(defaultHTTPClient()), option.WithEnvironmentProduction()}
 	if o, ok := os.LookupEnv("BLOCKAID_BASE_URL"); ok {
 		defaults = append(defaults, option.WithBaseURL(o))
 	}
