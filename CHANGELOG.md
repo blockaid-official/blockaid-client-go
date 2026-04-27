@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.74.0 (2026-04-27)
+
+Full Changelog: [v0.73.0...v0.74.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.73.0...v0.74.0)
+
+### Features
+
+* **api:** api update ([d5ee97f](https://github.com/blockaid-official/blockaid-client-go/commit/d5ee97fdd8def611ab9486a1141c444c8563403f))
+* **go:** add default http client with timeout ([5fa218e](https://github.com/blockaid-official/blockaid-client-go/commit/5fa218e889b9eaae5d8f58386d87f4af8f7db704))
+
+
+### Chores
+
+* **internal:** more robust bootstrap script ([5fad9b0](https://github.com/blockaid-official/blockaid-client-go/commit/5fad9b0920c633bcd8e10557fc0f6c7b03e24ef8))
+
 ## 0.73.0 (2026-04-20)
 
 Full Changelog: [v0.72.0...v0.73.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.72.0...v0.73.0)
