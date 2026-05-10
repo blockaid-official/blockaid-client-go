@@ -12092,6 +12092,8 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadata struct {
+	Account    param.Field[interface{}] `json:"account"`
+	Connection param.Field[interface{}] `json:"connection"`
 	// The full URL of the DApp or website that initiated the transaction, for
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
@@ -12119,6 +12121,10 @@ type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMet
 }
 
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataNonDapp struct {
+	// Account information associated with the request
+	Account param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataNonDappAccount] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataNonDappConnection] `json:"connection"`
 	// Indicates that the transaction was not initiated by a dapp.
 	NonDapp param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataNonDappNonDapp] `json:"non_dapp"`
 }
@@ -12128,6 +12134,34 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 }
 
 func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataNonDapp) implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataUnion() {
+}
+
+// Account information associated with the request
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataNonDappAccount struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataNonDappAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataNonDappConnection struct {
+	// IP address of the customer making the request.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataNonDappConnection) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // Indicates that the transaction was not initiated by a dapp.
@@ -12150,6 +12184,10 @@ type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMet
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain" api:"required"`
+	// Account information associated with the request
+	Account param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataDappAccount] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataDappConnection] `json:"connection"`
 	// Indicates that the transaction was not initiated by a dapp. Use false when the
 	// transaction is from a dapp.
 	NonDapp param.Field[bool] `json:"non_dapp"`
@@ -12160,6 +12198,34 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 }
 
 func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataDapp) implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataUnion() {
+}
+
+// Account information associated with the request
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataDappAccount struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataDappAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataDappConnection struct {
+	// IP address of the customer making the request.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataRoutersEvmModelsMetadataDappConnection) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsType string
@@ -12278,6 +12344,8 @@ func (r EvmTransactionScanParamsData) MarshalJSON() (data []byte, err error) {
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type EvmTransactionScanParamsMetadata struct {
+	Account    param.Field[interface{}] `json:"account"`
+	Connection param.Field[interface{}] `json:"connection"`
 	// The full URL of the DApp or website that initiated the transaction, for
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
@@ -12303,6 +12371,10 @@ type EvmTransactionScanParamsMetadataUnion interface {
 }
 
 type EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDapp struct {
+	// Account information associated with the request
+	Account param.Field[EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection] `json:"connection"`
 	// Indicates that the transaction was not initiated by a dapp.
 	NonDapp param.Field[EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappNonDapp] `json:"non_dapp"`
 }
@@ -12312,6 +12384,34 @@ func (r EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDapp) Marshal
 }
 
 func (r EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDapp) implementsEvmTransactionScanParamsMetadataUnion() {
+}
+
+// Account information associated with the request
+type EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection struct {
+	// IP address of the customer making the request.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // Indicates that the transaction was not initiated by a dapp.
@@ -12334,6 +12434,10 @@ type EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataDapp struct {
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain" api:"required"`
+	// Account information associated with the request
+	Account param.Field[EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataDappAccount] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataDappConnection] `json:"connection"`
 	// Indicates that the transaction was not initiated by a dapp. Use false when the
 	// transaction is from a dapp.
 	NonDapp param.Field[bool] `json:"non_dapp"`
@@ -12344,6 +12448,34 @@ func (r EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataDapp) MarshalJSO
 }
 
 func (r EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataDapp) implementsEvmTransactionScanParamsMetadataUnion() {
+}
+
+// Account information associated with the request
+type EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataDappAccount struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataDappAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataDappConnection struct {
+	// IP address of the customer making the request.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataDappConnection) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // The relative block for the block validation. Can be "latest" or a block number.

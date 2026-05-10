@@ -7,6 +7,7 @@ import (
 	"errors"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/blockaid-official/blockaid-client-go"
 	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
@@ -30,6 +31,16 @@ func TestEvmPostTransactionBulkScanWithOptionalParams(t *testing.T) {
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainEthereum),
 		Data:  blockaidclientgo.F([]string{"0x11c865addc39f1e1c4f0f6c9a84533c501e3705a6397988af942b2103d5e87a2", "0x50a109a2c2dd396e49710613dcf652728656055d90f80094f10c3ddd05150d2e"}),
 		Metadata: blockaidclientgo.F[blockaidclientgo.EvmPostTransactionBulkScanParamsMetadataUnion](blockaidclientgo.EvmPostTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDapp{
+			Account: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount{
+				AccountID:                blockaidclientgo.F("account_id"),
+				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
+				UserAge:                  blockaidclientgo.F(int64(1)),
+				UserCountryCode:          blockaidclientgo.F("user_country_code"),
+			}),
+			Connection: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection{
+				IPAddress: blockaidclientgo.F("ip_address"),
+				UserAgent: blockaidclientgo.F("user_agent"),
+			}),
 			NonDapp: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
 		}),
 		Block:                    blockaidclientgo.F[blockaidclientgo.EvmPostTransactionBulkScanParamsBlockUnion](shared.UnionInt(int64(0))),

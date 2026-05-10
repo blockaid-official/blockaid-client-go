@@ -7,6 +7,7 @@ import (
 	"errors"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/blockaid-official/blockaid-client-go"
 	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
@@ -28,6 +29,16 @@ func TestSolanaMessageScanWithOptionalParams(t *testing.T) {
 	_, err := client.Solana.Message.Scan(context.TODO(), blockaidclientgo.SolanaMessageScanParams{
 		AccountAddress: blockaidclientgo.F("86xCnPeV69n6t3DnyGvkKobf9FdN2H9oiVDdaMpo2MMY"),
 		Metadata: blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsMetadata{
+			Account: blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsMetadataAccount{
+				AccountID:                blockaidclientgo.F("account_id"),
+				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
+				UserAge:                  blockaidclientgo.F(int64(1)),
+				UserCountryCode:          blockaidclientgo.F("user_country_code"),
+			}),
+			Connection: blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsMetadataConnection{
+				IPAddress: blockaidclientgo.F("ip_address"),
+				UserAgent: blockaidclientgo.F("user_agent"),
+			}),
 			URL: blockaidclientgo.F("https://example.com"),
 		}),
 		Transactions:  blockaidclientgo.F([]string{"vxBNpvao9QJmLKXUThbbjRnxm3ufu4Wku97kHd5a67FDjSqeHwcPrBKTjAHp4ECr61eWwoxvUEVTuuWX65P9bCNDJrTJpX64vjdtpHA8cogA4C92Ubj813wUUA8Ey4Bvcrdj5c1bSTrGZVzb8QmCKyzMu9kMiSWpFtaFrNN8zb9grr81N3R3njrFgxCxNSjboFtomLyZ3iUQBaBkRF1DyzGyc1r1kd8FnptaDWteNCXJHUYFeH8wBDwZJzNZfz71CiugXhxBTJSAqSNC8JEWm7kmCqwjUqLd23L2x2s"}),

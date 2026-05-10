@@ -7,6 +7,7 @@ import (
 	"errors"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/blockaid-official/blockaid-client-go"
 	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
@@ -31,6 +32,16 @@ func TestHederaTransactionScanWithOptionalParams(t *testing.T) {
 		Metadata: blockaidclientgo.F[blockaidclientgo.HederaTransactionScanParamsMetadataUnion](blockaidclientgo.HederaTransactionScanParamsMetadataHederaWalletRequestMetadata{
 			Type: blockaidclientgo.F(blockaidclientgo.HederaTransactionScanParamsMetadataHederaWalletRequestMetadataTypeWallet),
 			URL:  blockaidclientgo.F("https://example.com"),
+			Account: blockaidclientgo.F(blockaidclientgo.HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccount{
+				AccountID:                blockaidclientgo.F("account_id"),
+				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
+				UserAge:                  blockaidclientgo.F(int64(1)),
+				UserCountryCode:          blockaidclientgo.F("user_country_code"),
+			}),
+			Connection: blockaidclientgo.F(blockaidclientgo.HederaTransactionScanParamsMetadataHederaWalletRequestMetadataConnection{
+				IPAddress: blockaidclientgo.F("ip_address"),
+				UserAgent: blockaidclientgo.F("user_agent"),
+			}),
 		}),
 		Transaction: blockaidclientgo.F("KmEKXQoVCgwIjvztygYQn6yo3QISBRiawrcDEgIYBhiAwtcvIgIIeDIVSEJBUiB0cmFuc2ZlciBleGFtcGxlciAKHgoNCgUYjee6BBD/p9a5BwoNCgUYha/rARCAqNa5BxIA"),
 		Options:     blockaidclientgo.F([]blockaidclientgo.HederaTransactionScanParamsOption{blockaidclientgo.HederaTransactionScanParamsOptionSimulation}),
