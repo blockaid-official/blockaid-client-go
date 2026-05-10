@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"slices"
+	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -74,6 +75,8 @@ func (r SuiTransactionScanParamsChain) IsKnown() bool {
 
 // Metadata
 type SuiTransactionScanParamsMetadata struct {
+	Account    param.Field[interface{}] `json:"account"`
+	Connection param.Field[interface{}] `json:"connection"`
 	// Metadata for wallet requests
 	Type param.Field[SuiTransactionScanParamsMetadataType] `json:"type"`
 	// URL of the dApp originating the transaction
@@ -100,6 +103,10 @@ type SuiTransactionScanParamsMetadataSuiWalletRequestMetadata struct {
 	Type param.Field[SuiTransactionScanParamsMetadataSuiWalletRequestMetadataType] `json:"type" api:"required"`
 	// URL of the dApp originating the transaction
 	URL param.Field[string] `json:"url" api:"required"`
+	// Account information associated with the request
+	Account param.Field[SuiTransactionScanParamsMetadataSuiWalletRequestMetadataAccount] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[SuiTransactionScanParamsMetadataSuiWalletRequestMetadataConnection] `json:"connection"`
 }
 
 func (r SuiTransactionScanParamsMetadataSuiWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
@@ -124,7 +131,39 @@ func (r SuiTransactionScanParamsMetadataSuiWalletRequestMetadataType) IsKnown() 
 	return false
 }
 
+// Account information associated with the request
+type SuiTransactionScanParamsMetadataSuiWalletRequestMetadataAccount struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r SuiTransactionScanParamsMetadataSuiWalletRequestMetadataAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type SuiTransactionScanParamsMetadataSuiWalletRequestMetadataConnection struct {
+	// IP address of the customer making the request.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r SuiTransactionScanParamsMetadataSuiWalletRequestMetadataConnection) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type SuiTransactionScanParamsMetadataSuiInAppRequestMetadata struct {
+	// Account information associated with the request
+	Account param.Field[SuiTransactionScanParamsMetadataSuiInAppRequestMetadataAccount] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[SuiTransactionScanParamsMetadataSuiInAppRequestMetadataConnection] `json:"connection"`
 	// Metadata for in-app requests
 	Type param.Field[SuiTransactionScanParamsMetadataSuiInAppRequestMetadataType] `json:"type"`
 }
@@ -134,6 +173,34 @@ func (r SuiTransactionScanParamsMetadataSuiInAppRequestMetadata) MarshalJSON() (
 }
 
 func (r SuiTransactionScanParamsMetadataSuiInAppRequestMetadata) implementsSuiTransactionScanParamsMetadataUnion() {
+}
+
+// Account information associated with the request
+type SuiTransactionScanParamsMetadataSuiInAppRequestMetadataAccount struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r SuiTransactionScanParamsMetadataSuiInAppRequestMetadataAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type SuiTransactionScanParamsMetadataSuiInAppRequestMetadataConnection struct {
+	// IP address of the customer making the request.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r SuiTransactionScanParamsMetadataSuiInAppRequestMetadataConnection) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // Metadata for in-app requests

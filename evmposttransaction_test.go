@@ -7,6 +7,7 @@ import (
 	"errors"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/blockaid-official/blockaid-client-go"
 	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
@@ -61,6 +62,16 @@ func TestEvmPostTransactionScanWithOptionalParams(t *testing.T) {
 			TxHash: blockaidclientgo.F("0xc01780dadc107754b331250b4797606949cb3d0087facc0a737122d5e973c83c"),
 		}),
 		Metadata: blockaidclientgo.F[blockaidclientgo.EvmPostTransactionScanParamsMetadataUnion](blockaidclientgo.EvmPostTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDapp{
+			Account: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount{
+				AccountID:                blockaidclientgo.F("account_id"),
+				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
+				UserAge:                  blockaidclientgo.F(int64(1)),
+				UserCountryCode:          blockaidclientgo.F("user_country_code"),
+			}),
+			Connection: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection{
+				IPAddress: blockaidclientgo.F("ip_address"),
+				UserAgent: blockaidclientgo.F("user_agent"),
+			}),
 			NonDapp: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
 		}),
 		Block:                    blockaidclientgo.F[blockaidclientgo.EvmPostTransactionScanParamsBlockUnion](shared.UnionInt(int64(0))),

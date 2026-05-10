@@ -7,6 +7,7 @@ import (
 	"errors"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/blockaid-official/blockaid-client-go"
 	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
@@ -61,6 +62,16 @@ func TestBitcoinTransactionRawScanWithOptionalParams(t *testing.T) {
 			Metadata: blockaidclientgo.F[blockaidclientgo.BitcoinTransactionScanRequestMetadataUnionParam](blockaidclientgo.BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataParam{
 				Type: blockaidclientgo.F(blockaidclientgo.BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataTypeWallet),
 				URL:  blockaidclientgo.F("url"),
+				Account: blockaidclientgo.F(blockaidclientgo.BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataAccountParam{
+					AccountID:                blockaidclientgo.F("account_id"),
+					AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
+					UserAge:                  blockaidclientgo.F(int64(1)),
+					UserCountryCode:          blockaidclientgo.F("user_country_code"),
+				}),
+				Connection: blockaidclientgo.F(blockaidclientgo.BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataConnectionParam{
+					IPAddress: blockaidclientgo.F("ip_address"),
+					UserAgent: blockaidclientgo.F("user_agent"),
+				}),
 			}),
 			Transaction: blockaidclientgo.F("transaction"),
 			Options:     blockaidclientgo.F([]blockaidclientgo.BitcoinTransactionScanRequestOption{blockaidclientgo.BitcoinTransactionScanRequestOptionValidation}),

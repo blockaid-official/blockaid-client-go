@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"reflect"
 	"slices"
+	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -5024,11 +5025,43 @@ func (r SolanaMessageScanParams) MarshalJSON() (data []byte, err error) {
 }
 
 type SolanaMessageScanParamsMetadata struct {
+	// Account information associated with the request
+	Account param.Field[SolanaMessageScanParamsMetadataAccount] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[SolanaMessageScanParamsMetadataConnection] `json:"connection"`
 	// URL of the dApp that originated the transaction
 	URL param.Field[string] `json:"url"`
 }
 
 func (r SolanaMessageScanParamsMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Account information associated with the request
+type SolanaMessageScanParamsMetadataAccount struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r SolanaMessageScanParamsMetadataAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type SolanaMessageScanParamsMetadataConnection struct {
+	// IP address of the customer making the request.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r SolanaMessageScanParamsMetadataConnection) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

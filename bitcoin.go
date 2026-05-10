@@ -4,6 +4,7 @@ package blockaidclientgo
 
 import (
 	"reflect"
+	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -81,6 +82,8 @@ func (r BitcoinTransactionScanRequestChain) IsKnown() bool {
 //
 // Choosing the correct type improves risk analysis and reporting.
 type BitcoinTransactionScanRequestMetadataParam struct {
+	Account    param.Field[interface{}] `json:"account"`
+	Connection param.Field[interface{}] `json:"connection"`
 	// Identifies the request as a wallet signing a transaction on behalf of an
 	// external dApp. The type improves threat context and helps attribute risk to
 	// specific origins.
@@ -119,6 +122,10 @@ type BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataParam stru
 	// The full URL of the dApp or page where the user initiated the transaction (e.g.
 	// https://app.example.com/swap).
 	URL param.Field[string] `json:"url" api:"required"`
+	// Account information associated with the request
+	Account param.Field[BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataAccountParam] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataConnectionParam] `json:"connection"`
 }
 
 func (r BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataParam) MarshalJSON() (data []byte, err error) {
@@ -145,7 +152,39 @@ func (r BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataType) I
 	return false
 }
 
+// Account information associated with the request
+type BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataAccountParam struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataConnectionParam struct {
+	// IP address of the customer making the request.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataConnectionParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataParam struct {
+	// Account information associated with the request
+	Account param.Field[BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataAccountParam] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataConnectionParam] `json:"connection"`
 	// Identifies the request as coming from your own app (e.g. in-app send, swap, or
 	// internal flow).
 	Type param.Field[BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataType] `json:"type"`
@@ -156,6 +195,34 @@ func (r BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataParam) M
 }
 
 func (r BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataParam) implementsBitcoinTransactionScanRequestMetadataUnionParam() {
+}
+
+// Account information associated with the request
+type BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataAccountParam struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataConnectionParam struct {
+	// IP address of the customer making the request.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataConnectionParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // Identifies the request as coming from your own app (e.g. in-app send, swap, or
