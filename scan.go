@@ -37,7 +37,7 @@ func NewScanService(opts ...option.RequestOption) (r *ScanService) {
 // etc.) using a request ID from a previous scan.
 func (r *ScanService) Report(ctx context.Context, body ScanReportParams, opts ...option.RequestOption) (res *ScanReportResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
-	path := "v0/scan/report/"
+	path := "v0/scan/report"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
