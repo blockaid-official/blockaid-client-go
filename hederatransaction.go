@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"reflect"
 	"slices"
+	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -83,6 +84,9 @@ type HederaTransactionScanResponseSimulation struct {
 	// Error message
 	Error string `json:"error"`
 	// This field can have the runtime type of
+	// [HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetails].
+	ErrorDetails interface{} `json:"error_details"`
+	// This field can have the runtime type of
 	// [map[string][]HederaTransactionScanResponseSimulationHederaSimulationResponseExposure].
 	Exposures interface{} `json:"exposures"`
 	// This field can have the runtime type of
@@ -100,6 +104,7 @@ type hederaTransactionScanResponseSimulationJSON struct {
 	AddressDetails     apijson.Field
 	AssetsDiffs        apijson.Field
 	Error              apijson.Field
+	ErrorDetails       apijson.Field
 	Exposures          apijson.Field
 	TransactionActions apijson.Field
 	raw                string
@@ -2072,17 +2077,20 @@ type HederaTransactionScanResponseSimulationHederaSimulationErrorSchema struct {
 	// Error message
 	Error  string                                                                   `json:"error" api:"required"`
 	Status HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaStatus `json:"status" api:"required"`
-	JSON   hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaJSON   `json:"-"`
+	// Error details if the simulation failed.
+	ErrorDetails HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetails `json:"error_details"`
+	JSON         hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaJSON         `json:"-"`
 }
 
 // hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaJSON contains
 // the JSON metadata for the struct
 // [HederaTransactionScanResponseSimulationHederaSimulationErrorSchema]
 type hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaJSON struct {
-	Error       apijson.Field
-	Status      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	Error        apijson.Field
+	Status       apijson.Field
+	ErrorDetails apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
 }
 
 func (r *HederaTransactionScanResponseSimulationHederaSimulationErrorSchema) UnmarshalJSON(data []byte) (err error) {
@@ -2105,6 +2113,163 @@ const (
 func (r HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaStatus) IsKnown() bool {
 	switch r {
 	case HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaStatusError:
+		return true
+	}
+	return false
+}
+
+// Error details if the simulation failed.
+type HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetails struct {
+	Category string `json:"category" api:"required"`
+	// The error code
+	Code string `json:"code" api:"required"`
+	// The unsupported transaction type
+	TransactionType string                                                                             `json:"transaction_type"`
+	JSON            hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsJSON `json:"-"`
+	union           HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsUnion
+}
+
+// hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsJSON
+// contains the JSON metadata for the struct
+// [HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetails]
+type hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsJSON struct {
+	Category        apijson.Field
+	Code            apijson.Field
+	TransactionType apijson.Field
+	raw             string
+	ExtraFields     map[string]apijson.Field
+}
+
+func (r hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetails) UnmarshalJSON(data []byte) (err error) {
+	*r = HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetails{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a
+// [HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaGenericErrorDetails],
+// [HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetails].
+func (r HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetails) AsUnion() HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsUnion {
+	return r.union
+}
+
+// Error details if the simulation failed.
+//
+// Union satisfied by
+// [HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaGenericErrorDetails]
+// or
+// [HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetails].
+type HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsUnion interface {
+	implementsHederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetails()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaGenericErrorDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetails{}),
+		},
+	)
+}
+
+type HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaGenericErrorDetails struct {
+	Category string `json:"category" api:"required"`
+	// The error code
+	Code string                                                                                                      `json:"code" api:"required"`
+	JSON hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaGenericErrorDetailsJSON `json:"-"`
+}
+
+// hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaGenericErrorDetailsJSON
+// contains the JSON metadata for the struct
+// [HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaGenericErrorDetails]
+type hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaGenericErrorDetailsJSON struct {
+	Category    apijson.Field
+	Code        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaGenericErrorDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaGenericErrorDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaGenericErrorDetails) implementsHederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetails() {
+}
+
+type HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetails struct {
+	Category HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsCategory `json:"category" api:"required"`
+	Code     HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsCode     `json:"code" api:"required"`
+	// The unsupported transaction type
+	TransactionType string                                                                                                                         `json:"transaction_type" api:"required"`
+	JSON            hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsJSON `json:"-"`
+}
+
+// hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsJSON
+// contains the JSON metadata for the struct
+// [HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetails]
+type hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsJSON struct {
+	Category        apijson.Field
+	Code            apijson.Field
+	TransactionType apijson.Field
+	raw             string
+	ExtraFields     map[string]apijson.Field
+}
+
+func (r *HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r hederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetails) implementsHederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetails() {
+}
+
+type HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsCategory string
+
+const (
+	HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsCategoryInvalidInput HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsCategory = "INVALID_INPUT"
+)
+
+func (r HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsCategory) IsKnown() bool {
+	switch r {
+	case HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsCategoryInvalidInput:
+		return true
+	}
+	return false
+}
+
+type HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsCode string
+
+const (
+	HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsCodeUnsupportedTransactionType HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsCode = "UNSUPPORTED_TRANSACTION_TYPE"
+)
+
+func (r HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsCode) IsKnown() bool {
+	switch r {
+	case HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetailsHederaUnsupportedTransactionTypeErrorDetailsCodeUnsupportedTransactionType:
 		return true
 	}
 	return false
@@ -2445,6 +2610,8 @@ func (r HederaTransactionScanParamsChain) IsKnown() bool {
 
 // Additional information regarding the wallet involved in the transaction.
 type HederaTransactionScanParamsMetadata struct {
+	Account    param.Field[interface{}] `json:"account"`
+	Connection param.Field[interface{}] `json:"connection"`
 	// Metadata for wallet requests
 	Type param.Field[HederaTransactionScanParamsMetadataType] `json:"type"`
 	// URL of the dApp the transaction originated from.
@@ -2471,6 +2638,10 @@ type HederaTransactionScanParamsMetadataHederaWalletRequestMetadata struct {
 	Type param.Field[HederaTransactionScanParamsMetadataHederaWalletRequestMetadataType] `json:"type" api:"required"`
 	// URL of the dApp the transaction originated from.
 	URL param.Field[string] `json:"url" api:"required"`
+	// Account information associated with the request
+	Account param.Field[HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccount] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[HederaTransactionScanParamsMetadataHederaWalletRequestMetadataConnection] `json:"connection"`
 }
 
 func (r HederaTransactionScanParamsMetadataHederaWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
@@ -2495,7 +2666,39 @@ func (r HederaTransactionScanParamsMetadataHederaWalletRequestMetadataType) IsKn
 	return false
 }
 
+// Account information associated with the request
+type HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccount struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type HederaTransactionScanParamsMetadataHederaWalletRequestMetadataConnection struct {
+	// IP address of the customer making the request.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r HederaTransactionScanParamsMetadataHederaWalletRequestMetadataConnection) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type HederaTransactionScanParamsMetadataHederaInAppRequestMetadata struct {
+	// Account information associated with the request
+	Account param.Field[HederaTransactionScanParamsMetadataHederaInAppRequestMetadataAccount] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[HederaTransactionScanParamsMetadataHederaInAppRequestMetadataConnection] `json:"connection"`
 	// Metadata for in-app requests
 	Type param.Field[HederaTransactionScanParamsMetadataHederaInAppRequestMetadataType] `json:"type"`
 }
@@ -2505,6 +2708,34 @@ func (r HederaTransactionScanParamsMetadataHederaInAppRequestMetadata) MarshalJS
 }
 
 func (r HederaTransactionScanParamsMetadataHederaInAppRequestMetadata) implementsHederaTransactionScanParamsMetadataUnion() {
+}
+
+// Account information associated with the request
+type HederaTransactionScanParamsMetadataHederaInAppRequestMetadataAccount struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r HederaTransactionScanParamsMetadataHederaInAppRequestMetadataAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type HederaTransactionScanParamsMetadataHederaInAppRequestMetadataConnection struct {
+	// IP address of the customer making the request.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r HederaTransactionScanParamsMetadataHederaInAppRequestMetadataConnection) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // Metadata for in-app requests

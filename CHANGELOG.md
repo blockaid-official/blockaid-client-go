@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.74.0 (2026-05-13)
+
+Full Changelog: [v0.73.0...v0.74.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.73.0...v0.74.0)
+
+### Features
+
+* **api:** api update ([1643a58](https://github.com/blockaid-official/blockaid-client-go/commit/1643a588901a48f93ceb8b6e53b95a61bde3204d))
+* **api:** api update ([2b9195b](https://github.com/blockaid-official/blockaid-client-go/commit/2b9195b77366400634f599a0db007770329da4db))
+* **api:** api update ([3f3c3ed](https://github.com/blockaid-official/blockaid-client-go/commit/3f3c3edbe746b146446c880696db98a430140f34))
+* **api:** api update ([d5ee97f](https://github.com/blockaid-official/blockaid-client-go/commit/d5ee97fdd8def611ab9486a1141c444c8563403f))
+* **go:** add default http client with timeout ([5fa218e](https://github.com/blockaid-official/blockaid-client-go/commit/5fa218e889b9eaae5d8f58386d87f4af8f7db704))
+* support setting headers via env ([b77db6e](https://github.com/blockaid-official/blockaid-client-go/commit/b77db6e77b26ba8436a490f73b95c37ba8d15e11))
+
+
+### Bug Fixes
+
+* **go:** avoid panic when http.DefaultTransport is wrapped ([e3a2fa5](https://github.com/blockaid-official/blockaid-client-go/commit/e3a2fa5893bacc7940622b927b08ea96cd2523d4))
+
+
+### Chores
+
+* avoid embedding reflect.Type for dead code elimination ([b71848b](https://github.com/blockaid-official/blockaid-client-go/commit/b71848b13884598e053e05eaccb82b1a1a46abd7))
+* **internal:** more robust bootstrap script ([5fad9b0](https://github.com/blockaid-official/blockaid-client-go/commit/5fad9b0920c633bcd8e10557fc0f6c7b03e24ef8))
+* redact api-key headers in debug logs ([c22e95b](https://github.com/blockaid-official/blockaid-client-go/commit/c22e95b30d9cda85ff03f9da038a782394e331b8))
+
 ## 0.73.0 (2026-04-20)
 
 Full Changelog: [v0.72.0...v0.73.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.72.0...v0.73.0)

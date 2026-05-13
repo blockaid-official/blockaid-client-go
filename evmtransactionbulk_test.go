@@ -7,6 +7,7 @@ import (
 	"errors"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/blockaid-official/blockaid-client-go"
 	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
@@ -62,6 +63,16 @@ func TestEvmTransactionBulkScanWithOptionalParams(t *testing.T) {
 			Value:    blockaidclientgo.F("0xdeadbeef"),
 		}}),
 		Metadata: blockaidclientgo.F[blockaidclientgo.EvmTransactionBulkScanParamsMetadataUnion](blockaidclientgo.EvmTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDapp{
+			Account: blockaidclientgo.F(blockaidclientgo.EvmTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount{
+				AccountID:                blockaidclientgo.F("account_id"),
+				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
+				UserAge:                  blockaidclientgo.F(int64(1)),
+				UserCountryCode:          blockaidclientgo.F("user_country_code"),
+			}),
+			Connection: blockaidclientgo.F(blockaidclientgo.EvmTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection{
+				IPAddress: blockaidclientgo.F("ip_address"),
+				UserAgent: blockaidclientgo.F("user_agent"),
+			}),
 			NonDapp: blockaidclientgo.F(blockaidclientgo.EvmTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
 		}),
 		Aggregated:               blockaidclientgo.F(true),

@@ -31,6 +31,16 @@ func TestEvmAddressBulkScan(t *testing.T) {
 			Addresses: blockaidclientgo.F([]string{"0xb85492afC686d5CA405E3CD4f50b05D358c75Ede", "0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97", "0x1f9090aaE28b8a3dCeaDf281B0F12828e676c326", "0xD6E4aA932147A3FE5311dA1b67D9e73da06F9cEf"}),
 			Chain:     blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainEthereum),
 			Metadata: blockaidclientgo.F[blockaidclientgo.ValidateBulkAddressesMetadataUnionParam](blockaidclientgo.ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappParam{
+				Account: blockaidclientgo.F(blockaidclientgo.ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappAccountParam{
+					AccountID:                blockaidclientgo.F("account_id"),
+					AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
+					UserAge:                  blockaidclientgo.F(int64(1)),
+					UserCountryCode:          blockaidclientgo.F("user_country_code"),
+				}),
+				Connection: blockaidclientgo.F(blockaidclientgo.ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappConnectionParam{
+					IPAddress: blockaidclientgo.F("ip_address"),
+					UserAgent: blockaidclientgo.F("user_agent"),
+				}),
 				NonDapp: blockaidclientgo.F(blockaidclientgo.ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
 			}),
 		},

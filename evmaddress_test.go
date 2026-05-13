@@ -7,6 +7,7 @@ import (
 	"errors"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/blockaid-official/blockaid-client-go"
 	"github.com/blockaid-official/blockaid-client-go/internal/testutil"
@@ -59,6 +60,16 @@ func TestEvmAddressScan(t *testing.T) {
 			Address: blockaidclientgo.F("0x946D45c866AFD5b8F436d40E551D8E50A5B84230"),
 			Chain:   blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainEthereum),
 			Metadata: blockaidclientgo.F[blockaidclientgo.ValidateAddressMetadataUnionParam](blockaidclientgo.ValidateAddressMetadataRoutersEvmModelsMetadataNonDappParam{
+				Account: blockaidclientgo.F(blockaidclientgo.ValidateAddressMetadataRoutersEvmModelsMetadataNonDappAccountParam{
+					AccountID:                blockaidclientgo.F("account_id"),
+					AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
+					UserAge:                  blockaidclientgo.F(int64(1)),
+					UserCountryCode:          blockaidclientgo.F("user_country_code"),
+				}),
+				Connection: blockaidclientgo.F(blockaidclientgo.ValidateAddressMetadataRoutersEvmModelsMetadataNonDappConnectionParam{
+					IPAddress: blockaidclientgo.F("ip_address"),
+					UserAgent: blockaidclientgo.F("user_agent"),
+				}),
 				NonDapp: blockaidclientgo.F(blockaidclientgo.ValidateAddressMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
 			}),
 		},

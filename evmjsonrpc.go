@@ -345,6 +345,9 @@ type EvmJsonRpcScanResponseSimulation struct {
 	// This field can have the runtime type of
 	// [map[string][]EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagement].
 	ContractManagement interface{} `json:"contract_management"`
+	// This field can have the runtime type of
+	// [[]EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiff].
+	CrossChainAssetDiffs interface{} `json:"cross_chain_asset_diffs"`
 	// A string explaining why the transaction failed
 	Description string `json:"description"`
 	// An error message if the simulation failed.
@@ -381,24 +384,25 @@ type EvmJsonRpcScanResponseSimulation struct {
 // evmJsonRpcScanResponseSimulationJSON contains the JSON metadata for the struct
 // [EvmJsonRpcScanResponseSimulation]
 type evmJsonRpcScanResponseSimulationJSON struct {
-	Status             apijson.Field
-	AccountSummary     apijson.Field
-	AddressDetails     apijson.Field
-	AssetsDiffs        apijson.Field
-	ContractManagement apijson.Field
-	Description        apijson.Field
-	Error              apijson.Field
-	ErrorDetails       apijson.Field
-	Exposures          apijson.Field
-	MissingBalances    apijson.Field
-	Params             apijson.Field
-	SessionKey         apijson.Field
-	SimulationRunCount apijson.Field
-	TotalUsdDiff       apijson.Field
-	TotalUsdExposure   apijson.Field
-	TransactionActions apijson.Field
-	raw                string
-	ExtraFields        map[string]apijson.Field
+	Status               apijson.Field
+	AccountSummary       apijson.Field
+	AddressDetails       apijson.Field
+	AssetsDiffs          apijson.Field
+	ContractManagement   apijson.Field
+	CrossChainAssetDiffs apijson.Field
+	Description          apijson.Field
+	Error                apijson.Field
+	ErrorDetails         apijson.Field
+	Exposures            apijson.Field
+	MissingBalances      apijson.Field
+	Params               apijson.Field
+	SessionKey           apijson.Field
+	SimulationRunCount   apijson.Field
+	TotalUsdDiff         apijson.Field
+	TotalUsdExposure     apijson.Field
+	TransactionActions   apijson.Field
+	raw                  string
+	ExtraFields          map[string]apijson.Field
 }
 
 func (r evmJsonRpcScanResponseSimulationJSON) RawJSON() string {
@@ -476,6 +480,9 @@ type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulation str
 	// Describes the state differences as a result of this transaction for every
 	// involved address
 	ContractManagement map[string][]EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagement `json:"contract_management"`
+	// Cross-chain asset diffs per address, showing asset movements across different
+	// chains (e.g. bridge transactions)
+	CrossChainAssetDiffs []EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiff `json:"cross_chain_asset_diffs" api:"nullable"`
 	// Missing balances in the transaction
 	MissingBalances []EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalance `json:"missing_balances"`
 	// The parameters of the transaction that was simulated.
@@ -489,21 +496,22 @@ type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulation str
 // contains the JSON metadata for the struct
 // [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulation]
 type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationJSON struct {
-	AccountSummary     apijson.Field
-	AddressDetails     apijson.Field
-	AssetsDiffs        apijson.Field
-	Exposures          apijson.Field
-	SessionKey         apijson.Field
-	Status             apijson.Field
-	TotalUsdDiff       apijson.Field
-	TotalUsdExposure   apijson.Field
-	TransactionActions apijson.Field
-	ContractManagement apijson.Field
-	MissingBalances    apijson.Field
-	Params             apijson.Field
-	SimulationRunCount apijson.Field
-	raw                string
-	ExtraFields        map[string]apijson.Field
+	AccountSummary       apijson.Field
+	AddressDetails       apijson.Field
+	AssetsDiffs          apijson.Field
+	Exposures            apijson.Field
+	SessionKey           apijson.Field
+	Status               apijson.Field
+	TotalUsdDiff         apijson.Field
+	TotalUsdExposure     apijson.Field
+	TransactionActions   apijson.Field
+	ContractManagement   apijson.Field
+	CrossChainAssetDiffs apijson.Field
+	MissingBalances      apijson.Field
+	Params               apijson.Field
+	SimulationRunCount   apijson.Field
+	raw                  string
+	ExtraFields          map[string]apijson.Field
 }
 
 func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulation) UnmarshalJSON(data []byte) (err error) {
@@ -3817,7 +3825,11 @@ func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationA
 	return r.raw
 }
 
+// Trace of a cross-chain bridge asset transfer, showing source and destination
+// asset movements
 type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTrace struct {
+	// The type of the model
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesType `json:"type" api:"required"`
 	// This field can have the runtime type of
 	// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceAsset],
 	// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceAsset],
@@ -3826,17 +3838,20 @@ type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAcco
 	// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceAsset],
 	// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceAsset],
 	// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTraceAsset].
-	Asset interface{} `json:"asset" api:"required"`
-	// type of the trace
-	TraceType EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceType `json:"trace_type" api:"required"`
-	// The type of the model
-	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesType `json:"type" api:"required"`
+	Asset interface{} `json:"asset"`
+	// The type of bridge protocol (e.g. hyperliquid, hyperliquid_l1_transfer)
+	BridgeType string `json:"bridge_type" api:"nullable"`
+	// This field can have the runtime type of
+	// [[]EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestination].
+	Destinations interface{} `json:"destinations"`
 	// This field can have the runtime type of
 	// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTraceDiff],
 	// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTraceDiff],
 	// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceDiff],
 	// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceDiff].
 	Diff interface{} `json:"diff"`
+	// Human-readable name for the bridge (e.g. Hyperliquid Bridge)
+	DisplayName string `json:"display_name" api:"nullable"`
 	// This field can have the runtime type of
 	// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTraceExposed],
 	// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTraceExposed].
@@ -3849,13 +3864,20 @@ type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAcco
 	// [[]EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTraceLabels],
 	// [[]EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTraceLabels].
 	Labels interface{} `json:"labels"`
+	// URL to the bridge protocol logo
+	LogoURL string `json:"logo_url" api:"nullable"`
 	// The owner of the assets
 	Owner string `json:"owner"`
+	// This field can have the runtime type of
+	// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSource].
+	Source interface{} `json:"source"`
 	// The spender of the assets
 	Spender string `json:"spender"`
 	// The address where the assets are moved to
-	ToAddress string                                                                                         `json:"to_address"`
-	JSON      evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTraceJSON `json:"-"`
+	ToAddress string `json:"to_address"`
+	// type of the trace
+	TraceType EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceType `json:"trace_type"`
+	JSON      evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTraceJSON       `json:"-"`
 	union     EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesUnion
 }
 
@@ -3863,18 +3885,23 @@ type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAcco
 // contains the JSON metadata for the struct
 // [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTrace]
 type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTraceJSON struct {
-	Asset       apijson.Field
-	TraceType   apijson.Field
-	Type        apijson.Field
-	Diff        apijson.Field
-	Exposed     apijson.Field
-	FromAddress apijson.Field
-	Labels      apijson.Field
-	Owner       apijson.Field
-	Spender     apijson.Field
-	ToAddress   apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	Type         apijson.Field
+	Asset        apijson.Field
+	BridgeType   apijson.Field
+	Destinations apijson.Field
+	Diff         apijson.Field
+	DisplayName  apijson.Field
+	Exposed      apijson.Field
+	FromAddress  apijson.Field
+	Labels       apijson.Field
+	LogoURL      apijson.Field
+	Owner        apijson.Field
+	Source       apijson.Field
+	Spender      apijson.Field
+	ToAddress    apijson.Field
+	TraceType    apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
 }
 
 func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTraceJSON) RawJSON() string {
@@ -3901,20 +3928,25 @@ func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulation
 // [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTrace],
 // [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTrace],
 // [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTrace],
-// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTrace].
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTrace],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTrace].
 func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTrace) AsUnion() EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesUnion {
 	return r.union
 }
 
+// Trace of a cross-chain bridge asset transfer, showing source and destination
+// asset movements
+//
 // Union satisfied by
 // [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20AssetTrace],
 // [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721AssetTrace],
 // [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155AssetTrace],
 // [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseNativeAssetTrace],
 // [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc20ExposureTrace],
-// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTrace]
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc721ExposureTrace],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTrace]
 // or
-// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTrace].
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTrace].
 type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesUnion interface {
 	implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTrace()
 }
@@ -3950,6 +3982,10 @@ func init() {
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
 			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseErc1155ExposureTrace{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTrace{}),
 		},
 	)
 }
@@ -5982,20 +6018,978 @@ func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationA
 	return false
 }
 
-// type of the trace
-type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceType string
+// Trace of a cross-chain bridge asset transfer, showing source and destination
+// asset movements
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTrace struct {
+	// The type of the trace
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceType `json:"type" api:"required"`
+	// The type of bridge protocol (e.g. hyperliquid, hyperliquid_l1_transfer)
+	BridgeType string `json:"bridge_type" api:"nullable"`
+	// The destination asset diffs of the bridge transaction
+	Destinations []EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestination `json:"destinations" api:"nullable"`
+	// Human-readable name for the bridge (e.g. Hyperliquid Bridge)
+	DisplayName string `json:"display_name" api:"nullable"`
+	// URL to the bridge protocol logo
+	LogoURL string `json:"logo_url" api:"nullable"`
+	// An asset diff with chain context, used in cross-chain bridge traces
+	Source EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSource `json:"source" api:"nullable"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceJSON   `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTrace]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceJSON struct {
+	Type         apijson.Field
+	BridgeType   apijson.Field
+	Destinations apijson.Field
+	DisplayName  apijson.Field
+	LogoURL      apijson.Field
+	Source       apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTrace) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTrace) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTrace() {
+}
+
+// The type of the trace
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceType string
 
 const (
-	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceTypeAssetTrace    EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceType = "AssetTrace"
-	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceTypeExposureTrace EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceType = "ExposureTrace"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceTypeBridgeAssetTrace EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceType = "BridgeAssetTrace"
 )
 
-func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceType) IsKnown() bool {
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceType) IsKnown() bool {
 	switch r {
-	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceTypeAssetTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceTypeExposureTrace:
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceTypeBridgeAssetTrace:
 		return true
 	}
 	return false
+}
+
+// An asset diff with chain context, used in cross-chain bridge traces
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestination struct {
+	// The address involved in the asset diff
+	Address string `json:"address" api:"required"`
+	// Details of the asset involved in the diff
+	Asset EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAsset `json:"asset" api:"required"`
+	// The chain identifier where the asset exists
+	Chain string `json:"chain" api:"required"`
+	// The asset value change
+	Diff EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsDiff `json:"diff" api:"required"`
+	// The type of the asset (e.g. ERC20, NATIVE, FUNGIBLE)
+	AssetType string                                                                                                                                       `json:"asset_type" api:"nullable"`
+	JSON      evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestination]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationJSON struct {
+	Address     apijson.Field
+	Asset       apijson.Field
+	Chain       apijson.Field
+	Diff        apijson.Field
+	AssetType   apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestination) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the asset involved in the diff
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAsset struct {
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetType `json:"type" api:"required"`
+	// address of the token
+	Address   string `json:"address"`
+	ChainID   int64  `json:"chain_id"`
+	ChainName string `json:"chain_name"`
+	// asset's decimals
+	Decimals int64 `json:"decimals"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                             `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetJSON `json:"-"`
+	union  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetUnion
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAsset]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetJSON struct {
+	Type        apijson.Field
+	Address     apijson.Field
+	ChainID     apijson.Field
+	ChainName   apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetails].
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAsset) AsUnion() EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetUnion {
+	return r.union
+}
+
+// Details of the asset involved in the diff
+//
+// Union satisfied by
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetails]
+// or
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetails].
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetUnion interface {
+	implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetails{}),
+		},
+	)
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetails struct {
+	// address of the token
+	Address string `json:"address" api:"required"`
+	// asset's decimals
+	Decimals int64 `json:"decimals" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type" api:"required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                                                                    `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetailsJSON struct {
+	Address     apijson.Field
+	Decimals    apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetailsTypeErc20 EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetailsType = "ERC20"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc20TokenDetailsTypeErc20:
+		return true
+	}
+	return false
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetails struct {
+	// address of the token
+	Address string `json:"address" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type" api:"required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                                                                     `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetailsJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetailsTypeErc721 EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetailsType = "ERC721"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc721TokenDetailsTypeErc721:
+		return true
+	}
+	return false
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetails struct {
+	// address of the token
+	Address string `json:"address" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type" api:"required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                                                                      `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetailsJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetailsTypeErc1155 EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetailsType = "ERC1155"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsErc1155TokenDetailsTypeErc1155:
+		return true
+	}
+	return false
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
+	// address of the token
+	Address string `json:"address" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                                                                     `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetailsJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetailsTypeNonerc EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetailsType = "NONERC"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNonercTokenDetailsTypeNonerc:
+		return true
+	}
+	return false
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetails struct {
+	ChainID   int64  `json:"chain_id" api:"required"`
+	ChainName string `json:"chain_name" api:"required"`
+	Decimals  int64  `json:"decimals" api:"required"`
+	LogoURL   string `json:"logo_url" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetailsType `json:"type" api:"required"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                                                                     `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetailsJSON struct {
+	ChainID     apijson.Field
+	ChainName   apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetailsTypeNative EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetailsType = "NATIVE"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetRoutersEvmTokenDetailsNativeAssetDetailsTypeNative:
+		return true
+	}
+	return false
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetTypeErc20   EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetType = "ERC20"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetTypeErc721  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetType = "ERC721"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetTypeErc1155 EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetType = "ERC1155"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetTypeNonerc  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetType = "NONERC"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetTypeNative  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetType = "NATIVE"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetTypeErc20, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetTypeErc721, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetTypeErc1155, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetTypeNonerc, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsAssetTypeNative:
+		return true
+	}
+	return false
+}
+
+// The asset value change
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsDiff struct {
+	// The raw value of the asset transfer before dividing by decimals
+	RawValue string `json:"raw_value" api:"required"`
+	// The USD equivalent value of the asset transfer
+	UsdPrice string `json:"usd_price"`
+	// The value of the asset transfer after dividing by decimals
+	Value string                                                                                                                                            `json:"value"`
+	JSON  evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsDiffJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsDiffJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsDiff]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsDiffJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsDiff) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceDestinationsDiffJSON) RawJSON() string {
+	return r.raw
+}
+
+// An asset diff with chain context, used in cross-chain bridge traces
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSource struct {
+	// The address involved in the asset diff
+	Address string `json:"address" api:"required"`
+	// Details of the asset involved in the diff
+	Asset EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAsset `json:"asset" api:"required"`
+	// The chain identifier where the asset exists
+	Chain string `json:"chain" api:"required"`
+	// The asset value change
+	Diff EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceDiff `json:"diff" api:"required"`
+	// The type of the asset (e.g. ERC20, NATIVE, FUNGIBLE)
+	AssetType string                                                                                                                                  `json:"asset_type" api:"nullable"`
+	JSON      evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSource]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceJSON struct {
+	Address     apijson.Field
+	Asset       apijson.Field
+	Chain       apijson.Field
+	Diff        apijson.Field
+	AssetType   apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSource) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the asset involved in the diff
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAsset struct {
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetType `json:"type" api:"required"`
+	// address of the token
+	Address   string `json:"address"`
+	ChainID   int64  `json:"chain_id"`
+	ChainName string `json:"chain_name"`
+	// asset's decimals
+	Decimals int64 `json:"decimals"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                       `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetJSON `json:"-"`
+	union  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetUnion
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAsset]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetJSON struct {
+	Type        apijson.Field
+	Address     apijson.Field
+	ChainID     apijson.Field
+	ChainName   apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetails].
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAsset) AsUnion() EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetUnion {
+	return r.union
+}
+
+// Details of the asset involved in the diff
+//
+// Union satisfied by
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetails]
+// or
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetails].
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetUnion interface {
+	implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetails{}),
+		},
+	)
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetails struct {
+	// address of the token
+	Address string `json:"address" api:"required"`
+	// asset's decimals
+	Decimals int64 `json:"decimals" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type" api:"required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                                                              `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetailsJSON struct {
+	Address     apijson.Field
+	Decimals    apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetailsTypeErc20 EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetailsType = "ERC20"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc20TokenDetailsTypeErc20:
+		return true
+	}
+	return false
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetails struct {
+	// address of the token
+	Address string `json:"address" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type" api:"required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                                                               `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetailsJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetailsTypeErc721 EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetailsType = "ERC721"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc721TokenDetailsTypeErc721:
+		return true
+	}
+	return false
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetails struct {
+	// address of the token
+	Address string `json:"address" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type" api:"required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                                                                `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetailsJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetailsTypeErc1155 EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetailsType = "ERC1155"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsErc1155TokenDetailsTypeErc1155:
+		return true
+	}
+	return false
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
+	// address of the token
+	Address string `json:"address" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                                                               `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetailsJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetailsTypeNonerc EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetailsType = "NONERC"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNonercTokenDetailsTypeNonerc:
+		return true
+	}
+	return false
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetails struct {
+	ChainID   int64  `json:"chain_id" api:"required"`
+	ChainName string `json:"chain_name" api:"required"`
+	Decimals  int64  `json:"decimals" api:"required"`
+	LogoURL   string `json:"logo_url" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetailsType `json:"type" api:"required"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                                                               `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetailsJSON struct {
+	ChainID     apijson.Field
+	ChainName   apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetailsTypeNative EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetailsType = "NATIVE"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetRoutersEvmTokenDetailsNativeAssetDetailsTypeNative:
+		return true
+	}
+	return false
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetTypeErc20   EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetType = "ERC20"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetTypeErc721  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetType = "ERC721"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetTypeErc1155 EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetType = "ERC1155"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetTypeNonerc  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetType = "NONERC"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetTypeNative  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetType = "NATIVE"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetTypeErc20, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetTypeErc721, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetTypeErc1155, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetTypeNonerc, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceAssetTypeNative:
+		return true
+	}
+	return false
+}
+
+// The asset value change
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceDiff struct {
+	// The raw value of the asset transfer before dividing by decimals
+	RawValue string `json:"raw_value" api:"required"`
+	// The USD equivalent value of the asset transfer
+	UsdPrice string `json:"usd_price"`
+	// The value of the asset transfer after dividing by decimals
+	Value string                                                                                                                                      `json:"value"`
+	JSON  evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceDiffJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceDiffJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceDiff]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceDiffJSON struct {
+	RawValue    apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceDiff) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesRoutersEvmResponseBridgeAssetTraceSourceDiffJSON) RawJSON() string {
+	return r.raw
 }
 
 // The type of the model
@@ -6009,11 +7003,28 @@ const (
 	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc20ExposureTrace   EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesType = "ERC20ExposureTrace"
 	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc721ExposureTrace  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesType = "ERC721ExposureTrace"
 	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc1155ExposureTrace EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesType = "ERC1155ExposureTrace"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeBridgeAssetTrace     EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesType = "BridgeAssetTrace"
 )
 
 func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesType) IsKnown() bool {
 	switch r {
-	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc20AssetTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc721AssetTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc1155AssetTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeNativeAssetTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc20ExposureTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc721ExposureTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc1155ExposureTrace:
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc20AssetTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc721AssetTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc1155AssetTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeNativeAssetTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc20ExposureTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc721ExposureTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeErc1155ExposureTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTypeBridgeAssetTrace:
+		return true
+	}
+	return false
+}
+
+// type of the trace
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceTypeAssetTrace    EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceType = "AssetTrace"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceTypeExposureTrace EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceType = "ExposureTrace"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceTypeAssetTrace, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummaryTracesTraceTypeExposureTrace:
 		return true
 	}
 	return false
@@ -9494,11 +10505,12 @@ const (
 	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsSetCodeAccount  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "set_code_account"
 	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsProxyUpgrade    EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "proxy_upgrade"
 	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsOwnershipChange EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "ownership_change"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsBridge          EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "bridge"
 )
 
 func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions) IsKnown() bool {
 	switch r {
-	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsMint, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsStake, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsSwap, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsNativeTransfer, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsTokenTransfer, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsApproval, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsSetCodeAccount, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsProxyUpgrade, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsOwnershipChange:
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsMint, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsStake, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsSwap, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsNativeTransfer, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsTokenTransfer, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsApproval, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsSetCodeAccount, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsProxyUpgrade, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsOwnershipChange, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsBridge:
 		return true
 	}
 	return false
@@ -9987,6 +10999,525 @@ func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationC
 		return true
 	}
 	return false
+}
+
+// Cross-chain asset diffs for a specific address
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiff struct {
+	// The address for which cross-chain asset diffs are reported
+	Address string `json:"address" api:"required"`
+	// List of cross-chain asset diffs for this address
+	Obj  []EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObj `json:"obj" api:"required"`
+	JSON evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffJSON   `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiff]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffJSON struct {
+	Address     apijson.Field
+	Obj         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiff) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffJSON) RawJSON() string {
+	return r.raw
+}
+
+// An asset diff on a specific chain, with in/out value changes
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObj struct {
+	// Details of the asset involved in the diff
+	Asset EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAsset `json:"asset" api:"required"`
+	// The type of the asset (e.g. ERC20, NATIVE, FUNGIBLE)
+	AssetType string `json:"asset_type" api:"required"`
+	// The chain identifier where the asset exists
+	Chain string `json:"chain" api:"required"`
+	// Asset value changes received on this chain
+	In []EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjIn `json:"in" api:"required"`
+	// Asset value changes sent from this chain
+	Out  []EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjOut `json:"out" api:"required"`
+	JSON evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjJSON  `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObj]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjJSON struct {
+	Asset       apijson.Field
+	AssetType   apijson.Field
+	Chain       apijson.Field
+	In          apijson.Field
+	Out         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObj) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjJSON) RawJSON() string {
+	return r.raw
+}
+
+// Details of the asset involved in the diff
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAsset struct {
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetType `json:"type" api:"required"`
+	// address of the token
+	Address   string `json:"address"`
+	ChainID   int64  `json:"chain_id"`
+	ChainName string `json:"chain_name"`
+	// asset's decimals
+	Decimals int64 `json:"decimals"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                  `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetJSON `json:"-"`
+	union  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetUnion
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAsset]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetJSON struct {
+	Type        apijson.Field
+	Address     apijson.Field
+	ChainID     apijson.Field
+	ChainName   apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAsset) UnmarshalJSON(data []byte) (err error) {
+	*r = EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAsset{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetUnion]
+// interface which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetails].
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAsset) AsUnion() EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetUnion {
+	return r.union
+}
+
+// Details of the asset involved in the diff
+//
+// Union satisfied by
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetails],
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetails]
+// or
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetails].
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetUnion interface {
+	implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAsset()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetails{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetails{}),
+		},
+	)
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetails struct {
+	// address of the token
+	Address string `json:"address" api:"required"`
+	// asset's decimals
+	Decimals int64 `json:"decimals" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetailsType `json:"type" api:"required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                         `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetailsJSON struct {
+	Address     apijson.Field
+	Decimals    apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetailsTypeErc20 EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetailsType = "ERC20"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc20TokenDetailsTypeErc20:
+		return true
+	}
+	return false
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetails struct {
+	// address of the token
+	Address string `json:"address" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetailsType `json:"type" api:"required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                          `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetailsJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetailsTypeErc721 EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetailsType = "ERC721"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc721TokenDetailsTypeErc721:
+		return true
+	}
+	return false
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetails struct {
+	// address of the token
+	Address string `json:"address" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetailsType `json:"type" api:"required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                           `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetailsJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetailsTypeErc1155 EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetailsType = "ERC1155"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsErc1155TokenDetailsTypeErc1155:
+		return true
+	}
+	return false
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetails struct {
+	// address of the token
+	Address string `json:"address" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetailsType `json:"type" api:"required"`
+	// url of the token logo
+	LogoURL string `json:"logo_url"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                          `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetailsJSON struct {
+	Address     apijson.Field
+	Type        apijson.Field
+	LogoURL     apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetailsTypeNonerc EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetailsType = "NONERC"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNonercTokenDetailsTypeNonerc:
+		return true
+	}
+	return false
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetails struct {
+	ChainID   int64  `json:"chain_id" api:"required"`
+	ChainName string `json:"chain_name" api:"required"`
+	Decimals  int64  `json:"decimals" api:"required"`
+	LogoURL   string `json:"logo_url" api:"required"`
+	// asset type.
+	Type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetailsType `json:"type" api:"required"`
+	// string represents the name of the asset
+	Name string `json:"name"`
+	// asset's symbol name
+	Symbol string                                                                                                                                          `json:"symbol"`
+	JSON   evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetailsJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetailsJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetails]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetailsJSON struct {
+	ChainID     apijson.Field
+	ChainName   apijson.Field
+	Decimals    apijson.Field
+	LogoURL     apijson.Field
+	Type        apijson.Field
+	Name        apijson.Field
+	Symbol      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetails) implementsEvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAsset() {
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetailsType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetailsTypeNative EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetailsType = "NATIVE"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetailsType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetRoutersEvmTokenDetailsNativeAssetDetailsTypeNative:
+		return true
+	}
+	return false
+}
+
+// asset type.
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetType string
+
+const (
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetTypeErc20   EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetType = "ERC20"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetTypeErc721  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetType = "ERC721"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetTypeErc1155 EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetType = "ERC1155"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetTypeNonerc  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetType = "NONERC"
+	EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetTypeNative  EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetType = "NATIVE"
+)
+
+func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetType) IsKnown() bool {
+	switch r {
+	case EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetTypeErc20, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetTypeErc721, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetTypeErc1155, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetTypeNonerc, EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjAssetTypeNative:
+		return true
+	}
+	return false
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjIn struct {
+	// value before divided by decimal, that was transferred from this address
+	RawValue string `json:"raw_value" api:"required"`
+	// user friendly description of the asset transfer
+	Summary string `json:"summary"`
+	// usd equal of the asset that was transferred from this address
+	UsdPrice string `json:"usd_price"`
+	// value after divided by decimals, that was transferred from this address
+	Value string                                                                                               `json:"value"`
+	JSON  evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjInJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjInJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjIn]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjInJSON struct {
+	RawValue    apijson.Field
+	Summary     apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjIn) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjInJSON) RawJSON() string {
+	return r.raw
+}
+
+type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjOut struct {
+	// value before divided by decimal, that was transferred from this address
+	RawValue string `json:"raw_value" api:"required"`
+	// user friendly description of the asset transfer
+	Summary string `json:"summary"`
+	// usd equal of the asset that was transferred from this address
+	UsdPrice string `json:"usd_price"`
+	// value after divided by decimals, that was transferred from this address
+	Value string                                                                                                `json:"value"`
+	JSON  evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjOutJSON `json:"-"`
+}
+
+// evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjOutJSON
+// contains the JSON metadata for the struct
+// [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjOut]
+type evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjOutJSON struct {
+	RawValue    apijson.Field
+	Summary     apijson.Field
+	UsdPrice    apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjOut) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiffsObjOutJSON) RawJSON() string {
+	return r.raw
 }
 
 type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalance struct {
@@ -11932,6 +13463,8 @@ func (r EvmJsonRpcScanParamsDataMethod) IsKnown() bool {
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type EvmJsonRpcScanParamsMetadata struct {
+	Account    param.Field[interface{}] `json:"account"`
+	Connection param.Field[interface{}] `json:"connection"`
 	// The full URL of the DApp or website that initiated the transaction, for
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
@@ -11957,6 +13490,10 @@ type EvmJsonRpcScanParamsMetadataUnion interface {
 }
 
 type EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDapp struct {
+	// Account information associated with the request
+	Account param.Field[EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection] `json:"connection"`
 	// Indicates that the transaction was not initiated by a dapp.
 	NonDapp param.Field[EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDappNonDapp] `json:"non_dapp"`
 }
@@ -11966,6 +13503,34 @@ func (r EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDapp) MarshalJSON
 }
 
 func (r EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDapp) implementsEvmJsonRpcScanParamsMetadataUnion() {
+}
+
+// Account information associated with the request
+type EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection struct {
+	// IP address of the customer making the request.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // Indicates that the transaction was not initiated by a dapp.
@@ -11988,6 +13553,10 @@ type EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDapp struct {
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain" api:"required"`
+	// Account information associated with the request
+	Account param.Field[EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDappAccount] `json:"account"`
+	// Connection metadata including user agent and IP information
+	Connection param.Field[EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDappConnection] `json:"connection"`
 	// Indicates that the transaction was not initiated by a dapp. Use false when the
 	// transaction is from a dapp.
 	NonDapp param.Field[bool] `json:"non_dapp"`
@@ -11998,6 +13567,34 @@ func (r EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDapp) MarshalJSON() 
 }
 
 func (r EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDapp) implementsEvmJsonRpcScanParamsMetadataUnion() {
+}
+
+// Account information associated with the request
+type EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDappAccount struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDappAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent and IP information
+type EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDappConnection struct {
+	// IP address of the customer making the request.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+}
+
+func (r EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataDappConnection) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // The relative block for the block validation. Can be "latest" or a block number.
