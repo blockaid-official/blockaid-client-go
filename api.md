@@ -288,10 +288,12 @@ Methods:
 
 Response Types:
 
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ScanReportResponse">ScanReportResponse</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ScanStatusResponse">ScanStatusResponse</a>
 
 Methods:
 
+- <code title="post /v0/scan/report/">client.Scan.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ScanService.Report">Report</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ScanReportParams">ScanReportParams</a>) (\*<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ScanReportResponse">ScanReportResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="post /v0/scan/status/">client.Scan.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ScanService.Status">Status</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ScanStatusParams">ScanStatusParams</a>) (\*<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ScanStatusResponse">ScanStatusResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Token
