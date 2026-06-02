@@ -430,6 +430,8 @@ func (r SolanaMessageScanResponseErrorDetailsType) IsKnown() bool {
 
 // Result of the request
 type SolanaMessageScanResponseResult struct {
+	// Transaction Gas Estimation
+	GasEstimation SolanaMessageScanResponseResultGasEstimation `json:"gas_estimation" api:"required,nullable"`
 	// Transaction Simulation Result
 	Simulation SolanaMessageScanResponseResultSimulation `json:"simulation" api:"required,nullable"`
 	// Transaction Validation Result
@@ -440,10 +442,11 @@ type SolanaMessageScanResponseResult struct {
 // solanaMessageScanResponseResultJSON contains the JSON metadata for the struct
 // [SolanaMessageScanResponseResult]
 type solanaMessageScanResponseResultJSON struct {
-	Simulation  apijson.Field
-	Validation  apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	GasEstimation apijson.Field
+	Simulation    apijson.Field
+	Validation    apijson.Field
+	raw           string
+	ExtraFields   map[string]apijson.Field
 }
 
 func (r *SolanaMessageScanResponseResult) UnmarshalJSON(data []byte) (err error) {
@@ -451,6 +454,64 @@ func (r *SolanaMessageScanResponseResult) UnmarshalJSON(data []byte) (err error)
 }
 
 func (r solanaMessageScanResponseResultJSON) RawJSON() string {
+	return r.raw
+}
+
+// Transaction Gas Estimation
+type SolanaMessageScanResponseResultGasEstimation struct {
+	// Base transaction fee in lamports
+	NetworkFee string `json:"network_fee" api:"required"`
+	// Prioritization fee in lamports
+	PriorityFee string `json:"priority_fee" api:"required"`
+	// Total fee in lamports
+	Total string `json:"total" api:"required"`
+	// Rent deposit fees for newly created accounts
+	AccountRentFees []SolanaMessageScanResponseResultGasEstimationAccountRentFee `json:"account_rent_fees"`
+	JSON            solanaMessageScanResponseResultGasEstimationJSON             `json:"-"`
+}
+
+// solanaMessageScanResponseResultGasEstimationJSON contains the JSON metadata for
+// the struct [SolanaMessageScanResponseResultGasEstimation]
+type solanaMessageScanResponseResultGasEstimationJSON struct {
+	NetworkFee      apijson.Field
+	PriorityFee     apijson.Field
+	Total           apijson.Field
+	AccountRentFees apijson.Field
+	raw             string
+	ExtraFields     map[string]apijson.Field
+}
+
+func (r *SolanaMessageScanResponseResultGasEstimation) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r solanaMessageScanResponseResultGasEstimationJSON) RawJSON() string {
+	return r.raw
+}
+
+type SolanaMessageScanResponseResultGasEstimationAccountRentFee struct {
+	AccountAddress string                                                         `json:"account_address" api:"required"`
+	AccountType    string                                                         `json:"account_type" api:"required"`
+	Lamports       string                                                         `json:"lamports" api:"required"`
+	JSON           solanaMessageScanResponseResultGasEstimationAccountRentFeeJSON `json:"-"`
+}
+
+// solanaMessageScanResponseResultGasEstimationAccountRentFeeJSON contains the JSON
+// metadata for the struct
+// [SolanaMessageScanResponseResultGasEstimationAccountRentFee]
+type solanaMessageScanResponseResultGasEstimationAccountRentFeeJSON struct {
+	AccountAddress apijson.Field
+	AccountType    apijson.Field
+	Lamports       apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *SolanaMessageScanResponseResultGasEstimationAccountRentFee) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r solanaMessageScanResponseResultGasEstimationAccountRentFeeJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -3191,6 +3252,7 @@ func (r solanaMessageScanResponseResultSimulationAssetsOwnershipDiffSolanaNonFun
 type SolanaMessageScanResponseResultSimulationAccountsDetail struct {
 	// Encoded public key of the account
 	AccountAddress string `json:"account_address" api:"required"`
+	WasCreated     bool   `json:"was_created" api:"required"`
 	WasWrittenTo   bool   `json:"was_written_to" api:"required"`
 	// Description of the account
 	Description string `json:"description" api:"nullable"`
@@ -3218,6 +3280,7 @@ type SolanaMessageScanResponseResultSimulationAccountsDetail struct {
 // [SolanaMessageScanResponseResultSimulationAccountsDetail]
 type solanaMessageScanResponseResultSimulationAccountsDetailJSON struct {
 	AccountAddress apijson.Field
+	WasCreated     apijson.Field
 	WasWrittenTo   apijson.Field
 	Description    apijson.Field
 	Logo           apijson.Field
@@ -3314,6 +3377,7 @@ type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSch
 	AccountAddress string `json:"account_address" api:"required"`
 	// The address of the owning program
 	Owner        string `json:"owner" api:"required"`
+	WasCreated   bool   `json:"was_created" api:"required"`
 	WasWrittenTo bool   `json:"was_written_to" api:"required"`
 	// Description of the account
 	Description string                                                                             `json:"description" api:"nullable"`
@@ -3327,6 +3391,7 @@ type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSch
 type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccountSchemaJSON struct {
 	AccountAddress apijson.Field
 	Owner          apijson.Field
+	WasCreated     apijson.Field
 	WasWrittenTo   apijson.Field
 	Description    apijson.Field
 	Type           apijson.Field
@@ -3362,6 +3427,7 @@ func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaPdaAccount
 type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchema struct {
 	// Encoded public key of the account
 	AccountAddress string `json:"account_address" api:"required"`
+	WasCreated     bool   `json:"was_created" api:"required"`
 	WasWrittenTo   bool   `json:"was_written_to" api:"required"`
 	// Description of the account
 	Description string                                                                                       `json:"description" api:"nullable"`
@@ -3374,6 +3440,7 @@ type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccount
 // [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchema]
 type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAccountDetailsSchemaJSON struct {
 	AccountAddress apijson.Field
+	WasCreated     apijson.Field
 	WasWrittenTo   apijson.Field
 	Description    apijson.Field
 	Type           apijson.Field
@@ -3409,6 +3476,7 @@ func (r SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaSystemAcco
 type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchema struct {
 	// Encoded public key of the account
 	AccountAddress string `json:"account_address" api:"required"`
+	WasCreated     bool   `json:"was_created" api:"required"`
 	WasWrittenTo   bool   `json:"was_written_to" api:"required"`
 	// Description of the account
 	Description string                                                                                        `json:"description" api:"nullable"`
@@ -3421,6 +3489,7 @@ type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccoun
 // [SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchema]
 type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaProgramAccountDetailsSchemaJSON struct {
 	AccountAddress apijson.Field
+	WasCreated     apijson.Field
 	WasWrittenTo   apijson.Field
 	Description    apijson.Field
 	Type           apijson.Field
@@ -3461,6 +3530,7 @@ type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountD
 	MintAddress string `json:"mint_address" api:"required"`
 	// Encoded public key of the owner
 	OwnerAddress string `json:"owner_address" api:"required"`
+	WasCreated   bool   `json:"was_created" api:"required"`
 	WasWrittenTo bool   `json:"was_written_to" api:"required"`
 	// Description of the account
 	Description string                                                                                      `json:"description" api:"nullable"`
@@ -3475,6 +3545,7 @@ type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaTokenAccountD
 	AccountAddress apijson.Field
 	MintAddress    apijson.Field
 	OwnerAddress   apijson.Field
+	WasCreated     apijson.Field
 	WasWrittenTo   apijson.Field
 	Description    apijson.Field
 	Type           apijson.Field
@@ -3516,6 +3587,7 @@ type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintA
 	Name string `json:"name" api:"required"`
 	// Symbol of the mint
 	Symbol       string `json:"symbol" api:"required"`
+	WasCreated   bool   `json:"was_created" api:"required"`
 	WasWrittenTo bool   `json:"was_written_to" api:"required"`
 	// Description of the account
 	Description string                                                                                             `json:"description" api:"nullable"`
@@ -3531,6 +3603,7 @@ type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaFungibleMintA
 	Logo           apijson.Field
 	Name           apijson.Field
 	Symbol         apijson.Field
+	WasCreated     apijson.Field
 	WasWrittenTo   apijson.Field
 	Description    apijson.Field
 	Type           apijson.Field
@@ -3574,6 +3647,7 @@ type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMi
 	Symbol string `json:"symbol" api:"required"`
 	// URI of the mint
 	Uri          string `json:"uri" api:"required"`
+	WasCreated   bool   `json:"was_created" api:"required"`
 	WasWrittenTo bool   `json:"was_written_to" api:"required"`
 	// Description of the account
 	Description string                                                                                                `json:"description" api:"nullable"`
@@ -3590,6 +3664,7 @@ type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaNonFungibleMi
 	Name           apijson.Field
 	Symbol         apijson.Field
 	Uri            apijson.Field
+	WasCreated     apijson.Field
 	WasWrittenTo   apijson.Field
 	Description    apijson.Field
 	Type           apijson.Field
@@ -3633,6 +3708,7 @@ type SolanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccou
 	Symbol string `json:"symbol" api:"required"`
 	// URI of the mint
 	Uri          string `json:"uri" api:"required"`
+	WasCreated   bool   `json:"was_created" api:"required"`
 	WasWrittenTo bool   `json:"was_written_to" api:"required"`
 	// Description of the account
 	Description string                                                                                         `json:"description" api:"nullable"`
@@ -3649,6 +3725,7 @@ type solanaMessageScanResponseResultSimulationAccountsDetailsSolanaCnftMintAccou
 	Name           apijson.Field
 	Symbol         apijson.Field
 	Uri            apijson.Field
+	WasCreated     apijson.Field
 	WasWrittenTo   apijson.Field
 	Description    apijson.Field
 	Type           apijson.Field
@@ -5017,6 +5094,8 @@ type SolanaMessageScanParams struct {
 	// - `Options.validation`: Include Options.validation output in the response
 	//
 	// - `Options.simulation`: Include Options.simulation output in the response
+	//
+	// - `Options.gas_estimation`: Include gas estimation output in the response
 	Options param.Field[[]SolanaMessageScanParamsOption] `json:"options"`
 }
 
@@ -5125,13 +5204,14 @@ func (r SolanaMessageScanParamsExecutionMode) IsKnown() bool {
 type SolanaMessageScanParamsOption string
 
 const (
-	SolanaMessageScanParamsOptionValidation SolanaMessageScanParamsOption = "validation"
-	SolanaMessageScanParamsOptionSimulation SolanaMessageScanParamsOption = "simulation"
+	SolanaMessageScanParamsOptionValidation    SolanaMessageScanParamsOption = "validation"
+	SolanaMessageScanParamsOptionSimulation    SolanaMessageScanParamsOption = "simulation"
+	SolanaMessageScanParamsOptionGasEstimation SolanaMessageScanParamsOption = "gas_estimation"
 )
 
 func (r SolanaMessageScanParamsOption) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanParamsOptionValidation, SolanaMessageScanParamsOptionSimulation:
+	case SolanaMessageScanParamsOptionValidation, SolanaMessageScanParamsOptionSimulation, SolanaMessageScanParamsOptionGasEstimation:
 		return true
 	}
 	return false
