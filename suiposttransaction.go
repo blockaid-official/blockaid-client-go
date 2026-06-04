@@ -1190,7 +1190,8 @@ func (r SuiPostTransactionScanParamsData) MarshalJSON() (data []byte, err error)
 type SuiPostTransactionScanParamsMetadata struct {
 	// cross reference transaction against the domain.
 	Domain param.Field[string] `json:"domain"`
-	// whether the transaction is initiated by a dapp. Default is false.
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
 	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 

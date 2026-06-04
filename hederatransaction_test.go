@@ -42,6 +42,7 @@ func TestHederaTransactionScanWithOptionalParams(t *testing.T) {
 				IPAddress: blockaidclientgo.F("ip_address"),
 				UserAgent: blockaidclientgo.F("user_agent"),
 			}),
+			NonDapp: blockaidclientgo.F(true),
 		}),
 		Transaction: blockaidclientgo.F("KmEKXQoVCgwIjvztygYQn6yo3QISBRiawrcDEgIYBhiAwtcvIgIIeDIVSEJBUiB0cmFuc2ZlciBleGFtcGxlciAKHgoNCgUYjee6BBD/p9a5BwoNCgUYha/rARCAqNa5BxIA"),
 		Options:     blockaidclientgo.F([]blockaidclientgo.HederaTransactionScanParamsOption{blockaidclientgo.HederaTransactionScanParamsOptionSimulation}),

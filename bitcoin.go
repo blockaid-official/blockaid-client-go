@@ -84,6 +84,9 @@ func (r BitcoinTransactionScanRequestChain) IsKnown() bool {
 type BitcoinTransactionScanRequestMetadataParam struct {
 	Account    param.Field[interface{}] `json:"account"`
 	Connection param.Field[interface{}] `json:"connection"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 	// Identifies the request as a wallet signing a transaction on behalf of an
 	// external dApp. The type improves threat context and helps attribute risk to
 	// specific origins.
@@ -126,6 +129,9 @@ type BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataParam stru
 	Account param.Field[BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataAccountParam] `json:"account"`
 	// Connection metadata including user agent and IP information
 	Connection param.Field[BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataConnectionParam] `json:"connection"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r BitcoinTransactionScanRequestMetadataBitcoinWalletRequestMetadataParam) MarshalJSON() (data []byte, err error) {
@@ -185,6 +191,9 @@ type BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataParam struc
 	Account param.Field[BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataAccountParam] `json:"account"`
 	// Connection metadata including user agent and IP information
 	Connection param.Field[BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataConnectionParam] `json:"connection"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 	// Identifies the request as coming from your own app (e.g. in-app send, swap, or
 	// internal flow).
 	Type param.Field[BitcoinTransactionScanRequestMetadataBitcoinInAppRequestMetadataType] `json:"type"`
