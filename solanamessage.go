@@ -5108,6 +5108,9 @@ type SolanaMessageScanParamsMetadata struct {
 	Account param.Field[SolanaMessageScanParamsMetadataAccount] `json:"account"`
 	// Connection metadata including user agent and IP information
 	Connection param.Field[SolanaMessageScanParamsMetadataConnection] `json:"connection"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 	// URL of the dApp that originated the transaction
 	URL param.Field[string] `json:"url"`
 }

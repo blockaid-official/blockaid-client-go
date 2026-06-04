@@ -315,6 +315,9 @@ func (r StellarTransactionScanRequestChain) IsKnown() bool {
 
 // Metadata
 type StellarTransactionScanRequestMetadataParam struct {
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 	// Metadata for wallet requests
 	Type param.Field[StellarTransactionScanRequestMetadataType] `json:"type"`
 	// URL of the dApp originating the transaction
@@ -343,6 +346,9 @@ type StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam stru
 	Type param.Field[StellarTransactionScanRequestMetadataStellarWalletRequestMetadataType] `json:"type" api:"required"`
 	// URL of the dApp originating the transaction
 	URL param.Field[string] `json:"url" api:"required"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam) MarshalJSON() (data []byte, err error) {
@@ -368,6 +374,9 @@ func (r StellarTransactionScanRequestMetadataStellarWalletRequestMetadataType) I
 }
 
 type StellarTransactionScanRequestMetadataStellarInAppRequestMetadataParam struct {
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 	// Metadata for in-app requests
 	Type param.Field[StellarTransactionScanRequestMetadataStellarInAppRequestMetadataType] `json:"type"`
 }

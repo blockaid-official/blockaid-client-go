@@ -2612,6 +2612,9 @@ func (r HederaTransactionScanParamsChain) IsKnown() bool {
 type HederaTransactionScanParamsMetadata struct {
 	Account    param.Field[interface{}] `json:"account"`
 	Connection param.Field[interface{}] `json:"connection"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 	// Metadata for wallet requests
 	Type param.Field[HederaTransactionScanParamsMetadataType] `json:"type"`
 	// URL of the dApp the transaction originated from.
@@ -2642,6 +2645,9 @@ type HederaTransactionScanParamsMetadataHederaWalletRequestMetadata struct {
 	Account param.Field[HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccount] `json:"account"`
 	// Connection metadata including user agent and IP information
 	Connection param.Field[HederaTransactionScanParamsMetadataHederaWalletRequestMetadataConnection] `json:"connection"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r HederaTransactionScanParamsMetadataHederaWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
@@ -2699,6 +2705,9 @@ type HederaTransactionScanParamsMetadataHederaInAppRequestMetadata struct {
 	Account param.Field[HederaTransactionScanParamsMetadataHederaInAppRequestMetadataAccount] `json:"account"`
 	// Connection metadata including user agent and IP information
 	Connection param.Field[HederaTransactionScanParamsMetadataHederaInAppRequestMetadataConnection] `json:"connection"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 	// Metadata for in-app requests
 	Type param.Field[HederaTransactionScanParamsMetadataHederaInAppRequestMetadataType] `json:"type"`
 }

@@ -72,6 +72,7 @@ func TestBitcoinTransactionRawScanWithOptionalParams(t *testing.T) {
 					IPAddress: blockaidclientgo.F("ip_address"),
 					UserAgent: blockaidclientgo.F("user_agent"),
 				}),
+				NonDapp: blockaidclientgo.F(true),
 			}),
 			Transaction: blockaidclientgo.F("transaction"),
 			Options:     blockaidclientgo.F([]blockaidclientgo.BitcoinTransactionScanRequestOption{blockaidclientgo.BitcoinTransactionScanRequestOptionValidation}),
