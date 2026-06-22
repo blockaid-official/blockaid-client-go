@@ -62,18 +62,23 @@ func TestEvmTransactionBulkScanWithOptionalParams(t *testing.T) {
 			To:       blockaidclientgo.F("0x0D524a5B52737C0a02880d5E84F7D20b8d66bfba"),
 			Value:    blockaidclientgo.F("0xdeadbeef"),
 		}}),
-		Metadata: blockaidclientgo.F[blockaidclientgo.EvmTransactionBulkScanParamsMetadataUnion](blockaidclientgo.EvmTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDapp{
-			Account: blockaidclientgo.F(blockaidclientgo.EvmTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount{
+		Metadata: blockaidclientgo.F(blockaidclientgo.EvmTransactionBulkScanParamsMetadata{
+			Account: blockaidclientgo.F(blockaidclientgo.EvmTransactionBulkScanParamsMetadataAccount{
 				AccountID:                blockaidclientgo.F("account_id"),
+				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
 				UserAge:                  blockaidclientgo.F(int64(1)),
 				UserCountryCode:          blockaidclientgo.F("user_country_code"),
 			}),
-			Connection: blockaidclientgo.F(blockaidclientgo.EvmTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection{
-				IPAddress: blockaidclientgo.F("ip_address"),
-				UserAgent: blockaidclientgo.F("user_agent"),
+			Connection: blockaidclientgo.F(blockaidclientgo.EvmTransactionBulkScanParamsMetadataConnection{
+				IPAddress:                blockaidclientgo.F("ip_address"),
+				Origin:                   blockaidclientgo.F("https://example.com"),
+				UserAgent:                blockaidclientgo.F("user_agent"),
+				WalletconnectDescription: blockaidclientgo.F("walletconnect_description"),
+				WalletconnectName:        blockaidclientgo.F("walletconnect_name"),
 			}),
-			NonDapp: blockaidclientgo.F(blockaidclientgo.EvmTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
+			Domain:  blockaidclientgo.F("https://example.com"),
+			NonDapp: blockaidclientgo.F(true),
 		}),
 		Aggregated:               blockaidclientgo.F(true),
 		Block:                    blockaidclientgo.F[blockaidclientgo.EvmTransactionBulkScanParamsBlockUnion](shared.UnionString("20224477")),

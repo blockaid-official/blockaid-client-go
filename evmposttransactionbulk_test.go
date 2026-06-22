@@ -30,18 +30,23 @@ func TestEvmPostTransactionBulkScanWithOptionalParams(t *testing.T) {
 	_, err := client.Evm.PostTransactionBulk.Scan(context.TODO(), blockaidclientgo.EvmPostTransactionBulkScanParams{
 		Chain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainEthereum),
 		Data:  blockaidclientgo.F([]string{"0x11c865addc39f1e1c4f0f6c9a84533c501e3705a6397988af942b2103d5e87a2", "0x50a109a2c2dd396e49710613dcf652728656055d90f80094f10c3ddd05150d2e"}),
-		Metadata: blockaidclientgo.F[blockaidclientgo.EvmPostTransactionBulkScanParamsMetadataUnion](blockaidclientgo.EvmPostTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDapp{
-			Account: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount{
+		Metadata: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionBulkScanParamsMetadata{
+			Account: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionBulkScanParamsMetadataAccount{
 				AccountID:                blockaidclientgo.F("account_id"),
+				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
 				UserAge:                  blockaidclientgo.F(int64(1)),
 				UserCountryCode:          blockaidclientgo.F("user_country_code"),
 			}),
-			Connection: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection{
-				IPAddress: blockaidclientgo.F("ip_address"),
-				UserAgent: blockaidclientgo.F("user_agent"),
+			Connection: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionBulkScanParamsMetadataConnection{
+				IPAddress:                blockaidclientgo.F("ip_address"),
+				Origin:                   blockaidclientgo.F("https://example.com"),
+				UserAgent:                blockaidclientgo.F("user_agent"),
+				WalletconnectDescription: blockaidclientgo.F("walletconnect_description"),
+				WalletconnectName:        blockaidclientgo.F("walletconnect_name"),
 			}),
-			NonDapp: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionBulkScanParamsMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
+			Domain:  blockaidclientgo.F("domain"),
+			NonDapp: blockaidclientgo.F(true),
 		}),
 		Block:                    blockaidclientgo.F[blockaidclientgo.EvmPostTransactionBulkScanParamsBlockUnion](shared.UnionInt(int64(0))),
 		Options:                  blockaidclientgo.F([]blockaidclientgo.EvmPostTransactionBulkScanParamsOption{blockaidclientgo.EvmPostTransactionBulkScanParamsOptionValidation, blockaidclientgo.EvmPostTransactionBulkScanParamsOptionSimulation}),

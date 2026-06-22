@@ -33,18 +33,23 @@ func TestEvmJsonRpcScanWithOptionalParams(t *testing.T) {
 			Method: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsDataMethodEthSignTypedDataV4),
 			Params: blockaidclientgo.F([]interface{}{"0x49c73c9d361c04769a452E85D343b41aC38e0EE4", `{"domain":{"chainId":1,"name":"Aave interest bearing WETH","version":"1","verifyingContract":"0x030ba81f1c18d280636f32af80b9aad02cf0854e"},"message":{"owner":"0x49c73c9d361c04769a452E85D343b41aC38e0EE4","spender":"0xa74cbd5b80f73b5950768c8dc467f1c6307c00fd","value":"115792089237316195423570985008687907853269984665640564039457584007913129639935","nonce":"0","deadline":"1988064000","holder":"0x49c73c9d361c04769a452E85D343b41aC38e0EE4"},"primaryType":"Permit","types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Permit":[{"name":"owner","type":"address"},{"name":"spender","type":"address"},{"name":"value","type":"uint256"},{"name":"nonce","type":"uint256"},{"name":"deadline","type":"uint256"}]}}`}),
 		}),
-		Metadata: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsMetadataUnion](blockaidclientgo.EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDapp{
-			Account: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount{
+		Metadata: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadata{
+			Account: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadataAccount{
 				AccountID:                blockaidclientgo.F("account_id"),
+				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
 				UserAge:                  blockaidclientgo.F(int64(1)),
 				UserCountryCode:          blockaidclientgo.F("user_country_code"),
 			}),
-			Connection: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection{
-				IPAddress: blockaidclientgo.F("ip_address"),
-				UserAgent: blockaidclientgo.F("user_agent"),
+			Connection: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadataConnection{
+				IPAddress:                blockaidclientgo.F("ip_address"),
+				Origin:                   blockaidclientgo.F("https://example.com"),
+				UserAgent:                blockaidclientgo.F("user_agent"),
+				WalletconnectDescription: blockaidclientgo.F("walletconnect_description"),
+				WalletconnectName:        blockaidclientgo.F("walletconnect_name"),
 			}),
-			NonDapp: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
+			Domain:  blockaidclientgo.F("https://boredapeyartclub.com"),
+			NonDapp: blockaidclientgo.F(true),
 		}),
 		AccountAddress:           blockaidclientgo.F("0x49c73c9d361c04769a452E85D343b41aC38e0EE4"),
 		Block:                    blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsBlockUnion](shared.UnionString("18370320")),

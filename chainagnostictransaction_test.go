@@ -40,13 +40,17 @@ func TestChainAgnosticTransactionScanWithOptionalParams(t *testing.T) {
 		Metadata: blockaidclientgo.F(blockaidclientgo.MetadataParam{
 			Account: blockaidclientgo.F(blockaidclientgo.MetadataParamAccount{
 				AccountID:                blockaidclientgo.F("1"),
+				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
 				UserAge:                  blockaidclientgo.F(int64(1)),
 				UserCountryCode:          blockaidclientgo.F("user_country_code"),
 			}),
 			Connection: blockaidclientgo.F(blockaidclientgo.MetadataParamConnection{
-				IPAddress: blockaidclientgo.F("1.1.1.1"),
-				UserAgent: blockaidclientgo.F("1"),
+				IPAddress:                blockaidclientgo.F("1.1.1.1"),
+				Origin:                   blockaidclientgo.F("https://example.com"),
+				UserAgent:                blockaidclientgo.F("1"),
+				WalletconnectDescription: blockaidclientgo.F("walletconnect_description"),
+				WalletconnectName:        blockaidclientgo.F("walletconnect_name"),
 			}),
 		}),
 		Options: blockaidclientgo.F([]blockaidclientgo.ChainAgnosticTransactionScanParamsOption{blockaidclientgo.ChainAgnosticTransactionScanParamsOptionValidation}),
