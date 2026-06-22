@@ -32,13 +32,17 @@ func TestScanReportWithOptionalParams(t *testing.T) {
 		Metadata: blockaidclientgo.F(blockaidclientgo.ScanReportParamsMetadata{
 			Account: blockaidclientgo.F(blockaidclientgo.ScanReportParamsMetadataAccount{
 				AccountID:                blockaidclientgo.F("user-abc-123"),
+				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
 				UserAge:                  blockaidclientgo.F(int64(30)),
 				UserCountryCode:          blockaidclientgo.F("US"),
 			}),
 			Connection: blockaidclientgo.F(blockaidclientgo.ScanReportParamsMetadataConnection{
-				IPAddress: blockaidclientgo.F("192.168.1.1"),
-				UserAgent: blockaidclientgo.F("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"),
+				IPAddress:                blockaidclientgo.F("192.168.1.1"),
+				Origin:                   blockaidclientgo.F("https://example.com"),
+				UserAgent:                blockaidclientgo.F("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"),
+				WalletconnectDescription: blockaidclientgo.F("walletconnect_description"),
+				WalletconnectName:        blockaidclientgo.F("walletconnect_name"),
 			}),
 			Domain: blockaidclientgo.F("https://app.uniswap.org"),
 		}),

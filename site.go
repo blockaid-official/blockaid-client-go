@@ -459,128 +459,75 @@ func (r SiteReportParamsReportType) IsKnown() bool {
 }
 
 type SiteScanParams struct {
-	URL      param.Field[string]                      `json:"url" api:"required"`
-	Metadata param.Field[SiteScanParamsMetadataUnion] `json:"metadata"`
+	URL param.Field[string] `json:"url" api:"required"`
+	// Request metadata: site catalog/wallet context, end-user account, and connection
+	// details.
+	Metadata param.Field[SiteScanParamsMetadata] `json:"metadata"`
 }
 
 func (r SiteScanParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// Request metadata: site catalog/wallet context, end-user account, and connection
+// details.
 type SiteScanParamsMetadata struct {
-	Type                     param.Field[SiteScanParamsMetadataType] `json:"type" api:"required"`
-	AccountAddress           param.Field[string]                     `json:"account_address"`
-	AccountAddresses         param.Field[interface{}]                `json:"account_addresses"`
-	WalletconnectDescription param.Field[string]                     `json:"walletconnect_description"`
-	WalletconnectName        param.Field[string]                     `json:"walletconnect_name"`
+	// End-user account context (id, age, country, creation time, and
+	// account_addresses).
+	Account param.Field[SiteScanParamsMetadataAccount] `json:"account"`
+	// Connection metadata including user agent, IP information, and origin.
+	Connection param.Field[SiteScanParamsMetadataConnection] `json:"connection"`
+	// The full URL of the DApp or website that initiated the request, for
+	// cross-reference. Must use the https or http scheme and contain a valid hostname.
+	// Cannot contain JSON, braces, or other embedded data structures.
+	Domain param.Field[string] `json:"domain"`
+	// Set to true when the request was not initiated by a dapp. Dapp requests should
+	// provide the `domain` field.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r SiteScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r SiteScanParamsMetadata) implementsSiteScanParamsMetadataUnion() {}
-
-// Satisfied by [SiteScanParamsMetadataCatalogRequestMetadata],
-// [SiteScanParamsMetadataWalletRequestMetadata],
-// [SiteScanParamsMetadataMultipleWalletRequestMetadata], [SiteScanParamsMetadata].
-type SiteScanParamsMetadataUnion interface {
-	implementsSiteScanParamsMetadataUnion()
-}
-
-type SiteScanParamsMetadataCatalogRequestMetadata struct {
-	Type param.Field[SiteScanParamsMetadataCatalogRequestMetadataType] `json:"type" api:"required"`
-}
-
-func (r SiteScanParamsMetadataCatalogRequestMetadata) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r SiteScanParamsMetadataCatalogRequestMetadata) implementsSiteScanParamsMetadataUnion() {}
-
-type SiteScanParamsMetadataCatalogRequestMetadataType string
-
-const (
-	SiteScanParamsMetadataCatalogRequestMetadataTypeCatalog SiteScanParamsMetadataCatalogRequestMetadataType = "catalog"
-)
-
-func (r SiteScanParamsMetadataCatalogRequestMetadataType) IsKnown() bool {
-	switch r {
-	case SiteScanParamsMetadataCatalogRequestMetadataTypeCatalog:
-		return true
-	}
-	return false
-}
-
-type SiteScanParamsMetadataWalletRequestMetadata struct {
-	AccountAddress           param.Field[string]                                          `json:"account_address" api:"required"`
-	Type                     param.Field[SiteScanParamsMetadataWalletRequestMetadataType] `json:"type" api:"required"`
-	WalletconnectDescription param.Field[string]                                          `json:"walletconnect_description"`
-	WalletconnectName        param.Field[string]                                          `json:"walletconnect_name"`
-}
-
-func (r SiteScanParamsMetadataWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r SiteScanParamsMetadataWalletRequestMetadata) implementsSiteScanParamsMetadataUnion() {}
-
-type SiteScanParamsMetadataWalletRequestMetadataType string
-
-const (
-	SiteScanParamsMetadataWalletRequestMetadataTypeWallet SiteScanParamsMetadataWalletRequestMetadataType = "wallet"
-)
-
-func (r SiteScanParamsMetadataWalletRequestMetadataType) IsKnown() bool {
-	switch r {
-	case SiteScanParamsMetadataWalletRequestMetadataTypeWallet:
-		return true
-	}
-	return false
-}
-
-type SiteScanParamsMetadataMultipleWalletRequestMetadata struct {
+// End-user account context (id, age, country, creation time, and
+// account_addresses).
+type SiteScanParamsMetadataAccount struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
 	// List of all account addresses in different chains based on the CAIPs standard
 	// (https://github.com/ChainAgnostic/CAIPs). Ethereum mainnet example:
 	// eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb
-	AccountAddresses         param.Field[[]string]                                                `json:"account_addresses" api:"required"`
-	Type                     param.Field[SiteScanParamsMetadataMultipleWalletRequestMetadataType] `json:"type" api:"required"`
-	WalletconnectDescription param.Field[string]                                                  `json:"walletconnect_description"`
-	WalletconnectName        param.Field[string]                                                  `json:"walletconnect_name"`
+	AccountAddresses param.Field[[]string] `json:"account_addresses"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
 }
 
-func (r SiteScanParamsMetadataMultipleWalletRequestMetadata) MarshalJSON() (data []byte, err error) {
+func (r SiteScanParamsMetadataAccount) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r SiteScanParamsMetadataMultipleWalletRequestMetadata) implementsSiteScanParamsMetadataUnion() {
+// Connection metadata including user agent, IP information, and origin.
+type SiteScanParamsMetadataConnection struct {
+	// IP address of the customer making the request. Both IPv4 and IPv6 addresses are
+	// supported.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// The full URL of the website that the request was directed to.
+	Origin param.Field[string] `json:"origin" format:"uri"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+	// WalletConnect session description, when the request originates from a
+	// WalletConnect session.
+	WalletconnectDescription param.Field[string] `json:"walletconnect_description"`
+	// WalletConnect session name, when the request originates from a WalletConnect
+	// session.
+	WalletconnectName param.Field[string] `json:"walletconnect_name"`
 }
 
-type SiteScanParamsMetadataMultipleWalletRequestMetadataType string
-
-const (
-	SiteScanParamsMetadataMultipleWalletRequestMetadataTypeWallet SiteScanParamsMetadataMultipleWalletRequestMetadataType = "wallet"
-)
-
-func (r SiteScanParamsMetadataMultipleWalletRequestMetadataType) IsKnown() bool {
-	switch r {
-	case SiteScanParamsMetadataMultipleWalletRequestMetadataTypeWallet:
-		return true
-	}
-	return false
-}
-
-type SiteScanParamsMetadataType string
-
-const (
-	SiteScanParamsMetadataTypeCatalog SiteScanParamsMetadataType = "catalog"
-	SiteScanParamsMetadataTypeWallet  SiteScanParamsMetadataType = "wallet"
-)
-
-func (r SiteScanParamsMetadataType) IsKnown() bool {
-	switch r {
-	case SiteScanParamsMetadataTypeCatalog, SiteScanParamsMetadataTypeWallet:
-		return true
-	}
-	return false
+func (r SiteScanParamsMetadataConnection) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }

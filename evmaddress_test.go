@@ -59,18 +59,23 @@ func TestEvmAddressScan(t *testing.T) {
 		ValidateAddress: blockaidclientgo.ValidateAddressParam{
 			Address: blockaidclientgo.F("0x946D45c866AFD5b8F436d40E551D8E50A5B84230"),
 			Chain:   blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainEthereum),
-			Metadata: blockaidclientgo.F[blockaidclientgo.ValidateAddressMetadataUnionParam](blockaidclientgo.ValidateAddressMetadataRoutersEvmModelsMetadataNonDappParam{
-				Account: blockaidclientgo.F(blockaidclientgo.ValidateAddressMetadataRoutersEvmModelsMetadataNonDappAccountParam{
+			Metadata: blockaidclientgo.F(blockaidclientgo.ValidateAddressMetadataParam{
+				Account: blockaidclientgo.F(blockaidclientgo.ValidateAddressMetadataAccountParam{
 					AccountID:                blockaidclientgo.F("account_id"),
+					AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 					AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
 					UserAge:                  blockaidclientgo.F(int64(1)),
 					UserCountryCode:          blockaidclientgo.F("user_country_code"),
 				}),
-				Connection: blockaidclientgo.F(blockaidclientgo.ValidateAddressMetadataRoutersEvmModelsMetadataNonDappConnectionParam{
-					IPAddress: blockaidclientgo.F("ip_address"),
-					UserAgent: blockaidclientgo.F("user_agent"),
+				Connection: blockaidclientgo.F(blockaidclientgo.ValidateAddressMetadataConnectionParam{
+					IPAddress:                blockaidclientgo.F("ip_address"),
+					Origin:                   blockaidclientgo.F("https://example.com"),
+					UserAgent:                blockaidclientgo.F("user_agent"),
+					WalletconnectDescription: blockaidclientgo.F("walletconnect_description"),
+					WalletconnectName:        blockaidclientgo.F("walletconnect_name"),
 				}),
-				NonDapp: blockaidclientgo.F(blockaidclientgo.ValidateAddressMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
+				Domain:  blockaidclientgo.F("https://example.com"),
+				NonDapp: blockaidclientgo.F(true),
 			}),
 		},
 	})

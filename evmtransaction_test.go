@@ -76,18 +76,23 @@ func TestEvmTransactionScanWithOptionalParams(t *testing.T) {
 			To:       blockaidclientgo.F("0x0d524a5b52737c0a02880d5e84f7d20b8d66bfba"),
 			Value:    blockaidclientgo.F("0x1000000000000000"),
 		}),
-		Metadata: blockaidclientgo.F[blockaidclientgo.EvmTransactionScanParamsMetadataUnion](blockaidclientgo.EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDapp{
-			Account: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount{
+		Metadata: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsMetadata{
+			Account: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsMetadataAccount{
 				AccountID:                blockaidclientgo.F("account_id"),
+				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
 				UserAge:                  blockaidclientgo.F(int64(1)),
 				UserCountryCode:          blockaidclientgo.F("user_country_code"),
 			}),
-			Connection: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection{
-				IPAddress: blockaidclientgo.F("ip_address"),
-				UserAgent: blockaidclientgo.F("user_agent"),
+			Connection: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsMetadataConnection{
+				IPAddress:                blockaidclientgo.F("ip_address"),
+				Origin:                   blockaidclientgo.F("https://example.com"),
+				UserAgent:                blockaidclientgo.F("user_agent"),
+				WalletconnectDescription: blockaidclientgo.F("walletconnect_description"),
+				WalletconnectName:        blockaidclientgo.F("walletconnect_name"),
 			}),
-			NonDapp: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
+			Domain:  blockaidclientgo.F("https://boredapeyartclub.com"),
+			NonDapp: blockaidclientgo.F(true),
 		}),
 		Block:                    blockaidclientgo.F[blockaidclientgo.EvmTransactionScanParamsBlockUnion](shared.UnionString("21211118")),
 		Options:                  blockaidclientgo.F([]blockaidclientgo.EvmTransactionScanParamsOption{blockaidclientgo.EvmTransactionScanParamsOptionSimulation, blockaidclientgo.EvmTransactionScanParamsOptionValidation}),

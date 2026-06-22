@@ -31,13 +31,17 @@ func TestSolanaMessageScanWithOptionalParams(t *testing.T) {
 		Metadata: blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsMetadata{
 			Account: blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsMetadataAccount{
 				AccountID:                blockaidclientgo.F("account_id"),
+				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
 				UserAge:                  blockaidclientgo.F(int64(1)),
 				UserCountryCode:          blockaidclientgo.F("user_country_code"),
 			}),
 			Connection: blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsMetadataConnection{
-				IPAddress: blockaidclientgo.F("ip_address"),
-				UserAgent: blockaidclientgo.F("user_agent"),
+				IPAddress:                blockaidclientgo.F("ip_address"),
+				Origin:                   blockaidclientgo.F("https://example.com"),
+				UserAgent:                blockaidclientgo.F("user_agent"),
+				WalletconnectDescription: blockaidclientgo.F("walletconnect_description"),
+				WalletconnectName:        blockaidclientgo.F("walletconnect_name"),
 			}),
 			NonDapp: blockaidclientgo.F(true),
 			URL:     blockaidclientgo.F("https://example.com"),
