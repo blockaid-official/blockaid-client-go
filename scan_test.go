@@ -44,7 +44,8 @@ func TestScanReportWithOptionalParams(t *testing.T) {
 				WalletconnectDescription: blockaidclientgo.F("walletconnect_description"),
 				WalletconnectName:        blockaidclientgo.F("walletconnect_name"),
 			}),
-			Domain: blockaidclientgo.F("https://app.uniswap.org"),
+			Domain:  blockaidclientgo.F("https://app.uniswap.org"),
+			NonDapp: blockaidclientgo.F(true),
 		}),
 		RequestID: blockaidclientgo.F("11111111-1111-1111-1111-111111111111"),
 	})

@@ -60,8 +60,8 @@ type ScanReportParams struct {
 	Details param.Field[string] `json:"details" api:"required"`
 	// The event type of the report. Could be `FALSE_POSITIVE` or `FALSE_NEGATIVE`.
 	Event param.Field[ScanReportParamsEvent] `json:"event" api:"required"`
-	// Client-side context attached to a report, identifying the originating dApp and
-	// end-user.
+	// Client-side context: the originating dApp domain, end-user account info, and
+	// connection details.
 	Metadata param.Field[ScanReportParamsMetadata] `json:"metadata" api:"required"`
 	// The request ID of a previous scan. This can be found in the value of the
 	// `x-request-id` field in the headers of the response of the previous request. For
@@ -89,22 +89,29 @@ func (r ScanReportParamsEvent) IsKnown() bool {
 	return false
 }
 
-// Client-side context attached to a report, identifying the originating dApp and
-// end-user.
+// Client-side context: the originating dApp domain, end-user account info, and
+// connection details.
 type ScanReportParamsMetadata struct {
-	// End-user account information (ID, age, country, creation time).
+	// End-user account context (id, age, country, creation time, and
+	// account_addresses).
 	Account param.Field[ScanReportParamsMetadataAccount] `json:"account"`
-	// Network connection details (IP address, user agent).
+	// Connection metadata including user agent, IP information, and origin.
 	Connection param.Field[ScanReportParamsMetadataConnection] `json:"connection"`
-	// The dApp or origin URL that triggered the interaction being reported.
+	// The full URL of the DApp or website that initiated the request, for
+	// cross-reference. Must use the https or http scheme and contain a valid hostname.
+	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain"`
+	// Set to true when the request was not initiated by a dapp. Dapp requests should
+	// provide the `domain` field.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r ScanReportParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// End-user account information (ID, age, country, creation time).
+// End-user account context (id, age, country, creation time, and
+// account_addresses).
 type ScanReportParamsMetadataAccount struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
@@ -124,7 +131,7 @@ func (r ScanReportParamsMetadataAccount) MarshalJSON() (data []byte, err error) 
 	return apijson.MarshalRoot(r)
 }
 
-// Network connection details (IP address, user agent).
+// Connection metadata including user agent, IP information, and origin.
 type ScanReportParamsMetadataConnection struct {
 	// IP address of the customer making the request. Both IPv4 and IPv6 addresses are
 	// supported.
