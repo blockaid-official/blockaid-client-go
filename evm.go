@@ -278,58 +278,6 @@ func (r AuthorizationParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-type MetadataParam struct {
-	// Account information associated with the request
-	Account param.Field[MetadataParamAccount] `json:"account"`
-	// Connection metadata including user agent and IP information
-	Connection param.Field[MetadataParamConnection] `json:"connection"`
-}
-
-func (r MetadataParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Account information associated with the request
-type MetadataParamAccount struct {
-	// Unique identifier for the account.
-	AccountID param.Field[string] `json:"account_id" api:"required"`
-	// List of all account addresses in different chains based on the CAIPs standard
-	// (https://github.com/ChainAgnostic/CAIPs). Ethereum mainnet example:
-	// eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb
-	AccountAddresses param.Field[[]string] `json:"account_addresses"`
-	// Timestamp when the account was created.
-	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
-	// Age of the user in years
-	UserAge param.Field[int64] `json:"user_age"`
-	// ISO country code of the user's location.
-	UserCountryCode param.Field[string] `json:"user_country_code"`
-}
-
-func (r MetadataParamAccount) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Connection metadata including user agent and IP information
-type MetadataParamConnection struct {
-	// IP address of the customer making the request. Both IPv4 and IPv6 addresses are
-	// supported.
-	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
-	// The full URL of the website that the request was directed to.
-	Origin param.Field[string] `json:"origin" format:"uri"`
-	// User agent string from the client's browser or application.
-	UserAgent param.Field[string] `json:"user_agent"`
-	// WalletConnect session description, when the request originates from a
-	// WalletConnect session.
-	WalletconnectDescription param.Field[string] `json:"walletconnect_description"`
-	// WalletConnect session name, when the request originates from a WalletConnect
-	// session.
-	WalletconnectName param.Field[string] `json:"walletconnect_name"`
-}
-
-func (r MetadataParamConnection) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
 // The chain name
 type TokenScanSupportedChain string
 
