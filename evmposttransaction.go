@@ -13553,8 +13553,9 @@ func (r EvmPostTransactionReportParamsReportType) IsKnown() bool {
 
 type EvmPostTransactionScanParams struct {
 	// The chain name or chain ID
-	Chain param.Field[TransactionScanSupportedChain]    `json:"chain" api:"required"`
-	Data  param.Field[EvmPostTransactionScanParamsData] `json:"data" api:"required"`
+	Chain param.Field[TransactionScanSupportedChain] `json:"chain" api:"required"`
+	// Post-transaction scan parameters
+	Data param.Field[EvmPostTransactionScanParamsData] `json:"data" api:"required"`
 	// Additional context for the scan (e.g., dapp URL/domain, integration source).
 	// Used to enrich results and reduce false positives/negatives.
 	Metadata param.Field[EvmPostTransactionScanParamsMetadata] `json:"metadata" api:"required"`
@@ -13579,6 +13580,7 @@ func (r EvmPostTransactionScanParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// Post-transaction scan parameters
 type EvmPostTransactionScanParamsData struct {
 	// The transaction hash to scan
 	TxHash param.Field[string] `json:"tx_hash" api:"required"`
@@ -13701,8 +13703,8 @@ func (r EvmPostTransactionScanParamsStateOverride) MarshalJSON() (data []byte, e
 // Optional customer-supplied hints about transaction intent that cannot be
 // inferred from on-chain simulation.
 type EvmPostTransactionScanParamsTransactionHints struct {
-	// Hint for cross-chain bridge deposits where the protocol negotiates the
-	// destination address off-chain and does not emit it in any on-chain event.
+	// Customer-supplied context for a cross-chain bridge deposit where the protocol
+	// does not emit the destination on-chain.
 	CrossChainBridge param.Field[EvmPostTransactionScanParamsTransactionHintsCrossChainBridge] `json:"cross_chain_bridge"`
 }
 
@@ -13710,8 +13712,8 @@ func (r EvmPostTransactionScanParamsTransactionHints) MarshalJSON() (data []byte
 	return apijson.MarshalRoot(r)
 }
 
-// Hint for cross-chain bridge deposits where the protocol negotiates the
-// destination address off-chain and does not emit it in any on-chain event.
+// Customer-supplied context for a cross-chain bridge deposit where the protocol
+// does not emit the destination on-chain.
 type EvmPostTransactionScanParamsTransactionHintsCrossChainBridge struct {
 	// The intended recipient address on the destination chain. Required when the
 	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
