@@ -49,6 +49,17 @@ func TestSuiTransactionScanWithOptionalParams(t *testing.T) {
 		}),
 		Transaction: blockaidclientgo.F("AAACAAgA4fUFAAAAAAAgHvls2mKzo/48s/fPdWP8xKtE4BhIjR2O8gMaZ6bI1+sCAgABAQAAAQECAAABAQBF6Qs+ouGSDEPZLSJGMNaoZcG1intOdwwqwVbqsw60kQFySkLceU6uis9QxxK4CDYqttqK3ilc9/yEcCgxdaeA0cl/xhwAAAAAIEuXU9TpAtIJmbPVFpxdc70+RWUqlSrfyIUKT9q1Au0ERekLPqLhkgxD2S0iRjDWqGXBtYp7TncMKsFW6rMOtJHuAgAAAAAAACAKNQAAAAAAAA=="),
 		Options:     blockaidclientgo.F([]blockaidclientgo.SuiTransactionScanParamsOption{blockaidclientgo.SuiTransactionScanParamsOptionSimulation}),
+		TransactionHints: blockaidclientgo.F(blockaidclientgo.SuiTransactionScanParamsTransactionHints{
+			CrossChainBridge: blockaidclientgo.F(blockaidclientgo.SuiTransactionScanParamsTransactionHintsCrossChainBridge{
+				DestinationAddress: blockaidclientgo.F("destination_address"),
+				DestinationAsset: blockaidclientgo.F[blockaidclientgo.SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion](blockaidclientgo.SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset{
+					Type:     blockaidclientgo.F(blockaidclientgo.SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetTypeNative),
+					RawValue: blockaidclientgo.F("raw_value"),
+					UsdPrice: blockaidclientgo.F("usd_price"),
+				}),
+				DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+			}),
+		}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
