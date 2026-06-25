@@ -65,6 +65,17 @@ func TestStellarTransactionScanWithOptionalParams(t *testing.T) {
 			}),
 			Transaction: blockaidclientgo.F("AAAAAgAAAADewq1UMCVJ2C3VzYwoevwMcWD8DQtJkjxetobiHEnHYgAAAAEAAAAAAAAAAgAAAAAAAAAAAAAAAQAAAAEAAAAA3sKtVDAlSdgt1c2MKHr8DHFg/A0LSZI8XraG4hxJx2IAAAABAAAAACI40RTBOFEE7uT5mZkoq30mbvxLPJpMUm9cIFHgK9SRAAAAAAAAAAAAmJaAAAAAAAAAAAA="),
 			Options:     blockaidclientgo.F([]blockaidclientgo.StellarTransactionScanRequestOption{blockaidclientgo.StellarTransactionScanRequestOptionValidation, blockaidclientgo.StellarTransactionScanRequestOptionSimulation}),
+			TransactionHints: blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestTransactionHintsParam{
+				CrossChainBridge: blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestTransactionHintsCrossChainBridgeParam{
+					DestinationAddress: blockaidclientgo.F("destination_address"),
+					DestinationAsset: blockaidclientgo.F[blockaidclientgo.StellarTransactionScanRequestTransactionHintsCrossChainBridgeDestinationAssetUnionParam](blockaidclientgo.StellarTransactionScanRequestTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetParam{
+						Type:     blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetTypeNative),
+						RawValue: blockaidclientgo.F("raw_value"),
+						UsdPrice: blockaidclientgo.F("usd_price"),
+					}),
+					DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+				}),
+			}),
 		},
 	})
 	if err != nil {

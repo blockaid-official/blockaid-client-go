@@ -13419,6 +13419,9 @@ type EvmTransactionRawScanParams struct {
 	SimulateWithEstimatedGas param.Field[bool] `json:"simulate_with_estimated_gas"`
 	// Override the state of the chain. This is useful for testing purposes.
 	StateOverride param.Field[map[string]EvmTransactionRawScanParamsStateOverride] `json:"state_override"`
+	// Customer-supplied hints about transaction intent that cannot be derived from
+	// on-chain simulation alone. Each key identifies the hint type.
+	TransactionHints param.Field[EvmTransactionRawScanParamsTransactionHints] `json:"transaction_hints"`
 }
 
 func (r EvmTransactionRawScanParams) MarshalJSON() (data []byte, err error) {
@@ -13533,4 +13536,182 @@ type EvmTransactionRawScanParamsStateOverride struct {
 
 func (r EvmTransactionRawScanParamsStateOverride) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// Customer-supplied hints about transaction intent that cannot be derived from
+// on-chain simulation alone. Each key identifies the hint type.
+type EvmTransactionRawScanParamsTransactionHints struct {
+	// Customer-supplied context for a cross-chain bridge deposit where the protocol
+	// does not emit the destination on-chain.
+	CrossChainBridge param.Field[EvmTransactionRawScanParamsTransactionHintsCrossChainBridge] `json:"cross_chain_bridge"`
+}
+
+func (r EvmTransactionRawScanParamsTransactionHints) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Customer-supplied context for a cross-chain bridge deposit where the protocol
+// does not emit the destination on-chain.
+type EvmTransactionRawScanParamsTransactionHintsCrossChainBridge struct {
+	// The intended recipient address on the destination chain. Required when the
+	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
+	// routes).
+	DestinationAddress param.Field[string] `json:"destination_address"`
+	// The asset the recipient will receive on the destination chain.
+	DestinationAsset param.Field[EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion] `json:"destination_asset"`
+	// The destination chain for the bridged assets.
+	DestinationChain param.Field[TransactionScanSupportedChain] `json:"destination_chain"`
+}
+
+func (r EvmTransactionRawScanParamsTransactionHintsCrossChainBridge) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The asset the recipient will receive on the destination chain.
+type EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAsset struct {
+	// Type of the asset (`NATIVE`)
+	Type param.Field[EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetType] `json:"type" api:"required"`
+	// Token contract address on the destination chain.
+	Address param.Field[string] `json:"address"`
+	// Amount to be received in the asset's smallest unit (before decimal division),
+	// e.g. wei for ETH.
+	RawValue param.Field[string] `json:"raw_value"`
+	// Token ID of the specific NFT being bridged.
+	TokenID param.Field[string] `json:"token_id"`
+	// Approximate USD value of the received amount at time of the request.
+	UsdPrice param.Field[string] `json:"usd_price"`
+}
+
+func (r EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAsset) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAsset) implementsEvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion() {
+}
+
+// The asset the recipient will receive on the destination chain.
+//
+// Satisfied by
+// [EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset],
+// [EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAsset],
+// [EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAsset],
+// [EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAsset].
+type EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion interface {
+	implementsEvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion()
+}
+
+type EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset struct {
+	// Type of the asset (`NATIVE`)
+	Type param.Field[EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetType] `json:"type" api:"required"`
+	// Amount to be received in the asset's smallest unit (before decimal division),
+	// e.g. wei for ETH.
+	RawValue param.Field[string] `json:"raw_value"`
+	// Approximate USD value of the received amount at time of the request.
+	UsdPrice param.Field[string] `json:"usd_price"`
+}
+
+func (r EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset) implementsEvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion() {
+}
+
+// Type of the asset (`NATIVE`)
+type EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetType string
+
+const (
+	EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetTypeNative EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetType = "NATIVE"
+)
+
+func (r EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetType) IsKnown() bool {
+	switch r {
+	case EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetTypeNative:
+		return true
+	}
+	return false
+}
+
+type EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAsset struct {
+	// Token contract address on the destination chain.
+	Address param.Field[string] `json:"address" api:"required"`
+	// Type of the asset (`FUNGIBLE`)
+	Type param.Field[EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAssetType] `json:"type" api:"required"`
+	// Amount to be received in the asset's smallest unit (before decimal division),
+	// e.g. base units for ERC-20 tokens.
+	RawValue param.Field[string] `json:"raw_value"`
+	// Approximate USD value of the received amount at time of the request.
+	UsdPrice param.Field[string] `json:"usd_price"`
+}
+
+func (r EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAsset) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAsset) implementsEvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion() {
+}
+
+// Type of the asset (`FUNGIBLE`)
+type EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAssetType string
+
+const (
+	EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAssetTypeFungible EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAssetType = "FUNGIBLE"
+)
+
+func (r EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAssetType) IsKnown() bool {
+	switch r {
+	case EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAssetTypeFungible:
+		return true
+	}
+	return false
+}
+
+type EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAsset struct {
+	// NFT collection contract address on the destination chain.
+	Address param.Field[string] `json:"address" api:"required"`
+	// Token ID of the specific NFT being bridged.
+	TokenID param.Field[string] `json:"token_id" api:"required"`
+	// Type of the asset (`NON_FUNGIBLE`)
+	Type param.Field[EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAssetType] `json:"type" api:"required"`
+	// Approximate USD value of the received amount at time of the request.
+	UsdPrice param.Field[string] `json:"usd_price"`
+}
+
+func (r EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAsset) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAsset) implementsEvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion() {
+}
+
+// Type of the asset (`NON_FUNGIBLE`)
+type EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAssetType string
+
+const (
+	EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAssetTypeNonFungible EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAssetType = "NON_FUNGIBLE"
+)
+
+func (r EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAssetType) IsKnown() bool {
+	switch r {
+	case EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAssetTypeNonFungible:
+		return true
+	}
+	return false
+}
+
+// Type of the asset (`NATIVE`)
+type EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetType string
+
+const (
+	EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetTypeNative      EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetType = "NATIVE"
+	EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetTypeFungible    EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetType = "FUNGIBLE"
+	EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetTypeNonFungible EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetType = "NON_FUNGIBLE"
+)
+
+func (r EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetType) IsKnown() bool {
+	switch r {
+	case EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetTypeNative, EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetTypeFungible, EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetTypeNonFungible:
+		return true
+	}
+	return false
 }

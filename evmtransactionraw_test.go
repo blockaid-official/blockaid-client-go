@@ -66,6 +66,17 @@ func TestEvmTransactionRawScanWithOptionalParams(t *testing.T) {
 				}),
 			},
 		}),
+		TransactionHints: blockaidclientgo.F(blockaidclientgo.EvmTransactionRawScanParamsTransactionHints{
+			CrossChainBridge: blockaidclientgo.F(blockaidclientgo.EvmTransactionRawScanParamsTransactionHintsCrossChainBridge{
+				DestinationAddress: blockaidclientgo.F("destination_address"),
+				DestinationAsset: blockaidclientgo.F[blockaidclientgo.EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion](blockaidclientgo.EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset{
+					Type:     blockaidclientgo.F(blockaidclientgo.EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetTypeNative),
+					RawValue: blockaidclientgo.F("raw_value"),
+					UsdPrice: blockaidclientgo.F("usd_price"),
+				}),
+				DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+			}),
+		}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
