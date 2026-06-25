@@ -13912,8 +13912,8 @@ func (r EvmTransactionScanParamsStateOverride) MarshalJSON() (data []byte, err e
 // Optional customer-supplied hints about transaction intent that cannot be
 // inferred from on-chain simulation.
 type EvmTransactionScanParamsTransactionHints struct {
-	// Hint for cross-chain bridge deposits where the protocol negotiates the
-	// destination address off-chain and does not emit it in any on-chain event.
+	// Customer-supplied context for a cross-chain bridge deposit where the protocol
+	// does not emit the destination on-chain.
 	CrossChainBridge param.Field[EvmTransactionScanParamsTransactionHintsCrossChainBridge] `json:"cross_chain_bridge"`
 }
 
@@ -13921,8 +13921,8 @@ func (r EvmTransactionScanParamsTransactionHints) MarshalJSON() (data []byte, er
 	return apijson.MarshalRoot(r)
 }
 
-// Hint for cross-chain bridge deposits where the protocol negotiates the
-// destination address off-chain and does not emit it in any on-chain event.
+// Customer-supplied context for a cross-chain bridge deposit where the protocol
+// does not emit the destination on-chain.
 type EvmTransactionScanParamsTransactionHintsCrossChainBridge struct {
 	// The intended recipient address on the destination chain. Required when the
 	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
