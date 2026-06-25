@@ -53,8 +53,8 @@ type SuiTransactionScanParams struct {
 	//
 	// - `Options.simulation`: Include Options.simulation output in the response
 	Options param.Field[[]SuiTransactionScanParamsOption] `json:"options"`
-	// Customer-supplied hints about transaction intent that cannot be derived from
-	// on-chain simulation alone. Each key identifies the hint type.
+	// Optional customer-supplied hints about transaction intent that cannot be
+	// inferred from on-chain simulation.
 	TransactionHints param.Field[SuiTransactionScanParamsTransactionHints] `json:"transaction_hints"`
 }
 
@@ -278,11 +278,11 @@ func (r SuiTransactionScanParamsOption) IsKnown() bool {
 	return false
 }
 
-// Customer-supplied hints about transaction intent that cannot be derived from
-// on-chain simulation alone. Each key identifies the hint type.
+// Optional customer-supplied hints about transaction intent that cannot be
+// inferred from on-chain simulation.
 type SuiTransactionScanParamsTransactionHints struct {
-	// Customer-supplied context for a cross-chain bridge deposit where the protocol
-	// does not emit the destination on-chain.
+	// Hint for cross-chain bridge deposits where the protocol negotiates the
+	// destination address off-chain and does not emit it in any on-chain event.
 	CrossChainBridge param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridge] `json:"cross_chain_bridge"`
 }
 
@@ -290,14 +290,16 @@ func (r SuiTransactionScanParamsTransactionHints) MarshalJSON() (data []byte, er
 	return apijson.MarshalRoot(r)
 }
 
-// Customer-supplied context for a cross-chain bridge deposit where the protocol
-// does not emit the destination on-chain.
+// Hint for cross-chain bridge deposits where the protocol negotiates the
+// destination address off-chain and does not emit it in any on-chain event.
 type SuiTransactionScanParamsTransactionHintsCrossChainBridge struct {
 	// The intended recipient address on the destination chain. Required when the
 	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
 	// routes).
 	DestinationAddress param.Field[string] `json:"destination_address"`
-	// The asset the recipient will receive on the destination chain.
+	// Details of the asset the recipient will receive on the destination chain. May
+	// differ from the source asset (e.g. wrapped vs. native, canonical vs. bridged
+	// token).
 	DestinationAsset param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion] `json:"destination_asset"`
 	// The destination chain for the bridged assets.
 	DestinationChain param.Field[TransactionScanSupportedChain] `json:"destination_chain"`
@@ -307,7 +309,9 @@ func (r SuiTransactionScanParamsTransactionHintsCrossChainBridge) MarshalJSON() 
 	return apijson.MarshalRoot(r)
 }
 
-// The asset the recipient will receive on the destination chain.
+// Details of the asset the recipient will receive on the destination chain. May
+// differ from the source asset (e.g. wrapped vs. native, canonical vs. bridged
+// token).
 type SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAsset struct {
 	// Type of the asset (`NATIVE`)
 	Type param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetType] `json:"type" api:"required"`
@@ -329,7 +333,9 @@ func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAsset
 func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAsset) implementsSuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion() {
 }
 
-// The asset the recipient will receive on the destination chain.
+// Details of the asset the recipient will receive on the destination chain. May
+// differ from the source asset (e.g. wrapped vs. native, canonical vs. bridged
+// token).
 //
 // Satisfied by
 // [SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset],
