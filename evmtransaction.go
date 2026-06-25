@@ -13768,8 +13768,8 @@ type EvmTransactionScanParams struct {
 	SimulateWithEstimatedGas param.Field[bool] `json:"simulate_with_estimated_gas"`
 	// Override the state of the chain. This is useful for testing purposes.
 	StateOverride param.Field[map[string]EvmTransactionScanParamsStateOverride] `json:"state_override"`
-	// Customer-supplied hints about transaction intent that cannot be derived from
-	// on-chain simulation alone. Each key identifies the hint type.
+	// Optional customer-supplied hints about transaction intent that cannot be
+	// inferred from on-chain simulation.
 	TransactionHints param.Field[EvmTransactionScanParamsTransactionHints] `json:"transaction_hints"`
 }
 
@@ -13909,11 +13909,11 @@ func (r EvmTransactionScanParamsStateOverride) MarshalJSON() (data []byte, err e
 	return apijson.MarshalRoot(r)
 }
 
-// Customer-supplied hints about transaction intent that cannot be derived from
-// on-chain simulation alone. Each key identifies the hint type.
+// Optional customer-supplied hints about transaction intent that cannot be
+// inferred from on-chain simulation.
 type EvmTransactionScanParamsTransactionHints struct {
-	// Customer-supplied context for a cross-chain bridge deposit where the protocol
-	// does not emit the destination on-chain.
+	// Hint for cross-chain bridge deposits where the protocol negotiates the
+	// destination address off-chain and does not emit it in any on-chain event.
 	CrossChainBridge param.Field[EvmTransactionScanParamsTransactionHintsCrossChainBridge] `json:"cross_chain_bridge"`
 }
 
@@ -13921,14 +13921,16 @@ func (r EvmTransactionScanParamsTransactionHints) MarshalJSON() (data []byte, er
 	return apijson.MarshalRoot(r)
 }
 
-// Customer-supplied context for a cross-chain bridge deposit where the protocol
-// does not emit the destination on-chain.
+// Hint for cross-chain bridge deposits where the protocol negotiates the
+// destination address off-chain and does not emit it in any on-chain event.
 type EvmTransactionScanParamsTransactionHintsCrossChainBridge struct {
 	// The intended recipient address on the destination chain. Required when the
 	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
 	// routes).
 	DestinationAddress param.Field[string] `json:"destination_address"`
-	// The asset the recipient will receive on the destination chain.
+	// Details of the asset the recipient will receive on the destination chain. May
+	// differ from the source asset (e.g. wrapped vs. native, canonical vs. bridged
+	// token).
 	DestinationAsset param.Field[EvmTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion] `json:"destination_asset"`
 	// The destination chain for the bridged assets.
 	DestinationChain param.Field[TransactionScanSupportedChain] `json:"destination_chain"`
@@ -13938,7 +13940,9 @@ func (r EvmTransactionScanParamsTransactionHintsCrossChainBridge) MarshalJSON() 
 	return apijson.MarshalRoot(r)
 }
 
-// The asset the recipient will receive on the destination chain.
+// Details of the asset the recipient will receive on the destination chain. May
+// differ from the source asset (e.g. wrapped vs. native, canonical vs. bridged
+// token).
 type EvmTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAsset struct {
 	// Type of the asset (`NATIVE`)
 	Type param.Field[EvmTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetType] `json:"type" api:"required"`
@@ -13960,7 +13964,9 @@ func (r EvmTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAsset
 func (r EvmTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAsset) implementsEvmTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion() {
 }
 
-// The asset the recipient will receive on the destination chain.
+// Details of the asset the recipient will receive on the destination chain. May
+// differ from the source asset (e.g. wrapped vs. native, canonical vs. bridged
+// token).
 //
 // Satisfied by
 // [EvmTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset],
