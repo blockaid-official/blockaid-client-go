@@ -96,17 +96,16 @@ func TestEvmPostTransactionScanWithOptionalParams(t *testing.T) {
 				}),
 			},
 		}),
-		TransactionHints: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsTransactionHints{
-			CrossChainBridge: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridge{
-				DestinationAddress: blockaidclientgo.F("destination_address"),
-				DestinationAsset: blockaidclientgo.F[blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion](blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset{
-					Type:     blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetTypeNative),
-					RawValue: blockaidclientgo.F("raw_value"),
-					UsdPrice: blockaidclientgo.F("usd_price"),
-				}),
-				DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+		TransactionHints: blockaidclientgo.F([]blockaidclientgo.EvmPostTransactionScanParamsTransactionHintUnion{blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridgeHint{
+			Type:               blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridgeHintTypeCrossChainBridge),
+			DestinationAddress: blockaidclientgo.F("destination_address"),
+			DestinationAsset: blockaidclientgo.F[blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion](blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAsset{
+				Type:     blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative),
+				RawValue: blockaidclientgo.F("raw_value"),
+				UsdPrice: blockaidclientgo.F("usd_price"),
 			}),
-		}),
+			DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+		}}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
