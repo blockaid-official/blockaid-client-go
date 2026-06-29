@@ -117,7 +117,6 @@ func TestEvmTransactionScanWithOptionalParams(t *testing.T) {
 			DestinationAsset: blockaidclientgo.F[blockaidclientgo.EvmTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion](blockaidclientgo.EvmTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAsset{
 				Type:     blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative),
 				RawValue: blockaidclientgo.F("raw_value"),
-				UsdPrice: blockaidclientgo.F("usd_price"),
 			}),
 			DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
 		}}),

@@ -75,7 +75,6 @@ func TestEvmJsonRpcScanWithOptionalParams(t *testing.T) {
 			DestinationAsset: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion](blockaidclientgo.EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAsset{
 				Type:     blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative),
 				RawValue: blockaidclientgo.F("raw_value"),
-				UsdPrice: blockaidclientgo.F("usd_price"),
 			}),
 			DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
 		}}),
