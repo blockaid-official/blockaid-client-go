@@ -111,17 +111,16 @@ func TestEvmTransactionScanWithOptionalParams(t *testing.T) {
 				}),
 			},
 		}),
-		TransactionHints: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsTransactionHints{
-			CrossChainBridge: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsTransactionHintsCrossChainBridge{
-				DestinationAddress: blockaidclientgo.F("destination_address"),
-				DestinationAsset: blockaidclientgo.F[blockaidclientgo.EvmTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion](blockaidclientgo.EvmTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset{
-					Type:     blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetTypeNative),
-					RawValue: blockaidclientgo.F("raw_value"),
-					UsdPrice: blockaidclientgo.F("usd_price"),
-				}),
-				DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+		TransactionHints: blockaidclientgo.F([]blockaidclientgo.EvmTransactionScanParamsTransactionHintUnion{blockaidclientgo.EvmTransactionScanParamsTransactionHintsCrossChainBridgeHint{
+			Type:               blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsTransactionHintsCrossChainBridgeHintTypeCrossChainBridge),
+			DestinationAddress: blockaidclientgo.F("destination_address"),
+			DestinationAsset: blockaidclientgo.F[blockaidclientgo.EvmTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion](blockaidclientgo.EvmTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAsset{
+				Type:     blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative),
+				RawValue: blockaidclientgo.F("raw_value"),
+				UsdPrice: blockaidclientgo.F("usd_price"),
 			}),
-		}),
+			DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+		}}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error

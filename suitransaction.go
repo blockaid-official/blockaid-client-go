@@ -55,7 +55,7 @@ type SuiTransactionScanParams struct {
 	Options param.Field[[]SuiTransactionScanParamsOption] `json:"options"`
 	// Optional customer-supplied hints about transaction intent that cannot be
 	// inferred from on-chain simulation.
-	TransactionHints param.Field[SuiTransactionScanParamsTransactionHints] `json:"transaction_hints"`
+	TransactionHints param.Field[[]SuiTransactionScanParamsTransactionHintUnion] `json:"transaction_hints"`
 }
 
 func (r SuiTransactionScanParams) MarshalJSON() (data []byte, err error) {
@@ -278,21 +278,41 @@ func (r SuiTransactionScanParamsOption) IsKnown() bool {
 	return false
 }
 
-// Optional customer-supplied hints about transaction intent that cannot be
-// inferred from on-chain simulation.
-type SuiTransactionScanParamsTransactionHints struct {
-	// Hint for cross-chain bridge deposits where the protocol negotiates the
-	// destination address off-chain and does not emit it in any on-chain event.
-	CrossChainBridge param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridge] `json:"cross_chain_bridge"`
+// A single customer-supplied hint about transaction intent. The `type` field
+// identifies which hint variant this is.
+type SuiTransactionScanParamsTransactionHint struct {
+	// Hint type discriminator (`cross_chain_bridge`).
+	Type param.Field[string] `json:"type" api:"required"`
+	// The intended recipient address on the destination chain. Required when the
+	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
+	// routes).
+	DestinationAddress param.Field[string]      `json:"destination_address"`
+	DestinationAsset   param.Field[interface{}] `json:"destination_asset"`
+	DestinationChain   param.Field[interface{}] `json:"destination_chain"`
 }
 
-func (r SuiTransactionScanParamsTransactionHints) MarshalJSON() (data []byte, err error) {
+func (r SuiTransactionScanParamsTransactionHint) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// Hint for cross-chain bridge deposits where the protocol negotiates the
-// destination address off-chain and does not emit it in any on-chain event.
-type SuiTransactionScanParamsTransactionHintsCrossChainBridge struct {
+func (r SuiTransactionScanParamsTransactionHint) implementsSuiTransactionScanParamsTransactionHintUnion() {
+}
+
+// A single customer-supplied hint about transaction intent. The `type` field
+// identifies which hint variant this is.
+//
+// Satisfied by [SuiTransactionScanParamsTransactionHintsCrossChainBridgeHint],
+// [SuiTransactionScanParamsTransactionHintsGenericTransactionHint],
+// [SuiTransactionScanParamsTransactionHint].
+type SuiTransactionScanParamsTransactionHintUnion interface {
+	implementsSuiTransactionScanParamsTransactionHintUnion()
+}
+
+// Customer-supplied context for a cross-chain bridge deposit where the protocol
+// does not emit the destination on-chain.
+type SuiTransactionScanParamsTransactionHintsCrossChainBridgeHint struct {
+	// Hint type discriminator (`cross_chain_bridge`).
+	Type param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintType] `json:"type" api:"required"`
 	// The intended recipient address on the destination chain. Required when the
 	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
 	// routes).
@@ -300,21 +320,39 @@ type SuiTransactionScanParamsTransactionHintsCrossChainBridge struct {
 	// Details of the asset the recipient will receive on the destination chain. May
 	// differ from the source asset (e.g. wrapped vs. native, canonical vs. bridged
 	// token).
-	DestinationAsset param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion] `json:"destination_asset"`
+	DestinationAsset param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion] `json:"destination_asset"`
 	// The destination chain for the bridged assets.
 	DestinationChain param.Field[TransactionScanSupportedChain] `json:"destination_chain"`
 }
 
-func (r SuiTransactionScanParamsTransactionHintsCrossChainBridge) MarshalJSON() (data []byte, err error) {
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHint) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHint) implementsSuiTransactionScanParamsTransactionHintUnion() {
+}
+
+// Hint type discriminator (`cross_chain_bridge`).
+type SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintType string
+
+const (
+	SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintTypeCrossChainBridge SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintType = "cross_chain_bridge"
+)
+
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintType) IsKnown() bool {
+	switch r {
+	case SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintTypeCrossChainBridge:
+		return true
+	}
+	return false
 }
 
 // Details of the asset the recipient will receive on the destination chain. May
 // differ from the source asset (e.g. wrapped vs. native, canonical vs. bridged
 // token).
-type SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAsset struct {
+type SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAsset struct {
 	// Type of the asset (`NATIVE`)
-	Type param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetType] `json:"type" api:"required"`
+	Type param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetType] `json:"type" api:"required"`
 	// Token contract address on the destination chain.
 	Address param.Field[string] `json:"address"`
 	// Amount to be received in the asset's smallest unit (before decimal division),
@@ -326,11 +364,11 @@ type SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAsset st
 	UsdPrice param.Field[string] `json:"usd_price"`
 }
 
-func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAsset) MarshalJSON() (data []byte, err error) {
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAsset) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAsset) implementsSuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion() {
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAsset) implementsSuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion() {
 }
 
 // Details of the asset the recipient will receive on the destination chain. May
@@ -338,17 +376,17 @@ func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAsset
 // token).
 //
 // Satisfied by
-// [SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset],
-// [SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAsset],
-// [SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAsset],
-// [SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAsset].
-type SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion interface {
-	implementsSuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion()
+// [SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAsset],
+// [SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAsset],
+// [SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAsset],
+// [SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAsset].
+type SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion interface {
+	implementsSuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion()
 }
 
-type SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset struct {
+type SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAsset struct {
 	// Type of the asset (`NATIVE`)
-	Type param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetType] `json:"type" api:"required"`
+	Type param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetType] `json:"type" api:"required"`
 	// Amount to be received in the asset's smallest unit (before decimal division),
 	// e.g. wei for ETH.
 	RawValue param.Field[string] `json:"raw_value"`
@@ -356,33 +394,33 @@ type SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCro
 	UsdPrice param.Field[string] `json:"usd_price"`
 }
 
-func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset) MarshalJSON() (data []byte, err error) {
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAsset) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset) implementsSuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion() {
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAsset) implementsSuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion() {
 }
 
 // Type of the asset (`NATIVE`)
-type SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetType string
+type SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetType string
 
 const (
-	SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetTypeNative SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetType = "NATIVE"
+	SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetType = "NATIVE"
 )
 
-func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetType) IsKnown() bool {
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetType) IsKnown() bool {
 	switch r {
-	case SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetTypeNative:
+	case SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative:
 		return true
 	}
 	return false
 }
 
-type SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAsset struct {
+type SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAsset struct {
 	// Token contract address on the destination chain.
 	Address param.Field[string] `json:"address" api:"required"`
 	// Type of the asset (`FUNGIBLE`)
-	Type param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAssetType] `json:"type" api:"required"`
+	Type param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetType] `json:"type" api:"required"`
 	// Amount to be received in the asset's smallest unit (before decimal division),
 	// e.g. base units for ERC-20 tokens.
 	RawValue param.Field[string] `json:"raw_value"`
@@ -390,74 +428,88 @@ type SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCro
 	UsdPrice param.Field[string] `json:"usd_price"`
 }
 
-func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAsset) MarshalJSON() (data []byte, err error) {
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAsset) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAsset) implementsSuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion() {
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAsset) implementsSuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion() {
 }
 
 // Type of the asset (`FUNGIBLE`)
-type SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAssetType string
+type SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetType string
 
 const (
-	SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAssetTypeFungible SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAssetType = "FUNGIBLE"
+	SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetTypeFungible SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetType = "FUNGIBLE"
 )
 
-func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAssetType) IsKnown() bool {
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetType) IsKnown() bool {
 	switch r {
-	case SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeFungibleAssetTypeFungible:
+	case SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetTypeFungible:
 		return true
 	}
 	return false
 }
 
-type SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAsset struct {
+type SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAsset struct {
 	// NFT collection contract address on the destination chain.
 	Address param.Field[string] `json:"address" api:"required"`
 	// Token ID of the specific NFT being bridged.
 	TokenID param.Field[string] `json:"token_id" api:"required"`
 	// Type of the asset (`NON_FUNGIBLE`)
-	Type param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAssetType] `json:"type" api:"required"`
+	Type param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetType] `json:"type" api:"required"`
 	// Approximate USD value of the received amount at time of the request.
 	UsdPrice param.Field[string] `json:"usd_price"`
 }
 
-func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAsset) MarshalJSON() (data []byte, err error) {
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAsset) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAsset) implementsSuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion() {
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAsset) implementsSuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion() {
 }
 
 // Type of the asset (`NON_FUNGIBLE`)
-type SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAssetType string
+type SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetType string
 
 const (
-	SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAssetTypeNonFungible SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAssetType = "NON_FUNGIBLE"
+	SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetTypeNonFungible SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetType = "NON_FUNGIBLE"
 )
 
-func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAssetType) IsKnown() bool {
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetType) IsKnown() bool {
 	switch r {
-	case SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNonFungibleAssetTypeNonFungible:
+	case SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetTypeNonFungible:
 		return true
 	}
 	return false
 }
 
 // Type of the asset (`NATIVE`)
-type SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetType string
+type SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetType string
 
 const (
-	SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetTypeNative      SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetType = "NATIVE"
-	SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetTypeFungible    SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetType = "FUNGIBLE"
-	SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetTypeNonFungible SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetType = "NON_FUNGIBLE"
+	SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetTypeNative      SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetType = "NATIVE"
+	SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetTypeFungible    SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetType = "FUNGIBLE"
+	SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetTypeNonFungible SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetType = "NON_FUNGIBLE"
 )
 
-func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetType) IsKnown() bool {
+func (r SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetType) IsKnown() bool {
 	switch r {
-	case SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetTypeNative, SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetTypeFungible, SuiTransactionScanParamsTransactionHintsCrossChainBridgeDestinationAssetTypeNonFungible:
+	case SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetTypeNative, SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetTypeFungible, SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetTypeNonFungible:
 		return true
 	}
 	return false
+}
+
+// Fallback for unrecognized or future hint types. Accepts any hint with a `type`
+// field.
+type SuiTransactionScanParamsTransactionHintsGenericTransactionHint struct {
+	// Hint type identifier for unrecognized or future hint types.
+	Type param.Field[string] `json:"type" api:"required"`
+}
+
+func (r SuiTransactionScanParamsTransactionHintsGenericTransactionHint) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r SuiTransactionScanParamsTransactionHintsGenericTransactionHint) implementsSuiTransactionScanParamsTransactionHintUnion() {
 }

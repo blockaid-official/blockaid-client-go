@@ -69,17 +69,16 @@ func TestEvmJsonRpcScanWithOptionalParams(t *testing.T) {
 				}),
 			},
 		}),
-		TransactionHints: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsTransactionHints{
-			CrossChainBridge: blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsTransactionHintsCrossChainBridge{
-				DestinationAddress: blockaidclientgo.F("destination_address"),
-				DestinationAsset: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeDestinationAssetUnion](blockaidclientgo.EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAsset{
-					Type:     blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeDestinationAssetCrossChainBridgeNativeAssetTypeNative),
-					RawValue: blockaidclientgo.F("raw_value"),
-					UsdPrice: blockaidclientgo.F("usd_price"),
-				}),
-				DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+		TransactionHints: blockaidclientgo.F([]blockaidclientgo.EvmJsonRpcScanParamsTransactionHintUnion{blockaidclientgo.EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHint{
+			Type:               blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintTypeCrossChainBridge),
+			DestinationAddress: blockaidclientgo.F("destination_address"),
+			DestinationAsset: blockaidclientgo.F[blockaidclientgo.EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion](blockaidclientgo.EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAsset{
+				Type:     blockaidclientgo.F(blockaidclientgo.EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative),
+				RawValue: blockaidclientgo.F("raw_value"),
+				UsdPrice: blockaidclientgo.F("usd_price"),
 			}),
-		}),
+			DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+		}}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error
