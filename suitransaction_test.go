@@ -55,7 +55,6 @@ func TestSuiTransactionScanWithOptionalParams(t *testing.T) {
 			DestinationAsset: blockaidclientgo.F[blockaidclientgo.SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion](blockaidclientgo.SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAsset{
 				Type:     blockaidclientgo.F(blockaidclientgo.SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative),
 				RawValue: blockaidclientgo.F("raw_value"),
-				UsdPrice: blockaidclientgo.F("usd_price"),
 			}),
 			DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
 		}}),

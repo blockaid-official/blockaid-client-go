@@ -13654,8 +13654,6 @@ type EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAsset st
 	RawValue param.Field[string] `json:"raw_value"`
 	// Token ID of the specific NFT being bridged.
 	TokenID param.Field[string] `json:"token_id"`
-	// Approximate USD value of the received amount at time of the request.
-	UsdPrice param.Field[string] `json:"usd_price"`
 }
 
 func (r EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAsset) MarshalJSON() (data []byte, err error) {
@@ -13684,8 +13682,6 @@ type EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCro
 	// Amount to be received in the asset's smallest unit (before decimal division),
 	// e.g. wei for ETH.
 	RawValue param.Field[string] `json:"raw_value"`
-	// Approximate USD value of the received amount at time of the request.
-	UsdPrice param.Field[string] `json:"usd_price"`
 }
 
 func (r EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAsset) MarshalJSON() (data []byte, err error) {
@@ -13718,8 +13714,6 @@ type EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCro
 	// Amount to be received in the asset's smallest unit (before decimal division),
 	// e.g. base units for ERC-20 tokens.
 	RawValue param.Field[string] `json:"raw_value"`
-	// Approximate USD value of the received amount at time of the request.
-	UsdPrice param.Field[string] `json:"usd_price"`
 }
 
 func (r EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAsset) MarshalJSON() (data []byte, err error) {
@@ -13751,8 +13745,6 @@ type EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCro
 	TokenID param.Field[string] `json:"token_id" api:"required"`
 	// Type of the asset (`NON_FUNGIBLE`)
 	Type param.Field[EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetType] `json:"type" api:"required"`
-	// Approximate USD value of the received amount at time of the request.
-	UsdPrice param.Field[string] `json:"usd_price"`
 }
 
 func (r EvmJsonRpcScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAsset) MarshalJSON() (data []byte, err error) {
