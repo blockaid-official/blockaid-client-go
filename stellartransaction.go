@@ -33,6 +33,8 @@ func NewStellarTransactionService(opts ...option.RequestOption) (r *StellarTrans
 }
 
 // Report Transaction
+//
+// Deprecated: deprecated
 func (r *StellarTransactionService) Report(ctx context.Context, body StellarTransactionReportParams, opts ...option.RequestOption) (res *int64, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/stellar/transaction/report"

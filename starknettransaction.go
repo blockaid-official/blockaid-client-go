@@ -33,6 +33,8 @@ func NewStarknetTransactionService(opts ...option.RequestOption) (r *StarknetTra
 }
 
 // Report Transaction
+//
+// Deprecated: deprecated
 func (r *StarknetTransactionService) Report(ctx context.Context, body StarknetTransactionReportParams, opts ...option.RequestOption) (res *int64, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/starknet/transaction/report"

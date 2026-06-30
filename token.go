@@ -35,6 +35,8 @@ func NewTokenService(opts ...option.RequestOption) (r *TokenService) {
 }
 
 // Report for misclassification of a token.
+//
+// Deprecated: deprecated
 func (r *TokenService) Report(ctx context.Context, body TokenReportParams, opts ...option.RequestOption) (res *TokenReportResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/token/report"
