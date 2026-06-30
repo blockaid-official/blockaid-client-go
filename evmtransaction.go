@@ -37,6 +37,8 @@ func NewEvmTransactionService(opts ...option.RequestOption) (r *EvmTransactionSe
 }
 
 // Report a misclassification of a transaction.
+//
+// Deprecated: deprecated
 func (r *EvmTransactionService) Report(ctx context.Context, body EvmTransactionReportParams, opts ...option.RequestOption) (res *EvmTransactionReportResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/transaction/report"

@@ -33,6 +33,8 @@ func NewEvmAddressService(opts ...option.RequestOption) (r *EvmAddressService) {
 }
 
 // Report a misclassification of an EVM address.
+//
+// Deprecated: deprecated
 func (r *EvmAddressService) Report(ctx context.Context, body EvmAddressReportParams, opts ...option.RequestOption) (res *EvmAddressReportResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v0/evm/address/report"
