@@ -50,8 +50,8 @@ func TestOrganizationRiskExposureConfigurationUpdateWithOptionalParams(t *testin
 	_, err := client.Organization.RiskExposureConfiguration.Update(context.TODO(), blockaidclientgo.OrganizationRiskExposureConfigurationUpdateParams{
 		PatchRiskConfigRequest: blockaidclientgo.PatchRiskConfigRequestParam{
 			CategoryOverrides: blockaidclientgo.F(map[string]float64{
-				"stolen_funds": 0.700000,
-				"mixer":        nil,
+				"sanctioned_entity": 0.700000,
+				"stolen_funds":      0.500000,
 			}),
 			VerdictOverrides: blockaidclientgo.F(blockaidclientgo.PatchRiskConfigRequestVerdictOverridesParam{
 				HighRisk:  blockaidclientgo.F(0.600000),
