@@ -290,6 +290,9 @@ type StellarTransactionScanRequestParam struct {
 	//
 	// - `Options.simulation`: Include Options.simulation output in the response
 	Options param.Field[[]StellarTransactionScanRequestOption] `json:"options"`
+	// Optional customer-supplied hints about transaction intent that cannot be
+	// inferred from on-chain simulation.
+	TransactionHints param.Field[[]StellarTransactionScanRequestTransactionHintsUnionParam] `json:"transaction_hints"`
 }
 
 func (r StellarTransactionScanRequestParam) MarshalJSON() (data []byte, err error) {
@@ -315,6 +318,9 @@ func (r StellarTransactionScanRequestChain) IsKnown() bool {
 
 // Metadata
 type StellarTransactionScanRequestMetadataParam struct {
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 	// Metadata for wallet requests
 	Type param.Field[StellarTransactionScanRequestMetadataType] `json:"type"`
 	// URL of the dApp originating the transaction
@@ -343,6 +349,9 @@ type StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam stru
 	Type param.Field[StellarTransactionScanRequestMetadataStellarWalletRequestMetadataType] `json:"type" api:"required"`
 	// URL of the dApp originating the transaction
 	URL param.Field[string] `json:"url" api:"required"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam) MarshalJSON() (data []byte, err error) {
@@ -368,6 +377,9 @@ func (r StellarTransactionScanRequestMetadataStellarWalletRequestMetadataType) I
 }
 
 type StellarTransactionScanRequestMetadataStellarInAppRequestMetadataParam struct {
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 	// Metadata for in-app requests
 	Type param.Field[StellarTransactionScanRequestMetadataStellarInAppRequestMetadataType] `json:"type"`
 }
@@ -423,6 +435,235 @@ func (r StellarTransactionScanRequestOption) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+// A single customer-supplied hint about transaction intent. The `type` field
+// identifies which hint variant this is.
+type StellarTransactionScanRequestTransactionHintParam struct {
+	// Hint type discriminator (`cross_chain_bridge`).
+	Type param.Field[string] `json:"type" api:"required"`
+	// The intended recipient address on the destination chain. Required when the
+	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
+	// routes).
+	DestinationAddress param.Field[string]      `json:"destination_address"`
+	DestinationAsset   param.Field[interface{}] `json:"destination_asset"`
+	DestinationChain   param.Field[interface{}] `json:"destination_chain"`
+}
+
+func (r StellarTransactionScanRequestTransactionHintParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionScanRequestTransactionHintParam) implementsStellarTransactionScanRequestTransactionHintsUnionParam() {
+}
+
+// A single customer-supplied hint about transaction intent. The `type` field
+// identifies which hint variant this is.
+//
+// Satisfied by
+// [StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintParam],
+// [StellarTransactionScanRequestTransactionHintsGenericTransactionHintParam],
+// [StellarTransactionScanRequestTransactionHintParam].
+type StellarTransactionScanRequestTransactionHintsUnionParam interface {
+	implementsStellarTransactionScanRequestTransactionHintsUnionParam()
+}
+
+// Customer-supplied context for a cross-chain bridge deposit where the protocol
+// does not emit the destination on-chain.
+type StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintParam struct {
+	// Hint type discriminator (`cross_chain_bridge`).
+	Type param.Field[StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintType] `json:"type" api:"required"`
+	// The intended recipient address on the destination chain. Required when the
+	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
+	// routes).
+	DestinationAddress param.Field[string] `json:"destination_address"`
+	// Details of the asset the recipient will receive on the destination chain. May
+	// differ from the source asset (e.g. wrapped vs. native, canonical vs. bridged
+	// token).
+	DestinationAsset param.Field[StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetUnionParam] `json:"destination_asset"`
+	// The destination chain for the bridged assets.
+	DestinationChain param.Field[TransactionScanSupportedChain] `json:"destination_chain"`
+}
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintParam) implementsStellarTransactionScanRequestTransactionHintsUnionParam() {
+}
+
+// Hint type discriminator (`cross_chain_bridge`).
+type StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintType string
+
+const (
+	StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintTypeCrossChainBridge StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintType = "cross_chain_bridge"
+)
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintType) IsKnown() bool {
+	switch r {
+	case StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintTypeCrossChainBridge:
+		return true
+	}
+	return false
+}
+
+// Details of the asset the recipient will receive on the destination chain. May
+// differ from the source asset (e.g. wrapped vs. native, canonical vs. bridged
+// token).
+type StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetParam struct {
+	// Type of the asset (`NATIVE`)
+	Type param.Field[StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetType] `json:"type" api:"required"`
+	// Token contract address on the destination chain.
+	Address param.Field[string] `json:"address"`
+	// Amount to be received in the asset's smallest unit (before decimal division),
+	// e.g. wei for ETH.
+	RawValue param.Field[string] `json:"raw_value"`
+	// Token ID of the specific NFT being bridged.
+	TokenID param.Field[string] `json:"token_id"`
+}
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetParam) implementsStellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetUnionParam() {
+}
+
+// Details of the asset the recipient will receive on the destination chain. May
+// differ from the source asset (e.g. wrapped vs. native, canonical vs. bridged
+// token).
+//
+// Satisfied by
+// [StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetParam],
+// [StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetParam],
+// [StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetParam],
+// [StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetParam].
+type StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetUnionParam interface {
+	implementsStellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetUnionParam()
+}
+
+type StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetParam struct {
+	// Type of the asset (`NATIVE`)
+	Type param.Field[StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetType] `json:"type" api:"required"`
+	// Amount to be received in the asset's smallest unit (before decimal division),
+	// e.g. wei for ETH.
+	RawValue param.Field[string] `json:"raw_value"`
+}
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetParam) implementsStellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetUnionParam() {
+}
+
+// Type of the asset (`NATIVE`)
+type StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetType string
+
+const (
+	StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetType = "NATIVE"
+)
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetType) IsKnown() bool {
+	switch r {
+	case StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetParam struct {
+	// Token contract address on the destination chain.
+	Address param.Field[string] `json:"address" api:"required"`
+	// Type of the asset (`FUNGIBLE`)
+	Type param.Field[StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetType] `json:"type" api:"required"`
+	// Amount to be received in the asset's smallest unit (before decimal division),
+	// e.g. base units for ERC-20 tokens.
+	RawValue param.Field[string] `json:"raw_value"`
+}
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetParam) implementsStellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetUnionParam() {
+}
+
+// Type of the asset (`FUNGIBLE`)
+type StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetType string
+
+const (
+	StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetTypeFungible StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetType = "FUNGIBLE"
+)
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetType) IsKnown() bool {
+	switch r {
+	case StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeFungibleAssetTypeFungible:
+		return true
+	}
+	return false
+}
+
+type StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetParam struct {
+	// NFT collection contract address on the destination chain.
+	Address param.Field[string] `json:"address" api:"required"`
+	// Token ID of the specific NFT being bridged.
+	TokenID param.Field[string] `json:"token_id" api:"required"`
+	// Type of the asset (`NON_FUNGIBLE`)
+	Type param.Field[StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetType] `json:"type" api:"required"`
+}
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetParam) implementsStellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetUnionParam() {
+}
+
+// Type of the asset (`NON_FUNGIBLE`)
+type StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetType string
+
+const (
+	StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetTypeNonFungible StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetType = "NON_FUNGIBLE"
+)
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetType) IsKnown() bool {
+	switch r {
+	case StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNonFungibleAssetTypeNonFungible:
+		return true
+	}
+	return false
+}
+
+// Type of the asset (`NATIVE`)
+type StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetType string
+
+const (
+	StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetTypeNative      StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetType = "NATIVE"
+	StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetTypeFungible    StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetType = "FUNGIBLE"
+	StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetTypeNonFungible StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetType = "NON_FUNGIBLE"
+)
+
+func (r StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetType) IsKnown() bool {
+	switch r {
+	case StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetTypeNative, StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetTypeFungible, StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetTypeNonFungible:
+		return true
+	}
+	return false
+}
+
+// Fallback for unrecognized or future hint types. Accepts any hint with a `type`
+// field.
+type StellarTransactionScanRequestTransactionHintsGenericTransactionHintParam struct {
+	// Hint type identifier for unrecognized or future hint types.
+	Type param.Field[string] `json:"type" api:"required"`
+}
+
+func (r StellarTransactionScanRequestTransactionHintsGenericTransactionHintParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r StellarTransactionScanRequestTransactionHintsGenericTransactionHintParam) implementsStellarTransactionScanRequestTransactionHintsUnionParam() {
 }
 
 type StellarTransactionScanResponse struct {

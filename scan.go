@@ -60,8 +60,8 @@ type ScanReportParams struct {
 	Details param.Field[string] `json:"details" api:"required"`
 	// The event type of the report. Could be `FALSE_POSITIVE` or `FALSE_NEGATIVE`.
 	Event param.Field[ScanReportParamsEvent] `json:"event" api:"required"`
-	// Client-side context attached to a report, identifying the originating dApp and
-	// end-user.
+	// Client-side context: the originating dApp domain, end-user account info, and
+	// connection details.
 	Metadata param.Field[ScanReportParamsMetadata] `json:"metadata" api:"required"`
 	// The request ID of a previous scan. This can be found in the value of the
 	// `x-request-id` field in the headers of the response of the previous request. For
@@ -89,25 +89,36 @@ func (r ScanReportParamsEvent) IsKnown() bool {
 	return false
 }
 
-// Client-side context attached to a report, identifying the originating dApp and
-// end-user.
+// Client-side context: the originating dApp domain, end-user account info, and
+// connection details.
 type ScanReportParamsMetadata struct {
-	// End-user account information (ID, age, country, creation time).
+	// End-user account context (id, age, country, creation time, and
+	// account_addresses).
 	Account param.Field[ScanReportParamsMetadataAccount] `json:"account"`
-	// Network connection details (IP address, user agent).
+	// Connection metadata including user agent, IP information, and origin.
 	Connection param.Field[ScanReportParamsMetadataConnection] `json:"connection"`
-	// The dApp or origin URL that triggered the interaction being reported.
+	// The full URL of the DApp or website that initiated the request, for
+	// cross-reference. Must use the https or http scheme and contain a valid hostname.
+	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain"`
+	// Set to true when the request was not initiated by a dapp. Dapp requests should
+	// provide the `domain` field.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
 func (r ScanReportParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// End-user account information (ID, age, country, creation time).
+// End-user account context (id, age, country, creation time, and
+// account_addresses).
 type ScanReportParamsMetadataAccount struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// List of all account addresses in different chains based on the CAIPs standard
+	// (https://github.com/ChainAgnostic/CAIPs). Ethereum mainnet example:
+	// eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb
+	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
 	// Age of the user in years
@@ -120,12 +131,21 @@ func (r ScanReportParamsMetadataAccount) MarshalJSON() (data []byte, err error) 
 	return apijson.MarshalRoot(r)
 }
 
-// Network connection details (IP address, user agent).
+// Connection metadata including user agent, IP information, and origin.
 type ScanReportParamsMetadataConnection struct {
-	// IP address of the customer making the request.
+	// IP address of the customer making the request. Both IPv4 and IPv6 addresses are
+	// supported.
 	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// The full URL of the website that the request was directed to.
+	Origin param.Field[string] `json:"origin" format:"uri"`
 	// User agent string from the client's browser or application.
 	UserAgent param.Field[string] `json:"user_agent"`
+	// WalletConnect session description, when the request originates from a
+	// WalletConnect session.
+	WalletconnectDescription param.Field[string] `json:"walletconnect_description"`
+	// WalletConnect session name, when the request originates from a WalletConnect
+	// session.
+	WalletconnectName param.Field[string] `json:"walletconnect_name"`
 }
 
 func (r ScanReportParamsMetadataConnection) MarshalJSON() (data []byte, err error) {

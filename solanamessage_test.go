@@ -31,15 +31,20 @@ func TestSolanaMessageScanWithOptionalParams(t *testing.T) {
 		Metadata: blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsMetadata{
 			Account: blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsMetadataAccount{
 				AccountID:                blockaidclientgo.F("account_id"),
+				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
 				UserAge:                  blockaidclientgo.F(int64(1)),
 				UserCountryCode:          blockaidclientgo.F("user_country_code"),
 			}),
 			Connection: blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsMetadataConnection{
-				IPAddress: blockaidclientgo.F("ip_address"),
-				UserAgent: blockaidclientgo.F("user_agent"),
+				IPAddress:                blockaidclientgo.F("ip_address"),
+				Origin:                   blockaidclientgo.F("https://example.com"),
+				UserAgent:                blockaidclientgo.F("user_agent"),
+				WalletconnectDescription: blockaidclientgo.F("walletconnect_description"),
+				WalletconnectName:        blockaidclientgo.F("walletconnect_name"),
 			}),
-			URL: blockaidclientgo.F("https://example.com"),
+			NonDapp: blockaidclientgo.F(true),
+			URL:     blockaidclientgo.F("https://example.com"),
 		}),
 		Transactions:  blockaidclientgo.F([]string{"vxBNpvao9QJmLKXUThbbjRnxm3ufu4Wku97kHd5a67FDjSqeHwcPrBKTjAHp4ECr61eWwoxvUEVTuuWX65P9bCNDJrTJpX64vjdtpHA8cogA4C92Ubj813wUUA8Ey4Bvcrdj5c1bSTrGZVzb8QmCKyzMu9kMiSWpFtaFrNN8zb9grr81N3R3njrFgxCxNSjboFtomLyZ3iUQBaBkRF1DyzGyc1r1kd8FnptaDWteNCXJHUYFeH8wBDwZJzNZfz71CiugXhxBTJSAqSNC8JEWm7kmCqwjUqLd23L2x2s"}),
 		Chain:         blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsChainMainnet),

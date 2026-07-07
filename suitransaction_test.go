@@ -34,17 +34,30 @@ func TestSuiTransactionScanWithOptionalParams(t *testing.T) {
 			URL:  blockaidclientgo.F("https://example.com"),
 			Account: blockaidclientgo.F(blockaidclientgo.SuiTransactionScanParamsMetadataSuiWalletRequestMetadataAccount{
 				AccountID:                blockaidclientgo.F("account_id"),
+				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
 				UserAge:                  blockaidclientgo.F(int64(1)),
 				UserCountryCode:          blockaidclientgo.F("user_country_code"),
 			}),
 			Connection: blockaidclientgo.F(blockaidclientgo.SuiTransactionScanParamsMetadataSuiWalletRequestMetadataConnection{
-				IPAddress: blockaidclientgo.F("ip_address"),
-				UserAgent: blockaidclientgo.F("user_agent"),
+				IPAddress:                blockaidclientgo.F("ip_address"),
+				Origin:                   blockaidclientgo.F("https://example.com"),
+				UserAgent:                blockaidclientgo.F("user_agent"),
+				WalletconnectDescription: blockaidclientgo.F("walletconnect_description"),
+				WalletconnectName:        blockaidclientgo.F("walletconnect_name"),
 			}),
 		}),
 		Transaction: blockaidclientgo.F("AAACAAgA4fUFAAAAAAAgHvls2mKzo/48s/fPdWP8xKtE4BhIjR2O8gMaZ6bI1+sCAgABAQAAAQECAAABAQBF6Qs+ouGSDEPZLSJGMNaoZcG1intOdwwqwVbqsw60kQFySkLceU6uis9QxxK4CDYqttqK3ilc9/yEcCgxdaeA0cl/xhwAAAAAIEuXU9TpAtIJmbPVFpxdc70+RWUqlSrfyIUKT9q1Au0ERekLPqLhkgxD2S0iRjDWqGXBtYp7TncMKsFW6rMOtJHuAgAAAAAAACAKNQAAAAAAAA=="),
 		Options:     blockaidclientgo.F([]blockaidclientgo.SuiTransactionScanParamsOption{blockaidclientgo.SuiTransactionScanParamsOptionSimulation}),
+		TransactionHints: blockaidclientgo.F([]blockaidclientgo.SuiTransactionScanParamsTransactionHintUnion{blockaidclientgo.SuiTransactionScanParamsTransactionHintsCrossChainBridgeHint{
+			Type:               blockaidclientgo.F(blockaidclientgo.SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintTypeCrossChainBridge),
+			DestinationAddress: blockaidclientgo.F("destination_address"),
+			DestinationAsset: blockaidclientgo.F[blockaidclientgo.SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion](blockaidclientgo.SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAsset{
+				Type:     blockaidclientgo.F(blockaidclientgo.SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative),
+				RawValue: blockaidclientgo.F("raw_value"),
+			}),
+			DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+		}}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error

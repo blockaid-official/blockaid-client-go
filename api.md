@@ -3,7 +3,6 @@
 Params Types:
 
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#AuthorizationParam">AuthorizationParam</a>
-- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#MetadataParam">MetadataParam</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenScanSupportedChain">TokenScanSupportedChain</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TransactionScanSupportedChain">TransactionScanSupportedChain</a>
 - <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#UserOperationDataParam">UserOperationDataParam</a>
@@ -367,3 +366,22 @@ Methods:
 - <code title="post /v0/transaction/scan">client.ChainAgnostic.Transaction.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ChainAgnosticTransactionService.Scan">Scan</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ChainAgnosticTransactionScanParams">ChainAgnosticTransactionScanParams</a>) (\*<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#ChainAgnosticTransactionScanResponse">ChainAgnosticTransactionScanResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Enrichment
+
+# Organization
+
+## RiskExposureConfiguration
+
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#PatchRiskConfigRequestParam">PatchRiskConfigRequestParam</a>
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#OrganizationCategoryRiskView">OrganizationCategoryRiskView</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#OrganizationRiskConfigView">OrganizationRiskConfigView</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#VerdictThresholdView">VerdictThresholdView</a>
+
+Methods:
+
+- <code title="get /v0/platform/organization/configuration/risk-exposure">client.Organization.RiskExposureConfiguration.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#OrganizationRiskExposureConfigurationService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>) (\*<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#OrganizationRiskConfigView">OrganizationRiskConfigView</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="patch /v0/platform/organization/configuration/risk-exposure">client.Organization.RiskExposureConfiguration.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#OrganizationRiskExposureConfigurationService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#OrganizationRiskExposureConfigurationUpdateParams">OrganizationRiskExposureConfigurationUpdateParams</a>) (\*<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#OrganizationRiskConfigView">OrganizationRiskConfigView</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>

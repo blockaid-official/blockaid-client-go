@@ -55,18 +55,23 @@ func TestEvmUserOperationScanWithOptionalParams(t *testing.T) {
 				}),
 				Entrypoint: blockaidclientgo.F("0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"),
 			}),
-			Metadata: blockaidclientgo.F[blockaidclientgo.UserOperationRequestMetadataUnionParam](blockaidclientgo.UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappParam{
-				Account: blockaidclientgo.F(blockaidclientgo.UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappAccountParam{
+			Metadata: blockaidclientgo.F(blockaidclientgo.UserOperationRequestMetadataParam{
+				Account: blockaidclientgo.F(blockaidclientgo.UserOperationRequestMetadataAccountParam{
 					AccountID:                blockaidclientgo.F("account_id"),
+					AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 					AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
 					UserAge:                  blockaidclientgo.F(int64(1)),
 					UserCountryCode:          blockaidclientgo.F("user_country_code"),
 				}),
-				Connection: blockaidclientgo.F(blockaidclientgo.UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappConnectionParam{
-					IPAddress: blockaidclientgo.F("ip_address"),
-					UserAgent: blockaidclientgo.F("user_agent"),
+				Connection: blockaidclientgo.F(blockaidclientgo.UserOperationRequestMetadataConnectionParam{
+					IPAddress:                blockaidclientgo.F("ip_address"),
+					Origin:                   blockaidclientgo.F("https://example.com"),
+					UserAgent:                blockaidclientgo.F("user_agent"),
+					WalletconnectDescription: blockaidclientgo.F("walletconnect_description"),
+					WalletconnectName:        blockaidclientgo.F("walletconnect_name"),
 				}),
-				NonDapp: blockaidclientgo.F(blockaidclientgo.UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
+				Domain:  blockaidclientgo.F("example.com"),
+				NonDapp: blockaidclientgo.F(true),
 			}),
 			AccountAddress:                blockaidclientgo.F("0x77bA5AC3ca4864be26CA3112baDf07286CcC3324"),
 			Block:                         blockaidclientgo.F[blockaidclientgo.UserOperationRequestBlockUnionParam](shared.UnionString("0x5c6fd5")),

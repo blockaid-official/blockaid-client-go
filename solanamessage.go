@@ -5108,6 +5108,9 @@ type SolanaMessageScanParamsMetadata struct {
 	Account param.Field[SolanaMessageScanParamsMetadataAccount] `json:"account"`
 	// Connection metadata including user agent and IP information
 	Connection param.Field[SolanaMessageScanParamsMetadataConnection] `json:"connection"`
+	// Indicates that the transaction was not initiated by a dapp. Use false when the
+	// transaction is from a dapp.
+	NonDapp param.Field[bool] `json:"non_dapp"`
 	// URL of the dApp that originated the transaction
 	URL param.Field[string] `json:"url"`
 }
@@ -5120,6 +5123,10 @@ func (r SolanaMessageScanParamsMetadata) MarshalJSON() (data []byte, err error) 
 type SolanaMessageScanParamsMetadataAccount struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// List of all account addresses in different chains based on the CAIPs standard
+	// (https://github.com/ChainAgnostic/CAIPs). Ethereum mainnet example:
+	// eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb
+	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
 	// Age of the user in years
@@ -5134,10 +5141,19 @@ func (r SolanaMessageScanParamsMetadataAccount) MarshalJSON() (data []byte, err 
 
 // Connection metadata including user agent and IP information
 type SolanaMessageScanParamsMetadataConnection struct {
-	// IP address of the customer making the request.
+	// IP address of the customer making the request. Both IPv4 and IPv6 addresses are
+	// supported.
 	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// The full URL of the website that the request was directed to.
+	Origin param.Field[string] `json:"origin" format:"uri"`
 	// User agent string from the client's browser or application.
 	UserAgent param.Field[string] `json:"user_agent"`
+	// WalletConnect session description, when the request originates from a
+	// WalletConnect session.
+	WalletconnectDescription param.Field[string] `json:"walletconnect_description"`
+	// WalletConnect session name, when the request originates from a WalletConnect
+	// session.
+	WalletconnectName param.Field[string] `json:"walletconnect_name"`
 }
 
 func (r SolanaMessageScanParamsMetadataConnection) MarshalJSON() (data []byte, err error) {

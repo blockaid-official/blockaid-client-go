@@ -278,45 +278,6 @@ func (r AuthorizationParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-type MetadataParam struct {
-	// Account information associated with the request
-	Account param.Field[MetadataParamAccount] `json:"account"`
-	// Connection metadata including user agent and IP information
-	Connection param.Field[MetadataParamConnection] `json:"connection"`
-}
-
-func (r MetadataParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Account information associated with the request
-type MetadataParamAccount struct {
-	// Unique identifier for the account.
-	AccountID param.Field[string] `json:"account_id" api:"required"`
-	// Timestamp when the account was created.
-	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
-	// Age of the user in years
-	UserAge param.Field[int64] `json:"user_age"`
-	// ISO country code of the user's location.
-	UserCountryCode param.Field[string] `json:"user_country_code"`
-}
-
-func (r MetadataParamAccount) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Connection metadata including user agent and IP information
-type MetadataParamConnection struct {
-	// IP address of the customer making the request.
-	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
-	// User agent string from the client's browser or application.
-	UserAgent param.Field[string] `json:"user_agent"`
-}
-
-func (r MetadataParamConnection) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
 // The chain name
 type TokenScanSupportedChain string
 
@@ -357,11 +318,12 @@ const (
 	TokenScanSupportedChainSei             TokenScanSupportedChain = "sei"
 	TokenScanSupportedChainKaia            TokenScanSupportedChain = "kaia"
 	TokenScanSupportedChainTron            TokenScanSupportedChain = "tron"
+	TokenScanSupportedChainRobinhood       TokenScanSupportedChain = "robinhood"
 )
 
 func (r TokenScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStarknetSepolia, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainDegen, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainBlast, TokenScanSupportedChainSoneiumMinato, TokenScanSupportedChainBaseSepolia, TokenScanSupportedChainBitcoin, TokenScanSupportedChainAbstract, TokenScanSupportedChainSoneium, TokenScanSupportedChainInk, TokenScanSupportedChainBerachain, TokenScanSupportedChainUnichain, TokenScanSupportedChainRonin, TokenScanSupportedChainSui, TokenScanSupportedChainHedera, TokenScanSupportedChainHyperevm, TokenScanSupportedChainXlayer, TokenScanSupportedChainMonad, TokenScanSupportedChainMegaeth, TokenScanSupportedChainTempo, TokenScanSupportedChainSei, TokenScanSupportedChainKaia, TokenScanSupportedChainTron:
+	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStarknetSepolia, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainDegen, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainBlast, TokenScanSupportedChainSoneiumMinato, TokenScanSupportedChainBaseSepolia, TokenScanSupportedChainBitcoin, TokenScanSupportedChainAbstract, TokenScanSupportedChainSoneium, TokenScanSupportedChainInk, TokenScanSupportedChainBerachain, TokenScanSupportedChainUnichain, TokenScanSupportedChainRonin, TokenScanSupportedChainSui, TokenScanSupportedChainHedera, TokenScanSupportedChainHyperevm, TokenScanSupportedChainXlayer, TokenScanSupportedChainMonad, TokenScanSupportedChainMegaeth, TokenScanSupportedChainTempo, TokenScanSupportedChainSei, TokenScanSupportedChainKaia, TokenScanSupportedChainTron, TokenScanSupportedChainRobinhood:
 		return true
 	}
 	return false
@@ -420,11 +382,13 @@ const (
 	TransactionScanSupportedChainKaia             TransactionScanSupportedChain = "kaia"
 	TransactionScanSupportedChainPlasma           TransactionScanSupportedChain = "plasma"
 	TransactionScanSupportedChainMantle           TransactionScanSupportedChain = "mantle"
+	TransactionScanSupportedChainRobinhood        TransactionScanSupportedChain = "robinhood"
+	TransactionScanSupportedChainArc              TransactionScanSupportedChain = "arc"
 )
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainLordchain, TransactionScanSupportedChainLordchainTestnet, TransactionScanSupportedChainMetacade, TransactionScanSupportedChainMetacadeTestnet, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainBerachain, TransactionScanSupportedChainBerachainBartio, TransactionScanSupportedChainInk, TransactionScanSupportedChainInkSepolia, TransactionScanSupportedChainAbstract, TransactionScanSupportedChainAbstractTestnet, TransactionScanSupportedChainSoneium, TransactionScanSupportedChainUnichain, TransactionScanSupportedChainSei, TransactionScanSupportedChainFlowEvm, TransactionScanSupportedChainHyperevm, TransactionScanSupportedChainMegaeth, TransactionScanSupportedChainKatana, TransactionScanSupportedChainPlume, TransactionScanSupportedChainXlayer, TransactionScanSupportedChainMonad, TransactionScanSupportedChainMonadTestnet, TransactionScanSupportedChainTempo, TransactionScanSupportedChainTempoTestnet, TransactionScanSupportedChainKiteAI, TransactionScanSupportedChainKaia, TransactionScanSupportedChainPlasma, TransactionScanSupportedChainMantle:
+	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainLordchain, TransactionScanSupportedChainLordchainTestnet, TransactionScanSupportedChainMetacade, TransactionScanSupportedChainMetacadeTestnet, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainBerachain, TransactionScanSupportedChainBerachainBartio, TransactionScanSupportedChainInk, TransactionScanSupportedChainInkSepolia, TransactionScanSupportedChainAbstract, TransactionScanSupportedChainAbstractTestnet, TransactionScanSupportedChainSoneium, TransactionScanSupportedChainUnichain, TransactionScanSupportedChainSei, TransactionScanSupportedChainFlowEvm, TransactionScanSupportedChainHyperevm, TransactionScanSupportedChainMegaeth, TransactionScanSupportedChainKatana, TransactionScanSupportedChainPlume, TransactionScanSupportedChainXlayer, TransactionScanSupportedChainMonad, TransactionScanSupportedChainMonadTestnet, TransactionScanSupportedChainTempo, TransactionScanSupportedChainTempoTestnet, TransactionScanSupportedChainKiteAI, TransactionScanSupportedChainKaia, TransactionScanSupportedChainPlasma, TransactionScanSupportedChainMantle, TransactionScanSupportedChainRobinhood, TransactionScanSupportedChainArc:
 		return true
 	}
 	return false
@@ -494,7 +458,7 @@ type UserOperationRequestParam struct {
 	Data param.Field[UserOperationDataParam] `json:"data" api:"required"`
 	// Additional context for the scan (e.g., dapp URL/domain, integration source).
 	// Used to enrich results and reduce false positives/negatives.
-	Metadata param.Field[UserOperationRequestMetadataUnionParam] `json:"metadata" api:"required"`
+	Metadata param.Field[UserOperationRequestMetadataParam] `json:"metadata" api:"required"`
 	// The address of the account (wallet) sending the request in hex string format
 	AccountAddress param.Field[string] `json:"account_address"`
 	// The relative block for the block validation. Can be "latest" or a block number.
@@ -521,13 +485,17 @@ func (r UserOperationRequestParam) MarshalJSON() (data []byte, err error) {
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type UserOperationRequestMetadataParam struct {
-	Account    param.Field[interface{}] `json:"account"`
-	Connection param.Field[interface{}] `json:"connection"`
-	// The full URL of the DApp or website that initiated the transaction, for
+	// End-user account context (id, age, country, creation time, and
+	// account_addresses).
+	Account param.Field[UserOperationRequestMetadataAccountParam] `json:"account"`
+	// Connection metadata including user agent, IP information, and origin.
+	Connection param.Field[UserOperationRequestMetadataConnectionParam] `json:"connection"`
+	// The full URL of the DApp or website that initiated the request, for
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain"`
-	// Indicates that the transaction was not initiated by a dapp.
+	// Set to true when the request was not initiated by a dapp. Dapp requests should
+	// provide the `domain` field.
 	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
@@ -535,38 +503,15 @@ func (r UserOperationRequestMetadataParam) MarshalJSON() (data []byte, err error
 	return apijson.MarshalRoot(r)
 }
 
-func (r UserOperationRequestMetadataParam) implementsUserOperationRequestMetadataUnionParam() {}
-
-// Additional context for the scan (e.g., dapp URL/domain, integration source).
-// Used to enrich results and reduce false positives/negatives.
-//
-// Satisfied by [UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappParam],
-// [UserOperationRequestMetadataRoutersEvmModelsMetadataDappParam],
-// [UserOperationRequestMetadataParam].
-type UserOperationRequestMetadataUnionParam interface {
-	implementsUserOperationRequestMetadataUnionParam()
-}
-
-type UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappParam struct {
-	// Account information associated with the request
-	Account param.Field[UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappAccountParam] `json:"account"`
-	// Connection metadata including user agent and IP information
-	Connection param.Field[UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappConnectionParam] `json:"connection"`
-	// Indicates that the transaction was not initiated by a dapp.
-	NonDapp param.Field[UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappNonDapp] `json:"non_dapp"`
-}
-
-func (r UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappParam) implementsUserOperationRequestMetadataUnionParam() {
-}
-
-// Account information associated with the request
-type UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappAccountParam struct {
+// End-user account context (id, age, country, creation time, and
+// account_addresses).
+type UserOperationRequestMetadataAccountParam struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// List of all account addresses in different chains based on the CAIPs standard
+	// (https://github.com/ChainAgnostic/CAIPs). Ethereum mainnet example:
+	// eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb
+	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
 	// Age of the user in years
@@ -575,83 +520,28 @@ type UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappAccountParam str
 	UserCountryCode param.Field[string] `json:"user_country_code"`
 }
 
-func (r UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappAccountParam) MarshalJSON() (data []byte, err error) {
+func (r UserOperationRequestMetadataAccountParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// Connection metadata including user agent and IP information
-type UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappConnectionParam struct {
-	// IP address of the customer making the request.
+// Connection metadata including user agent, IP information, and origin.
+type UserOperationRequestMetadataConnectionParam struct {
+	// IP address of the customer making the request. Both IPv4 and IPv6 addresses are
+	// supported.
 	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// The full URL of the website that the request was directed to.
+	Origin param.Field[string] `json:"origin" format:"uri"`
 	// User agent string from the client's browser or application.
 	UserAgent param.Field[string] `json:"user_agent"`
+	// WalletConnect session description, when the request originates from a
+	// WalletConnect session.
+	WalletconnectDescription param.Field[string] `json:"walletconnect_description"`
+	// WalletConnect session name, when the request originates from a WalletConnect
+	// session.
+	WalletconnectName param.Field[string] `json:"walletconnect_name"`
 }
 
-func (r UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappConnectionParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Indicates that the transaction was not initiated by a dapp.
-type UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappNonDapp bool
-
-const (
-	UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappNonDappTrue UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappNonDapp = true
-)
-
-func (r UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappNonDapp) IsKnown() bool {
-	switch r {
-	case UserOperationRequestMetadataRoutersEvmModelsMetadataNonDappNonDappTrue:
-		return true
-	}
-	return false
-}
-
-type UserOperationRequestMetadataRoutersEvmModelsMetadataDappParam struct {
-	// The full URL of the DApp or website that initiated the transaction, for
-	// cross-reference. Must use the https or http scheme and contain a valid hostname.
-	// Cannot contain JSON, braces, or other embedded data structures.
-	Domain param.Field[string] `json:"domain" api:"required"`
-	// Account information associated with the request
-	Account param.Field[UserOperationRequestMetadataRoutersEvmModelsMetadataDappAccountParam] `json:"account"`
-	// Connection metadata including user agent and IP information
-	Connection param.Field[UserOperationRequestMetadataRoutersEvmModelsMetadataDappConnectionParam] `json:"connection"`
-	// Indicates that the transaction was not initiated by a dapp. Use false when the
-	// transaction is from a dapp.
-	NonDapp param.Field[bool] `json:"non_dapp"`
-}
-
-func (r UserOperationRequestMetadataRoutersEvmModelsMetadataDappParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r UserOperationRequestMetadataRoutersEvmModelsMetadataDappParam) implementsUserOperationRequestMetadataUnionParam() {
-}
-
-// Account information associated with the request
-type UserOperationRequestMetadataRoutersEvmModelsMetadataDappAccountParam struct {
-	// Unique identifier for the account.
-	AccountID param.Field[string] `json:"account_id" api:"required"`
-	// Timestamp when the account was created.
-	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
-	// Age of the user in years
-	UserAge param.Field[int64] `json:"user_age"`
-	// ISO country code of the user's location.
-	UserCountryCode param.Field[string] `json:"user_country_code"`
-}
-
-func (r UserOperationRequestMetadataRoutersEvmModelsMetadataDappAccountParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Connection metadata including user agent and IP information
-type UserOperationRequestMetadataRoutersEvmModelsMetadataDappConnectionParam struct {
-	// IP address of the customer making the request.
-	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
-	// User agent string from the client's browser or application.
-	UserAgent param.Field[string] `json:"user_agent"`
-}
-
-func (r UserOperationRequestMetadataRoutersEvmModelsMetadataDappConnectionParam) MarshalJSON() (data []byte, err error) {
+func (r UserOperationRequestMetadataConnectionParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -895,7 +785,7 @@ type ValidateAddressParam struct {
 	Chain param.Field[TransactionScanSupportedChain] `json:"chain" api:"required"`
 	// Additional context for the scan (e.g., dapp URL/domain, integration source).
 	// Used to enrich results and reduce false positives/negatives.
-	Metadata param.Field[ValidateAddressMetadataUnionParam] `json:"metadata" api:"required"`
+	Metadata param.Field[ValidateAddressMetadataParam] `json:"metadata" api:"required"`
 }
 
 func (r ValidateAddressParam) MarshalJSON() (data []byte, err error) {
@@ -905,13 +795,17 @@ func (r ValidateAddressParam) MarshalJSON() (data []byte, err error) {
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type ValidateAddressMetadataParam struct {
-	Account    param.Field[interface{}] `json:"account"`
-	Connection param.Field[interface{}] `json:"connection"`
-	// The full URL of the DApp or website that initiated the transaction, for
+	// End-user account context (id, age, country, creation time, and
+	// account_addresses).
+	Account param.Field[ValidateAddressMetadataAccountParam] `json:"account"`
+	// Connection metadata including user agent, IP information, and origin.
+	Connection param.Field[ValidateAddressMetadataConnectionParam] `json:"connection"`
+	// The full URL of the DApp or website that initiated the request, for
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain"`
-	// Indicates that the transaction was not initiated by a dapp.
+	// Set to true when the request was not initiated by a dapp. Dapp requests should
+	// provide the `domain` field.
 	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
@@ -919,38 +813,15 @@ func (r ValidateAddressMetadataParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r ValidateAddressMetadataParam) implementsValidateAddressMetadataUnionParam() {}
-
-// Additional context for the scan (e.g., dapp URL/domain, integration source).
-// Used to enrich results and reduce false positives/negatives.
-//
-// Satisfied by [ValidateAddressMetadataRoutersEvmModelsMetadataNonDappParam],
-// [ValidateAddressMetadataRoutersEvmModelsMetadataDappParam],
-// [ValidateAddressMetadataParam].
-type ValidateAddressMetadataUnionParam interface {
-	implementsValidateAddressMetadataUnionParam()
-}
-
-type ValidateAddressMetadataRoutersEvmModelsMetadataNonDappParam struct {
-	// Account information associated with the request
-	Account param.Field[ValidateAddressMetadataRoutersEvmModelsMetadataNonDappAccountParam] `json:"account"`
-	// Connection metadata including user agent and IP information
-	Connection param.Field[ValidateAddressMetadataRoutersEvmModelsMetadataNonDappConnectionParam] `json:"connection"`
-	// Indicates that the transaction was not initiated by a dapp.
-	NonDapp param.Field[ValidateAddressMetadataRoutersEvmModelsMetadataNonDappNonDapp] `json:"non_dapp"`
-}
-
-func (r ValidateAddressMetadataRoutersEvmModelsMetadataNonDappParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r ValidateAddressMetadataRoutersEvmModelsMetadataNonDappParam) implementsValidateAddressMetadataUnionParam() {
-}
-
-// Account information associated with the request
-type ValidateAddressMetadataRoutersEvmModelsMetadataNonDappAccountParam struct {
+// End-user account context (id, age, country, creation time, and
+// account_addresses).
+type ValidateAddressMetadataAccountParam struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// List of all account addresses in different chains based on the CAIPs standard
+	// (https://github.com/ChainAgnostic/CAIPs). Ethereum mainnet example:
+	// eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb
+	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
 	// Age of the user in years
@@ -959,83 +830,28 @@ type ValidateAddressMetadataRoutersEvmModelsMetadataNonDappAccountParam struct {
 	UserCountryCode param.Field[string] `json:"user_country_code"`
 }
 
-func (r ValidateAddressMetadataRoutersEvmModelsMetadataNonDappAccountParam) MarshalJSON() (data []byte, err error) {
+func (r ValidateAddressMetadataAccountParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// Connection metadata including user agent and IP information
-type ValidateAddressMetadataRoutersEvmModelsMetadataNonDappConnectionParam struct {
-	// IP address of the customer making the request.
+// Connection metadata including user agent, IP information, and origin.
+type ValidateAddressMetadataConnectionParam struct {
+	// IP address of the customer making the request. Both IPv4 and IPv6 addresses are
+	// supported.
 	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// The full URL of the website that the request was directed to.
+	Origin param.Field[string] `json:"origin" format:"uri"`
 	// User agent string from the client's browser or application.
 	UserAgent param.Field[string] `json:"user_agent"`
+	// WalletConnect session description, when the request originates from a
+	// WalletConnect session.
+	WalletconnectDescription param.Field[string] `json:"walletconnect_description"`
+	// WalletConnect session name, when the request originates from a WalletConnect
+	// session.
+	WalletconnectName param.Field[string] `json:"walletconnect_name"`
 }
 
-func (r ValidateAddressMetadataRoutersEvmModelsMetadataNonDappConnectionParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Indicates that the transaction was not initiated by a dapp.
-type ValidateAddressMetadataRoutersEvmModelsMetadataNonDappNonDapp bool
-
-const (
-	ValidateAddressMetadataRoutersEvmModelsMetadataNonDappNonDappTrue ValidateAddressMetadataRoutersEvmModelsMetadataNonDappNonDapp = true
-)
-
-func (r ValidateAddressMetadataRoutersEvmModelsMetadataNonDappNonDapp) IsKnown() bool {
-	switch r {
-	case ValidateAddressMetadataRoutersEvmModelsMetadataNonDappNonDappTrue:
-		return true
-	}
-	return false
-}
-
-type ValidateAddressMetadataRoutersEvmModelsMetadataDappParam struct {
-	// The full URL of the DApp or website that initiated the transaction, for
-	// cross-reference. Must use the https or http scheme and contain a valid hostname.
-	// Cannot contain JSON, braces, or other embedded data structures.
-	Domain param.Field[string] `json:"domain" api:"required"`
-	// Account information associated with the request
-	Account param.Field[ValidateAddressMetadataRoutersEvmModelsMetadataDappAccountParam] `json:"account"`
-	// Connection metadata including user agent and IP information
-	Connection param.Field[ValidateAddressMetadataRoutersEvmModelsMetadataDappConnectionParam] `json:"connection"`
-	// Indicates that the transaction was not initiated by a dapp. Use false when the
-	// transaction is from a dapp.
-	NonDapp param.Field[bool] `json:"non_dapp"`
-}
-
-func (r ValidateAddressMetadataRoutersEvmModelsMetadataDappParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r ValidateAddressMetadataRoutersEvmModelsMetadataDappParam) implementsValidateAddressMetadataUnionParam() {
-}
-
-// Account information associated with the request
-type ValidateAddressMetadataRoutersEvmModelsMetadataDappAccountParam struct {
-	// Unique identifier for the account.
-	AccountID param.Field[string] `json:"account_id" api:"required"`
-	// Timestamp when the account was created.
-	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
-	// Age of the user in years
-	UserAge param.Field[int64] `json:"user_age"`
-	// ISO country code of the user's location.
-	UserCountryCode param.Field[string] `json:"user_country_code"`
-}
-
-func (r ValidateAddressMetadataRoutersEvmModelsMetadataDappAccountParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Connection metadata including user agent and IP information
-type ValidateAddressMetadataRoutersEvmModelsMetadataDappConnectionParam struct {
-	// IP address of the customer making the request.
-	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
-	// User agent string from the client's browser or application.
-	UserAgent param.Field[string] `json:"user_agent"`
-}
-
-func (r ValidateAddressMetadataRoutersEvmModelsMetadataDappConnectionParam) MarshalJSON() (data []byte, err error) {
+func (r ValidateAddressMetadataConnectionParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -1046,7 +862,7 @@ type ValidateBulkAddressesParam struct {
 	Chain param.Field[TransactionScanSupportedChain] `json:"chain" api:"required"`
 	// Additional context for the scan (e.g., dapp URL/domain, integration source).
 	// Used to enrich results and reduce false positives/negatives.
-	Metadata param.Field[ValidateBulkAddressesMetadataUnionParam] `json:"metadata" api:"required"`
+	Metadata param.Field[ValidateBulkAddressesMetadataParam] `json:"metadata" api:"required"`
 }
 
 func (r ValidateBulkAddressesParam) MarshalJSON() (data []byte, err error) {
@@ -1056,13 +872,17 @@ func (r ValidateBulkAddressesParam) MarshalJSON() (data []byte, err error) {
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type ValidateBulkAddressesMetadataParam struct {
-	Account    param.Field[interface{}] `json:"account"`
-	Connection param.Field[interface{}] `json:"connection"`
-	// The full URL of the DApp or website that initiated the transaction, for
+	// End-user account context (id, age, country, creation time, and
+	// account_addresses).
+	Account param.Field[ValidateBulkAddressesMetadataAccountParam] `json:"account"`
+	// Connection metadata including user agent, IP information, and origin.
+	Connection param.Field[ValidateBulkAddressesMetadataConnectionParam] `json:"connection"`
+	// The full URL of the DApp or website that initiated the request, for
 	// cross-reference. Must use the https or http scheme and contain a valid hostname.
 	// Cannot contain JSON, braces, or other embedded data structures.
 	Domain param.Field[string] `json:"domain"`
-	// Indicates that the transaction was not initiated by a dapp.
+	// Set to true when the request was not initiated by a dapp. Dapp requests should
+	// provide the `domain` field.
 	NonDapp param.Field[bool] `json:"non_dapp"`
 }
 
@@ -1070,39 +890,15 @@ func (r ValidateBulkAddressesMetadataParam) MarshalJSON() (data []byte, err erro
 	return apijson.MarshalRoot(r)
 }
 
-func (r ValidateBulkAddressesMetadataParam) implementsValidateBulkAddressesMetadataUnionParam() {}
-
-// Additional context for the scan (e.g., dapp URL/domain, integration source).
-// Used to enrich results and reduce false positives/negatives.
-//
-// Satisfied by
-// [ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappParam],
-// [ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappParam],
-// [ValidateBulkAddressesMetadataParam].
-type ValidateBulkAddressesMetadataUnionParam interface {
-	implementsValidateBulkAddressesMetadataUnionParam()
-}
-
-type ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappParam struct {
-	// Account information associated with the request
-	Account param.Field[ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappAccountParam] `json:"account"`
-	// Connection metadata including user agent and IP information
-	Connection param.Field[ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappConnectionParam] `json:"connection"`
-	// Indicates that the transaction was not initiated by a dapp.
-	NonDapp param.Field[ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappNonDapp] `json:"non_dapp"`
-}
-
-func (r ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappParam) implementsValidateBulkAddressesMetadataUnionParam() {
-}
-
-// Account information associated with the request
-type ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappAccountParam struct {
+// End-user account context (id, age, country, creation time, and
+// account_addresses).
+type ValidateBulkAddressesMetadataAccountParam struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// List of all account addresses in different chains based on the CAIPs standard
+	// (https://github.com/ChainAgnostic/CAIPs). Ethereum mainnet example:
+	// eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb
+	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
 	// Age of the user in years
@@ -1111,83 +907,28 @@ type ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappAccountParam st
 	UserCountryCode param.Field[string] `json:"user_country_code"`
 }
 
-func (r ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappAccountParam) MarshalJSON() (data []byte, err error) {
+func (r ValidateBulkAddressesMetadataAccountParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// Connection metadata including user agent and IP information
-type ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappConnectionParam struct {
-	// IP address of the customer making the request.
+// Connection metadata including user agent, IP information, and origin.
+type ValidateBulkAddressesMetadataConnectionParam struct {
+	// IP address of the customer making the request. Both IPv4 and IPv6 addresses are
+	// supported.
 	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// The full URL of the website that the request was directed to.
+	Origin param.Field[string] `json:"origin" format:"uri"`
 	// User agent string from the client's browser or application.
 	UserAgent param.Field[string] `json:"user_agent"`
+	// WalletConnect session description, when the request originates from a
+	// WalletConnect session.
+	WalletconnectDescription param.Field[string] `json:"walletconnect_description"`
+	// WalletConnect session name, when the request originates from a WalletConnect
+	// session.
+	WalletconnectName param.Field[string] `json:"walletconnect_name"`
 }
 
-func (r ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappConnectionParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Indicates that the transaction was not initiated by a dapp.
-type ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappNonDapp bool
-
-const (
-	ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappNonDappTrue ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappNonDapp = true
-)
-
-func (r ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappNonDapp) IsKnown() bool {
-	switch r {
-	case ValidateBulkAddressesMetadataRoutersEvmModelsMetadataNonDappNonDappTrue:
-		return true
-	}
-	return false
-}
-
-type ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappParam struct {
-	// The full URL of the DApp or website that initiated the transaction, for
-	// cross-reference. Must use the https or http scheme and contain a valid hostname.
-	// Cannot contain JSON, braces, or other embedded data structures.
-	Domain param.Field[string] `json:"domain" api:"required"`
-	// Account information associated with the request
-	Account param.Field[ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappAccountParam] `json:"account"`
-	// Connection metadata including user agent and IP information
-	Connection param.Field[ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappConnectionParam] `json:"connection"`
-	// Indicates that the transaction was not initiated by a dapp. Use false when the
-	// transaction is from a dapp.
-	NonDapp param.Field[bool] `json:"non_dapp"`
-}
-
-func (r ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappParam) implementsValidateBulkAddressesMetadataUnionParam() {
-}
-
-// Account information associated with the request
-type ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappAccountParam struct {
-	// Unique identifier for the account.
-	AccountID param.Field[string] `json:"account_id" api:"required"`
-	// Timestamp when the account was created.
-	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
-	// Age of the user in years
-	UserAge param.Field[int64] `json:"user_age"`
-	// ISO country code of the user's location.
-	UserCountryCode param.Field[string] `json:"user_country_code"`
-}
-
-func (r ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappAccountParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Connection metadata including user agent and IP information
-type ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappConnectionParam struct {
-	// IP address of the customer making the request.
-	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
-	// User agent string from the client's browser or application.
-	UserAgent param.Field[string] `json:"user_agent"`
-}
-
-func (r ValidateBulkAddressesMetadataRoutersEvmModelsMetadataDappConnectionParam) MarshalJSON() (data []byte, err error) {
+func (r ValidateBulkAddressesMetadataConnectionParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -1228,7 +969,10 @@ func (r ValidateBulkExtendedAddressesRequestMetadataAccountParam) MarshalJSON() 
 }
 
 type ValidateBulkExtendedAddressesRequestMetadataConnectionParam struct {
-	IPAddress param.Field[string] `json:"ip_address" api:"required"`
+	// IP address of the customer making the request. Both IPv4 and IPv6 addresses are
+	// supported.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// User agent string from the client's browser or application.
 	UserAgent param.Field[string] `json:"user_agent" api:"required"`
 }
 

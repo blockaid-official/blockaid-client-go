@@ -61,18 +61,23 @@ func TestEvmPostTransactionScanWithOptionalParams(t *testing.T) {
 		Data: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsData{
 			TxHash: blockaidclientgo.F("0xc01780dadc107754b331250b4797606949cb3d0087facc0a737122d5e973c83c"),
 		}),
-		Metadata: blockaidclientgo.F[blockaidclientgo.EvmPostTransactionScanParamsMetadataUnion](blockaidclientgo.EvmPostTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDapp{
-			Account: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappAccount{
+		Metadata: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsMetadata{
+			Account: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsMetadataAccount{
 				AccountID:                blockaidclientgo.F("account_id"),
+				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
 				UserAge:                  blockaidclientgo.F(int64(1)),
 				UserCountryCode:          blockaidclientgo.F("user_country_code"),
 			}),
-			Connection: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappConnection{
-				IPAddress: blockaidclientgo.F("ip_address"),
-				UserAgent: blockaidclientgo.F("user_agent"),
+			Connection: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsMetadataConnection{
+				IPAddress:                blockaidclientgo.F("ip_address"),
+				Origin:                   blockaidclientgo.F("https://example.com"),
+				UserAgent:                blockaidclientgo.F("user_agent"),
+				WalletconnectDescription: blockaidclientgo.F("walletconnect_description"),
+				WalletconnectName:        blockaidclientgo.F("walletconnect_name"),
 			}),
-			NonDapp: blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsMetadataRoutersEvmModelsMetadataNonDappNonDappTrue),
+			Domain:  blockaidclientgo.F("domain"),
+			NonDapp: blockaidclientgo.F(true),
 		}),
 		Block:                    blockaidclientgo.F[blockaidclientgo.EvmPostTransactionScanParamsBlockUnion](shared.UnionInt(int64(0))),
 		Options:                  blockaidclientgo.F([]blockaidclientgo.EvmPostTransactionScanParamsOption{blockaidclientgo.EvmPostTransactionScanParamsOptionValidation, blockaidclientgo.EvmPostTransactionScanParamsOptionSimulation}),
@@ -91,6 +96,15 @@ func TestEvmPostTransactionScanWithOptionalParams(t *testing.T) {
 				}),
 			},
 		}),
+		TransactionHints: blockaidclientgo.F([]blockaidclientgo.EvmPostTransactionScanParamsTransactionHintUnion{blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridgeHint{
+			Type:               blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridgeHintTypeCrossChainBridge),
+			DestinationAddress: blockaidclientgo.F("destination_address"),
+			DestinationAsset: blockaidclientgo.F[blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetUnion](blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAsset{
+				Type:     blockaidclientgo.F(blockaidclientgo.EvmPostTransactionScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative),
+				RawValue: blockaidclientgo.F("raw_value"),
+			}),
+			DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+		}}),
 	})
 	if err != nil {
 		var apierr *blockaidclientgo.Error

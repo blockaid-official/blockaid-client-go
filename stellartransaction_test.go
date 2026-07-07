@@ -59,11 +59,21 @@ func TestStellarTransactionScanWithOptionalParams(t *testing.T) {
 			AccountAddress: blockaidclientgo.F("GDPMFLKUGASUTWBN2XGYYKD27QGHCYH4BUFUTER4L23INYQ4JHDWFOIE"),
 			Chain:          blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestChainPubnet),
 			Metadata: blockaidclientgo.F[blockaidclientgo.StellarTransactionScanRequestMetadataUnionParam](blockaidclientgo.StellarTransactionScanRequestMetadataStellarWalletRequestMetadataParam{
-				Type: blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestMetadataStellarWalletRequestMetadataTypeWallet),
-				URL:  blockaidclientgo.F("https://example.com"),
+				Type:    blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestMetadataStellarWalletRequestMetadataTypeWallet),
+				URL:     blockaidclientgo.F("https://example.com"),
+				NonDapp: blockaidclientgo.F(true),
 			}),
 			Transaction: blockaidclientgo.F("AAAAAgAAAADewq1UMCVJ2C3VzYwoevwMcWD8DQtJkjxetobiHEnHYgAAAAEAAAAAAAAAAgAAAAAAAAAAAAAAAQAAAAEAAAAA3sKtVDAlSdgt1c2MKHr8DHFg/A0LSZI8XraG4hxJx2IAAAABAAAAACI40RTBOFEE7uT5mZkoq30mbvxLPJpMUm9cIFHgK9SRAAAAAAAAAAAAmJaAAAAAAAAAAAA="),
 			Options:     blockaidclientgo.F([]blockaidclientgo.StellarTransactionScanRequestOption{blockaidclientgo.StellarTransactionScanRequestOptionValidation, blockaidclientgo.StellarTransactionScanRequestOptionSimulation}),
+			TransactionHints: blockaidclientgo.F([]blockaidclientgo.StellarTransactionScanRequestTransactionHintsUnionParam{blockaidclientgo.StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintParam{
+				Type:               blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintTypeCrossChainBridge),
+				DestinationAddress: blockaidclientgo.F("destination_address"),
+				DestinationAsset: blockaidclientgo.F[blockaidclientgo.StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetUnionParam](blockaidclientgo.StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetParam{
+					Type:     blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative),
+					RawValue: blockaidclientgo.F("raw_value"),
+				}),
+				DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+			}}),
 		},
 	})
 	if err != nil {

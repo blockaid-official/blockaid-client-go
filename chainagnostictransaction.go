@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"reflect"
 	"slices"
+	"time"
 
 	"github.com/blockaid-official/blockaid-client-go/internal/apijson"
 	"github.com/blockaid-official/blockaid-client-go/internal/param"
@@ -480,7 +481,7 @@ type ChainAgnosticTransactionScanParams struct {
 	Data param.Field[ChainAgnosticTransactionScanParamsData] `json:"data" api:"required"`
 	// Additional metadata about the request including account and connection
 	// information
-	Metadata param.Field[MetadataParam] `json:"metadata" api:"required"`
+	Metadata param.Field[ChainAgnosticTransactionScanParamsMetadata] `json:"metadata" api:"required"`
 	// List of options to apply during the transaction scan
 	Options param.Field[[]ChainAgnosticTransactionScanParamsOption] `json:"options" api:"required"`
 }
@@ -609,11 +610,13 @@ const (
 	ChainAgnosticTransactionScanParamsDataChainKaia             ChainAgnosticTransactionScanParamsDataChain = "kaia"
 	ChainAgnosticTransactionScanParamsDataChainPlasma           ChainAgnosticTransactionScanParamsDataChain = "plasma"
 	ChainAgnosticTransactionScanParamsDataChainMantle           ChainAgnosticTransactionScanParamsDataChain = "mantle"
+	ChainAgnosticTransactionScanParamsDataChainRobinhood        ChainAgnosticTransactionScanParamsDataChain = "robinhood"
+	ChainAgnosticTransactionScanParamsDataChainArc              ChainAgnosticTransactionScanParamsDataChain = "arc"
 )
 
 func (r ChainAgnosticTransactionScanParamsDataChain) IsKnown() bool {
 	switch r {
-	case ChainAgnosticTransactionScanParamsDataChainArbitrum, ChainAgnosticTransactionScanParamsDataChainAvalanche, ChainAgnosticTransactionScanParamsDataChainBase, ChainAgnosticTransactionScanParamsDataChainBaseSepolia, ChainAgnosticTransactionScanParamsDataChainBsc, ChainAgnosticTransactionScanParamsDataChainEthereum, ChainAgnosticTransactionScanParamsDataChainEthereumSepolia, ChainAgnosticTransactionScanParamsDataChainOptimism, ChainAgnosticTransactionScanParamsDataChainPolygon, ChainAgnosticTransactionScanParamsDataChainZksync, ChainAgnosticTransactionScanParamsDataChainZksyncSepolia, ChainAgnosticTransactionScanParamsDataChainZora, ChainAgnosticTransactionScanParamsDataChainLinea, ChainAgnosticTransactionScanParamsDataChainBlast, ChainAgnosticTransactionScanParamsDataChainScroll, ChainAgnosticTransactionScanParamsDataChainAvalancheFuji, ChainAgnosticTransactionScanParamsDataChainDegen, ChainAgnosticTransactionScanParamsDataChainGnosis, ChainAgnosticTransactionScanParamsDataChainWorldchain, ChainAgnosticTransactionScanParamsDataChainSoneiumMinato, ChainAgnosticTransactionScanParamsDataChainRonin, ChainAgnosticTransactionScanParamsDataChainApechain, ChainAgnosticTransactionScanParamsDataChainBerachain, ChainAgnosticTransactionScanParamsDataChainInkSepolia, ChainAgnosticTransactionScanParamsDataChainInk, ChainAgnosticTransactionScanParamsDataChainAbstract, ChainAgnosticTransactionScanParamsDataChainAbstractTestnet, ChainAgnosticTransactionScanParamsDataChainMetacade, ChainAgnosticTransactionScanParamsDataChainMetacadeTestnet, ChainAgnosticTransactionScanParamsDataChainSoneium, ChainAgnosticTransactionScanParamsDataChainUnichain, ChainAgnosticTransactionScanParamsDataChainLordchainTestnet, ChainAgnosticTransactionScanParamsDataChainLordchain, ChainAgnosticTransactionScanParamsDataChainSei, ChainAgnosticTransactionScanParamsDataChainFlowEvm, ChainAgnosticTransactionScanParamsDataChainHyperevm, ChainAgnosticTransactionScanParamsDataChainMegaeth, ChainAgnosticTransactionScanParamsDataChainKatana, ChainAgnosticTransactionScanParamsDataChainPlume, ChainAgnosticTransactionScanParamsDataChainSolana, ChainAgnosticTransactionScanParamsDataChainBitcoin, ChainAgnosticTransactionScanParamsDataChainXlayer, ChainAgnosticTransactionScanParamsDataChainMonad, ChainAgnosticTransactionScanParamsDataChainMonadTestnet, ChainAgnosticTransactionScanParamsDataChainTron, ChainAgnosticTransactionScanParamsDataChainKaia, ChainAgnosticTransactionScanParamsDataChainPlasma, ChainAgnosticTransactionScanParamsDataChainMantle:
+	case ChainAgnosticTransactionScanParamsDataChainArbitrum, ChainAgnosticTransactionScanParamsDataChainAvalanche, ChainAgnosticTransactionScanParamsDataChainBase, ChainAgnosticTransactionScanParamsDataChainBaseSepolia, ChainAgnosticTransactionScanParamsDataChainBsc, ChainAgnosticTransactionScanParamsDataChainEthereum, ChainAgnosticTransactionScanParamsDataChainEthereumSepolia, ChainAgnosticTransactionScanParamsDataChainOptimism, ChainAgnosticTransactionScanParamsDataChainPolygon, ChainAgnosticTransactionScanParamsDataChainZksync, ChainAgnosticTransactionScanParamsDataChainZksyncSepolia, ChainAgnosticTransactionScanParamsDataChainZora, ChainAgnosticTransactionScanParamsDataChainLinea, ChainAgnosticTransactionScanParamsDataChainBlast, ChainAgnosticTransactionScanParamsDataChainScroll, ChainAgnosticTransactionScanParamsDataChainAvalancheFuji, ChainAgnosticTransactionScanParamsDataChainDegen, ChainAgnosticTransactionScanParamsDataChainGnosis, ChainAgnosticTransactionScanParamsDataChainWorldchain, ChainAgnosticTransactionScanParamsDataChainSoneiumMinato, ChainAgnosticTransactionScanParamsDataChainRonin, ChainAgnosticTransactionScanParamsDataChainApechain, ChainAgnosticTransactionScanParamsDataChainBerachain, ChainAgnosticTransactionScanParamsDataChainInkSepolia, ChainAgnosticTransactionScanParamsDataChainInk, ChainAgnosticTransactionScanParamsDataChainAbstract, ChainAgnosticTransactionScanParamsDataChainAbstractTestnet, ChainAgnosticTransactionScanParamsDataChainMetacade, ChainAgnosticTransactionScanParamsDataChainMetacadeTestnet, ChainAgnosticTransactionScanParamsDataChainSoneium, ChainAgnosticTransactionScanParamsDataChainUnichain, ChainAgnosticTransactionScanParamsDataChainLordchainTestnet, ChainAgnosticTransactionScanParamsDataChainLordchain, ChainAgnosticTransactionScanParamsDataChainSei, ChainAgnosticTransactionScanParamsDataChainFlowEvm, ChainAgnosticTransactionScanParamsDataChainHyperevm, ChainAgnosticTransactionScanParamsDataChainMegaeth, ChainAgnosticTransactionScanParamsDataChainKatana, ChainAgnosticTransactionScanParamsDataChainPlume, ChainAgnosticTransactionScanParamsDataChainSolana, ChainAgnosticTransactionScanParamsDataChainBitcoin, ChainAgnosticTransactionScanParamsDataChainXlayer, ChainAgnosticTransactionScanParamsDataChainMonad, ChainAgnosticTransactionScanParamsDataChainMonadTestnet, ChainAgnosticTransactionScanParamsDataChainTron, ChainAgnosticTransactionScanParamsDataChainKaia, ChainAgnosticTransactionScanParamsDataChainPlasma, ChainAgnosticTransactionScanParamsDataChainMantle, ChainAgnosticTransactionScanParamsDataChainRobinhood, ChainAgnosticTransactionScanParamsDataChainArc:
 		return true
 	}
 	return false
@@ -633,6 +636,69 @@ func (r ChainAgnosticTransactionScanParamsDataTransactionAction) IsKnown() bool 
 		return true
 	}
 	return false
+}
+
+// Additional metadata about the request including account and connection
+// information
+type ChainAgnosticTransactionScanParamsMetadata struct {
+	// End-user account context (id, age, country, creation time, and
+	// account_addresses).
+	Account param.Field[ChainAgnosticTransactionScanParamsMetadataAccount] `json:"account"`
+	// Connection metadata including user agent, IP information, and origin.
+	Connection param.Field[ChainAgnosticTransactionScanParamsMetadataConnection] `json:"connection"`
+	// The full URL of the DApp or website that initiated the request, for
+	// cross-reference. Must use the https or http scheme and contain a valid hostname.
+	// Cannot contain JSON, braces, or other embedded data structures.
+	Domain param.Field[string] `json:"domain"`
+	// Set to true when the request was not initiated by a dapp. Dapp requests should
+	// provide the `domain` field.
+	NonDapp param.Field[bool] `json:"non_dapp"`
+}
+
+func (r ChainAgnosticTransactionScanParamsMetadata) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// End-user account context (id, age, country, creation time, and
+// account_addresses).
+type ChainAgnosticTransactionScanParamsMetadataAccount struct {
+	// Unique identifier for the account.
+	AccountID param.Field[string] `json:"account_id" api:"required"`
+	// List of all account addresses in different chains based on the CAIPs standard
+	// (https://github.com/ChainAgnostic/CAIPs). Ethereum mainnet example:
+	// eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb
+	AccountAddresses param.Field[[]string] `json:"account_addresses"`
+	// Timestamp when the account was created.
+	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Age of the user in years
+	UserAge param.Field[int64] `json:"user_age"`
+	// ISO country code of the user's location.
+	UserCountryCode param.Field[string] `json:"user_country_code"`
+}
+
+func (r ChainAgnosticTransactionScanParamsMetadataAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Connection metadata including user agent, IP information, and origin.
+type ChainAgnosticTransactionScanParamsMetadataConnection struct {
+	// IP address of the customer making the request. Both IPv4 and IPv6 addresses are
+	// supported.
+	IPAddress param.Field[string] `json:"ip_address" api:"required" format:"ipvanyaddress"`
+	// The full URL of the website that the request was directed to.
+	Origin param.Field[string] `json:"origin" format:"uri"`
+	// User agent string from the client's browser or application.
+	UserAgent param.Field[string] `json:"user_agent"`
+	// WalletConnect session description, when the request originates from a
+	// WalletConnect session.
+	WalletconnectDescription param.Field[string] `json:"walletconnect_description"`
+	// WalletConnect session name, when the request originates from a WalletConnect
+	// session.
+	WalletconnectName param.Field[string] `json:"walletconnect_name"`
+}
+
+func (r ChainAgnosticTransactionScanParamsMetadataConnection) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // Requested output section to include in the response.
