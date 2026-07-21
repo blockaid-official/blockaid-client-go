@@ -13400,7 +13400,7 @@ func (r EvmTransactionBulkScanResponseValidationStatus) IsKnown() bool {
 
 type EvmTransactionBulkScanParams struct {
 	// The chain name or chain ID
-	Chain param.Field[TransactionScanSupportedChain] `json:"chain" api:"required"`
+	Chain param.Field[BulkTransactionScanSupportedChain] `json:"chain" api:"required"`
 	// Transaction bulk parameters
 	Data param.Field[[]EvmTransactionBulkScanParamsData] `json:"data" api:"required"`
 	// Additional context for the scan (e.g., dapp URL/domain, integration source).
