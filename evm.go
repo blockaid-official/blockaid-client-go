@@ -278,6 +278,33 @@ func (r AuthorizationParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// Chains supported by the bulk transaction scan endpoint. Narrower than
+// TransactionScanSupportedChains: limited to chains whose node exposes a batched
+// trace call (debug_traceCallMany / trace_callMany).
+type BulkTransactionScanSupportedChain string
+
+const (
+	BulkTransactionScanSupportedChainArbitrum    BulkTransactionScanSupportedChain = "arbitrum"
+	BulkTransactionScanSupportedChainAvalanche   BulkTransactionScanSupportedChain = "avalanche"
+	BulkTransactionScanSupportedChainBase        BulkTransactionScanSupportedChain = "base"
+	BulkTransactionScanSupportedChainBaseSepolia BulkTransactionScanSupportedChain = "base-sepolia"
+	BulkTransactionScanSupportedChainBsc         BulkTransactionScanSupportedChain = "bsc"
+	BulkTransactionScanSupportedChainEthereum    BulkTransactionScanSupportedChain = "ethereum"
+	BulkTransactionScanSupportedChainOptimism    BulkTransactionScanSupportedChain = "optimism"
+	BulkTransactionScanSupportedChainPolygon     BulkTransactionScanSupportedChain = "polygon"
+	BulkTransactionScanSupportedChainGnosis      BulkTransactionScanSupportedChain = "gnosis"
+	BulkTransactionScanSupportedChainSoneium     BulkTransactionScanSupportedChain = "soneium"
+	BulkTransactionScanSupportedChainUnichain    BulkTransactionScanSupportedChain = "unichain"
+)
+
+func (r BulkTransactionScanSupportedChain) IsKnown() bool {
+	switch r {
+	case BulkTransactionScanSupportedChainArbitrum, BulkTransactionScanSupportedChainAvalanche, BulkTransactionScanSupportedChainBase, BulkTransactionScanSupportedChainBaseSepolia, BulkTransactionScanSupportedChainBsc, BulkTransactionScanSupportedChainEthereum, BulkTransactionScanSupportedChainOptimism, BulkTransactionScanSupportedChainPolygon, BulkTransactionScanSupportedChainGnosis, BulkTransactionScanSupportedChainSoneium, BulkTransactionScanSupportedChainUnichain:
+		return true
+	}
+	return false
+}
+
 // The chain name
 type TokenScanSupportedChain string
 
