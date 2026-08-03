@@ -67,6 +67,102 @@ func (r suiAssetTransferDetailsSchemaJSON) RawJSON() string {
 	return r.raw
 }
 
+type SuiGasEstimation struct {
+	// Cost of the computation performed by the transaction, in MIST.
+	ComputationCost string `json:"computation_cost" api:"required"`
+	// Portion of the storage fee that is not refundable, in MIST.
+	NonRefundableStorageFee string `json:"non_refundable_storage_fee" api:"required"`
+	// Gas estimation succeeded.
+	Status SuiGasEstimationStatus `json:"status" api:"required"`
+	// Cost of the storage the transaction consumes, in MIST.
+	StorageCost string `json:"storage_cost" api:"required"`
+	// Rebate for storage freed by the transaction, in MIST.
+	StorageRebate string `json:"storage_rebate" api:"required"`
+	// Net fee charged (computation_cost + storage_cost - storage_rebate), in MIST.
+	Used string               `json:"used" api:"required"`
+	JSON suiGasEstimationJSON `json:"-"`
+}
+
+// suiGasEstimationJSON contains the JSON metadata for the struct
+// [SuiGasEstimation]
+type suiGasEstimationJSON struct {
+	ComputationCost         apijson.Field
+	NonRefundableStorageFee apijson.Field
+	Status                  apijson.Field
+	StorageCost             apijson.Field
+	StorageRebate           apijson.Field
+	Used                    apijson.Field
+	raw                     string
+	ExtraFields             map[string]apijson.Field
+}
+
+func (r *SuiGasEstimation) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r suiGasEstimationJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r SuiGasEstimation) implementsSuiTransactionScanResponseGasEstimation() {}
+
+// Gas estimation succeeded.
+type SuiGasEstimationStatus string
+
+const (
+	SuiGasEstimationStatusSuccess SuiGasEstimationStatus = "Success"
+)
+
+func (r SuiGasEstimationStatus) IsKnown() bool {
+	switch r {
+	case SuiGasEstimationStatusSuccess:
+		return true
+	}
+	return false
+}
+
+type SuiGasEstimationError struct {
+	// Reason gas estimation could not be produced (e.g. the simulation failed).
+	Error string `json:"error" api:"required"`
+	// Gas estimation failed.
+	Status SuiGasEstimationErrorStatus `json:"status" api:"required"`
+	JSON   suiGasEstimationErrorJSON   `json:"-"`
+}
+
+// suiGasEstimationErrorJSON contains the JSON metadata for the struct
+// [SuiGasEstimationError]
+type suiGasEstimationErrorJSON struct {
+	Error       apijson.Field
+	Status      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *SuiGasEstimationError) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r suiGasEstimationErrorJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r SuiGasEstimationError) implementsSuiTransactionScanResponseGasEstimation() {}
+
+// Gas estimation failed.
+type SuiGasEstimationErrorStatus string
+
+const (
+	SuiGasEstimationErrorStatusError SuiGasEstimationErrorStatus = "Error"
+)
+
+func (r SuiGasEstimationErrorStatus) IsKnown() bool {
+	switch r {
+	case SuiGasEstimationErrorStatusError:
+		return true
+	}
+	return false
+}
+
 type SuiNativeAssetDetailsSchema struct {
 	// Decimals of the asset
 	Decimals SuiNativeAssetDetailsSchemaDecimals `json:"decimals"`
@@ -242,6 +338,9 @@ func (r suiNFTDiffSchemaJSON) RawJSON() string {
 }
 
 type SuiTransactionScanResponse struct {
+	// Gas estimation for the transaction; only present when the gas_estimation option
+	// is requested.
+	GasEstimation SuiTransactionScanResponseGasEstimation `json:"gas_estimation" api:"nullable"`
 	// Simulation result; Only present if simulation option is included in the request
 	Simulation SuiTransactionScanResponseSimulation `json:"simulation" api:"nullable"`
 	// Validation result; Only present if validation option is included in the request
@@ -252,10 +351,11 @@ type SuiTransactionScanResponse struct {
 // suiTransactionScanResponseJSON contains the JSON metadata for the struct
 // [SuiTransactionScanResponse]
 type suiTransactionScanResponseJSON struct {
-	Simulation  apijson.Field
-	Validation  apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	GasEstimation apijson.Field
+	Simulation    apijson.Field
+	Validation    apijson.Field
+	raw           string
+	ExtraFields   map[string]apijson.Field
 }
 
 func (r *SuiTransactionScanResponse) UnmarshalJSON(data []byte) (err error) {
@@ -264,6 +364,102 @@ func (r *SuiTransactionScanResponse) UnmarshalJSON(data []byte) (err error) {
 
 func (r suiTransactionScanResponseJSON) RawJSON() string {
 	return r.raw
+}
+
+// Gas estimation for the transaction; only present when the gas_estimation option
+// is requested.
+type SuiTransactionScanResponseGasEstimation struct {
+	// Gas estimation succeeded.
+	Status SuiTransactionScanResponseGasEstimationStatus `json:"status" api:"required"`
+	// Cost of the computation performed by the transaction, in MIST.
+	ComputationCost string `json:"computation_cost"`
+	// Reason gas estimation could not be produced (e.g. the simulation failed).
+	Error string `json:"error"`
+	// Portion of the storage fee that is not refundable, in MIST.
+	NonRefundableStorageFee string `json:"non_refundable_storage_fee"`
+	// Cost of the storage the transaction consumes, in MIST.
+	StorageCost string `json:"storage_cost"`
+	// Rebate for storage freed by the transaction, in MIST.
+	StorageRebate string `json:"storage_rebate"`
+	// Net fee charged (computation_cost + storage_cost - storage_rebate), in MIST.
+	Used  string                                      `json:"used"`
+	JSON  suiTransactionScanResponseGasEstimationJSON `json:"-"`
+	union SuiTransactionScanResponseGasEstimationUnion
+}
+
+// suiTransactionScanResponseGasEstimationJSON contains the JSON metadata for the
+// struct [SuiTransactionScanResponseGasEstimation]
+type suiTransactionScanResponseGasEstimationJSON struct {
+	Status                  apijson.Field
+	ComputationCost         apijson.Field
+	Error                   apijson.Field
+	NonRefundableStorageFee apijson.Field
+	StorageCost             apijson.Field
+	StorageRebate           apijson.Field
+	Used                    apijson.Field
+	raw                     string
+	ExtraFields             map[string]apijson.Field
+}
+
+func (r suiTransactionScanResponseGasEstimationJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *SuiTransactionScanResponseGasEstimation) UnmarshalJSON(data []byte) (err error) {
+	*r = SuiTransactionScanResponseGasEstimation{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [SuiTransactionScanResponseGasEstimationUnion] interface which
+// you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [SuiGasEstimation],
+// [SuiGasEstimationError].
+func (r SuiTransactionScanResponseGasEstimation) AsUnion() SuiTransactionScanResponseGasEstimationUnion {
+	return r.union
+}
+
+// Gas estimation for the transaction; only present when the gas_estimation option
+// is requested.
+//
+// Union satisfied by [SuiGasEstimation] or [SuiGasEstimationError].
+type SuiTransactionScanResponseGasEstimationUnion interface {
+	implementsSuiTransactionScanResponseGasEstimation()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*SuiTransactionScanResponseGasEstimationUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(SuiGasEstimation{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(SuiGasEstimationError{}),
+		},
+	)
+}
+
+// Gas estimation succeeded.
+type SuiTransactionScanResponseGasEstimationStatus string
+
+const (
+	SuiTransactionScanResponseGasEstimationStatusSuccess SuiTransactionScanResponseGasEstimationStatus = "Success"
+	SuiTransactionScanResponseGasEstimationStatusError   SuiTransactionScanResponseGasEstimationStatus = "Error"
+)
+
+func (r SuiTransactionScanResponseGasEstimationStatus) IsKnown() bool {
+	switch r {
+	case SuiTransactionScanResponseGasEstimationStatusSuccess, SuiTransactionScanResponseGasEstimationStatusError:
+		return true
+	}
+	return false
 }
 
 // Simulation result; Only present if simulation option is included in the request
