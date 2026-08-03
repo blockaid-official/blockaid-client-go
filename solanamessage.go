@@ -431,7 +431,7 @@ func (r SolanaMessageScanResponseErrorDetailsType) IsKnown() bool {
 // Result of the request
 type SolanaMessageScanResponseResult struct {
 	// Transaction Gas Estimation
-	GasEstimation SolanaMessageScanResponseResultGasEstimation `json:"gas_estimation" api:"required,nullable"`
+	GasEstimation SolanaGasEstimation `json:"gas_estimation" api:"required,nullable"`
 	// Transaction Simulation Result
 	Simulation SolanaMessageScanResponseResultSimulation `json:"simulation" api:"required,nullable"`
 	// Transaction Validation Result
@@ -454,64 +454,6 @@ func (r *SolanaMessageScanResponseResult) UnmarshalJSON(data []byte) (err error)
 }
 
 func (r solanaMessageScanResponseResultJSON) RawJSON() string {
-	return r.raw
-}
-
-// Transaction Gas Estimation
-type SolanaMessageScanResponseResultGasEstimation struct {
-	// Base transaction fee in lamports
-	NetworkFee string `json:"network_fee" api:"required"`
-	// Prioritization fee in lamports
-	PriorityFee string `json:"priority_fee" api:"required"`
-	// Total fee in lamports
-	Total string `json:"total" api:"required"`
-	// Rent deposit fees for newly created accounts
-	AccountRentFees []SolanaMessageScanResponseResultGasEstimationAccountRentFee `json:"account_rent_fees"`
-	JSON            solanaMessageScanResponseResultGasEstimationJSON             `json:"-"`
-}
-
-// solanaMessageScanResponseResultGasEstimationJSON contains the JSON metadata for
-// the struct [SolanaMessageScanResponseResultGasEstimation]
-type solanaMessageScanResponseResultGasEstimationJSON struct {
-	NetworkFee      apijson.Field
-	PriorityFee     apijson.Field
-	Total           apijson.Field
-	AccountRentFees apijson.Field
-	raw             string
-	ExtraFields     map[string]apijson.Field
-}
-
-func (r *SolanaMessageScanResponseResultGasEstimation) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r solanaMessageScanResponseResultGasEstimationJSON) RawJSON() string {
-	return r.raw
-}
-
-type SolanaMessageScanResponseResultGasEstimationAccountRentFee struct {
-	AccountAddress string                                                         `json:"account_address" api:"required"`
-	AccountType    string                                                         `json:"account_type" api:"required"`
-	Lamports       string                                                         `json:"lamports" api:"required"`
-	JSON           solanaMessageScanResponseResultGasEstimationAccountRentFeeJSON `json:"-"`
-}
-
-// solanaMessageScanResponseResultGasEstimationAccountRentFeeJSON contains the JSON
-// metadata for the struct
-// [SolanaMessageScanResponseResultGasEstimationAccountRentFee]
-type solanaMessageScanResponseResultGasEstimationAccountRentFeeJSON struct {
-	AccountAddress apijson.Field
-	AccountType    apijson.Field
-	Lamports       apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *SolanaMessageScanResponseResultGasEstimationAccountRentFee) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r solanaMessageScanResponseResultGasEstimationAccountRentFeeJSON) RawJSON() string {
 	return r.raw
 }
 

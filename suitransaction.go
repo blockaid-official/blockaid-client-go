@@ -52,6 +52,8 @@ type SuiTransactionScanParams struct {
 	// - `Options.validation`: Include Options.validation output in the response
 	//
 	// - `Options.simulation`: Include Options.simulation output in the response
+	//
+	// - `Options.gas_estimation`: Include gas estimation output in the response
 	Options param.Field[[]SuiTransactionScanParamsOption] `json:"options"`
 	// Optional customer-supplied hints about transaction intent that cannot be
 	// inferred from on-chain simulation.
@@ -263,16 +265,18 @@ func (r SuiTransactionScanParamsMetadataType) IsKnown() bool {
 	return false
 }
 
+// Response sections to include (e.g., validation, simulation, gas estimation).
 type SuiTransactionScanParamsOption string
 
 const (
-	SuiTransactionScanParamsOptionValidation SuiTransactionScanParamsOption = "validation"
-	SuiTransactionScanParamsOptionSimulation SuiTransactionScanParamsOption = "simulation"
+	SuiTransactionScanParamsOptionValidation    SuiTransactionScanParamsOption = "validation"
+	SuiTransactionScanParamsOptionSimulation    SuiTransactionScanParamsOption = "simulation"
+	SuiTransactionScanParamsOptionGasEstimation SuiTransactionScanParamsOption = "gas_estimation"
 )
 
 func (r SuiTransactionScanParamsOption) IsKnown() bool {
 	switch r {
-	case SuiTransactionScanParamsOptionValidation, SuiTransactionScanParamsOptionSimulation:
+	case SuiTransactionScanParamsOptionValidation, SuiTransactionScanParamsOptionSimulation, SuiTransactionScanParamsOptionGasEstimation:
 		return true
 	}
 	return false
