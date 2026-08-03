@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.77.0 (2026-08-03)
+
+Full Changelog: [v0.76.0...v0.77.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.76.0...v0.77.0)
+
+### Features
+
+* **api:** api update ([cb839eb](https://github.com/blockaid-official/blockaid-client-go/commit/cb839eb0103f3e52afdaeaab99401ab9f72829d9))
+* **api:** api update ([efe080a](https://github.com/blockaid-official/blockaid-client-go/commit/efe080a42cc199e0f4064491fa37c46d4b2e3444))
+* **api:** api update ([cf51690](https://github.com/blockaid-official/blockaid-client-go/commit/cf51690f565ad549cad0e750d7402523b646f4a4))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([4f7617f](https://github.com/blockaid-official/blockaid-client-go/commit/4f7617f77c648b5ab1e1edcd39dc280695233aa7))
+
 ## 0.76.0 (2026-07-06)
 
 Full Changelog: [v0.75.0...v0.76.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.75.0...v0.76.0)
