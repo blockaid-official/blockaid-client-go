@@ -1199,16 +1199,18 @@ func (r SuiPostTransactionScanParamsMetadata) MarshalJSON() (data []byte, err er
 	return apijson.MarshalRoot(r)
 }
 
+// Response sections to include (e.g., validation, simulation, gas estimation).
 type SuiPostTransactionScanParamsOption string
 
 const (
-	SuiPostTransactionScanParamsOptionValidation SuiPostTransactionScanParamsOption = "validation"
-	SuiPostTransactionScanParamsOptionSimulation SuiPostTransactionScanParamsOption = "simulation"
+	SuiPostTransactionScanParamsOptionValidation    SuiPostTransactionScanParamsOption = "validation"
+	SuiPostTransactionScanParamsOptionSimulation    SuiPostTransactionScanParamsOption = "simulation"
+	SuiPostTransactionScanParamsOptionGasEstimation SuiPostTransactionScanParamsOption = "gas_estimation"
 )
 
 func (r SuiPostTransactionScanParamsOption) IsKnown() bool {
 	switch r {
-	case SuiPostTransactionScanParamsOptionValidation, SuiPostTransactionScanParamsOptionSimulation:
+	case SuiPostTransactionScanParamsOptionValidation, SuiPostTransactionScanParamsOptionSimulation, SuiPostTransactionScanParamsOptionGasEstimation:
 		return true
 	}
 	return false

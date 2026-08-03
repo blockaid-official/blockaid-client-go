@@ -112,6 +112,98 @@ func (r stellarAssetTransferDetailsJSON) RawJSON() string {
 	return r.raw
 }
 
+type StellarClassicGasEstimation struct {
+	// The network's minimum fee per operation, in stroops (currently 100).
+	BaseFee string `json:"base_fee" api:"required"`
+	// Number of operations in the transaction.
+	OperationCount string `json:"operation_count" api:"required"`
+	// Gas estimation succeeded.
+	Status StellarClassicGasEstimationStatus `json:"status" api:"required"`
+	// Fee charged, in stroops. On-chain: the real fee taken. Pre-sign: the
+	// network-minimum estimate (base_fee times operation_count, plus one operation for
+	// a fee-bump). Surge pricing can make the real on-chain charge higher.
+	Used string                          `json:"used" api:"required"`
+	JSON stellarClassicGasEstimationJSON `json:"-"`
+}
+
+// stellarClassicGasEstimationJSON contains the JSON metadata for the struct
+// [StellarClassicGasEstimation]
+type stellarClassicGasEstimationJSON struct {
+	BaseFee        apijson.Field
+	OperationCount apijson.Field
+	Status         apijson.Field
+	Used           apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *StellarClassicGasEstimation) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarClassicGasEstimationJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r StellarClassicGasEstimation) implementsStellarTransactionScanResponseGasEstimation() {}
+
+// Gas estimation succeeded.
+type StellarClassicGasEstimationStatus string
+
+const (
+	StellarClassicGasEstimationStatusSuccess StellarClassicGasEstimationStatus = "Success"
+)
+
+func (r StellarClassicGasEstimationStatus) IsKnown() bool {
+	switch r {
+	case StellarClassicGasEstimationStatusSuccess:
+		return true
+	}
+	return false
+}
+
+type StellarGasEstimationError struct {
+	// Reason gas estimation could not be produced (e.g. the simulation failed).
+	Error string `json:"error" api:"required"`
+	// Gas estimation failed.
+	Status StellarGasEstimationErrorStatus `json:"status" api:"required"`
+	JSON   stellarGasEstimationErrorJSON   `json:"-"`
+}
+
+// stellarGasEstimationErrorJSON contains the JSON metadata for the struct
+// [StellarGasEstimationError]
+type stellarGasEstimationErrorJSON struct {
+	Error       apijson.Field
+	Status      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *StellarGasEstimationError) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarGasEstimationErrorJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r StellarGasEstimationError) implementsStellarTransactionScanResponseGasEstimation() {}
+
+// Gas estimation failed.
+type StellarGasEstimationErrorStatus string
+
+const (
+	StellarGasEstimationErrorStatusError StellarGasEstimationErrorStatus = "Error"
+)
+
+func (r StellarGasEstimationErrorStatus) IsKnown() bool {
+	switch r {
+	case StellarGasEstimationErrorStatusError:
+		return true
+	}
+	return false
+}
+
 type StellarLegacyAssetDetails struct {
 	// Asset code
 	Code string `json:"code" api:"required"`
@@ -277,6 +369,88 @@ func (r stellarSingleAssetExposureExposureJSON) RawJSON() string {
 	return r.raw
 }
 
+type StellarSorobanGasEstimation struct {
+	// The inclusion (priority) fee - paid to get the transaction into a ledger,
+	// separate from resource costs. In stroops.
+	InclusionFee string `json:"inclusion_fee" api:"required"`
+	// The fee for the contract invocation's resource usage - CPU, ledger reads/writes,
+	// and bandwidth. In stroops.
+	ResourceFee string `json:"resource_fee" api:"required"`
+	// Raw resource usage that drives the resource fee.
+	Resources StellarSorobanResources `json:"resources" api:"required"`
+	// Gas estimation succeeded.
+	Status StellarSorobanGasEstimationStatus `json:"status" api:"required"`
+	// Fee charged, in stroops. On-chain: the real fee taken. Pre-sign: the estimated
+	// total (inclusion_fee + resource_fee).
+	Used string                          `json:"used" api:"required"`
+	JSON stellarSorobanGasEstimationJSON `json:"-"`
+}
+
+// stellarSorobanGasEstimationJSON contains the JSON metadata for the struct
+// [StellarSorobanGasEstimation]
+type stellarSorobanGasEstimationJSON struct {
+	InclusionFee apijson.Field
+	ResourceFee  apijson.Field
+	Resources    apijson.Field
+	Status       apijson.Field
+	Used         apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
+}
+
+func (r *StellarSorobanGasEstimation) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarSorobanGasEstimationJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r StellarSorobanGasEstimation) implementsStellarTransactionScanResponseGasEstimation() {}
+
+// Gas estimation succeeded.
+type StellarSorobanGasEstimationStatus string
+
+const (
+	StellarSorobanGasEstimationStatusSuccess StellarSorobanGasEstimationStatus = "Success"
+)
+
+func (r StellarSorobanGasEstimationStatus) IsKnown() bool {
+	switch r {
+	case StellarSorobanGasEstimationStatusSuccess:
+		return true
+	}
+	return false
+}
+
+type StellarSorobanResources struct {
+	// Number of CPU instructions the invocation consumes.
+	CPUInstructions string `json:"cpu_instructions" api:"required"`
+	// Bytes read from the ledger.
+	ReadBytes string `json:"read_bytes" api:"required"`
+	// Bytes written to the ledger.
+	WriteBytes string                      `json:"write_bytes" api:"required"`
+	JSON       stellarSorobanResourcesJSON `json:"-"`
+}
+
+// stellarSorobanResourcesJSON contains the JSON metadata for the struct
+// [StellarSorobanResources]
+type stellarSorobanResourcesJSON struct {
+	CPUInstructions apijson.Field
+	ReadBytes       apijson.Field
+	WriteBytes      apijson.Field
+	raw             string
+	ExtraFields     map[string]apijson.Field
+}
+
+func (r *StellarSorobanResources) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r stellarSorobanResourcesJSON) RawJSON() string {
+	return r.raw
+}
+
 type StellarTransactionScanRequestParam struct {
 	AccountAddress param.Field[string] `json:"account_address" api:"required"`
 	// A CAIP-2 chain ID or a Stellar network name
@@ -289,6 +463,9 @@ type StellarTransactionScanRequestParam struct {
 	// - `Options.validation`: Include Options.validation output in the response
 	//
 	// - `Options.simulation`: Include Options.simulation output in the response
+	//
+	//   - `Options.gas_estimation`: Include Options.gas_estimation output in the
+	//     response
 	Options param.Field[[]StellarTransactionScanRequestOption] `json:"options"`
 	// Optional customer-supplied hints about transaction intent that cannot be
 	// inferred from on-chain simulation.
@@ -422,16 +599,18 @@ func (r StellarTransactionScanRequestMetadataType) IsKnown() bool {
 	return false
 }
 
+// Response sections to include (e.g., validation, simulation, gas estimation).
 type StellarTransactionScanRequestOption string
 
 const (
-	StellarTransactionScanRequestOptionValidation StellarTransactionScanRequestOption = "validation"
-	StellarTransactionScanRequestOptionSimulation StellarTransactionScanRequestOption = "simulation"
+	StellarTransactionScanRequestOptionValidation    StellarTransactionScanRequestOption = "validation"
+	StellarTransactionScanRequestOptionSimulation    StellarTransactionScanRequestOption = "simulation"
+	StellarTransactionScanRequestOptionGasEstimation StellarTransactionScanRequestOption = "gas_estimation"
 )
 
 func (r StellarTransactionScanRequestOption) IsKnown() bool {
 	switch r {
-	case StellarTransactionScanRequestOptionValidation, StellarTransactionScanRequestOptionSimulation:
+	case StellarTransactionScanRequestOptionValidation, StellarTransactionScanRequestOptionSimulation, StellarTransactionScanRequestOptionGasEstimation:
 		return true
 	}
 	return false
@@ -667,6 +846,10 @@ func (r StellarTransactionScanRequestTransactionHintsGenericTransactionHintParam
 }
 
 type StellarTransactionScanResponse struct {
+	// Gas estimation for the transaction; only present when the gas_estimation option
+	// is requested. Classic and Soroban transactions each return their respective
+	// variant.
+	GasEstimation StellarTransactionScanResponseGasEstimation `json:"gas_estimation" api:"nullable"`
 	// Simulation result; Only present if simulation option is included in the request
 	Simulation StellarTransactionScanResponseSimulation `json:"simulation" api:"nullable"`
 	// Validation result; Only present if validation option is included in the request
@@ -677,10 +860,11 @@ type StellarTransactionScanResponse struct {
 // stellarTransactionScanResponseJSON contains the JSON metadata for the struct
 // [StellarTransactionScanResponse]
 type stellarTransactionScanResponseJSON struct {
-	Simulation  apijson.Field
-	Validation  apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	GasEstimation apijson.Field
+	Simulation    apijson.Field
+	Validation    apijson.Field
+	raw           string
+	ExtraFields   map[string]apijson.Field
 }
 
 func (r *StellarTransactionScanResponse) UnmarshalJSON(data []byte) (err error) {
@@ -689,6 +873,116 @@ func (r *StellarTransactionScanResponse) UnmarshalJSON(data []byte) (err error) 
 
 func (r stellarTransactionScanResponseJSON) RawJSON() string {
 	return r.raw
+}
+
+// Gas estimation for the transaction; only present when the gas_estimation option
+// is requested. Classic and Soroban transactions each return their respective
+// variant.
+type StellarTransactionScanResponseGasEstimation struct {
+	// Gas estimation succeeded.
+	Status StellarTransactionScanResponseGasEstimationStatus `json:"status" api:"required"`
+	// The network's minimum fee per operation, in stroops (currently 100).
+	BaseFee string `json:"base_fee"`
+	// Reason gas estimation could not be produced (e.g. the simulation failed).
+	Error string `json:"error"`
+	// The inclusion (priority) fee - paid to get the transaction into a ledger,
+	// separate from resource costs. In stroops.
+	InclusionFee string `json:"inclusion_fee"`
+	// Number of operations in the transaction.
+	OperationCount string `json:"operation_count"`
+	// The fee for the contract invocation's resource usage - CPU, ledger reads/writes,
+	// and bandwidth. In stroops.
+	ResourceFee string `json:"resource_fee"`
+	// Raw resource usage that drives the resource fee.
+	Resources StellarSorobanResources `json:"resources"`
+	// Fee charged, in stroops. On-chain: the real fee taken. Pre-sign: the
+	// network-minimum estimate (base_fee times operation_count, plus one operation for
+	// a fee-bump). Surge pricing can make the real on-chain charge higher.
+	Used  string                                          `json:"used"`
+	JSON  stellarTransactionScanResponseGasEstimationJSON `json:"-"`
+	union StellarTransactionScanResponseGasEstimationUnion
+}
+
+// stellarTransactionScanResponseGasEstimationJSON contains the JSON metadata for
+// the struct [StellarTransactionScanResponseGasEstimation]
+type stellarTransactionScanResponseGasEstimationJSON struct {
+	Status         apijson.Field
+	BaseFee        apijson.Field
+	Error          apijson.Field
+	InclusionFee   apijson.Field
+	OperationCount apijson.Field
+	ResourceFee    apijson.Field
+	Resources      apijson.Field
+	Used           apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r stellarTransactionScanResponseGasEstimationJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *StellarTransactionScanResponseGasEstimation) UnmarshalJSON(data []byte) (err error) {
+	*r = StellarTransactionScanResponseGasEstimation{}
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+// AsUnion returns a [StellarTransactionScanResponseGasEstimationUnion] interface
+// which you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [StellarClassicGasEstimation],
+// [StellarSorobanGasEstimation], [StellarGasEstimationError].
+func (r StellarTransactionScanResponseGasEstimation) AsUnion() StellarTransactionScanResponseGasEstimationUnion {
+	return r.union
+}
+
+// Gas estimation for the transaction; only present when the gas_estimation option
+// is requested. Classic and Soroban transactions each return their respective
+// variant.
+//
+// Union satisfied by [StellarClassicGasEstimation], [StellarSorobanGasEstimation]
+// or [StellarGasEstimationError].
+type StellarTransactionScanResponseGasEstimationUnion interface {
+	implementsStellarTransactionScanResponseGasEstimation()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*StellarTransactionScanResponseGasEstimationUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(StellarClassicGasEstimation{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(StellarSorobanGasEstimation{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(StellarGasEstimationError{}),
+		},
+	)
+}
+
+// Gas estimation succeeded.
+type StellarTransactionScanResponseGasEstimationStatus string
+
+const (
+	StellarTransactionScanResponseGasEstimationStatusSuccess StellarTransactionScanResponseGasEstimationStatus = "Success"
+	StellarTransactionScanResponseGasEstimationStatusError   StellarTransactionScanResponseGasEstimationStatus = "Error"
+)
+
+func (r StellarTransactionScanResponseGasEstimationStatus) IsKnown() bool {
+	switch r {
+	case StellarTransactionScanResponseGasEstimationStatusSuccess, StellarTransactionScanResponseGasEstimationStatusError:
+		return true
+	}
+	return false
 }
 
 // Simulation result; Only present if simulation option is included in the request
