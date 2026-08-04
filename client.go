@@ -31,6 +31,7 @@ type Client struct {
 	TokenBulk          *TokenBulkService
 	TokenWebhooks      *TokenWebhookService
 	TokenSnapshot      *TokenSnapshotService
+	TokenBulkExport    *TokenBulkExportService
 	ExchangeProtection *ExchangeProtectionService
 	ChainAgnostic      *ChainAgnosticService
 	Enrichment         *EnrichmentService
@@ -85,6 +86,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.TokenBulk = NewTokenBulkService(opts...)
 	r.TokenWebhooks = NewTokenWebhookService(opts...)
 	r.TokenSnapshot = NewTokenSnapshotService(opts...)
+	r.TokenBulkExport = NewTokenBulkExportService(opts...)
 	r.ExchangeProtection = NewExchangeProtectionService(opts...)
 	r.ChainAgnostic = NewChainAgnosticService(opts...)
 	r.Enrichment = NewEnrichmentService(opts...)
