@@ -361,6 +361,18 @@ Methods:
 - <code title="get /v0/token/snapshot/diff">client.TokenSnapshot.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenSnapshotService.Diff">Diff</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenSnapshotDiffParams">TokenSnapshotDiffParams</a>) (\*<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenSnapshotDiffResponse">TokenSnapshotDiffResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="get /v0/token/snapshot/full">client.TokenSnapshot.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenSnapshotService.Full">Full</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenSnapshotFullParams">TokenSnapshotFullParams</a>) (\*<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenSnapshotFullResponse">TokenSnapshotFullResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
+# TokenBulkExport
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenBulkExportNewResponse">TokenBulkExportNewResponse</a>
+- <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenBulkExportStatusResponse">TokenBulkExportStatusResponse</a>
+
+Methods:
+
+- <code title="post /v0/token/bulk-export/jobs">client.TokenBulkExport.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenBulkExportService.New">New</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenBulkExportNewParams">TokenBulkExportNewParams</a>) (\*<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenBulkExportNewResponse">TokenBulkExportNewResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="get /v0/token/bulk-export/jobs/{job_id}">client.TokenBulkExport.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenBulkExportService.Status">Status</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, jobID <a href="https://pkg.go.dev/builtin#string">string</a>) (\*<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go">blockaidclientgo</a>.<a href="https://pkg.go.dev/github.com/blockaid-official/blockaid-client-go#TokenBulkExportStatusResponse">TokenBulkExportStatusResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
 # ExchangeProtection
 
 ## Withdrawal
