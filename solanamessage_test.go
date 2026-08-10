@@ -50,7 +50,7 @@ func TestSolanaMessageScanWithOptionalParams(t *testing.T) {
 		Chain:         blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsChainMainnet),
 		Encoding:      blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsEncodingBase58),
 		ExecutionMode: blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsExecutionModeStandard),
-		Method:        blockaidclientgo.F("signAndSendTransaction"),
+		Method:        blockaidclientgo.F(blockaidclientgo.SolanaMessageScanParamsMethodSignAndSendTransaction),
 		Options:       blockaidclientgo.F([]blockaidclientgo.SolanaMessageScanParamsOption{blockaidclientgo.SolanaMessageScanParamsOptionSimulation, blockaidclientgo.SolanaMessageScanParamsOptionValidation}),
 	})
 	if err != nil {
