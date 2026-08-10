@@ -5174,13 +5174,12 @@ const (
 	SolanaMessageScanParamsMethodSignAndSendTransaction     SolanaMessageScanParamsMethod = "signAndSendTransaction"
 	SolanaMessageScanParamsMethodSignAndSendAllTransactions SolanaMessageScanParamsMethod = "signAndSendAllTransactions"
 	SolanaMessageScanParamsMethodSignTransaction            SolanaMessageScanParamsMethod = "signTransaction"
-	SolanaMessageScanParamsMethodSendRawTransaction         SolanaMessageScanParamsMethod = "sendRawTransaction"
 	SolanaMessageScanParamsMethodSignAllTransactions        SolanaMessageScanParamsMethod = "signAllTransactions"
 )
 
 func (r SolanaMessageScanParamsMethod) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanParamsMethodSignAndSendTransaction, SolanaMessageScanParamsMethodSignAndSendAllTransactions, SolanaMessageScanParamsMethodSignTransaction, SolanaMessageScanParamsMethodSendRawTransaction, SolanaMessageScanParamsMethodSignAllTransactions:
+	case SolanaMessageScanParamsMethodSignAndSendTransaction, SolanaMessageScanParamsMethodSignAndSendAllTransactions, SolanaMessageScanParamsMethodSignTransaction, SolanaMessageScanParamsMethodSignAllTransactions:
 		return true
 	}
 	return false
