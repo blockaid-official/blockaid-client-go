@@ -5038,7 +5038,7 @@ type SolanaMessageScanParams struct {
 	// necessarily all) of the bundle's transactions.
 	ExecutionMode param.Field[SolanaMessageScanParamsExecutionMode] `json:"execution_mode"`
 	// The RPC method used by the dApp to propose the transaction
-	Method param.Field[string] `json:"method"`
+	Method param.Field[SolanaMessageScanParamsMethod] `json:"method"`
 	// List of options to include in the response
 	//
 	// - `Options.validation`: Include Options.validation output in the response
@@ -5162,6 +5162,25 @@ const (
 func (r SolanaMessageScanParamsExecutionMode) IsKnown() bool {
 	switch r {
 	case SolanaMessageScanParamsExecutionModeStandard, SolanaMessageScanParamsExecutionModeJitoBundle:
+		return true
+	}
+	return false
+}
+
+// The RPC method used by the dApp to propose the transaction
+type SolanaMessageScanParamsMethod string
+
+const (
+	SolanaMessageScanParamsMethodSignAndSendTransaction     SolanaMessageScanParamsMethod = "signAndSendTransaction"
+	SolanaMessageScanParamsMethodSignAndSendAllTransactions SolanaMessageScanParamsMethod = "signAndSendAllTransactions"
+	SolanaMessageScanParamsMethodSignTransaction            SolanaMessageScanParamsMethod = "signTransaction"
+	SolanaMessageScanParamsMethodSendRawTransaction         SolanaMessageScanParamsMethod = "sendRawTransaction"
+	SolanaMessageScanParamsMethodSignAllTransactions        SolanaMessageScanParamsMethod = "signAllTransactions"
+)
+
+func (r SolanaMessageScanParamsMethod) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanParamsMethodSignAndSendTransaction, SolanaMessageScanParamsMethodSignAndSendAllTransactions, SolanaMessageScanParamsMethodSignTransaction, SolanaMessageScanParamsMethodSendRawTransaction, SolanaMessageScanParamsMethodSignAllTransactions:
 		return true
 	}
 	return false
