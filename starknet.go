@@ -1875,7 +1875,9 @@ func (r StarknetTransactionScanResponseSimulationStatus) IsKnown() bool {
 type StarknetTransactionScanResponseValidation struct {
 	Status StarknetTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classifications reference](/api-reference/end-user-protection/transaction-scanning/starknet/starknet-transaction-scanning-response-reference#classifications)
+	// for possible values.
 	Classification string `json:"classification"`
 	// A textual description about the validation result
 	Description string `json:"description"`
@@ -1885,7 +1887,9 @@ type StarknetTransactionScanResponseValidation struct {
 	// [[]StarknetTransactionScanResponseValidationStarknetValidationResultFeature].
 	Features interface{} `json:"features"`
 	// A textual description about the reasons the transaction was flagged with
-	// result_type
+	// result_type. See the
+	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/starknet/starknet-transaction-scanning-response-reference#reasons)
+	// for possible values.
 	Reason string `json:"reason"`
 	// Verdict of the validation
 	ResultType StarknetTransactionScanResponseValidationResultType `json:"result_type"`
@@ -1956,13 +1960,20 @@ func init() {
 
 type StarknetTransactionScanResponseValidationStarknetValidationResult struct {
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classifications reference](/api-reference/end-user-protection/transaction-scanning/starknet/starknet-transaction-scanning-response-reference#classifications)
+	// for possible values.
 	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
-	Description string                                                                     `json:"description" api:"required"`
-	Features    []StarknetTransactionScanResponseValidationStarknetValidationResultFeature `json:"features" api:"required"`
+	Description string `json:"description" api:"required"`
+	// See the
+	// [Features reference](/api-reference/end-user-protection/transaction-scanning/starknet/starknet-transaction-scanning-response-reference#features)
+	// for possible feature IDs.
+	Features []StarknetTransactionScanResponseValidationStarknetValidationResultFeature `json:"features" api:"required"`
 	// A textual description about the reasons the transaction was flagged with
-	// result_type
+	// result_type. See the
+	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/starknet/starknet-transaction-scanning-response-reference#reasons)
+	// for possible values.
 	Reason string `json:"reason" api:"required"`
 	// Verdict of the validation
 	ResultType StarknetTransactionScanResponseValidationStarknetValidationResultResultType `json:"result_type" api:"required"`

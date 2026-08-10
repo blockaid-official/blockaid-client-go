@@ -4911,17 +4911,25 @@ func (r SolanaMessageScanResponseResultSimulationTransactionActions) IsKnown() b
 // Transaction Validation Result
 type SolanaMessageScanResponseResultValidation struct {
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classifications reference](/api-reference/end-user-protection/transaction-scanning/solana/solana-transaction-scanning-response-reference#classifications)
+	// for possible values.
 	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
 	Description string `json:"description" api:"required"`
 	// A list of features explaining what is happening in the transaction in different
-	// levels of severity
+	// levels of severity. See the
+	// [Features reference](/api-reference/end-user-protection/transaction-scanning/solana/solana-transaction-scanning-response-reference#features)
+	// for possible feature IDs.
 	ExtendedFeatures []SolanaMessageScanResponseResultValidationExtendedFeature `json:"extended_features" api:"required"`
-	// A list of features about this transaction explaining the validation
+	// A list of features about this transaction explaining the validation. See the
+	// [Features reference](/api-reference/end-user-protection/transaction-scanning/solana/solana-transaction-scanning-response-reference#features)
+	// for possible feature IDs.
 	Features []string `json:"features" api:"required"`
 	// A textual description about the reasons the transaction was flagged with
-	// result_type
+	// result_type. See the
+	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/solana/solana-transaction-scanning-response-reference#reasons)
+	// for possible values.
 	Reason string `json:"reason" api:"required"`
 	// Verdict of the validation
 	ResultType SolanaMessageScanResponseResultValidationResultType `json:"result_type" api:"required"`

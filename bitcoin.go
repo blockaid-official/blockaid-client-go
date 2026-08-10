@@ -1771,7 +1771,9 @@ func (r BitcoinTransactionScanResponseSimulationStatus) IsKnown() bool {
 type BitcoinTransactionScanResponseValidation struct {
 	Status BitcoinTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classifications reference](/api-reference/end-user-protection/transaction-scanning/bitcoin/bitcoin-transaction-scanning-response-reference#classifications)
+	// for possible values.
 	Classification string `json:"classification"`
 	// A textual description about the validation result.
 	Description string `json:"description"`
@@ -1781,7 +1783,9 @@ type BitcoinTransactionScanResponseValidation struct {
 	// [[]BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature].
 	Features interface{} `json:"features"`
 	// Human-readable explanation of why the transaction received the given
-	// `result_type` verdict.
+	// `result_type` verdict. See the
+	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/bitcoin/bitcoin-transaction-scanning-response-reference#reasons)
+	// for possible values.
 	Reason string `json:"reason"`
 	// Verdict of the validation.
 	ResultType BitcoinTransactionScanResponseValidationResultType `json:"result_type"`
@@ -1852,15 +1856,21 @@ func init() {
 
 type BitcoinTransactionScanResponseValidationBitcoinValidationResult struct {
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classifications reference](/api-reference/end-user-protection/transaction-scanning/bitcoin/bitcoin-transaction-scanning-response-reference#classifications)
+	// for possible values.
 	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result.
 	Description string `json:"description" api:"required"`
 	// List of validation findings (addresses and classifications) that contributed to
-	// the verdict.
+	// the verdict. See the
+	// [Features reference](/api-reference/end-user-protection/transaction-scanning/bitcoin/bitcoin-transaction-scanning-response-reference#features)
+	// for possible feature IDs.
 	Features []BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature `json:"features" api:"required"`
 	// Human-readable explanation of why the transaction received the given
-	// `result_type` verdict.
+	// `result_type` verdict. See the
+	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/bitcoin/bitcoin-transaction-scanning-response-reference#reasons)
+	// for possible values.
 	Reason string `json:"reason" api:"required"`
 	// Verdict of the validation.
 	ResultType BitcoinTransactionScanResponseValidationBitcoinValidationResultResultType `json:"result_type" api:"required"`

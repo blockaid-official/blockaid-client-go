@@ -86,7 +86,12 @@ type TokenBulkScanResponseResult struct {
 	ResultType TokenBulkScanResponseResultsResultType `json:"result_type" api:"required"`
 	// Trading limits of the token
 	TradingLimits TokenBulkScanResponseResultsTradingLimits `json:"trading_limits" api:"required"`
-	// List of features associated with the token
+	// List of features associated with the token. See
+	// [Red Signal Features](/api-reference/end-user-protection/token-scanning/parse-security-risk-and-context#red-signal-features),
+	// [Green Signal Features](/api-reference/end-user-protection/token-scanning/parse-security-risk-and-context#green-signal-features),
+	// and
+	// [Info Features](/api-reference/end-user-protection/token-scanning/parse-security-risk-and-context#info-features)
+	// for the full feature ID catalog.
 	Features []TokenBulkScanResponseResultsFeature `json:"features"`
 	JSON     tokenBulkScanResponseResultJSON       `json:"-"`
 }

@@ -81,7 +81,9 @@ type ChainAgnosticTransactionScanResponseValidation struct {
 	ResultType ChainAgnosticTransactionScanResponseValidationResultType `json:"result_type" api:"required"`
 	// The status of the transaction scan
 	Status ChainAgnosticTransactionScanResponseValidationStatus `json:"status" api:"required"`
-	// List of features detected during the scan
+	// List of features detected during the scan. See the
+	// [Available Features reference](/api-reference/crypto-fraud-prevention/crypto-fraud-transaction-scan-response-reference#common-feature-ids)
+	// for possible feature IDs.
 	Features []ChainAgnosticTransactionScanResponseValidationFeature `json:"features"`
 	JSON     chainAgnosticTransactionScanResponseValidationJSON      `json:"-"`
 }

@@ -2294,7 +2294,9 @@ func (r HederaTransactionScanResponseSimulationStatus) IsKnown() bool {
 type HederaTransactionScanResponseValidation struct {
 	Status HederaTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classifications reference](/api-reference/end-user-protection/transaction-scanning/hedera/hedera-transaction-scanning-response-reference#classifications)
+	// for possible values.
 	Classification string `json:"classification"`
 	// A textual description about the validation result
 	Description string `json:"description"`
@@ -2304,7 +2306,9 @@ type HederaTransactionScanResponseValidation struct {
 	// [[]HederaTransactionScanResponseValidationHederaValidationResultFeature].
 	Features interface{} `json:"features"`
 	// A textual description about the reasons the transaction was flagged with
-	// result_type
+	// result_type. See the
+	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/hedera/hedera-transaction-scanning-response-reference#reasons)
+	// for possible values.
 	Reason string `json:"reason"`
 	// Verdict of the validation
 	ResultType HederaTransactionScanResponseValidationResultType `json:"result_type"`
@@ -2375,13 +2379,20 @@ func init() {
 
 type HederaTransactionScanResponseValidationHederaValidationResult struct {
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classifications reference](/api-reference/end-user-protection/transaction-scanning/hedera/hedera-transaction-scanning-response-reference#classifications)
+	// for possible values.
 	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
-	Description string                                                                 `json:"description" api:"required"`
-	Features    []HederaTransactionScanResponseValidationHederaValidationResultFeature `json:"features" api:"required"`
+	Description string `json:"description" api:"required"`
+	// See the
+	// [Features reference](/api-reference/end-user-protection/transaction-scanning/hedera/hedera-transaction-scanning-response-reference#features)
+	// for possible feature IDs.
+	Features []HederaTransactionScanResponseValidationHederaValidationResultFeature `json:"features" api:"required"`
 	// A textual description about the reasons the transaction was flagged with
-	// result_type
+	// result_type. See the
+	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/hedera/hedera-transaction-scanning-response-reference#reasons)
+	// for possible values.
 	Reason string `json:"reason" api:"required"`
 	// Verdict of the validation
 	ResultType HederaTransactionScanResponseValidationHederaValidationResultResultType `json:"result_type" api:"required"`

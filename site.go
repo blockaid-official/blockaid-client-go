@@ -54,6 +54,10 @@ func (r *SiteService) Scan(ctx context.Context, body SiteScanParams, opts ...opt
 }
 
 type SiteScanHitResponse struct {
+	// Object whose keys are attack type identifiers and values are AttackEntry
+	// objects. See the
+	// [Attack Type Reference](/api-reference/end-user-protection/dapp-scanning/dapp-scanning-response-reference#attack-type-reference)
+	// for possible keys.
 	AttackTypes       map[string]SiteScanHitResponseAttackType `json:"attack_types" api:"required"`
 	ContractRead      SiteScanHitResponseContractRead          `json:"contract_read" api:"required"`
 	ContractWrite     SiteScanHitResponseContractWrite         `json:"contract_write" api:"required"`
