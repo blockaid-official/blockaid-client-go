@@ -55,7 +55,9 @@ type AddressValidation struct {
 	// An error message returned when `result_type` is `Error`.
 	Error string `json:"error"`
 	// A list of features explaining the scan result (each feature includes a type,
-	// feature_id, and description).
+	// feature_id, and description). See the
+	// [Features reference](/api-reference/end-user-protection/address-scanning/address-scanning-response-reference#features)
+	// for possible feature IDs.
 	Features AddressValidationFeaturesUnion `json:"features"`
 	JSON     addressValidationJSON          `json:"-"`
 }
@@ -97,7 +99,9 @@ func (r AddressValidationResultType) IsKnown() bool {
 }
 
 // A list of features explaining the scan result (each feature includes a type,
-// feature_id, and description).
+// feature_id, and description). See the
+// [Features reference](/api-reference/end-user-protection/address-scanning/address-scanning-response-reference#features)
+// for possible feature IDs.
 //
 // Union satisfied by [AddressValidationFeaturesArray] or
 // [AddressValidationFeaturesArray].

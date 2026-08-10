@@ -1973,7 +1973,9 @@ func (r StellarTransactionScanResponseSimulationStatus) IsKnown() bool {
 type StellarTransactionScanResponseValidation struct {
 	Status StellarTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classification reference](/api-reference/end-user-protection/transaction-scanning/stellar/stellar-transaction-scanning-response-reference#classification)
+	// for possible values.
 	Classification string `json:"classification"`
 	// A textual description about the validation result
 	Description string `json:"description"`
@@ -1983,7 +1985,9 @@ type StellarTransactionScanResponseValidation struct {
 	// [[]StellarTransactionScanResponseValidationStellarValidationResultFeature].
 	Features interface{} `json:"features"`
 	// A textual description about the reasons the transaction was flagged with
-	// result_type
+	// result_type. See the
+	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/stellar/stellar-transaction-scanning-response-reference#reasons)
+	// for possible values.
 	Reason string `json:"reason"`
 	// Verdict of the validation
 	ResultType StellarTransactionScanResponseValidationResultType `json:"result_type"`
@@ -2054,13 +2058,17 @@ func init() {
 
 type StellarTransactionScanResponseValidationStellarValidationResult struct {
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classification reference](/api-reference/end-user-protection/transaction-scanning/stellar/stellar-transaction-scanning-response-reference#classification)
+	// for possible values.
 	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
 	Description string                                                                   `json:"description" api:"required"`
 	Features    []StellarTransactionScanResponseValidationStellarValidationResultFeature `json:"features" api:"required"`
 	// A textual description about the reasons the transaction was flagged with
-	// result_type
+	// result_type. See the
+	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/stellar/stellar-transaction-scanning-response-reference#reasons)
+	// for possible values.
 	Reason string `json:"reason" api:"required"`
 	// Verdict of the validation
 	ResultType StellarTransactionScanResponseValidationStellarValidationResultResultType `json:"result_type" api:"required"`

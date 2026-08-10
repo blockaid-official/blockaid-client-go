@@ -1229,7 +1229,9 @@ func (r SuiTransactionScanResponseSimulationStatus) IsKnown() bool {
 type SuiTransactionScanResponseValidation struct {
 	Status SuiTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classification reference](/api-reference/end-user-protection/transaction-scanning/sui/sui-transaction-scanning-response-reference#classification)
+	// for possible values.
 	Classification string `json:"classification"`
 	// A textual description about the validation result
 	Description string `json:"description"`
@@ -1239,7 +1241,9 @@ type SuiTransactionScanResponseValidation struct {
 	// [[]SuiTransactionScanResponseValidationSuiValidationResultFeature].
 	Features interface{} `json:"features"`
 	// A textual description about the reasons the transaction was flagged with
-	// result_type
+	// result_type. See the
+	// [Reason reference](/api-reference/end-user-protection/transaction-scanning/sui/sui-transaction-scanning-response-reference#reason)
+	// for possible values.
 	Reason string `json:"reason"`
 	// Verdict of the validation
 	ResultType SuiTransactionScanResponseValidationResultType `json:"result_type"`
@@ -1309,13 +1313,20 @@ func init() {
 
 type SuiTransactionScanResponseValidationSuiValidationResult struct {
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classification reference](/api-reference/end-user-protection/transaction-scanning/sui/sui-transaction-scanning-response-reference#classification)
+	// for possible values.
 	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
-	Description string                                                           `json:"description" api:"required"`
-	Features    []SuiTransactionScanResponseValidationSuiValidationResultFeature `json:"features" api:"required"`
+	Description string `json:"description" api:"required"`
+	// See the
+	// [Features reference](/api-reference/end-user-protection/transaction-scanning/sui/sui-transaction-scanning-response-reference#features)
+	// for possible feature IDs.
+	Features []SuiTransactionScanResponseValidationSuiValidationResultFeature `json:"features" api:"required"`
 	// A textual description about the reasons the transaction was flagged with
-	// result_type
+	// result_type. See the
+	// [Reason reference](/api-reference/end-user-protection/transaction-scanning/sui/sui-transaction-scanning-response-reference#reason)
+	// for possible values.
 	Reason string `json:"reason" api:"required"`
 	// Verdict of the validation
 	ResultType SuiTransactionScanResponseValidationSuiValidationResultResultType `json:"result_type" api:"required"`

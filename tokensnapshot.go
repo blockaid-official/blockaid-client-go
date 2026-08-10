@@ -117,7 +117,12 @@ type TokenSnapshotDiffResponseItem struct {
 	ResultType TokenSnapshotDiffResponseItemsResultType `json:"result_type" api:"required"`
 	// Trading limits of the token
 	TradingLimits TokenSnapshotDiffResponseItemsTradingLimits `json:"trading_limits" api:"required"`
-	// List of features associated with the token
+	// List of features associated with the token. See
+	// [Red Signal Features](/api-reference/end-user-protection/token-scanning/parse-security-risk-and-context#red-signal-features),
+	// [Green Signal Features](/api-reference/end-user-protection/token-scanning/parse-security-risk-and-context#green-signal-features),
+	// and
+	// [Info Features](/api-reference/end-user-protection/token-scanning/parse-security-risk-and-context#info-features)
+	// for the full feature ID catalog.
 	Features []TokenSnapshotDiffResponseItemsFeature `json:"features"`
 	JSON     tokenSnapshotDiffResponseItemJSON       `json:"-"`
 }
@@ -1192,7 +1197,12 @@ type TokenSnapshotFullResponseItem struct {
 	ResultType TokenSnapshotFullResponseItemsResultType `json:"result_type" api:"required"`
 	// Trading limits of the token
 	TradingLimits TokenSnapshotFullResponseItemsTradingLimits `json:"trading_limits" api:"required"`
-	// List of features associated with the token
+	// List of features associated with the token. See
+	// [Red Signal Features](/api-reference/end-user-protection/token-scanning/parse-security-risk-and-context#red-signal-features),
+	// [Green Signal Features](/api-reference/end-user-protection/token-scanning/parse-security-risk-and-context#green-signal-features),
+	// and
+	// [Info Features](/api-reference/end-user-protection/token-scanning/parse-security-risk-and-context#info-features)
+	// for the full feature ID catalog.
 	Features []TokenSnapshotFullResponseItemsFeature `json:"features"`
 	JSON     tokenSnapshotFullResponseItemJSON       `json:"-"`
 }
