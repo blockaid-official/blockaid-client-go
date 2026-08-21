@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.79.0 (2026-08-21)
+
+Full Changelog: [v0.78.0...v0.79.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.78.0...v0.79.0)
+
+### Features
+
+* **api:** api update ([6a3243f](https://github.com/blockaid-official/blockaid-client-go/commit/6a3243f63d3b1e4d2b7642f80efbd0ab4635f117))
+* **api:** api update ([3b345dd](https://github.com/blockaid-official/blockaid-client-go/commit/3b345dda2d315d353f9c55a5341c523a21b1fcda))
+* **api:** api update ([f9915eb](https://github.com/blockaid-official/blockaid-client-go/commit/f9915eb4f7ce82e9be68f521e6eca541a06b32a4))
+* **api:** api update ([50988de](https://github.com/blockaid-official/blockaid-client-go/commit/50988deca6dd80042322f4a27da0f91f3e3cc34d))
+* **api:** api update ([82fc9cb](https://github.com/blockaid-official/blockaid-client-go/commit/82fc9cbb7cc7dc8b5ad825f03a365594b02cb345))
+* **api:** api update ([b9eae37](https://github.com/blockaid-official/blockaid-client-go/commit/b9eae3771042cbcb209b0e9e0a82decf49881bdb))
+
+
+### Chores
+
+* **internal:** allow the mock server port to be set with STAINLESS_MOCK_PORT ([9ef5e9b](https://github.com/blockaid-official/blockaid-client-go/commit/9ef5e9bb8b4fa85c0cd0376886b0b4f401cc0c3b))
+
 ## 0.78.0 (2026-08-04)
 
 Full Changelog: [v0.77.0...v0.78.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.77.0...v0.78.0)
