@@ -4911,17 +4911,25 @@ func (r SolanaMessageScanResponseResultSimulationTransactionActions) IsKnown() b
 // Transaction Validation Result
 type SolanaMessageScanResponseResultValidation struct {
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classifications reference](/api-reference/end-user-protection/transaction-scanning/solana/solana-transaction-scanning-response-reference#classifications)
+	// for possible values.
 	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
 	Description string `json:"description" api:"required"`
 	// A list of features explaining what is happening in the transaction in different
-	// levels of severity
+	// levels of severity. See the
+	// [Features reference](/api-reference/end-user-protection/transaction-scanning/solana/solana-transaction-scanning-response-reference#features)
+	// for possible feature IDs.
 	ExtendedFeatures []SolanaMessageScanResponseResultValidationExtendedFeature `json:"extended_features" api:"required"`
-	// A list of features about this transaction explaining the validation
+	// A list of features about this transaction explaining the validation. See the
+	// [Features reference](/api-reference/end-user-protection/transaction-scanning/solana/solana-transaction-scanning-response-reference#features)
+	// for possible feature IDs.
 	Features []string `json:"features" api:"required"`
 	// A textual description about the reasons the transaction was flagged with
-	// result_type
+	// result_type. See the
+	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/solana/solana-transaction-scanning-response-reference#reasons)
+	// for possible values.
 	Reason string `json:"reason" api:"required"`
 	// Verdict of the validation
 	ResultType SolanaMessageScanResponseResultValidationResultType `json:"result_type" api:"required"`
@@ -5030,7 +5038,7 @@ type SolanaMessageScanParams struct {
 	// necessarily all) of the bundle's transactions.
 	ExecutionMode param.Field[SolanaMessageScanParamsExecutionMode] `json:"execution_mode"`
 	// The RPC method used by the dApp to propose the transaction
-	Method param.Field[string] `json:"method"`
+	Method param.Field[SolanaMessageScanParamsMethod] `json:"method"`
 	// List of options to include in the response
 	//
 	// - `Options.validation`: Include Options.validation output in the response
@@ -5154,6 +5162,24 @@ const (
 func (r SolanaMessageScanParamsExecutionMode) IsKnown() bool {
 	switch r {
 	case SolanaMessageScanParamsExecutionModeStandard, SolanaMessageScanParamsExecutionModeJitoBundle:
+		return true
+	}
+	return false
+}
+
+// The RPC method used by the dApp to propose the transaction
+type SolanaMessageScanParamsMethod string
+
+const (
+	SolanaMessageScanParamsMethodSignAndSendTransaction     SolanaMessageScanParamsMethod = "signAndSendTransaction"
+	SolanaMessageScanParamsMethodSignAndSendAllTransactions SolanaMessageScanParamsMethod = "signAndSendAllTransactions"
+	SolanaMessageScanParamsMethodSignTransaction            SolanaMessageScanParamsMethod = "signTransaction"
+	SolanaMessageScanParamsMethodSignAllTransactions        SolanaMessageScanParamsMethod = "signAllTransactions"
+)
+
+func (r SolanaMessageScanParamsMethod) IsKnown() bool {
+	switch r {
+	case SolanaMessageScanParamsMethodSignAndSendTransaction, SolanaMessageScanParamsMethodSignAndSendAllTransactions, SolanaMessageScanParamsMethodSignTransaction, SolanaMessageScanParamsMethodSignAllTransactions:
 		return true
 	}
 	return false

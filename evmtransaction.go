@@ -12992,7 +12992,9 @@ type EvmTransactionScanResponseValidation struct {
 	// A string indicating if the simulation was successful or not.
 	Status EvmTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classifications reference](/api-reference/end-user-protection/transaction-scanning/evm/transaction-scanning-evm/evm-transaction-scanning-response-reference#classifications)
+	// for possible values.
 	Classification string `json:"classification"`
 	// A textual description that can be presented to the user about what this
 	// transaction is doing.
@@ -13000,7 +13002,9 @@ type EvmTransactionScanResponseValidation struct {
 	// An error message if the validation failed.
 	Error string `json:"error"`
 	// A textual description about the reasons the transaction was flagged with
-	// result_type.
+	// result_type. See the
+	// [Classifications reference](/api-reference/end-user-protection/transaction-scanning/evm/transaction-scanning-evm/evm-transaction-scanning-response-reference#classifications)
+	// for possible values.
 	Reason string                                   `json:"reason"`
 	JSON   evmTransactionScanResponseValidationJSON `json:"-"`
 	union  EvmTransactionScanResponseValidationUnion
@@ -13066,20 +13070,26 @@ func init() {
 }
 
 type EvmTransactionScanResponseValidationRoutersEvmResponseTransactionValidation struct {
-	// A list of features about this transaction explaining the validation.
+	// A list of features about this transaction explaining the validation. See the
+	// [Features reference](/api-reference/end-user-protection/transaction-scanning/evm/transaction-scanning-evm/evm-transaction-scanning-response-reference#features)
+	// for possible feature IDs.
 	Features []EvmTransactionScanResponseValidationRoutersEvmResponseTransactionValidationFeature `json:"features" api:"required"`
 	// Result type returned when validation succeeds.
 	ResultType EvmTransactionScanResponseValidationRoutersEvmResponseTransactionValidationResultType `json:"result_type" api:"required"`
 	// A string indicating if the simulation was successful or not.
 	Status EvmTransactionScanResponseValidationRoutersEvmResponseTransactionValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
-	// reason.
+	// reason. See the
+	// [Classifications reference](/api-reference/end-user-protection/transaction-scanning/evm/transaction-scanning-evm/evm-transaction-scanning-response-reference#classifications)
+	// for possible values.
 	Classification string `json:"classification"`
 	// A textual description that can be presented to the user about what this
 	// transaction is doing.
 	Description string `json:"description"`
 	// A textual description about the reasons the transaction was flagged with
-	// result_type.
+	// result_type. See the
+	// [Classifications reference](/api-reference/end-user-protection/transaction-scanning/evm/transaction-scanning-evm/evm-transaction-scanning-response-reference#classifications)
+	// for possible values.
 	Reason string                                                                          `json:"reason"`
 	JSON   evmTransactionScanResponseValidationRoutersEvmResponseTransactionValidationJSON `json:"-"`
 }
