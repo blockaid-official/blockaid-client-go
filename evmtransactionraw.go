@@ -13430,7 +13430,7 @@ type EvmTransactionRawScanParams struct {
 	// Override the state of the chain. This is useful for testing purposes.
 	StateOverride param.Field[map[string]EvmTransactionRawScanParamsStateOverride] `json:"state_override"`
 	// Optional customer-supplied hints about transaction intent that cannot be
-	// inferred from on-chain simulation.
+	// inferred from onchain simulation.
 	TransactionHints param.Field[[]EvmTransactionRawScanParamsTransactionHintUnion] `json:"transaction_hints"`
 }
 
@@ -13554,7 +13554,7 @@ type EvmTransactionRawScanParamsTransactionHint struct {
 	// Hint type discriminator (`cross_chain_bridge`).
 	Type param.Field[string] `json:"type" api:"required"`
 	// The intended recipient address on the destination chain. Required when the
-	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
+	// bridge protocol does not emit this onchain (e.g. Relay, some Across deposit
 	// routes).
 	DestinationAddress param.Field[string]      `json:"destination_address"`
 	DestinationAsset   param.Field[interface{}] `json:"destination_asset"`
@@ -13579,12 +13579,12 @@ type EvmTransactionRawScanParamsTransactionHintUnion interface {
 }
 
 // Customer-supplied context for a cross-chain bridge deposit where the protocol
-// does not emit the destination on-chain.
+// does not emit the destination onchain.
 type EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeHint struct {
 	// Hint type discriminator (`cross_chain_bridge`).
 	Type param.Field[EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeHintType] `json:"type" api:"required"`
 	// The intended recipient address on the destination chain. Required when the
-	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
+	// bridge protocol does not emit this onchain (e.g. Relay, some Across deposit
 	// routes).
 	DestinationAddress param.Field[string] `json:"destination_address"`
 	// Details of the asset the recipient will receive on the destination chain. May

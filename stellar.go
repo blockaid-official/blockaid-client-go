@@ -121,7 +121,7 @@ type StellarClassicGasEstimation struct {
 	Status StellarClassicGasEstimationStatus `json:"status" api:"required"`
 	// Fee charged, in stroops. On-chain: the real fee taken. Pre-sign: the
 	// network-minimum estimate (base_fee times operation_count, plus one operation for
-	// a fee-bump). Surge pricing can make the real on-chain charge higher.
+	// a fee-bump). Surge pricing can make the real onchain charge higher.
 	Used string                          `json:"used" api:"required"`
 	JSON stellarClassicGasEstimationJSON `json:"-"`
 }
@@ -468,7 +468,7 @@ type StellarTransactionScanRequestParam struct {
 	//     response
 	Options param.Field[[]StellarTransactionScanRequestOption] `json:"options"`
 	// Optional customer-supplied hints about transaction intent that cannot be
-	// inferred from on-chain simulation.
+	// inferred from onchain simulation.
 	TransactionHints param.Field[[]StellarTransactionScanRequestTransactionHintsUnionParam] `json:"transaction_hints"`
 }
 
@@ -622,7 +622,7 @@ type StellarTransactionScanRequestTransactionHintParam struct {
 	// Hint type discriminator (`cross_chain_bridge`).
 	Type param.Field[string] `json:"type" api:"required"`
 	// The intended recipient address on the destination chain. Required when the
-	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
+	// bridge protocol does not emit this onchain (e.g. Relay, some Across deposit
 	// routes).
 	DestinationAddress param.Field[string]      `json:"destination_address"`
 	DestinationAsset   param.Field[interface{}] `json:"destination_asset"`
@@ -648,12 +648,12 @@ type StellarTransactionScanRequestTransactionHintsUnionParam interface {
 }
 
 // Customer-supplied context for a cross-chain bridge deposit where the protocol
-// does not emit the destination on-chain.
+// does not emit the destination onchain.
 type StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintParam struct {
 	// Hint type discriminator (`cross_chain_bridge`).
 	Type param.Field[StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintType] `json:"type" api:"required"`
 	// The intended recipient address on the destination chain. Required when the
-	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
+	// bridge protocol does not emit this onchain (e.g. Relay, some Across deposit
 	// routes).
 	DestinationAddress param.Field[string] `json:"destination_address"`
 	// Details of the asset the recipient will receive on the destination chain. May
@@ -897,7 +897,7 @@ type StellarTransactionScanResponseGasEstimation struct {
 	Resources StellarSorobanResources `json:"resources"`
 	// Fee charged, in stroops. On-chain: the real fee taken. Pre-sign: the
 	// network-minimum estimate (base_fee times operation_count, plus one operation for
-	// a fee-bump). Surge pricing can make the real on-chain charge higher.
+	// a fee-bump). Surge pricing can make the real onchain charge higher.
 	Used  string                                          `json:"used"`
 	JSON  stellarTransactionScanResponseGasEstimationJSON `json:"-"`
 	union StellarTransactionScanResponseGasEstimationUnion
