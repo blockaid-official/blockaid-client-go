@@ -45,16 +45,39 @@ func (r *EvmJsonRpcService) Scan(ctx context.Context, body EvmJsonRpcScanParams,
 }
 
 type EvmJsonRpcScanResponse struct {
-	Block                      string                                           `json:"block" api:"required"`
-	Chain                      string                                           `json:"chain" api:"required"`
-	AccountAddress             string                                           `json:"account_address"`
-	Events                     []EvmJsonRpcScanResponseEvent                    `json:"events"`
-	Features                   interface{}                                      `json:"features"`
-	GasEstimation              EvmJsonRpcScanResponseGasEstimation              `json:"gas_estimation"`
-	Simulation                 EvmJsonRpcScanResponseSimulation                 `json:"simulation"`
+	// The block number or tag used for the scan (e.g. "latest" or a specific block
+	// number as a string).
+	Block string `json:"block" api:"required"`
+	// The blockchain the transaction is being scanned on (e.g. ethereum, base,
+	// polygon).
+	Chain string `json:"chain" api:"required"`
+	// The account address whose perspective is used for simulation and validation. If
+	// omitted, it is inferred from the transaction's `from` field.
+	AccountAddress string `json:"account_address"`
+	// Events decoded/emitted during simulation, when available.
+	Events   []EvmJsonRpcScanResponseEvent `json:"events"`
+	Features interface{}                   `json:"features"`
+	// Included when the `gas_estimation` option is requested. Either a successful
+	// estimate (`status: "Success"`, `used`, `estimate`) or an error
+	// (`status: "Error"`, `error`).
+	GasEstimation EvmJsonRpcScanResponseGasEstimation `json:"gas_estimation"`
+	// Included when the `simulation` option is requested. Either a successful
+	// simulation result or a simulation-error result (`status: "Error"`, with an
+	// `error` message and optional `error_details`).
+	Simulation EvmJsonRpcScanResponseSimulation `json:"simulation"`
+	// Gas estimation for ERC-4337 user operations, when applicable. Success (v6/v7):
+	// `status: "Success"` with `pre_verification_gas_estimate`,
+	// `verification_gas_estimate`, `call_gas_estimate` (plus
+	// `paymaster_verification_gas_estimate` for v7). Error: `status: "Error"`,
+	// `error`.
 	UserOperationGasEstimation EvmJsonRpcScanResponseUserOperationGasEstimation `json:"user_operation_gas_estimation"`
-	Validation                 EvmJsonRpcScanResponseValidation                 `json:"validation"`
-	JSON                       evmJsonRpcScanResponseJSON                       `json:"-"`
+	// Included when the `validation` option is requested. Either a successful
+	// validation result (`status: "Success"`, `result_type` one of
+	// Benign/Warning/Malicious) or a validation-error result (`status: "Success"`,
+	// `result_type: "Error"`, with `description`/`reason`/`classification` empty and a
+	// top-level `error` message).
+	Validation EvmJsonRpcScanResponseValidation `json:"validation"`
+	JSON       evmJsonRpcScanResponseJSON       `json:"-"`
 }
 
 // evmJsonRpcScanResponseJSON contains the JSON metadata for the struct
@@ -82,13 +105,19 @@ func (r evmJsonRpcScanResponseJSON) RawJSON() string {
 }
 
 type EvmJsonRpcScanResponseEvent struct {
-	Data           string                              `json:"data" api:"required"`
-	EmitterAddress string                              `json:"emitter_address" api:"required"`
-	Topics         []string                            `json:"topics" api:"required"`
-	EmitterName    string                              `json:"emitter_name"`
-	Name           string                              `json:"name"`
-	Params         []EvmJsonRpcScanResponseEventsParam `json:"params"`
-	JSON           evmJsonRpcScanResponseEventJSON     `json:"-"`
+	// The raw log data of the event.
+	Data string `json:"data" api:"required"`
+	// The address that emitted the event.
+	EmitterAddress string `json:"emitter_address" api:"required"`
+	// The raw log topics of the event.
+	Topics []string `json:"topics" api:"required"`
+	// The name of the contract/token that emitted the event, when known.
+	EmitterName string `json:"emitter_name"`
+	// The decoded event name, when available.
+	Name string `json:"name"`
+	// Decoded event parameters, when available.
+	Params []EvmJsonRpcScanResponseEventsParam `json:"params"`
+	JSON   evmJsonRpcScanResponseEventJSON     `json:"-"`
 }
 
 // evmJsonRpcScanResponseEventJSON contains the JSON metadata for the struct
@@ -165,6 +194,9 @@ type EvmJsonRpcScanResponseEventsParamsValueArray []interface{}
 func (r EvmJsonRpcScanResponseEventsParamsValueArray) ImplementsEvmJsonRpcScanResponseEventsParamsValueUnion() {
 }
 
+// Included when the `gas_estimation` option is requested. Either a successful
+// estimate (`status: "Success"`, `used`, `estimate`) or an error
+// (`status: "Error"`, `error`).
 type EvmJsonRpcScanResponseGasEstimation struct {
 	Status   EvmJsonRpcScanResponseGasEstimationStatus `json:"status" api:"required"`
 	Error    string                                    `json:"error"`
@@ -208,6 +240,10 @@ func (r EvmJsonRpcScanResponseGasEstimation) AsUnion() EvmJsonRpcScanResponseGas
 	return r.union
 }
 
+// Included when the `gas_estimation` option is requested. Either a successful
+// estimate (`status: "Success"`, `used`, `estimate`) or an error
+// (`status: "Error"`, `error`).
+//
 // Union satisfied by
 // [EvmJsonRpcScanResponseGasEstimationRoutersEvmModelsTransactionScanGasEstimation]
 // or
@@ -330,6 +366,9 @@ func (r EvmJsonRpcScanResponseGasEstimationStatus) IsKnown() bool {
 	return false
 }
 
+// Included when the `simulation` option is requested. Either a successful
+// simulation result or a simulation-error result (`status: "Error"`, with an
+// `error` message and optional `error_details`).
 type EvmJsonRpcScanResponseSimulation struct {
 	// A string indicating if the simulation was successful or not.
 	Status EvmJsonRpcScanResponseSimulationStatus `json:"status" api:"required"`
@@ -428,6 +467,10 @@ func (r EvmJsonRpcScanResponseSimulation) AsUnion() EvmJsonRpcScanResponseSimula
 	return r.union
 }
 
+// Included when the `simulation` option is requested. Either a successful
+// simulation result or a simulation-error result (`status: "Error"`, with an
+// `error` message and optional `error_details`).
+//
 // Union satisfied by
 // [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulation] or
 // [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationError].
@@ -455,8 +498,8 @@ type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulation str
 	// by the `from` field in the transaction request, or explicit by the
 	// account_address field in the request.
 	AccountSummary EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAccountSummary `json:"account_summary" api:"required"`
-	// a dictionary including additional information about each relevant address in the
-	// transaction.
+	// Dictionary of per-address details, keyed by address. Values may include
+	// `name_tag`, `contract_name`, and `is_eoa` when available.
 	AddressDetails map[string]EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationAddressDetail `json:"address_details" api:"required"`
 	// dictionary describes the assets differences as a result of this transaction for
 	// every involved address
@@ -469,23 +512,33 @@ type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulation str
 	SessionKey map[string][]EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationSessionKey `json:"session_key" api:"required"`
 	// A string indicating if the simulation was successful or not.
 	Status EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationStatus `json:"status" api:"required"`
-	// dictionary represents the usd value each address gained / lost during this
-	// transaction
+	// Dictionary of per-address USD value changes from this transaction, keyed by
+	// address; each value has `in`, `out`, and `total` USD amounts as strings.
 	TotalUsdDiff map[string]EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTotalUsdDiff `json:"total_usd_diff" api:"required"`
 	// a dictionary representing the usd value each address is exposed to, split by
 	// spenders
 	TotalUsdExposure map[string]map[string]string `json:"total_usd_exposure" api:"required"`
-	// Describes the nature of the transaction and what happened as part of it
+	// High-level actions detected during simulation. Values are either a known
+	// `TransactionAction` enum (e.g. mint, swap, native_transfer, token_transfer,
+	// approval, proxy_upgrade, ownership_change, bridge) or an arbitrary string for
+	// actions without a dedicated type.
 	TransactionActions []EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions `json:"transaction_actions" api:"required"`
-	// Describes the state differences as a result of this transaction for every
-	// involved address
+	// Contract-management findings for every involved address, keyed by address (e.g.
+	// proxy upgrades, ownership changes, module changes, contract creation).
 	ContractManagement map[string][]EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationContractManagement `json:"contract_management"`
-	// Cross-chain asset diffs per address, showing asset movements across different
-	// chains (e.g. bridge transactions)
+	// Per-address asset diffs on the destination chain for cross-chain transactions
+	// (bridges and offchain transfers); each entry's `obj` array holds the diffs,
+	// including a `chain` field identifying the destination chain. Present only when
+	// the transaction involves a cross-chain operation. Use alongside `assets_diffs`:
+	// what leaves the source chain (`assets_diffs`) vs. what arrives on the
+	// destination chain (`cross_chain_asset_diffs`). Supported bridges: `hyperliquid`
+	// (cross-chain), `hyperliquid_internal` (within-chain).
 	CrossChainAssetDiffs []EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationCrossChainAssetDiff `json:"cross_chain_asset_diffs" api:"nullable"`
-	// Missing balances in the transaction
+	// Missing balances encountered during simulation (e.g. insufficient token/ETH
+	// balance for an action).
 	MissingBalances []EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationMissingBalance `json:"missing_balances"`
-	// The parameters of the transaction that was simulated.
+	// JSON-RPC parameters used for simulation (from, to, value, data, gas, gas_price,
+	// block_tag, chain), including parsed calldata when available.
 	Params EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationParams `json:"params"`
 	// The number of times the simulation ran until success
 	SimulationRunCount int64                                                                       `json:"simulation_run_count"`
@@ -11845,7 +11898,8 @@ func (r evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationM
 	return r.raw
 }
 
-// The parameters of the transaction that was simulated.
+// JSON-RPC parameters used for simulation (from, to, value, data, gas, gas_price,
+// block_tag, chain), including parsed calldata when available.
 type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationParams struct {
 	// The block tag to be sent.
 	BlockTag string `json:"block_tag"`
@@ -11963,7 +12017,9 @@ type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationErro
 	Error string `json:"error" api:"required"`
 	// A string indicating if the simulation was successful or not.
 	Status EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorStatus `json:"status" api:"required"`
-	// Error details if the simulation failed.
+	// Structured error details when simulation fails; shape varies by error type —
+	// insufficient funds, invalid address, unsupported EIP-712 message, or a generic
+	// error.
 	ErrorDetails EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetails `json:"error_details"`
 	JSON         evmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorJSON         `json:"-"`
 }
@@ -12006,7 +12062,9 @@ func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationE
 	return false
 }
 
-// Error details if the simulation failed.
+// Structured error details when simulation fails; shape varies by error type —
+// insufficient funds, invalid address, unsupported EIP-712 message, or a generic
+// error.
 type EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetails struct {
 	// The type of the model
 	Code string `json:"code" api:"required"`
@@ -12073,7 +12131,9 @@ func (r EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationE
 	return r.union
 }
 
-// Error details if the simulation failed.
+// Structured error details when simulation fails; shape varies by error type —
+// insufficient funds, invalid address, unsupported EIP-712 message, or a generic
+// error.
 //
 // Union satisfied by
 // [EvmJsonRpcScanResponseSimulationRoutersEvmResponseTransactionSimulationErrorErrorDetailsRoutersEvmResponseGeneralInsufficientFundsErrorDetails],
@@ -12841,6 +12901,11 @@ func (r EvmJsonRpcScanResponseSimulationStatus) IsKnown() bool {
 	return false
 }
 
+// Gas estimation for ERC-4337 user operations, when applicable. Success (v6/v7):
+// `status: "Success"` with `pre_verification_gas_estimate`,
+// `verification_gas_estimate`, `call_gas_estimate` (plus
+// `paymaster_verification_gas_estimate` for v7). Error: `status: "Error"`,
+// `error`.
 type EvmJsonRpcScanResponseUserOperationGasEstimation struct {
 	Status                           EvmJsonRpcScanResponseUserOperationGasEstimationStatus `json:"status" api:"required"`
 	CallGasEstimate                  string                                                 `json:"call_gas_estimate"`
@@ -12888,6 +12953,12 @@ func (r EvmJsonRpcScanResponseUserOperationGasEstimation) AsUnion() EvmJsonRpcSc
 	return r.union
 }
 
+// Gas estimation for ERC-4337 user operations, when applicable. Success (v6/v7):
+// `status: "Success"` with `pre_verification_gas_estimate`,
+// `verification_gas_estimate`, `call_gas_estimate` (plus
+// `paymaster_verification_gas_estimate` for v7). Error: `status: "Error"`,
+// `error`.
+//
 // Union satisfied by [UserOperationV6GasEstimation],
 // [UserOperationV7GasEstimation] or
 // [EvmJsonRpcScanResponseUserOperationGasEstimationRoutersEvmModelsTransactionScanGasEstimationError].
@@ -12970,6 +13041,11 @@ func (r EvmJsonRpcScanResponseUserOperationGasEstimationStatus) IsKnown() bool {
 	return false
 }
 
+// Included when the `validation` option is requested. Either a successful
+// validation result (`status: "Success"`, `result_type` one of
+// Benign/Warning/Malicious) or a validation-error result (`status: "Success"`,
+// `result_type: "Error"`, with `description`/`reason`/`classification` empty and a
+// top-level `error` message).
 type EvmJsonRpcScanResponseValidation struct {
 	// This field can have the runtime type of
 	// [[]EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationFeature],
@@ -13035,6 +13111,12 @@ func (r EvmJsonRpcScanResponseValidation) AsUnion() EvmJsonRpcScanResponseValida
 	return r.union
 }
 
+// Included when the `validation` option is requested. Either a successful
+// validation result (`status: "Success"`, `result_type` one of
+// Benign/Warning/Malicious) or a validation-error result (`status: "Success"`,
+// `result_type: "Error"`, with `description`/`reason`/`classification` empty and a
+// top-level `error` message).
+//
 // Union satisfied by
 // [EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidation] or
 // [EvmJsonRpcScanResponseValidationRoutersEvmResponseTransactionValidationError].

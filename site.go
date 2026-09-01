@@ -58,20 +58,30 @@ type SiteScanHitResponse struct {
 	// objects. See the
 	// [Attack Type Reference](/api-reference/end-user-protection/dapp-scanning/dapp-scanning-response-reference#attack-type-reference)
 	// for possible keys.
-	AttackTypes       map[string]SiteScanHitResponseAttackType `json:"attack_types" api:"required"`
-	ContractRead      SiteScanHitResponseContractRead          `json:"contract_read" api:"required"`
-	ContractWrite     SiteScanHitResponseContractWrite         `json:"contract_write" api:"required"`
-	IsMalicious       bool                                     `json:"is_malicious" api:"required"`
-	IsReachable       bool                                     `json:"is_reachable" api:"required"`
-	IsWeb3Site        bool                                     `json:"is_web3_site" api:"required"`
-	JsonRpcOperations []string                                 `json:"json_rpc_operations" api:"required"`
-	MaliciousScore    float64                                  `json:"malicious_score" api:"required"`
-	NetworkOperations []string                                 `json:"network_operations" api:"required"`
-	ScanEndTime       time.Time                                `json:"scan_end_time" api:"required" format:"date-time"`
-	ScanStartTime     time.Time                                `json:"scan_start_time" api:"required" format:"date-time"`
-	Status            SiteScanHitResponseStatus                `json:"status" api:"required"`
-	URL               string                                   `json:"url" api:"required"`
-	JSON              siteScanHitResponseJSON                  `json:"-"`
+	AttackTypes map[string]SiteScanHitResponseAttackType `json:"attack_types" api:"required"`
+	// Same shape as `contract_write`.
+	ContractRead  SiteScanHitResponseContractRead  `json:"contract_read" api:"required"`
+	ContractWrite SiteScanHitResponseContractWrite `json:"contract_write" api:"required"`
+	// Overall malicious verdict for the site.
+	IsMalicious bool `json:"is_malicious" api:"required"`
+	// Whether the site was reachable during the scan.
+	IsReachable bool `json:"is_reachable" api:"required"`
+	// Whether the site is treated as Web3-related for the scan.
+	IsWeb3Site bool `json:"is_web3_site" api:"required"`
+	// JSON-RPC method names observed during the scan.
+	JsonRpcOperations []string `json:"json_rpc_operations" api:"required"`
+	// Numeric score for the site; interpret together with `is_malicious` and other
+	// fields.
+	MaliciousScore float64 `json:"malicious_score" api:"required"`
+	// Hosts/domains observed during the scan.
+	NetworkOperations []string  `json:"network_operations" api:"required"`
+	ScanEndTime       time.Time `json:"scan_end_time" api:"required" format:"date-time"`
+	ScanStartTime     time.Time `json:"scan_start_time" api:"required" format:"date-time"`
+	// Literal "hit", indicating a scan result was found for this URL.
+	Status SiteScanHitResponseStatus `json:"status" api:"required"`
+	// Scanned URL.
+	URL  string                  `json:"url" api:"required"`
+	JSON siteScanHitResponseJSON `json:"-"`
 }
 
 // siteScanHitResponseJSON contains the JSON metadata for the struct
@@ -127,6 +137,7 @@ func (r siteScanHitResponseAttackTypeJSON) RawJSON() string {
 	return r.raw
 }
 
+// Same shape as `contract_write`.
 type SiteScanHitResponseContractRead struct {
 	ContractAddresses []string                            `json:"contract_addresses" api:"required"`
 	Functions         map[string][]string                 `json:"functions" api:"required"`
@@ -173,6 +184,7 @@ func (r siteScanHitResponseContractWriteJSON) RawJSON() string {
 	return r.raw
 }
 
+// Literal "hit", indicating a scan result was found for this URL.
 type SiteScanHitResponseStatus string
 
 const (
@@ -188,6 +200,7 @@ func (r SiteScanHitResponseStatus) IsKnown() bool {
 }
 
 type SiteScanMissResponse struct {
+	// Literal "miss", indicating no scan result was found for this URL.
 	Status SiteScanMissResponseStatus `json:"status" api:"required"`
 	JSON   siteScanMissResponseJSON   `json:"-"`
 }
@@ -210,6 +223,7 @@ func (r siteScanMissResponseJSON) RawJSON() string {
 
 func (r SiteScanMissResponse) implementsSiteScanResponse() {}
 
+// Literal "miss", indicating no scan result was found for this URL.
 type SiteScanMissResponseStatus string
 
 const (
@@ -227,6 +241,7 @@ func (r SiteScanMissResponseStatus) IsKnown() bool {
 type SiteReportResponse = interface{}
 
 type SiteScanResponse struct {
+	// Literal "hit", indicating a scan result was found for this URL.
 	Status SiteScanResponseStatus `json:"status" api:"required"`
 	// This field can have the runtime type of
 	// [map[string]SiteScanHitResponseAttackType].
@@ -235,19 +250,25 @@ type SiteScanResponse struct {
 	ContractRead interface{} `json:"contract_read"`
 	// This field can have the runtime type of [SiteScanHitResponseContractWrite].
 	ContractWrite interface{} `json:"contract_write"`
-	IsMalicious   bool        `json:"is_malicious"`
-	IsReachable   bool        `json:"is_reachable"`
-	IsWeb3Site    bool        `json:"is_web3_site"`
+	// Overall malicious verdict for the site.
+	IsMalicious bool `json:"is_malicious"`
+	// Whether the site was reachable during the scan.
+	IsReachable bool `json:"is_reachable"`
+	// Whether the site is treated as Web3-related for the scan.
+	IsWeb3Site bool `json:"is_web3_site"`
 	// This field can have the runtime type of [[]string].
 	JsonRpcOperations interface{} `json:"json_rpc_operations"`
-	MaliciousScore    float64     `json:"malicious_score"`
+	// Numeric score for the site; interpret together with `is_malicious` and other
+	// fields.
+	MaliciousScore float64 `json:"malicious_score"`
 	// This field can have the runtime type of [[]string].
-	NetworkOperations interface{}          `json:"network_operations"`
-	ScanEndTime       time.Time            `json:"scan_end_time" format:"date-time"`
-	ScanStartTime     time.Time            `json:"scan_start_time" format:"date-time"`
-	URL               string               `json:"url"`
-	JSON              siteScanResponseJSON `json:"-"`
-	union             SiteScanResponseUnion
+	NetworkOperations interface{} `json:"network_operations"`
+	ScanEndTime       time.Time   `json:"scan_end_time" format:"date-time"`
+	ScanStartTime     time.Time   `json:"scan_start_time" format:"date-time"`
+	// Scanned URL.
+	URL   string               `json:"url"`
+	JSON  siteScanResponseJSON `json:"-"`
+	union SiteScanResponseUnion
 }
 
 // siteScanResponseJSON contains the JSON metadata for the struct
@@ -312,6 +333,7 @@ func init() {
 	)
 }
 
+// Literal "hit", indicating a scan result was found for this URL.
 type SiteScanResponseStatus string
 
 const (

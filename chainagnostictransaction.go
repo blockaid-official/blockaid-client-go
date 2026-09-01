@@ -46,10 +46,13 @@ func (r *ChainAgnosticTransactionService) Scan(ctx context.Context, body ChainAg
 }
 
 type ChainAgnosticTransactionScanResponse struct {
-	// Complete validation result containing all scan details and findings
+	// Complete validation result containing all scan details and findings. The
+	// `status` field indicates whether the scan succeeded ("Success") or encountered
+	// an error ("Error").
 	Validation ChainAgnosticTransactionScanResponseValidation `json:"validation" api:"required"`
-	// Deep-link URL to the Blockaid platform address overview page for the scanned
-	// `to` address. Null if no URL is available for the given chain.
+	// Deep-link URL to the scanned `to` address overview page in the Blockaid platform
+	// (e.g. `https://app.blockaid.io/scanner/address/{to_address}?chain={chain}`).
+	// Null if no URL is available for the given chain.
 	PlatformURL string                                   `json:"platform_url" api:"nullable"`
 	JSON        chainAgnosticTransactionScanResponseJSON `json:"-"`
 }
@@ -71,11 +74,15 @@ func (r chainAgnosticTransactionScanResponseJSON) RawJSON() string {
 	return r.raw
 }
 
-// Complete validation result containing all scan details and findings
+// Complete validation result containing all scan details and findings. The
+// `status` field indicates whether the scan succeeded ("Success") or encountered
+// an error ("Error").
 type ChainAgnosticTransactionScanResponseValidation struct {
-	// Classification of the scan result based on the detected features
+	// Classification of the scan result based on the detected features (e.g. "Other",
+	// "Known malicious")
 	Classification string `json:"classification" api:"required"`
-	// Detailed description of the validation result
+	// Detailed, human-readable description of the validation result. In the error
+	// case, this describes what went wrong or what could still be determined.
 	Description string `json:"description" api:"required"`
 	// The type of validation result.
 	ResultType ChainAgnosticTransactionScanResponseValidationResultType `json:"result_type" api:"required"`
