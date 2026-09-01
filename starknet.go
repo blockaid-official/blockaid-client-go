@@ -701,7 +701,9 @@ func (r StarknetTransactionScanRequestOption) IsKnown() bool {
 type StarknetTransactionScanResponse struct {
 	// Simulation result; Only present if simulation option is included in the request
 	Simulation StarknetTransactionScanResponseSimulation `json:"simulation" api:"nullable"`
-	// Validation result; Only present if validation option is included in the request
+	// Validation result: a success object (`status: "Success"`) with a `result_type`
+	// of Benign, Warning, or Malicious, or an error object (`status: "Error"`). Only
+	// present if the `validation` option is included in the request.
 	Validation StarknetTransactionScanResponseValidation `json:"validation" api:"nullable"`
 	JSON       starknetTransactionScanResponseJSON       `json:"-"`
 }
@@ -737,7 +739,7 @@ type StarknetTransactionScanResponseSimulation struct {
 	AssetsDiffs interface{} `json:"assets_diffs"`
 	// Optional block number or tag context for the simulation
 	BlockNumber string `json:"block_number" api:"nullable"`
-	// Error message
+	// Error message describing what went wrong during the simulation.
 	Error string `json:"error"`
 	// This field can have the runtime type of
 	// [map[string][]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure].
@@ -814,13 +816,13 @@ type StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSc
 	Status         StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaStatus         `json:"status" api:"required"`
 	// Details of addresses involved in the transaction
 	AddressDetails []StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAddressDetail `json:"address_details"`
-	// Mapping between the address of an account to the assets diff during the
-	// transaction
+	// Mapping between the address of an account and the assets diff during the
+	// transaction; values are arrays of ERC20, ERC721, or ERC1155 asset diffs.
 	AssetsDiffs map[string][]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaAssetsDiff `json:"assets_diffs"`
 	// Optional block number or tag context for the simulation
 	BlockNumber string `json:"block_number" api:"nullable"`
-	// Mapping between the address of an account to the exposure of the assets during
-	// the transaction
+	// Mapping between the address of an account and the exposure of the assets during
+	// the transaction; values are arrays of ERC20, ERC721, or ERC1155 exposures.
 	Exposures map[string][]StarknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaExposure `json:"exposures"`
 	JSON      starknetTransactionScanResponseSimulationStarknetStarknetSimulationResultSchemaJSON                  `json:"-"`
 }
@@ -1815,7 +1817,7 @@ func (r starknetTransactionScanResponseSimulationStarknetStarknetSimulationResul
 }
 
 type StarknetTransactionScanResponseSimulationStarknetSimulationErrorSchema struct {
-	// Error message
+	// Error message describing what went wrong during the simulation.
 	Error  string                                                                       `json:"error" api:"required"`
 	Status StarknetTransactionScanResponseSimulationStarknetSimulationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   starknetTransactionScanResponseSimulationStarknetSimulationErrorSchemaJSON   `json:"-"`
@@ -1871,7 +1873,9 @@ func (r StarknetTransactionScanResponseSimulationStatus) IsKnown() bool {
 	return false
 }
 
-// Validation result; Only present if validation option is included in the request
+// Validation result: a success object (`status: "Success"`) with a `result_type`
+// of Benign, Warning, or Malicious, or an error object (`status: "Error"`). Only
+// present if the `validation` option is included in the request.
 type StarknetTransactionScanResponseValidation struct {
 	Status StarknetTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
@@ -1881,7 +1885,7 @@ type StarknetTransactionScanResponseValidation struct {
 	Classification string `json:"classification"`
 	// A textual description about the validation result
 	Description string `json:"description"`
-	// Error message
+	// Error message describing what went wrong during validation.
 	Error string `json:"error"`
 	// This field can have the runtime type of
 	// [[]StarknetTransactionScanResponseValidationStarknetValidationResultFeature].
@@ -1891,7 +1895,7 @@ type StarknetTransactionScanResponseValidation struct {
 	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/starknet/starknet-transaction-scanning-response-reference#reasons)
 	// for possible values.
 	Reason string `json:"reason"`
-	// Verdict of the validation
+	// Verdict of the validation: Benign, Warning, Malicious, or Error.
 	ResultType StarknetTransactionScanResponseValidationResultType `json:"result_type"`
 	JSON       starknetTransactionScanResponseValidationJSON       `json:"-"`
 	union      StarknetTransactionScanResponseValidationUnion
@@ -1934,7 +1938,9 @@ func (r StarknetTransactionScanResponseValidation) AsUnion() StarknetTransaction
 	return r.union
 }
 
-// Validation result; Only present if validation option is included in the request
+// Validation result: a success object (`status: "Success"`) with a `result_type`
+// of Benign, Warning, or Malicious, or an error object (`status: "Error"`). Only
+// present if the `validation` option is included in the request.
 //
 // Union satisfied by
 // [StarknetTransactionScanResponseValidationStarknetValidationResult] or
@@ -1966,7 +1972,7 @@ type StarknetTransactionScanResponseValidationStarknetValidationResult struct {
 	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
 	Description string `json:"description" api:"required"`
-	// See the
+	// List of features explaining the validation result. See the
 	// [Features reference](/api-reference/end-user-protection/transaction-scanning/starknet/starknet-transaction-scanning-response-reference#features)
 	// for possible feature IDs.
 	Features []StarknetTransactionScanResponseValidationStarknetValidationResultFeature `json:"features" api:"required"`
@@ -1975,7 +1981,7 @@ type StarknetTransactionScanResponseValidationStarknetValidationResult struct {
 	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/starknet/starknet-transaction-scanning-response-reference#reasons)
 	// for possible values.
 	Reason string `json:"reason" api:"required"`
-	// Verdict of the validation
+	// Verdict of the validation: Benign, Warning, Malicious, or Error.
 	ResultType StarknetTransactionScanResponseValidationStarknetValidationResultResultType `json:"result_type" api:"required"`
 	Status     StarknetTransactionScanResponseValidationStarknetValidationResultStatus     `json:"status" api:"required"`
 	JSON       starknetTransactionScanResponseValidationStarknetValidationResultJSON       `json:"-"`
@@ -2011,8 +2017,11 @@ type StarknetTransactionScanResponseValidationStarknetValidationResultFeature st
 	Address string `json:"address" api:"required"`
 	// Textual description
 	Description string `json:"description" api:"required"`
-	FeatureID   string `json:"feature_id" api:"required"`
-	// Feature Classification
+	// Identifier of the feature. See the
+	// [Features reference](/api-reference/end-user-protection/transaction-scanning/starknet/starknet-transaction-scanning-response-reference#features)
+	// for possible values.
+	FeatureID string `json:"feature_id" api:"required"`
+	// Feature classification: Benign, Warning, Malicious, or Info.
 	Type StarknetTransactionScanResponseValidationStarknetValidationResultFeaturesType `json:"type" api:"required"`
 	JSON starknetTransactionScanResponseValidationStarknetValidationResultFeatureJSON  `json:"-"`
 }
@@ -2037,7 +2046,7 @@ func (r starknetTransactionScanResponseValidationStarknetValidationResultFeature
 	return r.raw
 }
 
-// Feature Classification
+// Feature classification: Benign, Warning, Malicious, or Info.
 type StarknetTransactionScanResponseValidationStarknetValidationResultFeaturesType string
 
 const (
@@ -2055,7 +2064,7 @@ func (r StarknetTransactionScanResponseValidationStarknetValidationResultFeature
 	return false
 }
 
-// Verdict of the validation
+// Verdict of the validation: Benign, Warning, Malicious, or Error.
 type StarknetTransactionScanResponseValidationStarknetValidationResultResultType string
 
 const (
@@ -2088,7 +2097,7 @@ func (r StarknetTransactionScanResponseValidationStarknetValidationResultStatus)
 }
 
 type StarknetTransactionScanResponseValidationStarknetValidationErrorSchema struct {
-	// Error message
+	// Error message describing what went wrong during validation.
 	Error  string                                                                       `json:"error" api:"required"`
 	Status StarknetTransactionScanResponseValidationStarknetValidationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   starknetTransactionScanResponseValidationStarknetValidationErrorSchemaJSON   `json:"-"`
@@ -2144,7 +2153,7 @@ func (r StarknetTransactionScanResponseValidationStatus) IsKnown() bool {
 	return false
 }
 
-// Verdict of the validation
+// Verdict of the validation: Benign, Warning, Malicious, or Error.
 type StarknetTransactionScanResponseValidationResultType string
 
 const (

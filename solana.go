@@ -31,10 +31,13 @@ func NewSolanaService(opts ...option.RequestOption) (r *SolanaService) {
 }
 
 type SolanaAccountRentFee struct {
-	AccountAddress string                   `json:"account_address" api:"required"`
-	AccountType    string                   `json:"account_type" api:"required"`
-	Lamports       string                   `json:"lamports" api:"required"`
-	JSON           solanaAccountRentFeeJSON `json:"-"`
+	// Encoded public key of the account that rent was deposited for.
+	AccountAddress string `json:"account_address" api:"required"`
+	// Type of the newly created account, e.g. TOKEN_ACCOUNT or SYSTEM_ACCOUNT.
+	AccountType string `json:"account_type" api:"required"`
+	// Rent deposit amount in lamports, as a string.
+	Lamports string                   `json:"lamports" api:"required"`
+	JSON     solanaAccountRentFeeJSON `json:"-"`
 }
 
 // solanaAccountRentFeeJSON contains the JSON metadata for the struct
@@ -60,11 +63,12 @@ type SolanaGasEstimation struct {
 	NetworkFee string `json:"network_fee" api:"required"`
 	// Prioritization fee in lamports
 	PriorityFee string `json:"priority_fee" api:"required"`
-	// Total fee in lamports
+	// Total fee in lamports: network fee plus priority fee plus account rent fees.
 	Total string `json:"total" api:"required"`
 	// Total fee in lamports (equal to total; added for cross-chain consistency)
 	Used string `json:"used" api:"required"`
-	// Rent deposit fees for newly created accounts
+	// Rent deposit fees for accounts created by the transaction; empty when no new
+	// accounts are created.
 	AccountRentFees []SolanaAccountRentFee  `json:"account_rent_fees"`
 	JSON            solanaGasEstimationJSON `json:"-"`
 }

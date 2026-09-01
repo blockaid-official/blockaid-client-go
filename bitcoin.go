@@ -346,7 +346,7 @@ type BitcoinTransactionScanResponseSimulation struct {
 	// This field can have the runtime type of
 	// [map[string][]BitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDiff].
 	AssetsDiffs interface{} `json:"assets_diffs"`
-	// Error message
+	// Error message explaining why simulation failed.
 	Error string                                       `json:"error"`
 	JSON  bitcoinTransactionScanResponseSimulationJSON `json:"-"`
 	union BitcoinTransactionScanResponseSimulationUnion
@@ -1711,7 +1711,7 @@ func (r bitcoinTransactionScanResponseSimulationBitcoinSimulationResultAssetsDif
 }
 
 type BitcoinTransactionScanResponseSimulationBitcoinSimulationErrorSchema struct {
-	// Error message
+	// Error message explaining why simulation failed.
 	Error  string                                                                     `json:"error" api:"required"`
 	Status BitcoinTransactionScanResponseSimulationBitcoinSimulationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   bitcoinTransactionScanResponseSimulationBitcoinSimulationErrorSchemaJSON   `json:"-"`
@@ -1777,7 +1777,7 @@ type BitcoinTransactionScanResponseValidation struct {
 	Classification string `json:"classification"`
 	// A textual description about the validation result.
 	Description string `json:"description"`
-	// Error message
+	// Error message explaining why validation failed.
 	Error string `json:"error"`
 	// This field can have the runtime type of
 	// [[]BitcoinTransactionScanResponseValidationBitcoinValidationResultFeature].
@@ -1787,7 +1787,7 @@ type BitcoinTransactionScanResponseValidation struct {
 	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/bitcoin/bitcoin-transaction-scanning-response-reference#reasons)
 	// for possible values.
 	Reason string `json:"reason"`
-	// Verdict of the validation.
+	// Overall verdict for the transaction: Benign, Warning, or Malicious.
 	ResultType BitcoinTransactionScanResponseValidationResultType `json:"result_type"`
 	JSON       bitcoinTransactionScanResponseValidationJSON       `json:"-"`
 	union      BitcoinTransactionScanResponseValidationUnion
@@ -1872,7 +1872,7 @@ type BitcoinTransactionScanResponseValidationBitcoinValidationResult struct {
 	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/bitcoin/bitcoin-transaction-scanning-response-reference#reasons)
 	// for possible values.
 	Reason string `json:"reason" api:"required"`
-	// Verdict of the validation.
+	// Overall verdict for the transaction: Benign, Warning, or Malicious.
 	ResultType BitcoinTransactionScanResponseValidationBitcoinValidationResultResultType `json:"result_type" api:"required"`
 	Status     BitcoinTransactionScanResponseValidationBitcoinValidationResultStatus     `json:"status" api:"required"`
 	JSON       bitcoinTransactionScanResponseValidationBitcoinValidationResultJSON       `json:"-"`
@@ -1953,7 +1953,7 @@ func (r BitcoinTransactionScanResponseValidationBitcoinValidationResultFeaturesT
 	return false
 }
 
-// Verdict of the validation.
+// Overall verdict for the transaction: Benign, Warning, or Malicious.
 type BitcoinTransactionScanResponseValidationBitcoinValidationResultResultType string
 
 const (
@@ -1985,7 +1985,7 @@ func (r BitcoinTransactionScanResponseValidationBitcoinValidationResultStatus) I
 }
 
 type BitcoinTransactionScanResponseValidationBitcoinValidationErrorSchema struct {
-	// Error message
+	// Error message explaining why validation failed.
 	Error  string                                                                     `json:"error" api:"required"`
 	Status BitcoinTransactionScanResponseValidationBitcoinValidationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   bitcoinTransactionScanResponseValidationBitcoinValidationErrorSchemaJSON   `json:"-"`
@@ -2041,7 +2041,7 @@ func (r BitcoinTransactionScanResponseValidationStatus) IsKnown() bool {
 	return false
 }
 
-// Verdict of the validation.
+// Overall verdict for the transaction: Benign, Warning, or Malicious.
 type BitcoinTransactionScanResponseValidationResultType string
 
 const (

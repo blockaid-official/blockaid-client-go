@@ -52,10 +52,11 @@ func NewEvmService(opts ...option.RequestOption) (r *EvmService) {
 type AddressValidation struct {
 	// Overall validation outcome for the scan.
 	ResultType AddressValidationResultType `json:"result_type" api:"required"`
-	// An error message returned when `result_type` is `Error`.
+	// An error message returned when `result_type` is `Error` (e.g. invalid address
+	// format, unsupported chain, network error).
 	Error string `json:"error"`
-	// A list of features explaining the scan result (each feature includes a type,
-	// feature_id, and description). See the
+	// A list of security features and characteristics for the address (each feature
+	// includes a type, feature_id, and description). See the
 	// [Features reference](/api-reference/end-user-protection/address-scanning/address-scanning-response-reference#features)
 	// for possible feature IDs.
 	Features AddressValidationFeaturesUnion `json:"features"`
@@ -98,8 +99,8 @@ func (r AddressValidationResultType) IsKnown() bool {
 	return false
 }
 
-// A list of features explaining the scan result (each feature includes a type,
-// feature_id, and description). See the
+// A list of security features and characteristics for the address (each feature
+// includes a type, feature_id, and description). See the
 // [Features reference](/api-reference/end-user-protection/address-scanning/address-scanning-response-reference#features)
 // for possible feature IDs.
 //
