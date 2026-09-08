@@ -121,7 +121,7 @@ type StellarClassicGasEstimation struct {
 	Status StellarClassicGasEstimationStatus `json:"status" api:"required"`
 	// Fee charged, in stroops. On-chain: the real fee taken. Pre-sign: the
 	// network-minimum estimate (base_fee times operation_count, plus one operation for
-	// a fee-bump). Surge pricing can make the real on-chain charge higher.
+	// a fee-bump). Surge pricing can make the real onchain charge higher.
 	Used string                          `json:"used" api:"required"`
 	JSON stellarClassicGasEstimationJSON `json:"-"`
 }
@@ -468,7 +468,7 @@ type StellarTransactionScanRequestParam struct {
 	//     response
 	Options param.Field[[]StellarTransactionScanRequestOption] `json:"options"`
 	// Optional customer-supplied hints about transaction intent that cannot be
-	// inferred from on-chain simulation.
+	// inferred from onchain simulation.
 	TransactionHints param.Field[[]StellarTransactionScanRequestTransactionHintsUnionParam] `json:"transaction_hints"`
 }
 
@@ -622,7 +622,7 @@ type StellarTransactionScanRequestTransactionHintParam struct {
 	// Hint type discriminator (`cross_chain_bridge`).
 	Type param.Field[string] `json:"type" api:"required"`
 	// The intended recipient address on the destination chain. Required when the
-	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
+	// bridge protocol does not emit this onchain (e.g. Relay, some Across deposit
 	// routes).
 	DestinationAddress param.Field[string]      `json:"destination_address"`
 	DestinationAsset   param.Field[interface{}] `json:"destination_asset"`
@@ -648,12 +648,12 @@ type StellarTransactionScanRequestTransactionHintsUnionParam interface {
 }
 
 // Customer-supplied context for a cross-chain bridge deposit where the protocol
-// does not emit the destination on-chain.
+// does not emit the destination onchain.
 type StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintParam struct {
 	// Hint type discriminator (`cross_chain_bridge`).
 	Type param.Field[StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintType] `json:"type" api:"required"`
 	// The intended recipient address on the destination chain. Required when the
-	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
+	// bridge protocol does not emit this onchain (e.g. Relay, some Across deposit
 	// routes).
 	DestinationAddress param.Field[string] `json:"destination_address"`
 	// Details of the asset the recipient will receive on the destination chain. May
@@ -852,7 +852,9 @@ type StellarTransactionScanResponse struct {
 	GasEstimation StellarTransactionScanResponseGasEstimation `json:"gas_estimation" api:"nullable"`
 	// Simulation result; Only present if simulation option is included in the request
 	Simulation StellarTransactionScanResponseSimulation `json:"simulation" api:"nullable"`
-	// Validation result; Only present if validation option is included in the request
+	// Validation result: a success object (`status: "Success"`) with a `result_type`
+	// of Benign, Warning, or Malicious, or an error object (`status: "Error"`). Only
+	// present if the `validation` option is included in the request.
 	Validation StellarTransactionScanResponseValidation `json:"validation" api:"nullable"`
 	JSON       stellarTransactionScanResponseJSON       `json:"-"`
 }
@@ -897,7 +899,7 @@ type StellarTransactionScanResponseGasEstimation struct {
 	Resources StellarSorobanResources `json:"resources"`
 	// Fee charged, in stroops. On-chain: the real fee taken. Pre-sign: the
 	// network-minimum estimate (base_fee times operation_count, plus one operation for
-	// a fee-bump). Surge pricing can make the real on-chain charge higher.
+	// a fee-bump). Surge pricing can make the real onchain charge higher.
 	Used  string                                          `json:"used"`
 	JSON  stellarTransactionScanResponseGasEstimationJSON `json:"-"`
 	union StellarTransactionScanResponseGasEstimationUnion
@@ -1000,7 +1002,7 @@ type StellarTransactionScanResponseSimulation struct {
 	// This field can have the runtime type of
 	// [map[string][]StellarTransactionScanResponseSimulationStellarSimulationResultAssetsOwnershipDiff].
 	AssetsOwnershipDiff interface{} `json:"assets_ownership_diff"`
-	// Error message
+	// Error message describing what went wrong during the simulation.
 	Error string `json:"error"`
 	// This field can have the runtime type of
 	// [map[string][]StellarTransactionScanResponseSimulationStellarSimulationResultExposure].
@@ -1079,11 +1081,12 @@ type StellarTransactionScanResponseSimulationStellarSimulationResult struct {
 	Status              StellarTransactionScanResponseSimulationStellarSimulationResultStatus                           `json:"status" api:"required"`
 	// Details of addresses involved in the transaction
 	AddressDetails []StellarTransactionScanResponseSimulationStellarSimulationResultAddressDetail `json:"address_details"`
-	// Mapping between the address of an account to the assets diff during the
-	// transaction
+	// Mapping between the address of an account and the assets diff during the
+	// transaction; values are arrays of legacy, native, or contract-backed asset
+	// diffs.
 	AssetsDiffs map[string][]StellarTransactionScanResponseSimulationStellarSimulationResultAssetsDiff `json:"assets_diffs"`
-	// Mapping between the address of an account to the exposure of the assets during
-	// the transaction
+	// Mapping between the address of an account and the exposure of the assets during
+	// the transaction; values are arrays of legacy or native asset exposures.
 	Exposures map[string][]StellarTransactionScanResponseSimulationStellarSimulationResultExposure `json:"exposures"`
 	JSON      stellarTransactionScanResponseSimulationStellarSimulationResultJSON                  `json:"-"`
 }
@@ -1913,7 +1916,7 @@ func (r StellarTransactionScanResponseSimulationStellarSimulationResultExposures
 }
 
 type StellarTransactionScanResponseSimulationStellarSimulationErrorSchema struct {
-	// Error message
+	// Error message describing what went wrong during the simulation.
 	Error  string                                                                     `json:"error" api:"required"`
 	Status StellarTransactionScanResponseSimulationStellarSimulationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   stellarTransactionScanResponseSimulationStellarSimulationErrorSchemaJSON   `json:"-"`
@@ -1969,7 +1972,9 @@ func (r StellarTransactionScanResponseSimulationStatus) IsKnown() bool {
 	return false
 }
 
-// Validation result; Only present if validation option is included in the request
+// Validation result: a success object (`status: "Success"`) with a `result_type`
+// of Benign, Warning, or Malicious, or an error object (`status: "Error"`). Only
+// present if the `validation` option is included in the request.
 type StellarTransactionScanResponseValidation struct {
 	Status StellarTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
@@ -1979,7 +1984,7 @@ type StellarTransactionScanResponseValidation struct {
 	Classification string `json:"classification"`
 	// A textual description about the validation result
 	Description string `json:"description"`
-	// Error message
+	// Error message describing what went wrong during validation.
 	Error string `json:"error"`
 	// This field can have the runtime type of
 	// [[]StellarTransactionScanResponseValidationStellarValidationResultFeature].
@@ -1989,7 +1994,7 @@ type StellarTransactionScanResponseValidation struct {
 	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/stellar/stellar-transaction-scanning-response-reference#reasons)
 	// for possible values.
 	Reason string `json:"reason"`
-	// Verdict of the validation
+	// Verdict of the validation: Benign, Warning, or Malicious.
 	ResultType StellarTransactionScanResponseValidationResultType `json:"result_type"`
 	JSON       stellarTransactionScanResponseValidationJSON       `json:"-"`
 	union      StellarTransactionScanResponseValidationUnion
@@ -2032,7 +2037,9 @@ func (r StellarTransactionScanResponseValidation) AsUnion() StellarTransactionSc
 	return r.union
 }
 
-// Validation result; Only present if validation option is included in the request
+// Validation result: a success object (`status: "Success"`) with a `result_type`
+// of Benign, Warning, or Malicious, or an error object (`status: "Error"`). Only
+// present if the `validation` option is included in the request.
 //
 // Union satisfied by
 // [StellarTransactionScanResponseValidationStellarValidationResult] or
@@ -2063,14 +2070,17 @@ type StellarTransactionScanResponseValidationStellarValidationResult struct {
 	// for possible values.
 	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
-	Description string                                                                   `json:"description" api:"required"`
-	Features    []StellarTransactionScanResponseValidationStellarValidationResultFeature `json:"features" api:"required"`
+	Description string `json:"description" api:"required"`
+	// List of features explaining the validation result. See the
+	// [Features reference](/api-reference/end-user-protection/transaction-scanning/stellar/stellar-transaction-scanning-response-reference#features)
+	// for possible feature IDs.
+	Features []StellarTransactionScanResponseValidationStellarValidationResultFeature `json:"features" api:"required"`
 	// A textual description about the reasons the transaction was flagged with
 	// result_type. See the
 	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/stellar/stellar-transaction-scanning-response-reference#reasons)
 	// for possible values.
 	Reason string `json:"reason" api:"required"`
-	// Verdict of the validation
+	// Verdict of the validation: Benign, Warning, or Malicious.
 	ResultType StellarTransactionScanResponseValidationStellarValidationResultResultType `json:"result_type" api:"required"`
 	Status     StellarTransactionScanResponseValidationStellarValidationResultStatus     `json:"status" api:"required"`
 	JSON       stellarTransactionScanResponseValidationStellarValidationResultJSON       `json:"-"`
@@ -2106,8 +2116,11 @@ type StellarTransactionScanResponseValidationStellarValidationResultFeature stru
 	Address string `json:"address" api:"required"`
 	// Textual description
 	Description string `json:"description" api:"required"`
-	FeatureID   string `json:"feature_id" api:"required"`
-	// Feature Classification
+	// Identifier of the feature. See the
+	// [Features reference](/api-reference/end-user-protection/transaction-scanning/stellar/stellar-transaction-scanning-response-reference#features)
+	// for possible values.
+	FeatureID string `json:"feature_id" api:"required"`
+	// Feature classification: Benign, Warning, Malicious, or Info.
 	Type StellarTransactionScanResponseValidationStellarValidationResultFeaturesType `json:"type" api:"required"`
 	JSON stellarTransactionScanResponseValidationStellarValidationResultFeatureJSON  `json:"-"`
 }
@@ -2132,7 +2145,7 @@ func (r stellarTransactionScanResponseValidationStellarValidationResultFeatureJS
 	return r.raw
 }
 
-// Feature Classification
+// Feature classification: Benign, Warning, Malicious, or Info.
 type StellarTransactionScanResponseValidationStellarValidationResultFeaturesType string
 
 const (
@@ -2150,7 +2163,7 @@ func (r StellarTransactionScanResponseValidationStellarValidationResultFeaturesT
 	return false
 }
 
-// Verdict of the validation
+// Verdict of the validation: Benign, Warning, or Malicious.
 type StellarTransactionScanResponseValidationStellarValidationResultResultType string
 
 const (
@@ -2182,7 +2195,7 @@ func (r StellarTransactionScanResponseValidationStellarValidationResultStatus) I
 }
 
 type StellarTransactionScanResponseValidationStellarValidationErrorSchema struct {
-	// Error message
+	// Error message describing what went wrong during validation.
 	Error  string                                                                     `json:"error" api:"required"`
 	Status StellarTransactionScanResponseValidationStellarValidationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   stellarTransactionScanResponseValidationStellarValidationErrorSchemaJSON   `json:"-"`
@@ -2238,7 +2251,7 @@ func (r StellarTransactionScanResponseValidationStatus) IsKnown() bool {
 	return false
 }
 
-// Verdict of the validation
+// Verdict of the validation: Benign, Warning, or Malicious.
 type StellarTransactionScanResponseValidationResultType string
 
 const (
