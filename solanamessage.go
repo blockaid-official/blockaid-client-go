@@ -46,15 +46,27 @@ func (r *SolanaMessageService) Scan(ctx context.Context, body SolanaMessageScanP
 }
 
 type SolanaMessageScanResponse struct {
+	// Encoding used for the transactions in this request, either base58 or base64.
 	Encoding SolanaMessageScanResponseEncoding `json:"encoding" api:"required"`
 	// Unique identifier of the request
-	RequestID string                          `json:"request_id" api:"required,nullable"`
-	Status    SolanaMessageScanResponseStatus `json:"status" api:"required"`
-	// Error message if the simulation failed
+	RequestID string `json:"request_id" api:"required,nullable"`
+	// "SUCCESS" for successful processing, or "ERROR" when the scan fails.
+	Status SolanaMessageScanResponseStatus `json:"status" api:"required"`
+	// User-friendly error message if the scan or simulation failed, e.g. "Simulation
+	// failed due to an error" or "The transaction was reverted".
 	Error string `json:"error" api:"nullable"`
-	// Error details
+	// Structured error details; the `type` discriminator determines the shape:
+	// TransactionError (category "REVERT"; `type`, `category`, `message`,
+	// `transaction_index`; common codes AccountNotFound, ProgramAccountNotFound),
+	// InstructionError (category "REVERT"; adds `instruction_index`,
+	// `program_account`, `number`, `code`; common codes InsufficientFunds,
+	// ExceededDesiredSlippageLimit), or ApiError (category "NODE_ERROR"; returned when
+	// the request itself is malformed, e.g. an account address not associated with the
+	// provided transactions).
 	ErrorDetails SolanaMessageScanResponseErrorDetails `json:"error_details" api:"nullable"`
-	// Result of the request
+	// The scan result payload, present when `status` is "SUCCESS". Contains
+	// `validation` and, when requested via `options`, `simulation` and
+	// `gas_estimation`.
 	Result SolanaMessageScanResponseResult `json:"result" api:"nullable"`
 	JSON   solanaMessageScanResponseJSON   `json:"-"`
 }
@@ -80,6 +92,7 @@ func (r solanaMessageScanResponseJSON) RawJSON() string {
 	return r.raw
 }
 
+// Encoding used for the transactions in this request, either base58 or base64.
 type SolanaMessageScanResponseEncoding string
 
 const (
@@ -95,6 +108,7 @@ func (r SolanaMessageScanResponseEncoding) IsKnown() bool {
 	return false
 }
 
+// "SUCCESS" for successful processing, or "ERROR" when the scan fails.
 type SolanaMessageScanResponseStatus string
 
 const (
@@ -110,7 +124,14 @@ func (r SolanaMessageScanResponseStatus) IsKnown() bool {
 	return false
 }
 
-// Error details
+// Structured error details; the `type` discriminator determines the shape:
+// TransactionError (category "REVERT"; `type`, `category`, `message`,
+// `transaction_index`; common codes AccountNotFound, ProgramAccountNotFound),
+// InstructionError (category "REVERT"; adds `instruction_index`,
+// `program_account`, `number`, `code`; common codes InsufficientFunds,
+// ExceededDesiredSlippageLimit), or ApiError (category "NODE_ERROR"; returned when
+// the request itself is malformed, e.g. an account address not associated with the
+// provided transactions).
 type SolanaMessageScanResponseErrorDetails struct {
 	Category SolanaMessageScanResponseErrorDetailsCategory `json:"category"`
 	// Machine readable error code
@@ -169,7 +190,14 @@ func (r SolanaMessageScanResponseErrorDetails) AsUnion() SolanaMessageScanRespon
 	return r.union
 }
 
-// Error details
+// Structured error details; the `type` discriminator determines the shape:
+// TransactionError (category "REVERT"; `type`, `category`, `message`,
+// `transaction_index`; common codes AccountNotFound, ProgramAccountNotFound),
+// InstructionError (category "REVERT"; adds `instruction_index`,
+// `program_account`, `number`, `code`; common codes InsufficientFunds,
+// ExceededDesiredSlippageLimit), or ApiError (category "NODE_ERROR"; returned when
+// the request itself is malformed, e.g. an account address not associated with the
+// provided transactions).
 //
 // Union satisfied by
 // [SolanaMessageScanResponseErrorDetailsSolanamodulesTransactionScanningControllersSchemasErrorAPIErrorDetails],
@@ -428,11 +456,16 @@ func (r SolanaMessageScanResponseErrorDetailsType) IsKnown() bool {
 	return false
 }
 
-// Result of the request
+// The scan result payload, present when `status` is "SUCCESS". Contains
+// `validation` and, when requested via `options`, `simulation` and
+// `gas_estimation`.
 type SolanaMessageScanResponseResult struct {
-	// Transaction Gas Estimation
+	// Transaction gas estimation, present when the `gas_estimation` option is
+	// included. All fee amounts are returned as strings denominated in lamports.
 	GasEstimation SolanaGasEstimation `json:"gas_estimation" api:"required,nullable"`
-	// Transaction Simulation Result
+	// Transaction simulation result, present when the `simulation` option was
+	// requested. If simulation fails, the top-level `error` and `error_details` fields
+	// are returned instead.
 	Simulation SolanaMessageScanResponseResultSimulation `json:"simulation" api:"required,nullable"`
 	// Transaction Validation Result
 	Validation SolanaMessageScanResponseResultValidation `json:"validation" api:"required,nullable"`
@@ -457,23 +490,35 @@ func (r solanaMessageScanResponseResultJSON) RawJSON() string {
 	return r.raw
 }
 
-// Transaction Simulation Result
+// Transaction simulation result, present when the `simulation` option was
+// requested. If simulation fails, the top-level `error` and `error_details` fields
+// are returned instead.
 type SolanaMessageScanResponseResultSimulation struct {
 	// Summary of the actions and asset transfers that were made by the requested
 	// account address
 	AccountSummary SolanaMessageScanResponseResultSimulationAccountSummary `json:"account_summary" api:"required"`
-	// Ownership diffs of the account addresses
+	// Mapping between an account address and its array of asset ownership changes
+	// detected during the simulation.
 	AssetsOwnershipDiff map[string][]SolanaMessageScanResponseResultSimulationAssetsOwnershipDiff `json:"assets_ownership_diff" api:"required"`
-	// Details of addresses involved in the transaction
+	// Details of the addresses involved in the transaction. Each entry has a `type`
+	// discriminator (PDA, SYSTEM_ACCOUNT, PROGRAM/NATIVE_PROGRAM, TOKEN_ACCOUNT,
+	// FUNGIBLE_MINT_ACCOUNT, NON_FUNGIBLE_MINT_ACCOUNT, or CNFT_MINT_ACCOUNT) that
+	// determines which additional fields are present, e.g. `account_address`,
+	// `was_written_to`, `was_created` (pair with `gas_estimation.account_rent_fees` to
+	// surface rent deposits for newly created accounts), `owner` (for PDAs),
+	// `mint_address`/`owner_address` (for token accounts), and
+	// `name`/`symbol`/`logo`/`uri` (for mint accounts).
 	AccountsDetails []SolanaMessageScanResponseResultSimulationAccountsDetail `json:"accounts_details"`
-	// Mapping between the address of an account to the assets diff during the
-	// transaction
+	// Mapping between an account address and its array of asset changes from the
+	// simulation — native SOL, fungible SPL, non-fungible SPL, or compressed NFT
+	// (cNFT) diffs.
 	AssetsDiff map[string][]SolanaMessageScanResponseResultSimulationAssetsDiff `json:"assets_diff"`
 	// Mapping between the address of an account to the exposure of the assets during
 	// the transaction
-	Delegations        map[string][]SolanaMessageScanResponseResultSimulationDelegation `json:"delegations"`
-	TransactionActions []SolanaMessageScanResponseResultSimulationTransactionActions    `json:"transaction_actions" api:"nullable"`
-	JSON               solanaMessageScanResponseResultSimulationJSON                    `json:"-"`
+	Delegations map[string][]SolanaMessageScanResponseResultSimulationDelegation `json:"delegations"`
+	// High-level actions inferred from the transaction's instructions.
+	TransactionActions []SolanaMessageScanResponseResultSimulationTransactionActions `json:"transaction_actions" api:"nullable"`
+	JSON               solanaMessageScanResponseResultSimulationJSON                 `json:"-"`
 }
 
 // solanaMessageScanResponseResultSimulationJSON contains the JSON metadata for the
@@ -4958,11 +5003,12 @@ func (r solanaMessageScanResponseResultValidationJSON) RawJSON() string {
 }
 
 type SolanaMessageScanResponseResultValidationExtendedFeature struct {
-	// Address the feature refers to
+	// Onchain address associated with this finding, or null when not applicable.
 	Address string `json:"address" api:"required,nullable"`
-	// Textual description
+	// Textual description of this specific finding.
 	Description string `json:"description" api:"required"`
-	FeatureID   string `json:"feature_id" api:"required"`
+	// Identifier of the specific finding within its feature type.
+	FeatureID string `json:"feature_id" api:"required"`
 	// Feature Classification
 	Type SolanaMessageScanResponseResultValidationExtendedFeaturesType `json:"type" api:"required"`
 	JSON solanaMessageScanResponseResultValidationExtendedFeatureJSON  `json:"-"`

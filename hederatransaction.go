@@ -81,7 +81,7 @@ type HederaTransactionScanResponseSimulation struct {
 	// This field can have the runtime type of
 	// [map[string][]HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiff].
 	AssetsDiffs interface{} `json:"assets_diffs"`
-	// Error message
+	// Error message describing what went wrong during simulation.
 	Error string `json:"error"`
 	// This field can have the runtime type of
 	// [HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaErrorDetails].
@@ -165,14 +165,18 @@ type HederaTransactionScanResponseSimulationHederaSimulationResponse struct {
 	Status         HederaTransactionScanResponseSimulationHederaSimulationResponseStatus         `json:"status" api:"required"`
 	// Details of addresses involved in the transaction
 	AddressDetails []HederaTransactionScanResponseSimulationHederaSimulationResponseAddressDetail `json:"address_details"`
-	// Mapping between the address of an account to the assets diff during the
-	// transaction
+	// Object keyed by Hedera account address (e.g. "0.0.1234"); each value is an array
+	// of per-asset diffs showing what that account received (`in`) and sent (`out`)
+	// during simulation.
 	AssetsDiffs map[string][]HederaTransactionScanResponseSimulationHederaSimulationResponseAssetsDiff `json:"assets_diffs"`
-	// Mapping between the address of an account to the exposure of the assets during
-	// the transaction
-	Exposures          map[string][]HederaTransactionScanResponseSimulationHederaSimulationResponseExposure `json:"exposures"`
-	TransactionActions []HederaTransactionScanResponseSimulationHederaSimulationResponseTransactionActions  `json:"transaction_actions" api:"nullable"`
-	JSON               hederaTransactionScanResponseSimulationHederaSimulationResponseJSON                  `json:"-"`
+	// Object keyed by Hedera account address; each value is an array of exposure
+	// entries, each including an `asset` and a `spenders` map describing which
+	// accounts are granted spending/allowance exposure for that asset.
+	Exposures map[string][]HederaTransactionScanResponseSimulationHederaSimulationResponseExposure `json:"exposures"`
+	// High-level actions detected in the transaction (e.g. native_transfer,
+	// token_transfer, approval).
+	TransactionActions []HederaTransactionScanResponseSimulationHederaSimulationResponseTransactionActions `json:"transaction_actions" api:"nullable"`
+	JSON               hederaTransactionScanResponseSimulationHederaSimulationResponseJSON                 `json:"-"`
 }
 
 // hederaTransactionScanResponseSimulationHederaSimulationResponseJSON contains the
@@ -205,7 +209,7 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponse) impleme
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummary struct {
 	// Exposures made by the requested account address
 	AccountExposures []HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountExposure `json:"account_exposures" api:"required"`
-	// Total USD diff for the requested account address
+	// Total USD diff (in vs. out) for the requested account address.
 	TotalUsdDiff HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryTotalUsdDiff `json:"total_usd_diff" api:"required"`
 	// Assets diffs of the requested account address
 	AccountAssetsDiffs []HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryAccountAssetsDiff `json:"account_assets_diffs"`
@@ -579,7 +583,7 @@ func (r hederaTransactionScanResponseSimulationHederaSimulationResponseAccountSu
 	return r.raw
 }
 
-// Total USD diff for the requested account address
+// Total USD diff (in vs. out) for the requested account address.
 type HederaTransactionScanResponseSimulationHederaSimulationResponseAccountSummaryTotalUsdDiff struct {
 	// Total incoming USD transfers
 	In float64 `json:"in" api:"required"`
@@ -2074,7 +2078,7 @@ func (r HederaTransactionScanResponseSimulationHederaSimulationResponseTransacti
 }
 
 type HederaTransactionScanResponseSimulationHederaSimulationErrorSchema struct {
-	// Error message
+	// Error message describing what went wrong during simulation.
 	Error  string                                                                   `json:"error" api:"required"`
 	Status HederaTransactionScanResponseSimulationHederaSimulationErrorSchemaStatus `json:"status" api:"required"`
 	// Error details if the simulation failed.
@@ -2292,6 +2296,7 @@ func (r HederaTransactionScanResponseSimulationStatus) IsKnown() bool {
 
 // Validation result; Only present if validation option is included in the request
 type HederaTransactionScanResponseValidation struct {
+	// Always "Success" for a successful validation.
 	Status HederaTransactionScanResponseValidationStatus `json:"status" api:"required"`
 	// A textual classification that can be presented to the user explaining the
 	// reason. See the
@@ -2300,7 +2305,7 @@ type HederaTransactionScanResponseValidation struct {
 	Classification string `json:"classification"`
 	// A textual description about the validation result
 	Description string `json:"description"`
-	// Error message
+	// Error message describing what went wrong during validation.
 	Error string `json:"error"`
 	// This field can have the runtime type of
 	// [[]HederaTransactionScanResponseValidationHederaValidationResultFeature].
@@ -2310,7 +2315,8 @@ type HederaTransactionScanResponseValidation struct {
 	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/hedera/hedera-transaction-scanning-response-reference#reasons)
 	// for possible values.
 	Reason string `json:"reason"`
-	// Verdict of the validation
+	// The overall verdict of the validation: "Benign", "Warning", "Malicious", or
+	// "Error".
 	ResultType HederaTransactionScanResponseValidationResultType `json:"result_type"`
 	JSON       hederaTransactionScanResponseValidationJSON       `json:"-"`
 	union      HederaTransactionScanResponseValidationUnion
@@ -2385,7 +2391,7 @@ type HederaTransactionScanResponseValidationHederaValidationResult struct {
 	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
 	Description string `json:"description" api:"required"`
-	// See the
+	// Structured findings that explain the validation decision. See the
 	// [Features reference](/api-reference/end-user-protection/transaction-scanning/hedera/hedera-transaction-scanning-response-reference#features)
 	// for possible feature IDs.
 	Features []HederaTransactionScanResponseValidationHederaValidationResultFeature `json:"features" api:"required"`
@@ -2394,10 +2400,12 @@ type HederaTransactionScanResponseValidationHederaValidationResult struct {
 	// [Reasons reference](/api-reference/end-user-protection/transaction-scanning/hedera/hedera-transaction-scanning-response-reference#reasons)
 	// for possible values.
 	Reason string `json:"reason" api:"required"`
-	// Verdict of the validation
+	// The overall verdict of the validation: "Benign", "Warning", "Malicious", or
+	// "Error".
 	ResultType HederaTransactionScanResponseValidationHederaValidationResultResultType `json:"result_type" api:"required"`
-	Status     HederaTransactionScanResponseValidationHederaValidationResultStatus     `json:"status" api:"required"`
-	JSON       hederaTransactionScanResponseValidationHederaValidationResultJSON       `json:"-"`
+	// Always "Success" for a successful validation.
+	Status HederaTransactionScanResponseValidationHederaValidationResultStatus `json:"status" api:"required"`
+	JSON   hederaTransactionScanResponseValidationHederaValidationResultJSON   `json:"-"`
 }
 
 // hederaTransactionScanResponseValidationHederaValidationResultJSON contains the
@@ -2475,7 +2483,8 @@ func (r HederaTransactionScanResponseValidationHederaValidationResultFeaturesTyp
 	return false
 }
 
-// Verdict of the validation
+// The overall verdict of the validation: "Benign", "Warning", "Malicious", or
+// "Error".
 type HederaTransactionScanResponseValidationHederaValidationResultResultType string
 
 const (
@@ -2493,6 +2502,7 @@ func (r HederaTransactionScanResponseValidationHederaValidationResultResultType)
 	return false
 }
 
+// Always "Success" for a successful validation.
 type HederaTransactionScanResponseValidationHederaValidationResultStatus string
 
 const (
@@ -2508,8 +2518,9 @@ func (r HederaTransactionScanResponseValidationHederaValidationResultStatus) IsK
 }
 
 type HederaTransactionScanResponseValidationHederaValidationErrorSchema struct {
-	// Error message
-	Error  string                                                                   `json:"error" api:"required"`
+	// Error message describing what went wrong during validation.
+	Error string `json:"error" api:"required"`
+	// Always "Error" when the validation request could not be completed.
 	Status HederaTransactionScanResponseValidationHederaValidationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   hederaTransactionScanResponseValidationHederaValidationErrorSchemaJSON   `json:"-"`
 }
@@ -2535,6 +2546,7 @@ func (r hederaTransactionScanResponseValidationHederaValidationErrorSchemaJSON) 
 func (r HederaTransactionScanResponseValidationHederaValidationErrorSchema) implementsHederaTransactionScanResponseValidation() {
 }
 
+// Always "Error" when the validation request could not be completed.
 type HederaTransactionScanResponseValidationHederaValidationErrorSchemaStatus string
 
 const (
@@ -2549,6 +2561,7 @@ func (r HederaTransactionScanResponseValidationHederaValidationErrorSchemaStatus
 	return false
 }
 
+// Always "Success" for a successful validation.
 type HederaTransactionScanResponseValidationStatus string
 
 const (
@@ -2564,7 +2577,8 @@ func (r HederaTransactionScanResponseValidationStatus) IsKnown() bool {
 	return false
 }
 
-// Verdict of the validation
+// The overall verdict of the validation: "Benign", "Warning", "Malicious", or
+// "Error".
 type HederaTransactionScanResponseValidationResultType string
 
 const (
