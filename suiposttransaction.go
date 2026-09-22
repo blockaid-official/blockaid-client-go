@@ -83,7 +83,7 @@ type SuiPostTransactionScanResponseSimulation struct {
 	// This field can have the runtime type of
 	// [map[string][]SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultAssetsDiff].
 	AssetsDiffs interface{} `json:"assets_diffs"`
-	// Error message
+	// Error message describing what went wrong during the simulation.
 	Error string `json:"error"`
 	// This field can have the runtime type of
 	// [SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResultParams].
@@ -814,7 +814,7 @@ func (r SuiPostTransactionScanResponseSimulationSuiPostTransactionSimulationResu
 }
 
 type SuiPostTransactionScanResponseSimulationSuiSimulationErrorSchema struct {
-	// Error message
+	// Error message describing what went wrong during the simulation.
 	Error  string                                                                 `json:"error" api:"required"`
 	Status SuiPostTransactionScanResponseSimulationSuiSimulationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   suiPostTransactionScanResponseSimulationSuiSimulationErrorSchemaJSON   `json:"-"`
@@ -880,7 +880,7 @@ type SuiPostTransactionScanResponseValidation struct {
 	Classification string `json:"classification"`
 	// A textual description about the validation result
 	Description string `json:"description"`
-	// Error message
+	// Error message describing what went wrong during validation.
 	Error string `json:"error"`
 	// This field can have the runtime type of
 	// [[]SuiPostTransactionScanResponseValidationSuiValidationResultFeature].
@@ -890,7 +890,7 @@ type SuiPostTransactionScanResponseValidation struct {
 	// [Reason reference](/api-reference/end-user-protection/transaction-scanning/sui/sui-transaction-scanning-response-reference#reason)
 	// for possible values.
 	Reason string `json:"reason"`
-	// Verdict of the validation
+	// Verdict of the validation: Benign, Warning, Malicious, or Error.
 	ResultType SuiPostTransactionScanResponseValidationResultType `json:"result_type"`
 	JSON       suiPostTransactionScanResponseValidationJSON       `json:"-"`
 	union      SuiPostTransactionScanResponseValidationUnion
@@ -964,7 +964,7 @@ type SuiPostTransactionScanResponseValidationSuiValidationResult struct {
 	Classification string `json:"classification" api:"required"`
 	// A textual description about the validation result
 	Description string `json:"description" api:"required"`
-	// See the
+	// List of features explaining the validation result. See the
 	// [Features reference](/api-reference/end-user-protection/transaction-scanning/sui/sui-transaction-scanning-response-reference#features)
 	// for possible feature IDs.
 	Features []SuiPostTransactionScanResponseValidationSuiValidationResultFeature `json:"features" api:"required"`
@@ -973,7 +973,7 @@ type SuiPostTransactionScanResponseValidationSuiValidationResult struct {
 	// [Reason reference](/api-reference/end-user-protection/transaction-scanning/sui/sui-transaction-scanning-response-reference#reason)
 	// for possible values.
 	Reason string `json:"reason" api:"required"`
-	// Verdict of the validation
+	// Verdict of the validation: Benign, Warning, Malicious, or Error.
 	ResultType SuiPostTransactionScanResponseValidationSuiValidationResultResultType `json:"result_type" api:"required"`
 	Status     SuiPostTransactionScanResponseValidationSuiValidationResultStatus     `json:"status" api:"required"`
 	JSON       suiPostTransactionScanResponseValidationSuiValidationResultJSON       `json:"-"`
@@ -1009,8 +1009,11 @@ type SuiPostTransactionScanResponseValidationSuiValidationResultFeature struct {
 	Address string `json:"address" api:"required"`
 	// Textual description
 	Description string `json:"description" api:"required"`
-	FeatureID   string `json:"feature_id" api:"required"`
-	// Feature Classification
+	// Identifier of the feature. See the
+	// [Features reference](/api-reference/end-user-protection/transaction-scanning/sui/sui-transaction-scanning-response-reference#features)
+	// for possible values.
+	FeatureID string `json:"feature_id" api:"required"`
+	// Feature classification: Benign, Warning, Malicious, or Info.
 	Type SuiPostTransactionScanResponseValidationSuiValidationResultFeaturesType `json:"type" api:"required"`
 	JSON suiPostTransactionScanResponseValidationSuiValidationResultFeatureJSON  `json:"-"`
 }
@@ -1035,7 +1038,7 @@ func (r suiPostTransactionScanResponseValidationSuiValidationResultFeatureJSON) 
 	return r.raw
 }
 
-// Feature Classification
+// Feature classification: Benign, Warning, Malicious, or Info.
 type SuiPostTransactionScanResponseValidationSuiValidationResultFeaturesType string
 
 const (
@@ -1053,7 +1056,7 @@ func (r SuiPostTransactionScanResponseValidationSuiValidationResultFeaturesType)
 	return false
 }
 
-// Verdict of the validation
+// Verdict of the validation: Benign, Warning, Malicious, or Error.
 type SuiPostTransactionScanResponseValidationSuiValidationResultResultType string
 
 const (
@@ -1086,7 +1089,7 @@ func (r SuiPostTransactionScanResponseValidationSuiValidationResultStatus) IsKno
 }
 
 type SuiPostTransactionScanResponseValidationSuiValidationErrorSchema struct {
-	// Error message
+	// Error message describing what went wrong during validation.
 	Error  string                                                                 `json:"error" api:"required"`
 	Status SuiPostTransactionScanResponseValidationSuiValidationErrorSchemaStatus `json:"status" api:"required"`
 	JSON   suiPostTransactionScanResponseValidationSuiValidationErrorSchemaJSON   `json:"-"`
@@ -1142,7 +1145,7 @@ func (r SuiPostTransactionScanResponseValidationStatus) IsKnown() bool {
 	return false
 }
 
-// Verdict of the validation
+// Verdict of the validation: Benign, Warning, Malicious, or Error.
 type SuiPostTransactionScanResponseValidationResultType string
 
 const (

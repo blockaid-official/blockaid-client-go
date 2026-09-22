@@ -56,7 +56,7 @@ type SuiTransactionScanParams struct {
 	// - `Options.gas_estimation`: Include gas estimation output in the response
 	Options param.Field[[]SuiTransactionScanParamsOption] `json:"options"`
 	// Optional customer-supplied hints about transaction intent that cannot be
-	// inferred from on-chain simulation.
+	// inferred from onchain simulation.
 	TransactionHints param.Field[[]SuiTransactionScanParamsTransactionHintUnion] `json:"transaction_hints"`
 }
 
@@ -288,7 +288,7 @@ type SuiTransactionScanParamsTransactionHint struct {
 	// Hint type discriminator (`cross_chain_bridge`).
 	Type param.Field[string] `json:"type" api:"required"`
 	// The intended recipient address on the destination chain. Required when the
-	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
+	// bridge protocol does not emit this onchain (e.g. Relay, some Across deposit
 	// routes).
 	DestinationAddress param.Field[string]      `json:"destination_address"`
 	DestinationAsset   param.Field[interface{}] `json:"destination_asset"`
@@ -313,12 +313,12 @@ type SuiTransactionScanParamsTransactionHintUnion interface {
 }
 
 // Customer-supplied context for a cross-chain bridge deposit where the protocol
-// does not emit the destination on-chain.
+// does not emit the destination onchain.
 type SuiTransactionScanParamsTransactionHintsCrossChainBridgeHint struct {
 	// Hint type discriminator (`cross_chain_bridge`).
 	Type param.Field[SuiTransactionScanParamsTransactionHintsCrossChainBridgeHintType] `json:"type" api:"required"`
 	// The intended recipient address on the destination chain. Required when the
-	// bridge protocol does not emit this on-chain (e.g. Relay, some Across deposit
+	// bridge protocol does not emit this onchain (e.g. Relay, some Across deposit
 	// routes).
 	DestinationAddress param.Field[string] `json:"destination_address"`
 	// Details of the asset the recipient will receive on the destination chain. May
