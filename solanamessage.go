@@ -5071,12 +5071,16 @@ func (r SolanaMessageScanResponseResultValidationResultType) IsKnown() bool {
 }
 
 type SolanaMessageScanParams struct {
+	// The user's Solana account address. Can be either base58 or base64, independent
+	// of the `encoding` field, which applies to `transactions` only.
 	AccountAddress param.Field[string]                          `json:"account_address" api:"required"`
 	Metadata       param.Field[SolanaMessageScanParamsMetadata] `json:"metadata" api:"required"`
 	// Transactions to scan
-	Transactions param.Field[[]string]                        `json:"transactions" api:"required"`
-	Chain        param.Field[SolanaMessageScanParamsChain]    `json:"chain"`
-	Encoding     param.Field[SolanaMessageScanParamsEncoding] `json:"encoding"`
+	Transactions param.Field[[]string]                     `json:"transactions" api:"required"`
+	Chain        param.Field[SolanaMessageScanParamsChain] `json:"chain"`
+	// Encoding used for the transactions in this request, either base58 or base64.
+	// Does not affect account_address, which can be both base58 and base64.
+	Encoding param.Field[SolanaMessageScanParamsEncoding] `json:"encoding"`
 	// The execution mode for the transaction(s). Use `jito_bundle` when the
 	// transactions are intended to be submitted as a Jito bundle. In bundle mode,
 	// simulation uses pre/post account state diffs instead of instruction-level
@@ -5178,6 +5182,8 @@ func (r SolanaMessageScanParamsChain) IsKnown() bool {
 	return false
 }
 
+// Encoding used for the transactions in this request, either base58 or base64.
+// Does not affect account_address, which can be both base58 and base64.
 type SolanaMessageScanParamsEncoding string
 
 const (
