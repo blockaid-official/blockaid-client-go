@@ -13590,6 +13590,7 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 
 // Transaction parameters
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsData struct {
+	AccessList        param.Field[interface{}] `json:"accessList"`
 	AuthorizationList param.Field[interface{}] `json:"authorization_list"`
 	// The encoded call data of the transaction in hex string format
 	Data param.Field[string] `json:"data"`
@@ -13628,6 +13629,10 @@ type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDat
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataRoutersEvmTransactionModelsTransaction struct {
 	// The source address of the transaction in hex string format
 	From param.Field[string] `json:"from" api:"required"`
+	// The EIP-2930 access list of addresses and storage keys the transaction plans to
+	// access. Note: this field name is camelCase, unlike the other snake_case fields
+	// in this object.
+	AccessList param.Field[[]EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataRoutersEvmTransactionModelsTransactionAccessList] `json:"accessList"`
 	// The authorization list
 	AuthorizationList param.Field[[]AuthorizationParam] `json:"authorization_list"`
 	// The encoded call data of the transaction in hex string format
@@ -13647,6 +13652,17 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 }
 
 func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataRoutersEvmTransactionModelsTransaction) implementsEvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataUnion() {
+}
+
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataRoutersEvmTransactionModelsTransactionAccessList struct {
+	// The address to be accessed by the transaction, in hex string format
+	Address param.Field[string] `json:"address" api:"required"`
+	// The storage keys to be accessed by the transaction, in hex string format
+	StorageKeys param.Field[[]string] `json:"storageKeys" api:"required"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataRoutersEvmTransactionModelsTransactionAccessList) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsDataJsonRpc struct {
@@ -13876,6 +13892,10 @@ func (r EvmTransactionScanParams) MarshalJSON() (data []byte, err error) {
 type EvmTransactionScanParamsData struct {
 	// The source address of the transaction in hex string format
 	From param.Field[string] `json:"from" api:"required"`
+	// The EIP-2930 access list of addresses and storage keys the transaction plans to
+	// access. Note: this field name is camelCase, unlike the other snake_case fields
+	// in this object.
+	AccessList param.Field[[]EvmTransactionScanParamsDataAccessList] `json:"accessList"`
 	// The authorization list
 	AuthorizationList param.Field[[]AuthorizationParam] `json:"authorization_list"`
 	// The encoded call data of the transaction in hex string format
@@ -13891,6 +13911,17 @@ type EvmTransactionScanParamsData struct {
 }
 
 func (r EvmTransactionScanParamsData) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type EvmTransactionScanParamsDataAccessList struct {
+	// The address to be accessed by the transaction, in hex string format
+	Address param.Field[string] `json:"address" api:"required"`
+	// The storage keys to be accessed by the transaction, in hex string format
+	StorageKeys param.Field[[]string] `json:"storageKeys" api:"required"`
+}
+
+func (r EvmTransactionScanParamsDataAccessList) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

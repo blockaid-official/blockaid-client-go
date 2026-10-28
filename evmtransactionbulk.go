@@ -13521,6 +13521,10 @@ func (r EvmTransactionBulkScanParams) MarshalJSON() (data []byte, err error) {
 type EvmTransactionBulkScanParamsData struct {
 	// The source address of the transaction in hex string format
 	From param.Field[string] `json:"from" api:"required"`
+	// The EIP-2930 access list of addresses and storage keys the transaction plans to
+	// access. Note: this field name is camelCase, unlike the other snake_case fields
+	// in this object.
+	AccessList param.Field[[]EvmTransactionBulkScanParamsDataAccessList] `json:"accessList"`
 	// The authorization list
 	AuthorizationList param.Field[[]AuthorizationParam] `json:"authorization_list"`
 	// The encoded call data of the transaction in hex string format
@@ -13536,6 +13540,17 @@ type EvmTransactionBulkScanParamsData struct {
 }
 
 func (r EvmTransactionBulkScanParamsData) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type EvmTransactionBulkScanParamsDataAccessList struct {
+	// The address to be accessed by the transaction, in hex string format
+	Address param.Field[string] `json:"address" api:"required"`
+	// The storage keys to be accessed by the transaction, in hex string format
+	StorageKeys param.Field[[]string] `json:"storageKeys" api:"required"`
+}
+
+func (r EvmTransactionBulkScanParamsDataAccessList) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
