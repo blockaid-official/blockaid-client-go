@@ -46,10 +46,12 @@ func (r *TokenWebhookService) New(ctx context.Context, chain TokenScanSupportedC
 }
 
 // Updates an existing webhook subscription in place. Only the provided fields are
-// changed; omitted fields keep their current value. The filter's token_addresses
-// can be replaced in full via `filter`, or adjusted incrementally via
-// `add_token_addresses`/`remove_token_addresses` (mutually exclusive with
-// `filter`).
+// changed; omitted fields keep their current value. `filter` replaces the hook's
+// entire filter (token-address or token-type) in one call. For a token-address
+// filter specifically, `add_token_addresses`/`remove_token_addresses` let you
+// adjust the address list incrementally without resending it; they are mutually
+// exclusive with `filter` and only valid when the existing (or resulting) filter
+// is a token-address filter.
 func (r *TokenWebhookService) Update(ctx context.Context, chain TokenScanSupportedChain, body TokenWebhookUpdateParams, opts ...option.RequestOption) (res *TokenWebhookUpdateResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("v0/token/hooks/%v", chain)
@@ -90,7 +92,7 @@ type TokenWebhookNewResponse struct {
 	CreatedAt time.Time               `json:"created_at" api:"required" format:"date-time"`
 	UpdatedAt time.Time               `json:"updated_at" api:"required" format:"date-time"`
 	URL       string                  `json:"url" api:"required" format:"uri"`
-	// Filter for webhook updates
+	// The webhook's currently registered filter.
 	Filter TokenWebhookNewResponseFilter `json:"filter" api:"nullable"`
 	// Optional shared secret key (32 characters), used to calculate the HMAC signature
 	SharedSecretKey string                      `json:"shared_secret_key" api:"nullable"`
@@ -119,7 +121,7 @@ func (r tokenWebhookNewResponseJSON) RawJSON() string {
 	return r.raw
 }
 
-// Filter for webhook updates
+// The webhook's currently registered filter.
 type TokenWebhookNewResponseFilter struct {
 	// Type of filter applied to the webhook updates
 	FilterType TokenWebhookNewResponseFilterFilterType `json:"filter_type"`
@@ -164,7 +166,7 @@ func (r TokenWebhookNewResponseFilter) AsUnion() TokenWebhookNewResponseFilterUn
 	return r.union
 }
 
-// Filter for webhook updates
+// The webhook's currently registered filter.
 //
 // Union satisfied by [TokenWebhookNewResponseFilterTokenAddressFilter] or
 // [TokenWebhookNewResponseFilterTokenTypeFilter].
@@ -326,7 +328,7 @@ type TokenWebhookUpdateResponse struct {
 	CreatedAt time.Time               `json:"created_at" api:"required" format:"date-time"`
 	UpdatedAt time.Time               `json:"updated_at" api:"required" format:"date-time"`
 	URL       string                  `json:"url" api:"required" format:"uri"`
-	// Filter for webhook updates
+	// The webhook's currently registered filter.
 	Filter TokenWebhookUpdateResponseFilter `json:"filter" api:"nullable"`
 	// Optional shared secret key (32 characters), used to calculate the HMAC signature
 	SharedSecretKey string                         `json:"shared_secret_key" api:"nullable"`
@@ -355,7 +357,7 @@ func (r tokenWebhookUpdateResponseJSON) RawJSON() string {
 	return r.raw
 }
 
-// Filter for webhook updates
+// The webhook's currently registered filter.
 type TokenWebhookUpdateResponseFilter struct {
 	// Type of filter applied to the webhook updates
 	FilterType TokenWebhookUpdateResponseFilterFilterType `json:"filter_type"`
@@ -400,7 +402,7 @@ func (r TokenWebhookUpdateResponseFilter) AsUnion() TokenWebhookUpdateResponseFi
 	return r.union
 }
 
-// Filter for webhook updates
+// The webhook's currently registered filter.
 //
 // Union satisfied by [TokenWebhookUpdateResponseFilterTokenAddressFilter] or
 // [TokenWebhookUpdateResponseFilterTokenTypeFilter].
@@ -564,7 +566,7 @@ type TokenWebhookGetResponse struct {
 	CreatedAt time.Time               `json:"created_at" api:"required" format:"date-time"`
 	UpdatedAt time.Time               `json:"updated_at" api:"required" format:"date-time"`
 	URL       string                  `json:"url" api:"required" format:"uri"`
-	// Filter for webhook updates
+	// The webhook's currently registered filter.
 	Filter TokenWebhookGetResponseFilter `json:"filter" api:"nullable"`
 	// Optional shared secret key (32 characters), used to calculate the HMAC signature
 	SharedSecretKey string                      `json:"shared_secret_key" api:"nullable"`
@@ -593,7 +595,7 @@ func (r tokenWebhookGetResponseJSON) RawJSON() string {
 	return r.raw
 }
 
-// Filter for webhook updates
+// The webhook's currently registered filter.
 type TokenWebhookGetResponseFilter struct {
 	// Type of filter applied to the webhook updates
 	FilterType TokenWebhookGetResponseFilterFilterType `json:"filter_type"`
@@ -638,7 +640,7 @@ func (r TokenWebhookGetResponseFilter) AsUnion() TokenWebhookGetResponseFilterUn
 	return r.union
 }
 
-// Filter for webhook updates
+// The webhook's currently registered filter.
 //
 // Union satisfied by [TokenWebhookGetResponseFilterTokenAddressFilter] or
 // [TokenWebhookGetResponseFilterTokenTypeFilter].
@@ -800,7 +802,7 @@ type TokenWebhookGetAllResponse struct {
 	CreatedAt time.Time               `json:"created_at" api:"required" format:"date-time"`
 	UpdatedAt time.Time               `json:"updated_at" api:"required" format:"date-time"`
 	URL       string                  `json:"url" api:"required" format:"uri"`
-	// Filter for webhook updates
+	// The webhook's currently registered filter.
 	Filter TokenWebhookGetAllResponseFilter `json:"filter" api:"nullable"`
 	// Optional shared secret key (32 characters), used to calculate the HMAC signature
 	SharedSecretKey string                         `json:"shared_secret_key" api:"nullable"`
@@ -829,7 +831,7 @@ func (r tokenWebhookGetAllResponseJSON) RawJSON() string {
 	return r.raw
 }
 
-// Filter for webhook updates
+// The webhook's currently registered filter.
 type TokenWebhookGetAllResponseFilter struct {
 	// Type of filter applied to the webhook updates
 	FilterType TokenWebhookGetAllResponseFilterFilterType `json:"filter_type"`
@@ -874,7 +876,7 @@ func (r TokenWebhookGetAllResponseFilter) AsUnion() TokenWebhookGetAllResponseFi
 	return r.union
 }
 
-// Filter for webhook updates
+// The webhook's currently registered filter.
 //
 // Union satisfied by [TokenWebhookGetAllResponseFilterTokenAddressFilter] or
 // [TokenWebhookGetAllResponseFilterTokenTypeFilter].
