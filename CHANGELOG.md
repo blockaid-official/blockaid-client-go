@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.81.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.80.0...v0.81.0) (2026-10-29)
+
+
+### Features
+
+* **token-hooks:** add PATCH /v0/token/hooks/{chain} update endpoint ([5a5ab6e](https://github.com/blockaid-official/blockaid-client-go/commit/5a5ab6e4515dfc06fcfafa5d42d215ce75e56b3d))
+
 ## 0.80.0 (2026-09-15)
 
 Full Changelog: [v0.79.0...v0.80.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.79.0...v0.80.0)
