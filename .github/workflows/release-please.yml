@@ -1,0 +1,28 @@
+# Cuts releases from Conventional Commit history on main.
+#
+# Stainless previously ran this (release-please, triggered through its own
+# hosted automation) and created the GitHub Release. Stainless has wound
+# down, so this workflow self-hosts that step with the upstream
+# release-please action. A Go module needs no separate publish step: the
+# tag this workflow creates is what `go get` resolves against.
+name: Release Please
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  release-please:
+    if: github.repository == 'blockaid-official/blockaid-client-go'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
