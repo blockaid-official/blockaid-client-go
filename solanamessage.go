@@ -5167,7 +5167,6 @@ const (
 	SolanaMessageScanParamsChainTestnet                           SolanaMessageScanParamsChain = "testnet"
 	SolanaMessageScanParamsChainDevnet                            SolanaMessageScanParamsChain = "devnet"
 	SolanaMessageScanParamsChainEclipseMainnet                    SolanaMessageScanParamsChain = "eclipse_mainnet"
-	SolanaMessageScanParamsChainEclipseDevnet                     SolanaMessageScanParamsChain = "eclipse_devnet"
 	SolanaMessageScanParamsChainSonicMainnet                      SolanaMessageScanParamsChain = "sonic_mainnet"
 	SolanaMessageScanParamsChain5eykt4UsFv8P8NJdTrEpY1vzqKqZKvdp  SolanaMessageScanParamsChain = "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"
 	SolanaMessageScanParamsChainEtWtrabZaYq6iMfeYKouRu166Vu2xqa1  SolanaMessageScanParamsChain = "EtWTRABZaYq6iMfeYKouRu166VU2xqa1"
@@ -5176,7 +5175,7 @@ const (
 
 func (r SolanaMessageScanParamsChain) IsKnown() bool {
 	switch r {
-	case SolanaMessageScanParamsChainMainnet, SolanaMessageScanParamsChainTestnet, SolanaMessageScanParamsChainDevnet, SolanaMessageScanParamsChainEclipseMainnet, SolanaMessageScanParamsChainEclipseDevnet, SolanaMessageScanParamsChainSonicMainnet, SolanaMessageScanParamsChain5eykt4UsFv8P8NJdTrEpY1vzqKqZKvdp, SolanaMessageScanParamsChainEtWtrabZaYq6iMfeYKouRu166Vu2xqa1, SolanaMessageScanParamsChainEaqljcv2mh23BsK2P9oYpV5ChvldnhTxY:
+	case SolanaMessageScanParamsChainMainnet, SolanaMessageScanParamsChainTestnet, SolanaMessageScanParamsChainDevnet, SolanaMessageScanParamsChainEclipseMainnet, SolanaMessageScanParamsChainSonicMainnet, SolanaMessageScanParamsChain5eykt4UsFv8P8NJdTrEpY1vzqKqZKvdp, SolanaMessageScanParamsChainEtWtrabZaYq6iMfeYKouRu166Vu2xqa1, SolanaMessageScanParamsChainEaqljcv2mh23BsK2P9oYpV5ChvldnhTxY:
 		return true
 	}
 	return false
