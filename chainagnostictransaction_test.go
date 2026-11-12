@@ -42,8 +42,20 @@ func TestChainAgnosticTransactionScanWithOptionalParams(t *testing.T) {
 				AccountID:                blockaidclientgo.F("1"),
 				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
-				UserAge:                  blockaidclientgo.F(int64(1)),
-				UserCountryCode:          blockaidclientgo.F("user_country_code"),
+				BankAccounts: blockaidclientgo.F([]blockaidclientgo.ChainAgnosticTransactionScanParamsMetadataAccountBankAccount{{
+					AccountNumber: blockaidclientgo.F("account_number"),
+					CountryCode:   blockaidclientgo.F("country_code"),
+					Iban:          blockaidclientgo.F("iban"),
+					RoutingNumber: blockaidclientgo.F("routing_number"),
+				}}),
+				BankWires: blockaidclientgo.F([]blockaidclientgo.ChainAgnosticTransactionScanParamsMetadataAccountBankWire{{
+					AccountNumber: blockaidclientgo.F("account_number"),
+					Iban:          blockaidclientgo.F("iban"),
+					RoutingNumber: blockaidclientgo.F("routing_number"),
+					Swift:         blockaidclientgo.F("swift"),
+				}}),
+				UserAge:         blockaidclientgo.F(int64(1)),
+				UserCountryCode: blockaidclientgo.F("user_country_code"),
 			}),
 			Connection: blockaidclientgo.F(blockaidclientgo.ChainAgnosticTransactionScanParamsMetadataConnection{
 				IPAddress:                blockaidclientgo.F("1.1.1.1"),
