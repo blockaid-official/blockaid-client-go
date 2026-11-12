@@ -500,8 +500,8 @@ func (r SiteScanParams) MarshalJSON() (data []byte, err error) {
 // Request metadata: site catalog/wallet context, end-user account, and connection
 // details.
 type SiteScanParamsMetadata struct {
-	// End-user account context (id, age, country, creation time, and
-	// account_addresses).
+	// End-user account context (id, age, country, creation time, account_addresses,
+	// bank_accounts, and bank_wires).
 	Account param.Field[SiteScanParamsMetadataAccount] `json:"account"`
 	// Connection metadata including user agent, IP information, and origin.
 	Connection param.Field[SiteScanParamsMetadataConnection] `json:"connection"`
@@ -518,8 +518,8 @@ func (r SiteScanParamsMetadata) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// End-user account context (id, age, country, creation time, and
-// account_addresses).
+// End-user account context (id, age, country, creation time, account_addresses,
+// bank_accounts, and bank_wires).
 type SiteScanParamsMetadataAccount struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
@@ -529,6 +529,12 @@ type SiteScanParamsMetadataAccount struct {
 	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Fiat bank accounts linked to this user (account numbers, IBANs, ACH routing
+	// numbers).
+	BankAccounts param.Field[[]SiteScanParamsMetadataAccountBankAccount] `json:"bank_accounts"`
+	// Bank wire identifiers linked to this user (Fedwire routing numbers, SWIFT/BIC
+	// codes).
+	BankWires param.Field[[]SiteScanParamsMetadataAccountBankWire] `json:"bank_wires"`
 	// Age of the user in years
 	UserAge param.Field[int64] `json:"user_age"`
 	// ISO country code of the user's location.
@@ -536,6 +542,38 @@ type SiteScanParamsMetadataAccount struct {
 }
 
 func (r SiteScanParamsMetadataAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A fiat bank account identifier for the end user.
+type SiteScanParamsMetadataAccountBankAccount struct {
+	// Domestic bank account number.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// ISO 3166-1 alpha-2 code of the account's country.
+	CountryCode param.Field[string] `json:"country_code"`
+	// International Bank Account Number.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for ACH transfers.
+	RoutingNumber param.Field[string] `json:"routing_number"`
+}
+
+func (r SiteScanParamsMetadataAccountBankAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A bank wire identifier for the end user.
+type SiteScanParamsMetadataAccountBankWire struct {
+	// Beneficiary account number used for the wire.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// Beneficiary International Bank Account Number used for the wire.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for US domestic wires (Fedwire).
+	RoutingNumber param.Field[string] `json:"routing_number"`
+	// SWIFT/BIC code used for international wires.
+	Swift param.Field[string] `json:"swift"`
+}
+
+func (r SiteScanParamsMetadataAccountBankWire) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

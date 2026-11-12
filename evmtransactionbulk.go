@@ -10551,21 +10551,22 @@ func (r evmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSim
 type EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions string
 
 const (
-	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsMint            EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "mint"
-	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsStake           EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "stake"
-	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsSwap            EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "swap"
-	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsNativeTransfer  EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "native_transfer"
-	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsTokenTransfer   EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "token_transfer"
-	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsApproval        EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "approval"
-	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsSetCodeAccount  EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "set_code_account"
-	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsProxyUpgrade    EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "proxy_upgrade"
-	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsOwnershipChange EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "ownership_change"
-	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsBridge          EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "bridge"
+	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsMint                    EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "mint"
+	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsStake                   EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "stake"
+	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsSwap                    EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "swap"
+	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsNativeTransfer          EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "native_transfer"
+	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsTokenTransfer           EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "token_transfer"
+	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsApproval                EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "approval"
+	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsSetCodeAccount          EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "set_code_account"
+	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsProxyUpgrade            EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "proxy_upgrade"
+	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsOwnershipChange         EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "ownership_change"
+	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsBridge                  EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "bridge"
+	EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsExchangeBatchWithdrawal EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions = "exchange_batch_withdrawal"
 )
 
 func (r EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActions) IsKnown() bool {
 	switch r {
-	case EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsMint, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsStake, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsSwap, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsNativeTransfer, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsTokenTransfer, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsApproval, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsSetCodeAccount, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsProxyUpgrade, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsOwnershipChange, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsBridge:
+	case EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsMint, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsStake, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsSwap, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsNativeTransfer, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsTokenTransfer, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsApproval, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsSetCodeAccount, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsProxyUpgrade, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsOwnershipChange, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsBridge, EvmTransactionBulkScanResponseSimulationRoutersEvmResponseTransactionSimulationTransactionActionsExchangeBatchWithdrawal:
 		return true
 	}
 	return false
@@ -13520,6 +13521,10 @@ func (r EvmTransactionBulkScanParams) MarshalJSON() (data []byte, err error) {
 type EvmTransactionBulkScanParamsData struct {
 	// The source address of the transaction in hex string format
 	From param.Field[string] `json:"from" api:"required"`
+	// The EIP-2930 access list of addresses and storage keys the transaction plans to
+	// access. Note: this field name is camelCase, unlike the other snake_case fields
+	// in this object.
+	AccessList param.Field[[]EvmTransactionBulkScanParamsDataAccessList] `json:"accessList"`
 	// The authorization list
 	AuthorizationList param.Field[[]AuthorizationParam] `json:"authorization_list"`
 	// The encoded call data of the transaction in hex string format
@@ -13538,11 +13543,22 @@ func (r EvmTransactionBulkScanParamsData) MarshalJSON() (data []byte, err error)
 	return apijson.MarshalRoot(r)
 }
 
+type EvmTransactionBulkScanParamsDataAccessList struct {
+	// The address to be accessed by the transaction, in hex string format
+	Address param.Field[string] `json:"address" api:"required"`
+	// The storage keys to be accessed by the transaction, in hex string format
+	StorageKeys param.Field[[]string] `json:"storageKeys" api:"required"`
+}
+
+func (r EvmTransactionBulkScanParamsDataAccessList) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type EvmTransactionBulkScanParamsMetadata struct {
-	// End-user account context (id, age, country, creation time, and
-	// account_addresses).
+	// End-user account context (id, age, country, creation time, account_addresses,
+	// bank_accounts, and bank_wires).
 	Account param.Field[EvmTransactionBulkScanParamsMetadataAccount] `json:"account"`
 	// Connection metadata including user agent, IP information, and origin.
 	Connection param.Field[EvmTransactionBulkScanParamsMetadataConnection] `json:"connection"`
@@ -13559,8 +13575,8 @@ func (r EvmTransactionBulkScanParamsMetadata) MarshalJSON() (data []byte, err er
 	return apijson.MarshalRoot(r)
 }
 
-// End-user account context (id, age, country, creation time, and
-// account_addresses).
+// End-user account context (id, age, country, creation time, account_addresses,
+// bank_accounts, and bank_wires).
 type EvmTransactionBulkScanParamsMetadataAccount struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
@@ -13570,6 +13586,12 @@ type EvmTransactionBulkScanParamsMetadataAccount struct {
 	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Fiat bank accounts linked to this user (account numbers, IBANs, ACH routing
+	// numbers).
+	BankAccounts param.Field[[]EvmTransactionBulkScanParamsMetadataAccountBankAccount] `json:"bank_accounts"`
+	// Bank wire identifiers linked to this user (Fedwire routing numbers, SWIFT/BIC
+	// codes).
+	BankWires param.Field[[]EvmTransactionBulkScanParamsMetadataAccountBankWire] `json:"bank_wires"`
 	// Age of the user in years
 	UserAge param.Field[int64] `json:"user_age"`
 	// ISO country code of the user's location.
@@ -13577,6 +13599,38 @@ type EvmTransactionBulkScanParamsMetadataAccount struct {
 }
 
 func (r EvmTransactionBulkScanParamsMetadataAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A fiat bank account identifier for the end user.
+type EvmTransactionBulkScanParamsMetadataAccountBankAccount struct {
+	// Domestic bank account number.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// ISO 3166-1 alpha-2 code of the account's country.
+	CountryCode param.Field[string] `json:"country_code"`
+	// International Bank Account Number.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for ACH transfers.
+	RoutingNumber param.Field[string] `json:"routing_number"`
+}
+
+func (r EvmTransactionBulkScanParamsMetadataAccountBankAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A bank wire identifier for the end user.
+type EvmTransactionBulkScanParamsMetadataAccountBankWire struct {
+	// Beneficiary account number used for the wire.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// Beneficiary International Bank Account Number used for the wire.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for US domestic wires (Fedwire).
+	RoutingNumber param.Field[string] `json:"routing_number"`
+	// SWIFT/BIC code used for international wires.
+	Swift param.Field[string] `json:"swift"`
+}
+
+func (r EvmTransactionBulkScanParamsMetadataAccountBankWire) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
