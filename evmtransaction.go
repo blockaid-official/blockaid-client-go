@@ -13734,8 +13734,8 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadata struct {
-	// End-user account context (id, age, country, creation time, and
-	// account_addresses).
+	// End-user account context (id, age, country, creation time, account_addresses,
+	// bank_accounts, and bank_wires).
 	Account param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataAccount] `json:"account"`
 	// Connection metadata including user agent, IP information, and origin.
 	Connection param.Field[EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataConnection] `json:"connection"`
@@ -13752,8 +13752,8 @@ func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParams
 	return apijson.MarshalRoot(r)
 }
 
-// End-user account context (id, age, country, creation time, and
-// account_addresses).
+// End-user account context (id, age, country, creation time, account_addresses,
+// bank_accounts, and bank_wires).
 type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataAccount struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
@@ -13763,6 +13763,12 @@ type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMet
 	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Fiat bank accounts linked to this user (account numbers, IBANs, ACH routing
+	// numbers).
+	BankAccounts param.Field[[]EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataAccountBankAccount] `json:"bank_accounts"`
+	// Bank wire identifiers linked to this user (Fedwire routing numbers, SWIFT/BIC
+	// codes).
+	BankWires param.Field[[]EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataAccountBankWire] `json:"bank_wires"`
 	// Age of the user in years
 	UserAge param.Field[int64] `json:"user_age"`
 	// ISO country code of the user's location.
@@ -13770,6 +13776,38 @@ type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMet
 }
 
 func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A fiat bank account identifier for the end user.
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataAccountBankAccount struct {
+	// Domestic bank account number.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// ISO 3166-1 alpha-2 code of the account's country.
+	CountryCode param.Field[string] `json:"country_code"`
+	// International Bank Account Number.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for ACH transfers.
+	RoutingNumber param.Field[string] `json:"routing_number"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataAccountBankAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A bank wire identifier for the end user.
+type EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataAccountBankWire struct {
+	// Beneficiary account number used for the wire.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// Beneficiary International Bank Account Number used for the wire.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for US domestic wires (Fedwire).
+	RoutingNumber param.Field[string] `json:"routing_number"`
+	// SWIFT/BIC code used for international wires.
+	Swift param.Field[string] `json:"swift"`
+}
+
+func (r EvmTransactionReportParamsReportParamReportTransactionReportParamsParamsMetadataAccountBankWire) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -13928,8 +13966,8 @@ func (r EvmTransactionScanParamsDataAccessList) MarshalJSON() (data []byte, err 
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type EvmTransactionScanParamsMetadata struct {
-	// End-user account context (id, age, country, creation time, and
-	// account_addresses).
+	// End-user account context (id, age, country, creation time, account_addresses,
+	// bank_accounts, and bank_wires).
 	Account param.Field[EvmTransactionScanParamsMetadataAccount] `json:"account"`
 	// Connection metadata including user agent, IP information, and origin.
 	Connection param.Field[EvmTransactionScanParamsMetadataConnection] `json:"connection"`
@@ -13946,8 +13984,8 @@ func (r EvmTransactionScanParamsMetadata) MarshalJSON() (data []byte, err error)
 	return apijson.MarshalRoot(r)
 }
 
-// End-user account context (id, age, country, creation time, and
-// account_addresses).
+// End-user account context (id, age, country, creation time, account_addresses,
+// bank_accounts, and bank_wires).
 type EvmTransactionScanParamsMetadataAccount struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
@@ -13957,6 +13995,12 @@ type EvmTransactionScanParamsMetadataAccount struct {
 	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Fiat bank accounts linked to this user (account numbers, IBANs, ACH routing
+	// numbers).
+	BankAccounts param.Field[[]EvmTransactionScanParamsMetadataAccountBankAccount] `json:"bank_accounts"`
+	// Bank wire identifiers linked to this user (Fedwire routing numbers, SWIFT/BIC
+	// codes).
+	BankWires param.Field[[]EvmTransactionScanParamsMetadataAccountBankWire] `json:"bank_wires"`
 	// Age of the user in years
 	UserAge param.Field[int64] `json:"user_age"`
 	// ISO country code of the user's location.
@@ -13964,6 +14008,38 @@ type EvmTransactionScanParamsMetadataAccount struct {
 }
 
 func (r EvmTransactionScanParamsMetadataAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A fiat bank account identifier for the end user.
+type EvmTransactionScanParamsMetadataAccountBankAccount struct {
+	// Domestic bank account number.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// ISO 3166-1 alpha-2 code of the account's country.
+	CountryCode param.Field[string] `json:"country_code"`
+	// International Bank Account Number.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for ACH transfers.
+	RoutingNumber param.Field[string] `json:"routing_number"`
+}
+
+func (r EvmTransactionScanParamsMetadataAccountBankAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A bank wire identifier for the end user.
+type EvmTransactionScanParamsMetadataAccountBankWire struct {
+	// Beneficiary account number used for the wire.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// Beneficiary International Bank Account Number used for the wire.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for US domestic wires (Fedwire).
+	RoutingNumber param.Field[string] `json:"routing_number"`
+	// SWIFT/BIC code used for international wires.
+	Swift param.Field[string] `json:"swift"`
+}
+
+func (r EvmTransactionScanParamsMetadataAccountBankWire) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
