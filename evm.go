@@ -231,11 +231,12 @@ const (
 	AddressValidationFeaturesArrayFeatureIDCreatedViaLaunchpad            AddressValidationFeaturesArrayFeatureID = "CREATED_VIA_LAUNCHPAD"
 	AddressValidationFeaturesArrayFeatureIDCompromisedToken               AddressValidationFeaturesArrayFeatureID = "COMPROMISED_TOKEN"
 	AddressValidationFeaturesArrayFeatureIDLongFundTrail                  AddressValidationFeaturesArrayFeatureID = "LONG_FUND_TRAIL"
+	AddressValidationFeaturesArrayFeatureIDMetadataPromptInjection        AddressValidationFeaturesArrayFeatureID = "METADATA_PROMPT_INJECTION"
 )
 
 func (r AddressValidationFeaturesArrayFeatureID) IsKnown() bool {
 	switch r {
-	case AddressValidationFeaturesArrayFeatureIDVerifiedContract, AddressValidationFeaturesArrayFeatureIDUnverifiedContract, AddressValidationFeaturesArrayFeatureIDHighTradeVolume, AddressValidationFeaturesArrayFeatureIDMarketPlaceSalesHistory, AddressValidationFeaturesArrayFeatureIDHighReputationToken, AddressValidationFeaturesArrayFeatureIDOnchainActivityValidator, AddressValidationFeaturesArrayFeatureIDStaticCodeSignature, AddressValidationFeaturesArrayFeatureIDKnownMalicious, AddressValidationFeaturesArrayFeatureIDIsEoa, AddressValidationFeaturesArrayFeatureIDIsContract, AddressValidationFeaturesArrayFeatureIDErc20Contract, AddressValidationFeaturesArrayFeatureIDTrustedContract, AddressValidationFeaturesArrayFeatureIDBenignCreator, AddressValidationFeaturesArrayFeatureIDMetadata, AddressValidationFeaturesArrayFeatureIDAirdropPattern, AddressValidationFeaturesArrayFeatureIDImpersonator, AddressValidationFeaturesArrayFeatureIDInorganicVolume, AddressValidationFeaturesArrayFeatureIDDynamicAnalysis, AddressValidationFeaturesArrayFeatureIDConcentratedSupplyDistribution, AddressValidationFeaturesArrayFeatureIDHoneypot, AddressValidationFeaturesArrayFeatureIDInsufficientLockedLiquidity, AddressValidationFeaturesArrayFeatureIDUnstableTokenPrice, AddressValidationFeaturesArrayFeatureIDRugpull, AddressValidationFeaturesArrayFeatureIDKnownRugpullCodePattern, AddressValidationFeaturesArrayFeatureIDWashTrading, AddressValidationFeaturesArrayFeatureIDConsumerOverride, AddressValidationFeaturesArrayFeatureIDInappropriateContent, AddressValidationFeaturesArrayFeatureIDHighTransferFee, AddressValidationFeaturesArrayFeatureIDHighBuyFee, AddressValidationFeaturesArrayFeatureIDHighSellFee, AddressValidationFeaturesArrayFeatureIDUnsellableToken, AddressValidationFeaturesArrayFeatureIDIsMintable, AddressValidationFeaturesArrayFeatureIDModifiableTaxes, AddressValidationFeaturesArrayFeatureIDCanBlacklist, AddressValidationFeaturesArrayFeatureIDCanWhitelist, AddressValidationFeaturesArrayFeatureIDHasTradingCooldown, AddressValidationFeaturesArrayFeatureIDExternalFunctions, AddressValidationFeaturesArrayFeatureIDHiddenOwner, AddressValidationFeaturesArrayFeatureIDTransferPauseable, AddressValidationFeaturesArrayFeatureIDOwnershipRenounced, AddressValidationFeaturesArrayFeatureIDOwnerCanChangeBalance, AddressValidationFeaturesArrayFeatureIDProxyContract, AddressValidationFeaturesArrayFeatureIDSimilarMaliciousContract, AddressValidationFeaturesArrayFeatureIDImpersonatorSensitiveAsset, AddressValidationFeaturesArrayFeatureIDImpersonatorHighConfidence, AddressValidationFeaturesArrayFeatureIDImpersonatorMediumConfidence, AddressValidationFeaturesArrayFeatureIDImpersonatorLowConfidence, AddressValidationFeaturesArrayFeatureIDImpersonationProtected, AddressValidationFeaturesArrayFeatureIDFakeVolume, AddressValidationFeaturesArrayFeatureIDHiddenSupplyByKeyHolder, AddressValidationFeaturesArrayFeatureIDFakeTradeMakerCount, AddressValidationFeaturesArrayFeatureIDTransferFromReverts, AddressValidationFeaturesArrayFeatureIDOffensiveTokenMetadata, AddressValidationFeaturesArrayFeatureIDListedOnCentralizedExchange, AddressValidationFeaturesArrayFeatureIDSanctionedCreator, AddressValidationFeaturesArrayFeatureIDSpamText, AddressValidationFeaturesArrayFeatureIDBondingCurveToken, AddressValidationFeaturesArrayFeatureIDHeavilySniped, AddressValidationFeaturesArrayFeatureIDSolanaToken2022, AddressValidationFeaturesArrayFeatureIDPostDump, AddressValidationFeaturesArrayFeatureIDDexPaid, AddressValidationFeaturesArrayFeatureIDLowReputationCreator, AddressValidationFeaturesArrayFeatureIDSnipeAtMint, AddressValidationFeaturesArrayFeatureIDTransferHookEnabled, AddressValidationFeaturesArrayFeatureIDConfidentialTransfersEnabled, AddressValidationFeaturesArrayFeatureIDNonTranserable, AddressValidationFeaturesArrayFeatureIDTokenBackdoor, AddressValidationFeaturesArrayFeatureIDCreatedViaLaunchpad, AddressValidationFeaturesArrayFeatureIDCompromisedToken, AddressValidationFeaturesArrayFeatureIDLongFundTrail:
+	case AddressValidationFeaturesArrayFeatureIDVerifiedContract, AddressValidationFeaturesArrayFeatureIDUnverifiedContract, AddressValidationFeaturesArrayFeatureIDHighTradeVolume, AddressValidationFeaturesArrayFeatureIDMarketPlaceSalesHistory, AddressValidationFeaturesArrayFeatureIDHighReputationToken, AddressValidationFeaturesArrayFeatureIDOnchainActivityValidator, AddressValidationFeaturesArrayFeatureIDStaticCodeSignature, AddressValidationFeaturesArrayFeatureIDKnownMalicious, AddressValidationFeaturesArrayFeatureIDIsEoa, AddressValidationFeaturesArrayFeatureIDIsContract, AddressValidationFeaturesArrayFeatureIDErc20Contract, AddressValidationFeaturesArrayFeatureIDTrustedContract, AddressValidationFeaturesArrayFeatureIDBenignCreator, AddressValidationFeaturesArrayFeatureIDMetadata, AddressValidationFeaturesArrayFeatureIDAirdropPattern, AddressValidationFeaturesArrayFeatureIDImpersonator, AddressValidationFeaturesArrayFeatureIDInorganicVolume, AddressValidationFeaturesArrayFeatureIDDynamicAnalysis, AddressValidationFeaturesArrayFeatureIDConcentratedSupplyDistribution, AddressValidationFeaturesArrayFeatureIDHoneypot, AddressValidationFeaturesArrayFeatureIDInsufficientLockedLiquidity, AddressValidationFeaturesArrayFeatureIDUnstableTokenPrice, AddressValidationFeaturesArrayFeatureIDRugpull, AddressValidationFeaturesArrayFeatureIDKnownRugpullCodePattern, AddressValidationFeaturesArrayFeatureIDWashTrading, AddressValidationFeaturesArrayFeatureIDConsumerOverride, AddressValidationFeaturesArrayFeatureIDInappropriateContent, AddressValidationFeaturesArrayFeatureIDHighTransferFee, AddressValidationFeaturesArrayFeatureIDHighBuyFee, AddressValidationFeaturesArrayFeatureIDHighSellFee, AddressValidationFeaturesArrayFeatureIDUnsellableToken, AddressValidationFeaturesArrayFeatureIDIsMintable, AddressValidationFeaturesArrayFeatureIDModifiableTaxes, AddressValidationFeaturesArrayFeatureIDCanBlacklist, AddressValidationFeaturesArrayFeatureIDCanWhitelist, AddressValidationFeaturesArrayFeatureIDHasTradingCooldown, AddressValidationFeaturesArrayFeatureIDExternalFunctions, AddressValidationFeaturesArrayFeatureIDHiddenOwner, AddressValidationFeaturesArrayFeatureIDTransferPauseable, AddressValidationFeaturesArrayFeatureIDOwnershipRenounced, AddressValidationFeaturesArrayFeatureIDOwnerCanChangeBalance, AddressValidationFeaturesArrayFeatureIDProxyContract, AddressValidationFeaturesArrayFeatureIDSimilarMaliciousContract, AddressValidationFeaturesArrayFeatureIDImpersonatorSensitiveAsset, AddressValidationFeaturesArrayFeatureIDImpersonatorHighConfidence, AddressValidationFeaturesArrayFeatureIDImpersonatorMediumConfidence, AddressValidationFeaturesArrayFeatureIDImpersonatorLowConfidence, AddressValidationFeaturesArrayFeatureIDImpersonationProtected, AddressValidationFeaturesArrayFeatureIDFakeVolume, AddressValidationFeaturesArrayFeatureIDHiddenSupplyByKeyHolder, AddressValidationFeaturesArrayFeatureIDFakeTradeMakerCount, AddressValidationFeaturesArrayFeatureIDTransferFromReverts, AddressValidationFeaturesArrayFeatureIDOffensiveTokenMetadata, AddressValidationFeaturesArrayFeatureIDListedOnCentralizedExchange, AddressValidationFeaturesArrayFeatureIDSanctionedCreator, AddressValidationFeaturesArrayFeatureIDSpamText, AddressValidationFeaturesArrayFeatureIDBondingCurveToken, AddressValidationFeaturesArrayFeatureIDHeavilySniped, AddressValidationFeaturesArrayFeatureIDSolanaToken2022, AddressValidationFeaturesArrayFeatureIDPostDump, AddressValidationFeaturesArrayFeatureIDDexPaid, AddressValidationFeaturesArrayFeatureIDLowReputationCreator, AddressValidationFeaturesArrayFeatureIDSnipeAtMint, AddressValidationFeaturesArrayFeatureIDTransferHookEnabled, AddressValidationFeaturesArrayFeatureIDConfidentialTransfersEnabled, AddressValidationFeaturesArrayFeatureIDNonTranserable, AddressValidationFeaturesArrayFeatureIDTokenBackdoor, AddressValidationFeaturesArrayFeatureIDCreatedViaLaunchpad, AddressValidationFeaturesArrayFeatureIDCompromisedToken, AddressValidationFeaturesArrayFeatureIDLongFundTrail, AddressValidationFeaturesArrayFeatureIDMetadataPromptInjection:
 		return true
 	}
 	return false
@@ -518,8 +519,8 @@ func (r UserOperationRequestParam) MarshalJSON() (data []byte, err error) {
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type UserOperationRequestMetadataParam struct {
-	// End-user account context (id, age, country, creation time, and
-	// account_addresses).
+	// End-user account context (id, age, country, creation time, account_addresses,
+	// bank_accounts, and bank_wires).
 	Account param.Field[UserOperationRequestMetadataAccountParam] `json:"account"`
 	// Connection metadata including user agent, IP information, and origin.
 	Connection param.Field[UserOperationRequestMetadataConnectionParam] `json:"connection"`
@@ -536,8 +537,8 @@ func (r UserOperationRequestMetadataParam) MarshalJSON() (data []byte, err error
 	return apijson.MarshalRoot(r)
 }
 
-// End-user account context (id, age, country, creation time, and
-// account_addresses).
+// End-user account context (id, age, country, creation time, account_addresses,
+// bank_accounts, and bank_wires).
 type UserOperationRequestMetadataAccountParam struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
@@ -547,6 +548,12 @@ type UserOperationRequestMetadataAccountParam struct {
 	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Fiat bank accounts linked to this user (account numbers, IBANs, ACH routing
+	// numbers).
+	BankAccounts param.Field[[]UserOperationRequestMetadataAccountBankAccountParam] `json:"bank_accounts"`
+	// Bank wire identifiers linked to this user (Fedwire routing numbers, SWIFT/BIC
+	// codes).
+	BankWires param.Field[[]UserOperationRequestMetadataAccountBankWireParam] `json:"bank_wires"`
 	// Age of the user in years
 	UserAge param.Field[int64] `json:"user_age"`
 	// ISO country code of the user's location.
@@ -554,6 +561,38 @@ type UserOperationRequestMetadataAccountParam struct {
 }
 
 func (r UserOperationRequestMetadataAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A fiat bank account identifier for the end user.
+type UserOperationRequestMetadataAccountBankAccountParam struct {
+	// Domestic bank account number.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// ISO 3166-1 alpha-2 code of the account's country.
+	CountryCode param.Field[string] `json:"country_code"`
+	// International Bank Account Number.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for ACH transfers.
+	RoutingNumber param.Field[string] `json:"routing_number"`
+}
+
+func (r UserOperationRequestMetadataAccountBankAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A bank wire identifier for the end user.
+type UserOperationRequestMetadataAccountBankWireParam struct {
+	// Beneficiary account number used for the wire.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// Beneficiary International Bank Account Number used for the wire.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for US domestic wires (Fedwire).
+	RoutingNumber param.Field[string] `json:"routing_number"`
+	// SWIFT/BIC code used for international wires.
+	Swift param.Field[string] `json:"swift"`
+}
+
+func (r UserOperationRequestMetadataAccountBankWireParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -828,8 +867,8 @@ func (r ValidateAddressParam) MarshalJSON() (data []byte, err error) {
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type ValidateAddressMetadataParam struct {
-	// End-user account context (id, age, country, creation time, and
-	// account_addresses).
+	// End-user account context (id, age, country, creation time, account_addresses,
+	// bank_accounts, and bank_wires).
 	Account param.Field[ValidateAddressMetadataAccountParam] `json:"account"`
 	// Connection metadata including user agent, IP information, and origin.
 	Connection param.Field[ValidateAddressMetadataConnectionParam] `json:"connection"`
@@ -846,8 +885,8 @@ func (r ValidateAddressMetadataParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// End-user account context (id, age, country, creation time, and
-// account_addresses).
+// End-user account context (id, age, country, creation time, account_addresses,
+// bank_accounts, and bank_wires).
 type ValidateAddressMetadataAccountParam struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
@@ -857,6 +896,12 @@ type ValidateAddressMetadataAccountParam struct {
 	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Fiat bank accounts linked to this user (account numbers, IBANs, ACH routing
+	// numbers).
+	BankAccounts param.Field[[]ValidateAddressMetadataAccountBankAccountParam] `json:"bank_accounts"`
+	// Bank wire identifiers linked to this user (Fedwire routing numbers, SWIFT/BIC
+	// codes).
+	BankWires param.Field[[]ValidateAddressMetadataAccountBankWireParam] `json:"bank_wires"`
 	// Age of the user in years
 	UserAge param.Field[int64] `json:"user_age"`
 	// ISO country code of the user's location.
@@ -864,6 +909,38 @@ type ValidateAddressMetadataAccountParam struct {
 }
 
 func (r ValidateAddressMetadataAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A fiat bank account identifier for the end user.
+type ValidateAddressMetadataAccountBankAccountParam struct {
+	// Domestic bank account number.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// ISO 3166-1 alpha-2 code of the account's country.
+	CountryCode param.Field[string] `json:"country_code"`
+	// International Bank Account Number.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for ACH transfers.
+	RoutingNumber param.Field[string] `json:"routing_number"`
+}
+
+func (r ValidateAddressMetadataAccountBankAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A bank wire identifier for the end user.
+type ValidateAddressMetadataAccountBankWireParam struct {
+	// Beneficiary account number used for the wire.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// Beneficiary International Bank Account Number used for the wire.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for US domestic wires (Fedwire).
+	RoutingNumber param.Field[string] `json:"routing_number"`
+	// SWIFT/BIC code used for international wires.
+	Swift param.Field[string] `json:"swift"`
+}
+
+func (r ValidateAddressMetadataAccountBankWireParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -905,8 +982,8 @@ func (r ValidateBulkAddressesParam) MarshalJSON() (data []byte, err error) {
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type ValidateBulkAddressesMetadataParam struct {
-	// End-user account context (id, age, country, creation time, and
-	// account_addresses).
+	// End-user account context (id, age, country, creation time, account_addresses,
+	// bank_accounts, and bank_wires).
 	Account param.Field[ValidateBulkAddressesMetadataAccountParam] `json:"account"`
 	// Connection metadata including user agent, IP information, and origin.
 	Connection param.Field[ValidateBulkAddressesMetadataConnectionParam] `json:"connection"`
@@ -923,8 +1000,8 @@ func (r ValidateBulkAddressesMetadataParam) MarshalJSON() (data []byte, err erro
 	return apijson.MarshalRoot(r)
 }
 
-// End-user account context (id, age, country, creation time, and
-// account_addresses).
+// End-user account context (id, age, country, creation time, account_addresses,
+// bank_accounts, and bank_wires).
 type ValidateBulkAddressesMetadataAccountParam struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
@@ -934,6 +1011,12 @@ type ValidateBulkAddressesMetadataAccountParam struct {
 	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Fiat bank accounts linked to this user (account numbers, IBANs, ACH routing
+	// numbers).
+	BankAccounts param.Field[[]ValidateBulkAddressesMetadataAccountBankAccountParam] `json:"bank_accounts"`
+	// Bank wire identifiers linked to this user (Fedwire routing numbers, SWIFT/BIC
+	// codes).
+	BankWires param.Field[[]ValidateBulkAddressesMetadataAccountBankWireParam] `json:"bank_wires"`
 	// Age of the user in years
 	UserAge param.Field[int64] `json:"user_age"`
 	// ISO country code of the user's location.
@@ -941,6 +1024,38 @@ type ValidateBulkAddressesMetadataAccountParam struct {
 }
 
 func (r ValidateBulkAddressesMetadataAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A fiat bank account identifier for the end user.
+type ValidateBulkAddressesMetadataAccountBankAccountParam struct {
+	// Domestic bank account number.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// ISO 3166-1 alpha-2 code of the account's country.
+	CountryCode param.Field[string] `json:"country_code"`
+	// International Bank Account Number.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for ACH transfers.
+	RoutingNumber param.Field[string] `json:"routing_number"`
+}
+
+func (r ValidateBulkAddressesMetadataAccountBankAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A bank wire identifier for the end user.
+type ValidateBulkAddressesMetadataAccountBankWireParam struct {
+	// Beneficiary account number used for the wire.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// Beneficiary International Bank Account Number used for the wire.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for US domestic wires (Fedwire).
+	RoutingNumber param.Field[string] `json:"routing_number"`
+	// SWIFT/BIC code used for international wires.
+	Swift param.Field[string] `json:"swift"`
+}
+
+func (r ValidateBulkAddressesMetadataAccountBankWireParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -1209,11 +1324,12 @@ const (
 	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCreatedViaLaunchpad            ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "CREATED_VIA_LAUNCHPAD"
 	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCompromisedToken               ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "COMPROMISED_TOKEN"
 	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDLongFundTrail                  ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "LONG_FUND_TRAIL"
+	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMetadataPromptInjection        ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "METADATA_PROMPT_INJECTION"
 )
 
 func (r ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID) IsKnown() bool {
 	switch r {
-	case ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDVerifiedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnverifiedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighTradeVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMarketPlaceSalesHistory, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighReputationToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOnchainActivityValidator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDStaticCodeSignature, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDKnownMalicious, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsEoa, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDErc20Contract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTrustedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDBenignCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMetadata, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDAirdropPattern, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInorganicVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDDynamicAnalysis, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConcentratedSupplyDistribution, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHoneypot, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInsufficientLockedLiquidity, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnstableTokenPrice, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDRugpull, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDKnownRugpullCodePattern, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDWashTrading, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConsumerOverride, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInappropriateContent, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighTransferFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighBuyFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighSellFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnsellableToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsMintable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDModifiableTaxes, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCanBlacklist, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCanWhitelist, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHasTradingCooldown, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDExternalFunctions, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHiddenOwner, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferPauseable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOwnershipRenounced, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOwnerCanChangeBalance, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDProxyContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSimilarMaliciousContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorSensitiveAsset, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorHighConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorMediumConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorLowConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonationProtected, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHiddenSupplyByKeyHolder, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeTradeMakerCount, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferFromReverts, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOffensiveTokenMetadata, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDListedOnCentralizedExchange, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSanctionedCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSpamText, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDBondingCurveToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHeavilySniped, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSolanaToken2022, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDPostDump, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDDexPaid, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDLowReputationCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSnipeAtMint, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferHookEnabled, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConfidentialTransfersEnabled, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDNonTranserable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTokenBackdoor, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCreatedViaLaunchpad, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCompromisedToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDLongFundTrail:
+	case ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDVerifiedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnverifiedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighTradeVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMarketPlaceSalesHistory, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighReputationToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOnchainActivityValidator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDStaticCodeSignature, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDKnownMalicious, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsEoa, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDErc20Contract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTrustedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDBenignCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMetadata, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDAirdropPattern, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInorganicVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDDynamicAnalysis, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConcentratedSupplyDistribution, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHoneypot, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInsufficientLockedLiquidity, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnstableTokenPrice, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDRugpull, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDKnownRugpullCodePattern, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDWashTrading, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConsumerOverride, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInappropriateContent, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighTransferFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighBuyFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighSellFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnsellableToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsMintable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDModifiableTaxes, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCanBlacklist, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCanWhitelist, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHasTradingCooldown, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDExternalFunctions, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHiddenOwner, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferPauseable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOwnershipRenounced, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOwnerCanChangeBalance, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDProxyContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSimilarMaliciousContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorSensitiveAsset, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorHighConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorMediumConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorLowConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonationProtected, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHiddenSupplyByKeyHolder, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeTradeMakerCount, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferFromReverts, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOffensiveTokenMetadata, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDListedOnCentralizedExchange, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSanctionedCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSpamText, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDBondingCurveToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHeavilySniped, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSolanaToken2022, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDPostDump, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDDexPaid, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDLowReputationCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSnipeAtMint, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferHookEnabled, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConfidentialTransfersEnabled, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDNonTranserable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTokenBackdoor, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCreatedViaLaunchpad, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCompromisedToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDLongFundTrail, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMetadataPromptInjection:
 		return true
 	}
 	return false
