@@ -34,8 +34,20 @@ func TestScanReportWithOptionalParams(t *testing.T) {
 				AccountID:                blockaidclientgo.F("user-abc-123"),
 				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
-				UserAge:                  blockaidclientgo.F(int64(30)),
-				UserCountryCode:          blockaidclientgo.F("US"),
+				BankAccounts: blockaidclientgo.F([]blockaidclientgo.ScanReportParamsMetadataAccountBankAccount{{
+					AccountNumber: blockaidclientgo.F("account_number"),
+					CountryCode:   blockaidclientgo.F("country_code"),
+					Iban:          blockaidclientgo.F("iban"),
+					RoutingNumber: blockaidclientgo.F("routing_number"),
+				}}),
+				BankWires: blockaidclientgo.F([]blockaidclientgo.ScanReportParamsMetadataAccountBankWire{{
+					AccountNumber: blockaidclientgo.F("account_number"),
+					Iban:          blockaidclientgo.F("iban"),
+					RoutingNumber: blockaidclientgo.F("routing_number"),
+					Swift:         blockaidclientgo.F("swift"),
+				}}),
+				UserAge:         blockaidclientgo.F(int64(30)),
+				UserCountryCode: blockaidclientgo.F("US"),
 			}),
 			Connection: blockaidclientgo.F(blockaidclientgo.ScanReportParamsMetadataConnection{
 				IPAddress:                blockaidclientgo.F("192.168.1.1"),
