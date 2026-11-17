@@ -2707,6 +2707,12 @@ type HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccount struc
 	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Fiat bank accounts linked to this user (account numbers, IBANs, ACH routing
+	// numbers).
+	BankAccounts param.Field[[]HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccountBankAccount] `json:"bank_accounts"`
+	// Bank wire identifiers linked to this user (Fedwire routing numbers, SWIFT/BIC
+	// codes).
+	BankWires param.Field[[]HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccountBankWire] `json:"bank_wires"`
 	// Age of the user in years
 	UserAge param.Field[int64] `json:"user_age"`
 	// ISO country code of the user's location.
@@ -2714,6 +2720,38 @@ type HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccount struc
 }
 
 func (r HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A fiat bank account identifier for the end user.
+type HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccountBankAccount struct {
+	// Domestic bank account number.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// ISO 3166-1 alpha-2 code of the account's country.
+	CountryCode param.Field[string] `json:"country_code"`
+	// International Bank Account Number.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for ACH transfers.
+	RoutingNumber param.Field[string] `json:"routing_number"`
+}
+
+func (r HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccountBankAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A bank wire identifier for the end user.
+type HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccountBankWire struct {
+	// Beneficiary account number used for the wire.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// Beneficiary International Bank Account Number used for the wire.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for US domestic wires (Fedwire).
+	RoutingNumber param.Field[string] `json:"routing_number"`
+	// SWIFT/BIC code used for international wires.
+	Swift param.Field[string] `json:"swift"`
+}
+
+func (r HederaTransactionScanParamsMetadataHederaWalletRequestMetadataAccountBankWire) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -2767,6 +2805,12 @@ type HederaTransactionScanParamsMetadataHederaInAppRequestMetadataAccount struct
 	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Fiat bank accounts linked to this user (account numbers, IBANs, ACH routing
+	// numbers).
+	BankAccounts param.Field[[]HederaTransactionScanParamsMetadataHederaInAppRequestMetadataAccountBankAccount] `json:"bank_accounts"`
+	// Bank wire identifiers linked to this user (Fedwire routing numbers, SWIFT/BIC
+	// codes).
+	BankWires param.Field[[]HederaTransactionScanParamsMetadataHederaInAppRequestMetadataAccountBankWire] `json:"bank_wires"`
 	// Age of the user in years
 	UserAge param.Field[int64] `json:"user_age"`
 	// ISO country code of the user's location.
@@ -2774,6 +2818,38 @@ type HederaTransactionScanParamsMetadataHederaInAppRequestMetadataAccount struct
 }
 
 func (r HederaTransactionScanParamsMetadataHederaInAppRequestMetadataAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A fiat bank account identifier for the end user.
+type HederaTransactionScanParamsMetadataHederaInAppRequestMetadataAccountBankAccount struct {
+	// Domestic bank account number.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// ISO 3166-1 alpha-2 code of the account's country.
+	CountryCode param.Field[string] `json:"country_code"`
+	// International Bank Account Number.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for ACH transfers.
+	RoutingNumber param.Field[string] `json:"routing_number"`
+}
+
+func (r HederaTransactionScanParamsMetadataHederaInAppRequestMetadataAccountBankAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A bank wire identifier for the end user.
+type HederaTransactionScanParamsMetadataHederaInAppRequestMetadataAccountBankWire struct {
+	// Beneficiary account number used for the wire.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// Beneficiary International Bank Account Number used for the wire.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for US domestic wires (Fedwire).
+	RoutingNumber param.Field[string] `json:"routing_number"`
+	// SWIFT/BIC code used for international wires.
+	Swift param.Field[string] `json:"swift"`
+}
+
+func (r HederaTransactionScanParamsMetadataHederaInAppRequestMetadataAccountBankWire) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
