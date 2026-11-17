@@ -60,7 +60,10 @@ type AddressValidation struct {
 	// [Features reference](/api-reference/end-user-protection/address-scanning/address-scanning-response-reference#features)
 	// for possible feature IDs.
 	Features AddressValidationFeaturesUnion `json:"features"`
-	JSON     addressValidationJSON          `json:"-"`
+	// A human-readable name for the address, resolved from its public tag or, if none,
+	// its contract name. Omitted when no name is known.
+	Label string                `json:"label"`
+	JSON  addressValidationJSON `json:"-"`
 }
 
 // addressValidationJSON contains the JSON metadata for the struct
@@ -69,6 +72,7 @@ type addressValidationJSON struct {
 	ResultType  apijson.Field
 	Error       apijson.Field
 	Features    apijson.Field
+	Label       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
