@@ -35,8 +35,20 @@ func TestEvmAddressBulkScan(t *testing.T) {
 					AccountID:                blockaidclientgo.F("account_id"),
 					AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 					AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
-					UserAge:                  blockaidclientgo.F(int64(1)),
-					UserCountryCode:          blockaidclientgo.F("user_country_code"),
+					BankAccounts: blockaidclientgo.F([]blockaidclientgo.ValidateBulkAddressesMetadataAccountBankAccountParam{{
+						AccountNumber: blockaidclientgo.F("account_number"),
+						CountryCode:   blockaidclientgo.F("country_code"),
+						Iban:          blockaidclientgo.F("iban"),
+						RoutingNumber: blockaidclientgo.F("routing_number"),
+					}}),
+					BankWires: blockaidclientgo.F([]blockaidclientgo.ValidateBulkAddressesMetadataAccountBankWireParam{{
+						AccountNumber: blockaidclientgo.F("account_number"),
+						Iban:          blockaidclientgo.F("iban"),
+						RoutingNumber: blockaidclientgo.F("routing_number"),
+						Swift:         blockaidclientgo.F("swift"),
+					}}),
+					UserAge:         blockaidclientgo.F(int64(1)),
+					UserCountryCode: blockaidclientgo.F("user_country_code"),
 				}),
 				Connection: blockaidclientgo.F(blockaidclientgo.ValidateBulkAddressesMetadataConnectionParam{
 					IPAddress:                blockaidclientgo.F("ip_address"),
