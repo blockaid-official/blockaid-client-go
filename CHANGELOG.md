@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.82.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.81.0...v0.82.0) (2026-11-22)
+
+
+### Features
+
+* **PLA-4747:** document the My Incidents API ([7d928ac](https://github.com/blockaid-official/blockaid-client-go/commit/7d928accf7b0e60a7bf4a11300f20754dd606f35))
+
+
+### Documentation
+
+* **PLA-4747:** remove published_at, tags and exploit_name from My Incidents ([4c5c502](https://github.com/blockaid-official/blockaid-client-go/commit/4c5c5024cdefeeabb139b4c55d7b3d374f925ede))
+
 ## [0.81.0](https://github.com/blockaid-official/blockaid-client-go/compare/v0.80.0...v0.81.0) (2026-10-29)
 
 
