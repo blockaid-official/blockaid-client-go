@@ -61,6 +61,10 @@ func TestEvmTransactionScanWithOptionalParams(t *testing.T) {
 		Chain:          blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainEthereum),
 		Data: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsData{
 			From: blockaidclientgo.F("0x5e1a0d484c5f0de722e82f9dca3a9d5a421d47cb"),
+			AccessList: blockaidclientgo.F([]blockaidclientgo.EvmTransactionScanParamsDataAccessList{{
+				Address:     blockaidclientgo.F("address"),
+				StorageKeys: blockaidclientgo.F([]string{"string"}),
+			}}),
 			AuthorizationList: blockaidclientgo.F([]blockaidclientgo.AuthorizationParam{{
 				Address: blockaidclientgo.F("address"),
 				ChainID: blockaidclientgo.F("chainId"),
@@ -81,8 +85,20 @@ func TestEvmTransactionScanWithOptionalParams(t *testing.T) {
 				AccountID:                blockaidclientgo.F("account_id"),
 				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
-				UserAge:                  blockaidclientgo.F(int64(1)),
-				UserCountryCode:          blockaidclientgo.F("user_country_code"),
+				BankAccounts: blockaidclientgo.F([]blockaidclientgo.EvmTransactionScanParamsMetadataAccountBankAccount{{
+					AccountNumber: blockaidclientgo.F("account_number"),
+					CountryCode:   blockaidclientgo.F("country_code"),
+					Iban:          blockaidclientgo.F("iban"),
+					RoutingNumber: blockaidclientgo.F("routing_number"),
+				}}),
+				BankWires: blockaidclientgo.F([]blockaidclientgo.EvmTransactionScanParamsMetadataAccountBankWire{{
+					AccountNumber: blockaidclientgo.F("account_number"),
+					Iban:          blockaidclientgo.F("iban"),
+					RoutingNumber: blockaidclientgo.F("routing_number"),
+					Swift:         blockaidclientgo.F("swift"),
+				}}),
+				UserAge:         blockaidclientgo.F(int64(1)),
+				UserCountryCode: blockaidclientgo.F("user_country_code"),
 			}),
 			Connection: blockaidclientgo.F(blockaidclientgo.EvmTransactionScanParamsMetadataConnection{
 				IPAddress:                blockaidclientgo.F("ip_address"),
