@@ -60,7 +60,10 @@ type AddressValidation struct {
 	// [Features reference](/api-reference/end-user-protection/address-scanning/address-scanning-response-reference#features)
 	// for possible feature IDs.
 	Features AddressValidationFeaturesUnion `json:"features"`
-	JSON     addressValidationJSON          `json:"-"`
+	// A human-readable name for the address, resolved from its public tag or, if none,
+	// its contract name. Omitted when no name is known.
+	Label string                `json:"label"`
+	JSON  addressValidationJSON `json:"-"`
 }
 
 // addressValidationJSON contains the JSON metadata for the struct
@@ -69,6 +72,7 @@ type addressValidationJSON struct {
 	ResultType  apijson.Field
 	Error       apijson.Field
 	Features    apijson.Field
+	Label       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -231,11 +235,12 @@ const (
 	AddressValidationFeaturesArrayFeatureIDCreatedViaLaunchpad            AddressValidationFeaturesArrayFeatureID = "CREATED_VIA_LAUNCHPAD"
 	AddressValidationFeaturesArrayFeatureIDCompromisedToken               AddressValidationFeaturesArrayFeatureID = "COMPROMISED_TOKEN"
 	AddressValidationFeaturesArrayFeatureIDLongFundTrail                  AddressValidationFeaturesArrayFeatureID = "LONG_FUND_TRAIL"
+	AddressValidationFeaturesArrayFeatureIDMetadataPromptInjection        AddressValidationFeaturesArrayFeatureID = "METADATA_PROMPT_INJECTION"
 )
 
 func (r AddressValidationFeaturesArrayFeatureID) IsKnown() bool {
 	switch r {
-	case AddressValidationFeaturesArrayFeatureIDVerifiedContract, AddressValidationFeaturesArrayFeatureIDUnverifiedContract, AddressValidationFeaturesArrayFeatureIDHighTradeVolume, AddressValidationFeaturesArrayFeatureIDMarketPlaceSalesHistory, AddressValidationFeaturesArrayFeatureIDHighReputationToken, AddressValidationFeaturesArrayFeatureIDOnchainActivityValidator, AddressValidationFeaturesArrayFeatureIDStaticCodeSignature, AddressValidationFeaturesArrayFeatureIDKnownMalicious, AddressValidationFeaturesArrayFeatureIDIsEoa, AddressValidationFeaturesArrayFeatureIDIsContract, AddressValidationFeaturesArrayFeatureIDErc20Contract, AddressValidationFeaturesArrayFeatureIDTrustedContract, AddressValidationFeaturesArrayFeatureIDBenignCreator, AddressValidationFeaturesArrayFeatureIDMetadata, AddressValidationFeaturesArrayFeatureIDAirdropPattern, AddressValidationFeaturesArrayFeatureIDImpersonator, AddressValidationFeaturesArrayFeatureIDInorganicVolume, AddressValidationFeaturesArrayFeatureIDDynamicAnalysis, AddressValidationFeaturesArrayFeatureIDConcentratedSupplyDistribution, AddressValidationFeaturesArrayFeatureIDHoneypot, AddressValidationFeaturesArrayFeatureIDInsufficientLockedLiquidity, AddressValidationFeaturesArrayFeatureIDUnstableTokenPrice, AddressValidationFeaturesArrayFeatureIDRugpull, AddressValidationFeaturesArrayFeatureIDKnownRugpullCodePattern, AddressValidationFeaturesArrayFeatureIDWashTrading, AddressValidationFeaturesArrayFeatureIDConsumerOverride, AddressValidationFeaturesArrayFeatureIDInappropriateContent, AddressValidationFeaturesArrayFeatureIDHighTransferFee, AddressValidationFeaturesArrayFeatureIDHighBuyFee, AddressValidationFeaturesArrayFeatureIDHighSellFee, AddressValidationFeaturesArrayFeatureIDUnsellableToken, AddressValidationFeaturesArrayFeatureIDIsMintable, AddressValidationFeaturesArrayFeatureIDModifiableTaxes, AddressValidationFeaturesArrayFeatureIDCanBlacklist, AddressValidationFeaturesArrayFeatureIDCanWhitelist, AddressValidationFeaturesArrayFeatureIDHasTradingCooldown, AddressValidationFeaturesArrayFeatureIDExternalFunctions, AddressValidationFeaturesArrayFeatureIDHiddenOwner, AddressValidationFeaturesArrayFeatureIDTransferPauseable, AddressValidationFeaturesArrayFeatureIDOwnershipRenounced, AddressValidationFeaturesArrayFeatureIDOwnerCanChangeBalance, AddressValidationFeaturesArrayFeatureIDProxyContract, AddressValidationFeaturesArrayFeatureIDSimilarMaliciousContract, AddressValidationFeaturesArrayFeatureIDImpersonatorSensitiveAsset, AddressValidationFeaturesArrayFeatureIDImpersonatorHighConfidence, AddressValidationFeaturesArrayFeatureIDImpersonatorMediumConfidence, AddressValidationFeaturesArrayFeatureIDImpersonatorLowConfidence, AddressValidationFeaturesArrayFeatureIDImpersonationProtected, AddressValidationFeaturesArrayFeatureIDFakeVolume, AddressValidationFeaturesArrayFeatureIDHiddenSupplyByKeyHolder, AddressValidationFeaturesArrayFeatureIDFakeTradeMakerCount, AddressValidationFeaturesArrayFeatureIDTransferFromReverts, AddressValidationFeaturesArrayFeatureIDOffensiveTokenMetadata, AddressValidationFeaturesArrayFeatureIDListedOnCentralizedExchange, AddressValidationFeaturesArrayFeatureIDSanctionedCreator, AddressValidationFeaturesArrayFeatureIDSpamText, AddressValidationFeaturesArrayFeatureIDBondingCurveToken, AddressValidationFeaturesArrayFeatureIDHeavilySniped, AddressValidationFeaturesArrayFeatureIDSolanaToken2022, AddressValidationFeaturesArrayFeatureIDPostDump, AddressValidationFeaturesArrayFeatureIDDexPaid, AddressValidationFeaturesArrayFeatureIDLowReputationCreator, AddressValidationFeaturesArrayFeatureIDSnipeAtMint, AddressValidationFeaturesArrayFeatureIDTransferHookEnabled, AddressValidationFeaturesArrayFeatureIDConfidentialTransfersEnabled, AddressValidationFeaturesArrayFeatureIDNonTranserable, AddressValidationFeaturesArrayFeatureIDTokenBackdoor, AddressValidationFeaturesArrayFeatureIDCreatedViaLaunchpad, AddressValidationFeaturesArrayFeatureIDCompromisedToken, AddressValidationFeaturesArrayFeatureIDLongFundTrail:
+	case AddressValidationFeaturesArrayFeatureIDVerifiedContract, AddressValidationFeaturesArrayFeatureIDUnverifiedContract, AddressValidationFeaturesArrayFeatureIDHighTradeVolume, AddressValidationFeaturesArrayFeatureIDMarketPlaceSalesHistory, AddressValidationFeaturesArrayFeatureIDHighReputationToken, AddressValidationFeaturesArrayFeatureIDOnchainActivityValidator, AddressValidationFeaturesArrayFeatureIDStaticCodeSignature, AddressValidationFeaturesArrayFeatureIDKnownMalicious, AddressValidationFeaturesArrayFeatureIDIsEoa, AddressValidationFeaturesArrayFeatureIDIsContract, AddressValidationFeaturesArrayFeatureIDErc20Contract, AddressValidationFeaturesArrayFeatureIDTrustedContract, AddressValidationFeaturesArrayFeatureIDBenignCreator, AddressValidationFeaturesArrayFeatureIDMetadata, AddressValidationFeaturesArrayFeatureIDAirdropPattern, AddressValidationFeaturesArrayFeatureIDImpersonator, AddressValidationFeaturesArrayFeatureIDInorganicVolume, AddressValidationFeaturesArrayFeatureIDDynamicAnalysis, AddressValidationFeaturesArrayFeatureIDConcentratedSupplyDistribution, AddressValidationFeaturesArrayFeatureIDHoneypot, AddressValidationFeaturesArrayFeatureIDInsufficientLockedLiquidity, AddressValidationFeaturesArrayFeatureIDUnstableTokenPrice, AddressValidationFeaturesArrayFeatureIDRugpull, AddressValidationFeaturesArrayFeatureIDKnownRugpullCodePattern, AddressValidationFeaturesArrayFeatureIDWashTrading, AddressValidationFeaturesArrayFeatureIDConsumerOverride, AddressValidationFeaturesArrayFeatureIDInappropriateContent, AddressValidationFeaturesArrayFeatureIDHighTransferFee, AddressValidationFeaturesArrayFeatureIDHighBuyFee, AddressValidationFeaturesArrayFeatureIDHighSellFee, AddressValidationFeaturesArrayFeatureIDUnsellableToken, AddressValidationFeaturesArrayFeatureIDIsMintable, AddressValidationFeaturesArrayFeatureIDModifiableTaxes, AddressValidationFeaturesArrayFeatureIDCanBlacklist, AddressValidationFeaturesArrayFeatureIDCanWhitelist, AddressValidationFeaturesArrayFeatureIDHasTradingCooldown, AddressValidationFeaturesArrayFeatureIDExternalFunctions, AddressValidationFeaturesArrayFeatureIDHiddenOwner, AddressValidationFeaturesArrayFeatureIDTransferPauseable, AddressValidationFeaturesArrayFeatureIDOwnershipRenounced, AddressValidationFeaturesArrayFeatureIDOwnerCanChangeBalance, AddressValidationFeaturesArrayFeatureIDProxyContract, AddressValidationFeaturesArrayFeatureIDSimilarMaliciousContract, AddressValidationFeaturesArrayFeatureIDImpersonatorSensitiveAsset, AddressValidationFeaturesArrayFeatureIDImpersonatorHighConfidence, AddressValidationFeaturesArrayFeatureIDImpersonatorMediumConfidence, AddressValidationFeaturesArrayFeatureIDImpersonatorLowConfidence, AddressValidationFeaturesArrayFeatureIDImpersonationProtected, AddressValidationFeaturesArrayFeatureIDFakeVolume, AddressValidationFeaturesArrayFeatureIDHiddenSupplyByKeyHolder, AddressValidationFeaturesArrayFeatureIDFakeTradeMakerCount, AddressValidationFeaturesArrayFeatureIDTransferFromReverts, AddressValidationFeaturesArrayFeatureIDOffensiveTokenMetadata, AddressValidationFeaturesArrayFeatureIDListedOnCentralizedExchange, AddressValidationFeaturesArrayFeatureIDSanctionedCreator, AddressValidationFeaturesArrayFeatureIDSpamText, AddressValidationFeaturesArrayFeatureIDBondingCurveToken, AddressValidationFeaturesArrayFeatureIDHeavilySniped, AddressValidationFeaturesArrayFeatureIDSolanaToken2022, AddressValidationFeaturesArrayFeatureIDPostDump, AddressValidationFeaturesArrayFeatureIDDexPaid, AddressValidationFeaturesArrayFeatureIDLowReputationCreator, AddressValidationFeaturesArrayFeatureIDSnipeAtMint, AddressValidationFeaturesArrayFeatureIDTransferHookEnabled, AddressValidationFeaturesArrayFeatureIDConfidentialTransfersEnabled, AddressValidationFeaturesArrayFeatureIDNonTranserable, AddressValidationFeaturesArrayFeatureIDTokenBackdoor, AddressValidationFeaturesArrayFeatureIDCreatedViaLaunchpad, AddressValidationFeaturesArrayFeatureIDCompromisedToken, AddressValidationFeaturesArrayFeatureIDLongFundTrail, AddressValidationFeaturesArrayFeatureIDMetadataPromptInjection:
 		return true
 	}
 	return false
@@ -294,16 +299,15 @@ const (
 	BulkTransactionScanSupportedChainBaseSepolia BulkTransactionScanSupportedChain = "base-sepolia"
 	BulkTransactionScanSupportedChainBsc         BulkTransactionScanSupportedChain = "bsc"
 	BulkTransactionScanSupportedChainEthereum    BulkTransactionScanSupportedChain = "ethereum"
+	BulkTransactionScanSupportedChainGnosis      BulkTransactionScanSupportedChain = "gnosis"
 	BulkTransactionScanSupportedChainOptimism    BulkTransactionScanSupportedChain = "optimism"
 	BulkTransactionScanSupportedChainPolygon     BulkTransactionScanSupportedChain = "polygon"
-	BulkTransactionScanSupportedChainGnosis      BulkTransactionScanSupportedChain = "gnosis"
-	BulkTransactionScanSupportedChainSoneium     BulkTransactionScanSupportedChain = "soneium"
 	BulkTransactionScanSupportedChainUnichain    BulkTransactionScanSupportedChain = "unichain"
 )
 
 func (r BulkTransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case BulkTransactionScanSupportedChainArbitrum, BulkTransactionScanSupportedChainAvalanche, BulkTransactionScanSupportedChainBase, BulkTransactionScanSupportedChainBaseSepolia, BulkTransactionScanSupportedChainBsc, BulkTransactionScanSupportedChainEthereum, BulkTransactionScanSupportedChainOptimism, BulkTransactionScanSupportedChainPolygon, BulkTransactionScanSupportedChainGnosis, BulkTransactionScanSupportedChainSoneium, BulkTransactionScanSupportedChainUnichain:
+	case BulkTransactionScanSupportedChainArbitrum, BulkTransactionScanSupportedChainAvalanche, BulkTransactionScanSupportedChainBase, BulkTransactionScanSupportedChainBaseSepolia, BulkTransactionScanSupportedChainBsc, BulkTransactionScanSupportedChainEthereum, BulkTransactionScanSupportedChainGnosis, BulkTransactionScanSupportedChainOptimism, BulkTransactionScanSupportedChainPolygon, BulkTransactionScanSupportedChainUnichain:
 		return true
 	}
 	return false
@@ -313,50 +317,46 @@ func (r BulkTransactionScanSupportedChain) IsKnown() bool {
 type TokenScanSupportedChain string
 
 const (
+	TokenScanSupportedChainAbstract        TokenScanSupportedChain = "abstract"
 	TokenScanSupportedChainArbitrum        TokenScanSupportedChain = "arbitrum"
+	TokenScanSupportedChainArc             TokenScanSupportedChain = "arc"
 	TokenScanSupportedChainAvalanche       TokenScanSupportedChain = "avalanche"
 	TokenScanSupportedChainBase            TokenScanSupportedChain = "base"
+	TokenScanSupportedChainBaseSepolia     TokenScanSupportedChain = "base-sepolia"
+	TokenScanSupportedChainBerachain       TokenScanSupportedChain = "berachain"
 	TokenScanSupportedChainBsc             TokenScanSupportedChain = "bsc"
 	TokenScanSupportedChainEthereum        TokenScanSupportedChain = "ethereum"
+	TokenScanSupportedChainFlare           TokenScanSupportedChain = "flare"
+	TokenScanSupportedChainHedera          TokenScanSupportedChain = "hedera"
+	TokenScanSupportedChainHyperevm        TokenScanSupportedChain = "hyperevm"
+	TokenScanSupportedChainInk             TokenScanSupportedChain = "ink"
+	TokenScanSupportedChainLinea           TokenScanSupportedChain = "linea"
+	TokenScanSupportedChainMegaeth         TokenScanSupportedChain = "megaeth"
+	TokenScanSupportedChainMonad           TokenScanSupportedChain = "monad"
 	TokenScanSupportedChainOptimism        TokenScanSupportedChain = "optimism"
 	TokenScanSupportedChainPolygon         TokenScanSupportedChain = "polygon"
-	TokenScanSupportedChainZora            TokenScanSupportedChain = "zora"
+	TokenScanSupportedChainRobinhood       TokenScanSupportedChain = "robinhood"
+	TokenScanSupportedChainRonin           TokenScanSupportedChain = "ronin"
+	TokenScanSupportedChainScroll          TokenScanSupportedChain = "scroll"
+	TokenScanSupportedChainSei             TokenScanSupportedChain = "sei"
 	TokenScanSupportedChainSolana          TokenScanSupportedChain = "solana"
+	TokenScanSupportedChainSoneium         TokenScanSupportedChain = "soneium"
+	TokenScanSupportedChainSoneiumMinato   TokenScanSupportedChain = "soneium-minato"
 	TokenScanSupportedChainStarknet        TokenScanSupportedChain = "starknet"
 	TokenScanSupportedChainStarknetSepolia TokenScanSupportedChain = "starknet-sepolia"
 	TokenScanSupportedChainStellar         TokenScanSupportedChain = "stellar"
-	TokenScanSupportedChainLinea           TokenScanSupportedChain = "linea"
-	TokenScanSupportedChainDegen           TokenScanSupportedChain = "degen"
-	TokenScanSupportedChainZksync          TokenScanSupportedChain = "zksync"
-	TokenScanSupportedChainScroll          TokenScanSupportedChain = "scroll"
-	TokenScanSupportedChainBlast           TokenScanSupportedChain = "blast"
-	TokenScanSupportedChainSoneiumMinato   TokenScanSupportedChain = "soneium-minato"
-	TokenScanSupportedChainBaseSepolia     TokenScanSupportedChain = "base-sepolia"
-	TokenScanSupportedChainBitcoin         TokenScanSupportedChain = "bitcoin"
-	TokenScanSupportedChainAbstract        TokenScanSupportedChain = "abstract"
-	TokenScanSupportedChainSoneium         TokenScanSupportedChain = "soneium"
-	TokenScanSupportedChainInk             TokenScanSupportedChain = "ink"
-	TokenScanSupportedChainBerachain       TokenScanSupportedChain = "berachain"
-	TokenScanSupportedChainUnichain        TokenScanSupportedChain = "unichain"
-	TokenScanSupportedChainRonin           TokenScanSupportedChain = "ronin"
 	TokenScanSupportedChainSui             TokenScanSupportedChain = "sui"
-	TokenScanSupportedChainHedera          TokenScanSupportedChain = "hedera"
-	TokenScanSupportedChainHyperevm        TokenScanSupportedChain = "hyperevm"
-	TokenScanSupportedChainXlayer          TokenScanSupportedChain = "xlayer"
-	TokenScanSupportedChainMonad           TokenScanSupportedChain = "monad"
-	TokenScanSupportedChainMegaeth         TokenScanSupportedChain = "megaeth"
 	TokenScanSupportedChainTempo           TokenScanSupportedChain = "tempo"
-	TokenScanSupportedChainSei             TokenScanSupportedChain = "sei"
-	TokenScanSupportedChainKaia            TokenScanSupportedChain = "kaia"
 	TokenScanSupportedChainTron            TokenScanSupportedChain = "tron"
-	TokenScanSupportedChainRobinhood       TokenScanSupportedChain = "robinhood"
-	TokenScanSupportedChainFlare           TokenScanSupportedChain = "flare"
-	TokenScanSupportedChainArc             TokenScanSupportedChain = "arc"
+	TokenScanSupportedChainUnichain        TokenScanSupportedChain = "unichain"
+	TokenScanSupportedChainXlayer          TokenScanSupportedChain = "xlayer"
+	TokenScanSupportedChainZksync          TokenScanSupportedChain = "zksync"
+	TokenScanSupportedChainZora            TokenScanSupportedChain = "zora"
 )
 
 func (r TokenScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TokenScanSupportedChainArbitrum, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainZora, TokenScanSupportedChainSolana, TokenScanSupportedChainStarknet, TokenScanSupportedChainStarknetSepolia, TokenScanSupportedChainStellar, TokenScanSupportedChainLinea, TokenScanSupportedChainDegen, TokenScanSupportedChainZksync, TokenScanSupportedChainScroll, TokenScanSupportedChainBlast, TokenScanSupportedChainSoneiumMinato, TokenScanSupportedChainBaseSepolia, TokenScanSupportedChainBitcoin, TokenScanSupportedChainAbstract, TokenScanSupportedChainSoneium, TokenScanSupportedChainInk, TokenScanSupportedChainBerachain, TokenScanSupportedChainUnichain, TokenScanSupportedChainRonin, TokenScanSupportedChainSui, TokenScanSupportedChainHedera, TokenScanSupportedChainHyperevm, TokenScanSupportedChainXlayer, TokenScanSupportedChainMonad, TokenScanSupportedChainMegaeth, TokenScanSupportedChainTempo, TokenScanSupportedChainSei, TokenScanSupportedChainKaia, TokenScanSupportedChainTron, TokenScanSupportedChainRobinhood, TokenScanSupportedChainFlare, TokenScanSupportedChainArc:
+	case TokenScanSupportedChainAbstract, TokenScanSupportedChainArbitrum, TokenScanSupportedChainArc, TokenScanSupportedChainAvalanche, TokenScanSupportedChainBase, TokenScanSupportedChainBaseSepolia, TokenScanSupportedChainBerachain, TokenScanSupportedChainBsc, TokenScanSupportedChainEthereum, TokenScanSupportedChainFlare, TokenScanSupportedChainHedera, TokenScanSupportedChainHyperevm, TokenScanSupportedChainInk, TokenScanSupportedChainLinea, TokenScanSupportedChainMegaeth, TokenScanSupportedChainMonad, TokenScanSupportedChainOptimism, TokenScanSupportedChainPolygon, TokenScanSupportedChainRobinhood, TokenScanSupportedChainRonin, TokenScanSupportedChainScroll, TokenScanSupportedChainSei, TokenScanSupportedChainSolana, TokenScanSupportedChainSoneium, TokenScanSupportedChainSoneiumMinato, TokenScanSupportedChainStarknet, TokenScanSupportedChainStarknetSepolia, TokenScanSupportedChainStellar, TokenScanSupportedChainSui, TokenScanSupportedChainTempo, TokenScanSupportedChainTron, TokenScanSupportedChainUnichain, TokenScanSupportedChainXlayer, TokenScanSupportedChainZksync, TokenScanSupportedChainZora:
 		return true
 	}
 	return false
@@ -366,62 +366,60 @@ func (r TokenScanSupportedChain) IsKnown() bool {
 type TransactionScanSupportedChain string
 
 const (
-	TransactionScanSupportedChainArbitrum         TransactionScanSupportedChain = "arbitrum"
-	TransactionScanSupportedChainAvalanche        TransactionScanSupportedChain = "avalanche"
-	TransactionScanSupportedChainBase             TransactionScanSupportedChain = "base"
-	TransactionScanSupportedChainBaseSepolia      TransactionScanSupportedChain = "base-sepolia"
-	TransactionScanSupportedChainLordchain        TransactionScanSupportedChain = "lordchain"
-	TransactionScanSupportedChainLordchainTestnet TransactionScanSupportedChain = "lordchain-testnet"
-	TransactionScanSupportedChainMetacade         TransactionScanSupportedChain = "metacade"
-	TransactionScanSupportedChainMetacadeTestnet  TransactionScanSupportedChain = "metacade-testnet"
-	TransactionScanSupportedChainBsc              TransactionScanSupportedChain = "bsc"
-	TransactionScanSupportedChainEthereum         TransactionScanSupportedChain = "ethereum"
-	TransactionScanSupportedChainOptimism         TransactionScanSupportedChain = "optimism"
-	TransactionScanSupportedChainPolygon          TransactionScanSupportedChain = "polygon"
-	TransactionScanSupportedChainZksync           TransactionScanSupportedChain = "zksync"
-	TransactionScanSupportedChainZksyncSepolia    TransactionScanSupportedChain = "zksync-sepolia"
-	TransactionScanSupportedChainZora             TransactionScanSupportedChain = "zora"
-	TransactionScanSupportedChainLinea            TransactionScanSupportedChain = "linea"
-	TransactionScanSupportedChainBlast            TransactionScanSupportedChain = "blast"
-	TransactionScanSupportedChainScroll           TransactionScanSupportedChain = "scroll"
-	TransactionScanSupportedChainEthereumSepolia  TransactionScanSupportedChain = "ethereum-sepolia"
-	TransactionScanSupportedChainDegen            TransactionScanSupportedChain = "degen"
-	TransactionScanSupportedChainAvalancheFuji    TransactionScanSupportedChain = "avalanche-fuji"
-	TransactionScanSupportedChainGnosis           TransactionScanSupportedChain = "gnosis"
-	TransactionScanSupportedChainSoneiumMinato    TransactionScanSupportedChain = "soneium-minato"
-	TransactionScanSupportedChainRonin            TransactionScanSupportedChain = "ronin"
-	TransactionScanSupportedChainApechain         TransactionScanSupportedChain = "apechain"
-	TransactionScanSupportedChainBerachain        TransactionScanSupportedChain = "berachain"
-	TransactionScanSupportedChainBerachainBartio  TransactionScanSupportedChain = "berachain-bartio"
-	TransactionScanSupportedChainInk              TransactionScanSupportedChain = "ink"
-	TransactionScanSupportedChainInkSepolia       TransactionScanSupportedChain = "ink-sepolia"
-	TransactionScanSupportedChainAbstract         TransactionScanSupportedChain = "abstract"
-	TransactionScanSupportedChainAbstractTestnet  TransactionScanSupportedChain = "abstract-testnet"
-	TransactionScanSupportedChainSoneium          TransactionScanSupportedChain = "soneium"
-	TransactionScanSupportedChainUnichain         TransactionScanSupportedChain = "unichain"
-	TransactionScanSupportedChainSei              TransactionScanSupportedChain = "sei"
-	TransactionScanSupportedChainFlowEvm          TransactionScanSupportedChain = "flow-evm"
-	TransactionScanSupportedChainHyperevm         TransactionScanSupportedChain = "hyperevm"
-	TransactionScanSupportedChainMegaeth          TransactionScanSupportedChain = "megaeth"
-	TransactionScanSupportedChainKatana           TransactionScanSupportedChain = "katana"
-	TransactionScanSupportedChainPlume            TransactionScanSupportedChain = "plume"
-	TransactionScanSupportedChainXlayer           TransactionScanSupportedChain = "xlayer"
-	TransactionScanSupportedChainMonad            TransactionScanSupportedChain = "monad"
-	TransactionScanSupportedChainMonadTestnet     TransactionScanSupportedChain = "monad-testnet"
-	TransactionScanSupportedChainTempo            TransactionScanSupportedChain = "tempo"
-	TransactionScanSupportedChainTempoTestnet     TransactionScanSupportedChain = "tempo-testnet"
-	TransactionScanSupportedChainKiteAI           TransactionScanSupportedChain = "kite-ai"
-	TransactionScanSupportedChainKaia             TransactionScanSupportedChain = "kaia"
-	TransactionScanSupportedChainPlasma           TransactionScanSupportedChain = "plasma"
-	TransactionScanSupportedChainMantle           TransactionScanSupportedChain = "mantle"
-	TransactionScanSupportedChainRobinhood        TransactionScanSupportedChain = "robinhood"
-	TransactionScanSupportedChainArc              TransactionScanSupportedChain = "arc"
-	TransactionScanSupportedChainFlare            TransactionScanSupportedChain = "flare"
+	TransactionScanSupportedChainAbstract        TransactionScanSupportedChain = "abstract"
+	TransactionScanSupportedChainAbstractTestnet TransactionScanSupportedChain = "abstract-testnet"
+	TransactionScanSupportedChainApechain        TransactionScanSupportedChain = "apechain"
+	TransactionScanSupportedChainArbitrum        TransactionScanSupportedChain = "arbitrum"
+	TransactionScanSupportedChainArc             TransactionScanSupportedChain = "arc"
+	TransactionScanSupportedChainAvalanche       TransactionScanSupportedChain = "avalanche"
+	TransactionScanSupportedChainAvalancheFuji   TransactionScanSupportedChain = "avalanche-fuji"
+	TransactionScanSupportedChainBase            TransactionScanSupportedChain = "base"
+	TransactionScanSupportedChainBaseSepolia     TransactionScanSupportedChain = "base-sepolia"
+	TransactionScanSupportedChainBerachain       TransactionScanSupportedChain = "berachain"
+	TransactionScanSupportedChainBsc             TransactionScanSupportedChain = "bsc"
+	TransactionScanSupportedChainEthereum        TransactionScanSupportedChain = "ethereum"
+	TransactionScanSupportedChainEthereumSepolia TransactionScanSupportedChain = "ethereum-sepolia"
+	TransactionScanSupportedChainFlare           TransactionScanSupportedChain = "flare"
+	TransactionScanSupportedChainFlowEvm         TransactionScanSupportedChain = "flow-evm"
+	TransactionScanSupportedChainGiwaSepolia     TransactionScanSupportedChain = "giwa-sepolia"
+	TransactionScanSupportedChainGnosis          TransactionScanSupportedChain = "gnosis"
+	TransactionScanSupportedChainHedera          TransactionScanSupportedChain = "hedera"
+	TransactionScanSupportedChainHyperevm        TransactionScanSupportedChain = "hyperevm"
+	TransactionScanSupportedChainInk             TransactionScanSupportedChain = "ink"
+	TransactionScanSupportedChainInkSepolia      TransactionScanSupportedChain = "ink-sepolia"
+	TransactionScanSupportedChainKaia            TransactionScanSupportedChain = "kaia"
+	TransactionScanSupportedChainKatana          TransactionScanSupportedChain = "katana"
+	TransactionScanSupportedChainKiteAI          TransactionScanSupportedChain = "kite-ai"
+	TransactionScanSupportedChainLinea           TransactionScanSupportedChain = "linea"
+	TransactionScanSupportedChainMantle          TransactionScanSupportedChain = "mantle"
+	TransactionScanSupportedChainMegaeth         TransactionScanSupportedChain = "megaeth"
+	TransactionScanSupportedChainMonad           TransactionScanSupportedChain = "monad"
+	TransactionScanSupportedChainMonadTestnet    TransactionScanSupportedChain = "monad-testnet"
+	TransactionScanSupportedChainOptimism        TransactionScanSupportedChain = "optimism"
+	TransactionScanSupportedChainPlasma          TransactionScanSupportedChain = "plasma"
+	TransactionScanSupportedChainPlume           TransactionScanSupportedChain = "plume"
+	TransactionScanSupportedChainPolygon         TransactionScanSupportedChain = "polygon"
+	TransactionScanSupportedChainRobinhood       TransactionScanSupportedChain = "robinhood"
+	TransactionScanSupportedChainRonin           TransactionScanSupportedChain = "ronin"
+	TransactionScanSupportedChainScroll          TransactionScanSupportedChain = "scroll"
+	TransactionScanSupportedChainSei             TransactionScanSupportedChain = "sei"
+	TransactionScanSupportedChainSoneium         TransactionScanSupportedChain = "soneium"
+	TransactionScanSupportedChainSoneiumMinato   TransactionScanSupportedChain = "soneium-minato"
+	TransactionScanSupportedChainTempo           TransactionScanSupportedChain = "tempo"
+	TransactionScanSupportedChainTempoTestnet    TransactionScanSupportedChain = "tempo-testnet"
+	TransactionScanSupportedChainTron            TransactionScanSupportedChain = "tron"
+	TransactionScanSupportedChainUnichain        TransactionScanSupportedChain = "unichain"
+	TransactionScanSupportedChainWorldchain      TransactionScanSupportedChain = "worldchain"
+	TransactionScanSupportedChainXdc             TransactionScanSupportedChain = "xdc"
+	TransactionScanSupportedChainXlayer          TransactionScanSupportedChain = "xlayer"
+	TransactionScanSupportedChainZksync          TransactionScanSupportedChain = "zksync"
+	TransactionScanSupportedChainZksyncSepolia   TransactionScanSupportedChain = "zksync-sepolia"
+	TransactionScanSupportedChainZora            TransactionScanSupportedChain = "zora"
 )
 
 func (r TransactionScanSupportedChain) IsKnown() bool {
 	switch r {
-	case TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainLordchain, TransactionScanSupportedChainLordchainTestnet, TransactionScanSupportedChainMetacade, TransactionScanSupportedChainMetacadeTestnet, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora, TransactionScanSupportedChainLinea, TransactionScanSupportedChainBlast, TransactionScanSupportedChainScroll, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainDegen, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainRonin, TransactionScanSupportedChainApechain, TransactionScanSupportedChainBerachain, TransactionScanSupportedChainBerachainBartio, TransactionScanSupportedChainInk, TransactionScanSupportedChainInkSepolia, TransactionScanSupportedChainAbstract, TransactionScanSupportedChainAbstractTestnet, TransactionScanSupportedChainSoneium, TransactionScanSupportedChainUnichain, TransactionScanSupportedChainSei, TransactionScanSupportedChainFlowEvm, TransactionScanSupportedChainHyperevm, TransactionScanSupportedChainMegaeth, TransactionScanSupportedChainKatana, TransactionScanSupportedChainPlume, TransactionScanSupportedChainXlayer, TransactionScanSupportedChainMonad, TransactionScanSupportedChainMonadTestnet, TransactionScanSupportedChainTempo, TransactionScanSupportedChainTempoTestnet, TransactionScanSupportedChainKiteAI, TransactionScanSupportedChainKaia, TransactionScanSupportedChainPlasma, TransactionScanSupportedChainMantle, TransactionScanSupportedChainRobinhood, TransactionScanSupportedChainArc, TransactionScanSupportedChainFlare:
+	case TransactionScanSupportedChainAbstract, TransactionScanSupportedChainAbstractTestnet, TransactionScanSupportedChainApechain, TransactionScanSupportedChainArbitrum, TransactionScanSupportedChainArc, TransactionScanSupportedChainAvalanche, TransactionScanSupportedChainAvalancheFuji, TransactionScanSupportedChainBase, TransactionScanSupportedChainBaseSepolia, TransactionScanSupportedChainBerachain, TransactionScanSupportedChainBsc, TransactionScanSupportedChainEthereum, TransactionScanSupportedChainEthereumSepolia, TransactionScanSupportedChainFlare, TransactionScanSupportedChainFlowEvm, TransactionScanSupportedChainGiwaSepolia, TransactionScanSupportedChainGnosis, TransactionScanSupportedChainHedera, TransactionScanSupportedChainHyperevm, TransactionScanSupportedChainInk, TransactionScanSupportedChainInkSepolia, TransactionScanSupportedChainKaia, TransactionScanSupportedChainKatana, TransactionScanSupportedChainKiteAI, TransactionScanSupportedChainLinea, TransactionScanSupportedChainMantle, TransactionScanSupportedChainMegaeth, TransactionScanSupportedChainMonad, TransactionScanSupportedChainMonadTestnet, TransactionScanSupportedChainOptimism, TransactionScanSupportedChainPlasma, TransactionScanSupportedChainPlume, TransactionScanSupportedChainPolygon, TransactionScanSupportedChainRobinhood, TransactionScanSupportedChainRonin, TransactionScanSupportedChainScroll, TransactionScanSupportedChainSei, TransactionScanSupportedChainSoneium, TransactionScanSupportedChainSoneiumMinato, TransactionScanSupportedChainTempo, TransactionScanSupportedChainTempoTestnet, TransactionScanSupportedChainTron, TransactionScanSupportedChainUnichain, TransactionScanSupportedChainWorldchain, TransactionScanSupportedChainXdc, TransactionScanSupportedChainXlayer, TransactionScanSupportedChainZksync, TransactionScanSupportedChainZksyncSepolia, TransactionScanSupportedChainZora:
 		return true
 	}
 	return false
@@ -518,8 +516,8 @@ func (r UserOperationRequestParam) MarshalJSON() (data []byte, err error) {
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type UserOperationRequestMetadataParam struct {
-	// End-user account context (id, age, country, creation time, and
-	// account_addresses).
+	// End-user account context (id, age, country, creation time, account_addresses,
+	// bank_accounts, and bank_wires).
 	Account param.Field[UserOperationRequestMetadataAccountParam] `json:"account"`
 	// Connection metadata including user agent, IP information, and origin.
 	Connection param.Field[UserOperationRequestMetadataConnectionParam] `json:"connection"`
@@ -536,8 +534,8 @@ func (r UserOperationRequestMetadataParam) MarshalJSON() (data []byte, err error
 	return apijson.MarshalRoot(r)
 }
 
-// End-user account context (id, age, country, creation time, and
-// account_addresses).
+// End-user account context (id, age, country, creation time, account_addresses,
+// bank_accounts, and bank_wires).
 type UserOperationRequestMetadataAccountParam struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
@@ -547,6 +545,12 @@ type UserOperationRequestMetadataAccountParam struct {
 	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Fiat bank accounts linked to this user (account numbers, IBANs, ACH routing
+	// numbers).
+	BankAccounts param.Field[[]UserOperationRequestMetadataAccountBankAccountParam] `json:"bank_accounts"`
+	// Bank wire identifiers linked to this user (Fedwire routing numbers, SWIFT/BIC
+	// codes).
+	BankWires param.Field[[]UserOperationRequestMetadataAccountBankWireParam] `json:"bank_wires"`
 	// Age of the user in years
 	UserAge param.Field[int64] `json:"user_age"`
 	// ISO country code of the user's location.
@@ -554,6 +558,38 @@ type UserOperationRequestMetadataAccountParam struct {
 }
 
 func (r UserOperationRequestMetadataAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A fiat bank account identifier for the end user.
+type UserOperationRequestMetadataAccountBankAccountParam struct {
+	// Domestic bank account number.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// ISO 3166-1 alpha-2 code of the account's country.
+	CountryCode param.Field[string] `json:"country_code"`
+	// International Bank Account Number.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for ACH transfers.
+	RoutingNumber param.Field[string] `json:"routing_number"`
+}
+
+func (r UserOperationRequestMetadataAccountBankAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A bank wire identifier for the end user.
+type UserOperationRequestMetadataAccountBankWireParam struct {
+	// Beneficiary account number used for the wire.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// Beneficiary International Bank Account Number used for the wire.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for US domestic wires (Fedwire).
+	RoutingNumber param.Field[string] `json:"routing_number"`
+	// SWIFT/BIC code used for international wires.
+	Swift param.Field[string] `json:"swift"`
+}
+
+func (r UserOperationRequestMetadataAccountBankWireParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -828,8 +864,8 @@ func (r ValidateAddressParam) MarshalJSON() (data []byte, err error) {
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type ValidateAddressMetadataParam struct {
-	// End-user account context (id, age, country, creation time, and
-	// account_addresses).
+	// End-user account context (id, age, country, creation time, account_addresses,
+	// bank_accounts, and bank_wires).
 	Account param.Field[ValidateAddressMetadataAccountParam] `json:"account"`
 	// Connection metadata including user agent, IP information, and origin.
 	Connection param.Field[ValidateAddressMetadataConnectionParam] `json:"connection"`
@@ -846,8 +882,8 @@ func (r ValidateAddressMetadataParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// End-user account context (id, age, country, creation time, and
-// account_addresses).
+// End-user account context (id, age, country, creation time, account_addresses,
+// bank_accounts, and bank_wires).
 type ValidateAddressMetadataAccountParam struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
@@ -857,6 +893,12 @@ type ValidateAddressMetadataAccountParam struct {
 	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Fiat bank accounts linked to this user (account numbers, IBANs, ACH routing
+	// numbers).
+	BankAccounts param.Field[[]ValidateAddressMetadataAccountBankAccountParam] `json:"bank_accounts"`
+	// Bank wire identifiers linked to this user (Fedwire routing numbers, SWIFT/BIC
+	// codes).
+	BankWires param.Field[[]ValidateAddressMetadataAccountBankWireParam] `json:"bank_wires"`
 	// Age of the user in years
 	UserAge param.Field[int64] `json:"user_age"`
 	// ISO country code of the user's location.
@@ -864,6 +906,38 @@ type ValidateAddressMetadataAccountParam struct {
 }
 
 func (r ValidateAddressMetadataAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A fiat bank account identifier for the end user.
+type ValidateAddressMetadataAccountBankAccountParam struct {
+	// Domestic bank account number.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// ISO 3166-1 alpha-2 code of the account's country.
+	CountryCode param.Field[string] `json:"country_code"`
+	// International Bank Account Number.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for ACH transfers.
+	RoutingNumber param.Field[string] `json:"routing_number"`
+}
+
+func (r ValidateAddressMetadataAccountBankAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A bank wire identifier for the end user.
+type ValidateAddressMetadataAccountBankWireParam struct {
+	// Beneficiary account number used for the wire.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// Beneficiary International Bank Account Number used for the wire.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for US domestic wires (Fedwire).
+	RoutingNumber param.Field[string] `json:"routing_number"`
+	// SWIFT/BIC code used for international wires.
+	Swift param.Field[string] `json:"swift"`
+}
+
+func (r ValidateAddressMetadataAccountBankWireParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -905,8 +979,8 @@ func (r ValidateBulkAddressesParam) MarshalJSON() (data []byte, err error) {
 // Additional context for the scan (e.g., dapp URL/domain, integration source).
 // Used to enrich results and reduce false positives/negatives.
 type ValidateBulkAddressesMetadataParam struct {
-	// End-user account context (id, age, country, creation time, and
-	// account_addresses).
+	// End-user account context (id, age, country, creation time, account_addresses,
+	// bank_accounts, and bank_wires).
 	Account param.Field[ValidateBulkAddressesMetadataAccountParam] `json:"account"`
 	// Connection metadata including user agent, IP information, and origin.
 	Connection param.Field[ValidateBulkAddressesMetadataConnectionParam] `json:"connection"`
@@ -923,8 +997,8 @@ func (r ValidateBulkAddressesMetadataParam) MarshalJSON() (data []byte, err erro
 	return apijson.MarshalRoot(r)
 }
 
-// End-user account context (id, age, country, creation time, and
-// account_addresses).
+// End-user account context (id, age, country, creation time, account_addresses,
+// bank_accounts, and bank_wires).
 type ValidateBulkAddressesMetadataAccountParam struct {
 	// Unique identifier for the account.
 	AccountID param.Field[string] `json:"account_id" api:"required"`
@@ -934,6 +1008,12 @@ type ValidateBulkAddressesMetadataAccountParam struct {
 	AccountAddresses param.Field[[]string] `json:"account_addresses"`
 	// Timestamp when the account was created.
 	AccountCreationTimestamp param.Field[time.Time] `json:"account_creation_timestamp" format:"date-time"`
+	// Fiat bank accounts linked to this user (account numbers, IBANs, ACH routing
+	// numbers).
+	BankAccounts param.Field[[]ValidateBulkAddressesMetadataAccountBankAccountParam] `json:"bank_accounts"`
+	// Bank wire identifiers linked to this user (Fedwire routing numbers, SWIFT/BIC
+	// codes).
+	BankWires param.Field[[]ValidateBulkAddressesMetadataAccountBankWireParam] `json:"bank_wires"`
 	// Age of the user in years
 	UserAge param.Field[int64] `json:"user_age"`
 	// ISO country code of the user's location.
@@ -941,6 +1021,38 @@ type ValidateBulkAddressesMetadataAccountParam struct {
 }
 
 func (r ValidateBulkAddressesMetadataAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A fiat bank account identifier for the end user.
+type ValidateBulkAddressesMetadataAccountBankAccountParam struct {
+	// Domestic bank account number.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// ISO 3166-1 alpha-2 code of the account's country.
+	CountryCode param.Field[string] `json:"country_code"`
+	// International Bank Account Number.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for ACH transfers.
+	RoutingNumber param.Field[string] `json:"routing_number"`
+}
+
+func (r ValidateBulkAddressesMetadataAccountBankAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A bank wire identifier for the end user.
+type ValidateBulkAddressesMetadataAccountBankWireParam struct {
+	// Beneficiary account number used for the wire.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// Beneficiary International Bank Account Number used for the wire.
+	Iban param.Field[string] `json:"iban"`
+	// ABA routing number used for US domestic wires (Fedwire).
+	RoutingNumber param.Field[string] `json:"routing_number"`
+	// SWIFT/BIC code used for international wires.
+	Swift param.Field[string] `json:"swift"`
+}
+
+func (r ValidateBulkAddressesMetadataAccountBankWireParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -1209,11 +1321,12 @@ const (
 	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCreatedViaLaunchpad            ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "CREATED_VIA_LAUNCHPAD"
 	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCompromisedToken               ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "COMPROMISED_TOKEN"
 	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDLongFundTrail                  ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "LONG_FUND_TRAIL"
+	ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMetadataPromptInjection        ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID = "METADATA_PROMPT_INJECTION"
 )
 
 func (r ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureID) IsKnown() bool {
 	switch r {
-	case ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDVerifiedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnverifiedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighTradeVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMarketPlaceSalesHistory, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighReputationToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOnchainActivityValidator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDStaticCodeSignature, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDKnownMalicious, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsEoa, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDErc20Contract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTrustedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDBenignCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMetadata, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDAirdropPattern, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInorganicVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDDynamicAnalysis, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConcentratedSupplyDistribution, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHoneypot, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInsufficientLockedLiquidity, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnstableTokenPrice, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDRugpull, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDKnownRugpullCodePattern, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDWashTrading, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConsumerOverride, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInappropriateContent, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighTransferFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighBuyFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighSellFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnsellableToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsMintable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDModifiableTaxes, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCanBlacklist, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCanWhitelist, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHasTradingCooldown, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDExternalFunctions, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHiddenOwner, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferPauseable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOwnershipRenounced, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOwnerCanChangeBalance, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDProxyContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSimilarMaliciousContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorSensitiveAsset, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorHighConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorMediumConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorLowConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonationProtected, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHiddenSupplyByKeyHolder, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeTradeMakerCount, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferFromReverts, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOffensiveTokenMetadata, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDListedOnCentralizedExchange, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSanctionedCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSpamText, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDBondingCurveToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHeavilySniped, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSolanaToken2022, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDPostDump, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDDexPaid, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDLowReputationCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSnipeAtMint, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferHookEnabled, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConfidentialTransfersEnabled, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDNonTranserable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTokenBackdoor, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCreatedViaLaunchpad, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCompromisedToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDLongFundTrail:
+	case ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDVerifiedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnverifiedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighTradeVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMarketPlaceSalesHistory, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighReputationToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOnchainActivityValidator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDStaticCodeSignature, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDKnownMalicious, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsEoa, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDErc20Contract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTrustedContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDBenignCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMetadata, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDAirdropPattern, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInorganicVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDDynamicAnalysis, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConcentratedSupplyDistribution, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHoneypot, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInsufficientLockedLiquidity, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnstableTokenPrice, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDRugpull, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDKnownRugpullCodePattern, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDWashTrading, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConsumerOverride, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDInappropriateContent, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighTransferFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighBuyFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHighSellFee, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDUnsellableToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDIsMintable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDModifiableTaxes, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCanBlacklist, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCanWhitelist, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHasTradingCooldown, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDExternalFunctions, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHiddenOwner, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferPauseable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOwnershipRenounced, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOwnerCanChangeBalance, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDProxyContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSimilarMaliciousContract, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorSensitiveAsset, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorHighConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorMediumConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonatorLowConfidence, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDImpersonationProtected, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeVolume, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHiddenSupplyByKeyHolder, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDFakeTradeMakerCount, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferFromReverts, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDOffensiveTokenMetadata, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDListedOnCentralizedExchange, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSanctionedCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSpamText, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDBondingCurveToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDHeavilySniped, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSolanaToken2022, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDPostDump, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDDexPaid, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDLowReputationCreator, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDSnipeAtMint, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTransferHookEnabled, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDConfidentialTransfersEnabled, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDNonTranserable, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDTokenBackdoor, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCreatedViaLaunchpad, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDCompromisedToken, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDLongFundTrail, ValidateBulkExtendedAddressesResponseResultsValidationFeaturesFeatureIDMetadataPromptInjection:
 		return true
 	}
 	return false
