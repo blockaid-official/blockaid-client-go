@@ -72,7 +72,7 @@ func TestStellarTransactionScanWithOptionalParams(t *testing.T) {
 					Type:     blockaidclientgo.F(blockaidclientgo.StellarTransactionScanRequestTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative),
 					RawValue: blockaidclientgo.F("raw_value"),
 				}),
-				DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+				DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainAbstract),
 			}}),
 		},
 	})

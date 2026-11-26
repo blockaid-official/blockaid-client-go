@@ -85,7 +85,7 @@ func TestEvmTransactionRawScanWithOptionalParams(t *testing.T) {
 				Type:     blockaidclientgo.F(blockaidclientgo.EvmTransactionRawScanParamsTransactionHintsCrossChainBridgeHintDestinationAssetCrossChainBridgeNativeAssetTypeNative),
 				RawValue: blockaidclientgo.F("raw_value"),
 			}),
-			DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainArbitrum),
+			DestinationChain: blockaidclientgo.F(blockaidclientgo.TransactionScanSupportedChainAbstract),
 		}}),
 	})
 	if err != nil {

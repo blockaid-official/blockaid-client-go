@@ -27,7 +27,7 @@ func TestTokenWebhookNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.TokenWebhooks.New(
 		context.TODO(),
-		blockaidclientgo.TokenScanSupportedChainArbitrum,
+		blockaidclientgo.TokenScanSupportedChainAbstract,
 		blockaidclientgo.TokenWebhookNewParams{
 			URL: blockaidclientgo.F("https://example.com/"),
 			Filter: blockaidclientgo.F[blockaidclientgo.TokenWebhookNewParamsFilterUnion](blockaidclientgo.TokenWebhookNewParamsFilterTokenAddressFilter{
@@ -60,7 +60,7 @@ func TestTokenWebhookUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.TokenWebhooks.Update(
 		context.TODO(),
-		blockaidclientgo.TokenScanSupportedChainArbitrum,
+		blockaidclientgo.TokenScanSupportedChainAbstract,
 		blockaidclientgo.TokenWebhookUpdateParams{
 			AddTokenAddresses: blockaidclientgo.F([]string{"string"}),
 			Filter: blockaidclientgo.F[blockaidclientgo.TokenWebhookUpdateParamsFilterUnion](blockaidclientgo.TokenWebhookUpdateParamsFilterTokenAddressFilter{
@@ -93,7 +93,7 @@ func TestTokenWebhookDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	err := client.TokenWebhooks.Delete(context.TODO(), blockaidclientgo.TokenScanSupportedChainArbitrum)
+	err := client.TokenWebhooks.Delete(context.TODO(), blockaidclientgo.TokenScanSupportedChainAbstract)
 	if err != nil {
 		var apierr *blockaidclientgo.Error
 		if errors.As(err, &apierr) {
@@ -115,7 +115,7 @@ func TestTokenWebhookGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.TokenWebhooks.Get(context.TODO(), blockaidclientgo.TokenScanSupportedChainArbitrum)
+	_, err := client.TokenWebhooks.Get(context.TODO(), blockaidclientgo.TokenScanSupportedChainAbstract)
 	if err != nil {
 		var apierr *blockaidclientgo.Error
 		if errors.As(err, &apierr) {
