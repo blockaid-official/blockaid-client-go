@@ -31,6 +31,10 @@ func TestEvmTransactionBulkScanWithOptionalParams(t *testing.T) {
 		Chain: blockaidclientgo.F(blockaidclientgo.BulkTransactionScanSupportedChainEthereum),
 		Data: blockaidclientgo.F([]blockaidclientgo.EvmTransactionBulkScanParamsData{{
 			From: blockaidclientgo.F("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"),
+			AccessList: blockaidclientgo.F([]blockaidclientgo.EvmTransactionBulkScanParamsDataAccessList{{
+				Address:     blockaidclientgo.F("address"),
+				StorageKeys: blockaidclientgo.F([]string{"string"}),
+			}}),
 			AuthorizationList: blockaidclientgo.F([]blockaidclientgo.AuthorizationParam{{
 				Address: blockaidclientgo.F("address"),
 				ChainID: blockaidclientgo.F("chainId"),
@@ -47,6 +51,10 @@ func TestEvmTransactionBulkScanWithOptionalParams(t *testing.T) {
 			Value:    blockaidclientgo.F("0x100000000000"),
 		}, {
 			From: blockaidclientgo.F("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"),
+			AccessList: blockaidclientgo.F([]blockaidclientgo.EvmTransactionBulkScanParamsDataAccessList{{
+				Address:     blockaidclientgo.F("address"),
+				StorageKeys: blockaidclientgo.F([]string{"string"}),
+			}}),
 			AuthorizationList: blockaidclientgo.F([]blockaidclientgo.AuthorizationParam{{
 				Address: blockaidclientgo.F("address"),
 				ChainID: blockaidclientgo.F("chainId"),
@@ -67,8 +75,20 @@ func TestEvmTransactionBulkScanWithOptionalParams(t *testing.T) {
 				AccountID:                blockaidclientgo.F("account_id"),
 				AccountAddresses:         blockaidclientgo.F([]string{"string"}),
 				AccountCreationTimestamp: blockaidclientgo.F(time.Now()),
-				UserAge:                  blockaidclientgo.F(int64(1)),
-				UserCountryCode:          blockaidclientgo.F("user_country_code"),
+				BankAccounts: blockaidclientgo.F([]blockaidclientgo.EvmTransactionBulkScanParamsMetadataAccountBankAccount{{
+					AccountNumber: blockaidclientgo.F("account_number"),
+					CountryCode:   blockaidclientgo.F("country_code"),
+					Iban:          blockaidclientgo.F("iban"),
+					RoutingNumber: blockaidclientgo.F("routing_number"),
+				}}),
+				BankWires: blockaidclientgo.F([]blockaidclientgo.EvmTransactionBulkScanParamsMetadataAccountBankWire{{
+					AccountNumber: blockaidclientgo.F("account_number"),
+					Iban:          blockaidclientgo.F("iban"),
+					RoutingNumber: blockaidclientgo.F("routing_number"),
+					Swift:         blockaidclientgo.F("swift"),
+				}}),
+				UserAge:         blockaidclientgo.F(int64(1)),
+				UserCountryCode: blockaidclientgo.F("user_country_code"),
 			}),
 			Connection: blockaidclientgo.F(blockaidclientgo.EvmTransactionBulkScanParamsMetadataConnection{
 				IPAddress:                blockaidclientgo.F("ip_address"),
